@@ -98,8 +98,8 @@ const App = () => {
         </div>
       </div>
 
-      <Card style={{ margin: '1px' }}>
-        <div style={{ height: '150px', backgroundColor: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Card className='carousel-card'>
+        <div className='carousel-container'>
           轮播图
         </div>
       </Card>
