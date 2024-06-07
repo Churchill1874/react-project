@@ -91,10 +91,10 @@ const App = () => {
 
       <div className="top-news">
         <div className="list-item">
-          <span style={{ color: 'red' }}>置顶：国家主席习近平今日召开重要会议</span>
+          <span className='top'>置顶：国家主席习近平今日召开重要会议</span>
         </div>
         <div className="list-item">
-          头条1：村东头王寡妇跟人跑了
+          头条：村东头王寡妇跟人跑了
         </div>
       </div>
 
@@ -104,7 +104,7 @@ const App = () => {
         </div>
       </Card>
 
-      <div style={{ padding: '10px', backgroundColor: '#f5f5f5', margin: '10px 0' }}>
+      <div className='message'>
         滚动文字、平台公告、系统通知~
       </div>
 
@@ -138,7 +138,7 @@ const App = () => {
         <Tabs.Tab title="首页" key="home" />
         <Tabs.Tab title="新闻" key="news" />
         <Tabs.Tab title="市场" key="market" />
-        <Tabs.Tab title="大厅" key="hall" />
+        <Tabs.Tab title="消息" key="hall" />
         <Tabs.Tab title="个人" key="personal" />
       </Tabs>
     </div>
