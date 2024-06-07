@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Card, List, SearchBar, Badge, Tabs, Input, Button } from 'antd-mobile';
 //import 'antd-mobile/es/global';
 //import '../../global.less';  // 确认路径正确
@@ -7,7 +7,7 @@ import '@/pages/home/Home.less';  // 引入Home.less
 const App = () => {
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     const scrollContent = scrollContentRef.current;
     const newsList = newsListRef.current;
@@ -83,21 +83,11 @@ const App = () => {
 
   return (
     <div>
-      <header style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', borderBottom: '1px solid #ccc' }}>
-        <div>logo</div>
-        <div>头像</div>
+      <header className='header'>
+        <div className='logo'>logo</div>
+        <SearchBar className='search-bar' placeholder="搜索框…" style={{ flex: 1, margin: '0 10px', height: '30px', padding: '0' }} />
+        <div className='avatar'>头像</div>
       </header>
-
-      <SearchBar placeholder="搜索框…" style={{ margin: '10px' }} />
-
-      {/*       <List className="top-news">
-        <List.Item>
-          <span style={{ color: 'red' }}>置顶：国家主席习近平今日召开重要会议</span>
-        </List.Item>
-        <List.Item>
-          头条1：村东头王寡妇跟人跑了
-        </List.Item>
-      </List> */}
 
       <div className="top-news">
         <div className="list-item">
@@ -108,8 +98,8 @@ const App = () => {
         </div>
       </div>
 
-      <Card style={{ margin: '10px' }}>
-        <div style={{ height: '200px', backgroundColor: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Card style={{ margin: '1px' }}>
+        <div style={{ height: '150px', backgroundColor: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           轮播图
         </div>
       </Card>
