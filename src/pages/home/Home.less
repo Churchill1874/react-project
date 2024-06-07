@@ -1,0 +1,30 @@
+@color:#f5f1f1; 
+
+.top-news {
+    margin: 0; /* 去掉外边距 */
+    .list-item{
+        line-height: 1.6;
+        font-size: 14px;
+        border-bottom: none
+    }
+    border-bottom: 1px solid @color;
+  }
+  
+
+  
+  .news-list {
+    max-height: 200px;  /* 设置一个最大高度 */
+    overflow: hidden;  /* 隐藏滚动条 */
+    position: relative;
+  }
+  
+  .news-list .adm-list-item {
+    font-size: 14px;  /* 调整字体大小 */
+    line-height: 0.5; /* 调整行高，使内容更紧凑 */
+    border-bottom: 1px solid @color;  /* 添加下边框 */
+  }
+  
+  .news-list .adm-list-item .adm-list-item-description {
+    margin-top: 10px;  /* 调整描述文字与标题的间距 */
+  }
+  
