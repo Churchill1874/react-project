@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Toast, Swiper, Card, List, SearchBar, Badge, Tabs, Input, Button, NoticeBar } from 'antd-mobile';
+import { Toast, Swiper, List, SearchBar, Badge, Tabs, Input, Button, NoticeBar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import '@/pages/home/Home.less';  // 引入Home.less
 
@@ -71,6 +71,8 @@ const Home = () => {
   }, []);
 
 
+
+
   const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac']
 
   const items = colors.map((color, index) => (
@@ -89,53 +91,112 @@ const Home = () => {
 
   const newsItems = (
     <>
-      <List.Item
-        extra={<Badge content="新闻" />}
-        description="2023-09-10 浏览: 1001 赞: 99 喷: 3 评: 20"
+      <List.Item extra={<Badge content="新闻" />}
       >
-        1.郭德纲将前往日本访问
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
-      <List.Item
-        extra={<Badge content="话题" />}
-        description="2023-09-09 浏览: 99999 赞: 1 喷: 7685 评: 309"
+
+      <List.Item extra={<Badge content="新闻" />}
       >
-        2.热烈庆祝中国男足战胜西班牙夺得世界杯冠军
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
-      <List.Item
-        extra={<Badge content="新闻" />}
-        description="2023-09-08 浏览: 9 赞: 2 喷: 7685 评: 3"
+
+      <List.Item extra={<Badge content="新闻" />}
       >
-        3.已全民实现小康家庭
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
-      <List.Item
-        extra={<Badge content="出售" />}
-        description="2023-09-08 浏览: 78 赞: 21 喷: 1 评: 20"
+
+      <List.Item extra={<Badge content="新闻" />}
       >
-        4.家中闲置母老虎一只，急售!!!
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
-      <List.Item
-        extra={<Badge content="新闻" />}
-        description="2023-09-10 浏览: 1001 赞: 99 喷: 3 评: 20"
+
+      <List.Item extra={<Badge content="新闻" />}
       >
-        5.郭德纲将前往日本访问
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
-      <List.Item
-        extra={<Badge content="话题" />}
-        description="2023-09-09 浏览: 99999 赞: 1 喷: 7685 评: 309"
+
+      <List.Item extra={<Badge content="新闻" />}
       >
-        6.热烈庆祝中国男足战胜西班牙夺得世界杯冠军
-      </List.Item>
-      <List.Item
-        extra={<Badge content="新闻" />}
-        description="2023-09-08 浏览: 9 赞: 2 喷: 7685 评: 3"
-      >
-        7.已全民实现小康家庭
-      </List.Item>
-      <List.Item
-        extra={<Badge content="出售" />}
-        description="2023-09-08 浏览: 78 赞: 21 喷: 1 评: 20"
-      >
-        8.家中闲置母老虎一只，急售!!!
+        <div className="news-item">
+          <div className="news-title">1.郭德纲将前往日本访问</div>
+          <div className="news-info">
+            <span className="date">2023-09-10</span>
+            <span className="space"></span>
+            <span className="views">浏览: 1001</span>
+            <span className="space"></span>
+            <span className="likes">赞: 99</span>
+            <span className="space"></span>
+            <span className="dislikes">喷: 3</span>
+            <span className="space"></span>
+            <span className="comments">评: 20</span>
+          </div>
+        </div>
       </List.Item>
     </>
   );
@@ -144,13 +205,13 @@ const Home = () => {
     <div>
       <header className='header'>
         <div className='logo'>logo</div>
-        <SearchBar className='search-bar' placeholder="搜索框…"/>
+        <div className='logo'>0级 暗中观察</div>
         <div className='avatar'>头像</div>
       </header>
 
       <div className="top-news">
         <div className="list-item">
-          <span className='top'>置顶：国家主席习近平今日召开重要会议</span>
+          <span className='top'>置顶：</span>国家主席习近平今日召开重要会议
         </div>
       </div>
 
@@ -171,6 +232,7 @@ const Home = () => {
         speed={50}
       />
 
+      <div className='chat-container'></div>
       <div className='chat'>
         <div>刘老六：介绍行了介绍就!</div>
         <span className='time'>2024-09-08 10:05</span>
@@ -206,10 +268,17 @@ const Home = () => {
         <span className='time'>2024-09-08 10:05</span>
       </div>
 
-      <div className='send'>
-        <Input placeholder="请输入" style={{ flex: 1 }} />
-        <Button color="primary">发送</Button>
+
+      <div className="send-container">
+        <Input
+          className="input-field"
+          placeholder="请输入"
+          inputMode="search"
+        />
+        <Button className="send-button" color="primary">发送</Button>
       </div>
+
+
 
       <Tabs>
         <Tabs.Tab title="首页" key="home" />
