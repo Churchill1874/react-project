@@ -6,7 +6,7 @@
 
   /* 去掉外边距 */
   .list-item {
-    line-height: 2;
+    line-height: 2.5;
     font-size: 13px;
     border-bottom: none;
     .top {
@@ -84,23 +84,20 @@
 }
 
 
-
-
-
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 35px;
+  height: 30px;
   margin-top: -5px;
-  margin-bottom: 5px;
-  background-color: @theme;
+  padding-left: 2px;
+  padding-right: 2px;
 
+  .title,
   .logo,
   .avatar {
-    color: #ffffff;
-    font-size: 16px;
+    color: #201f1f;
+    font-size: 15px;
   }
 }
 
@@ -129,7 +126,7 @@
   margin-bottom: 1px;
   padding: 5px;
   text-align: left;
-  max-height: 200px; // 设置最大高度
+  height: 200px; // 设置固定高度
   overflow-y: auto; // 允许垂直滚动
   border: 1px solid #dbe6f5;
   .time {

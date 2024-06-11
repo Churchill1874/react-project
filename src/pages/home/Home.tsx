@@ -203,10 +203,11 @@ const Home = () => {
 
   return (
     <div>
+
       <header className='header'>
         <div className='logo'>logo</div>
-        <div className='logo'>0级 暗中观察</div>
-        <div className='avatar'>头像</div>
+        <div className='title'>暗中观察</div>
+        <div className='avatar'>level 0 头像</div>
       </header>
 
       <div className="top-news">
@@ -263,7 +264,7 @@ const Home = () => {
         <div>李大婉：访呀</div>
         <span className='time'>2024-09-08 10:05</span>
         <div>宋大大：那是他该干的事嘛</div>
-        <div className='time'>2024-10-08 10:05</div>
+        <span className='time'>2024-10-08 10:05</span>
         <div>主教练：中国队夺冠啦~~~~~~</div>
         <span className='time'>2024-09-08 10:05</span>
       </div>

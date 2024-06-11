@@ -1,77 +1,38 @@
-.my-nav-bar {
-    &-subtitle {
-      font-size: 12px;
-    }
+@theme: #1890ff;
+
+.tabs{
+  margin-top: 15%;
+  --fixed-active-line-width: 50%;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color:aliceblue /* 替换为你需要的颜色 */
+}
+
+.form{
+  .adm-list-item-title {
+    font-size: 14px; /* 设置标题字体大小 */
   }
-  
-  .password {
-    display: flex;
-    align-items: center;
-  
-    .input {
-      flex: auto;
-    }
-  
-    .eye {
-      flex: none;
-      margin-left: 8px;
-      padding: 4px;
-      cursor: pointer;
-  
-      svg {
-        display: block;
-        font-size: var(--adm-font-size-7);
-      }
-    }
+  .adm-list-item-content {
+    font-size: 15px; /* 设置内容字体大小 */
   }
+}
+
+.footer {
+  margin-top: 0px;
+  background-color: transparent; /* 去掉背景色 */
+  border: none; /* 去掉边框，如果有的话 */
   
-  .eye {
-    padding: 4px;
-    cursor: pointer;
-    svg {
-      display: block;
-      font-size: var(--adm-font-size-7);
-    }
+  .adm-footer {
+    background-color: transparent; /* 去掉背景色 */
+    border: none; /* 去掉边框 */
+    box-shadow: none; /* 去掉阴影 */
   }
-  
-  .login-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding: 30px;
+
+  .adm-footer-content {
+    background-color: transparent; /* 确保内容背景色也去掉 */
+    border: none; /* 去掉边框 */
   }
-  
-  .input-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 20px;
-  }
-  
-  .input-wrapper .adm-input {
-    width: 100%;
-    max-width: 380px;
-    margin-bottom: 15px;
-  }
-  
-  .extraPart {
-    border-left: solid 1px #a6d9f8;
-    padding-left: 12px;
-    font-size: 15px;
-    line-height: 22px;
-    color: rgb(6, 132, 242);
-  
-    &:active {
-      color: rgb(191, 206, 241); /* 点击时的颜色 */
-    }
-  }
-  
-  .login{
-    margin-top: 20px;
-  }
-  
-  .login-footer{
-    margin-top: 350px;
-  }
+}
