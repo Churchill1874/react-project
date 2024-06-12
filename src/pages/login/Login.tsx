@@ -48,8 +48,14 @@ const Login: React.FC = () => {
     if(!result){
       return;
     }
-    console.log(1)
-    
+
+    //对所有注册信息进行校验
+
+
+
+
+
+    //请求后台
     const {code,data,msg} = await Request_Register(values);
     if(code === -1){
       Toast.show({
