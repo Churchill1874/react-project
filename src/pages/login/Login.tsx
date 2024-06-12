@@ -1,27 +1,71 @@
 import '@/pages/login/Login.less';
 import { useState , useEffect} from 'react';
-import { Image, Form, Tabs, ResultPage, Input, Footer, Button } from 'antd-mobile'
+import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast } from 'antd-mobile'
 import { AntOutline } from 'antd-mobile-icons'
-import { Request_GetVerficationCode } from '@/pages/login/api'
+import { Request_GetVerficationCode, Request_Register } from '@/pages/login/api'
+
+interface Register {
+  account: string;
+  name: string;
+  password: string;
+  gender: number;
+  verificationCode: string;
+}
+const regex = /^[A-Za-z0-9]+$/;
+
+
+const checkRegister = (register: Register):boolean=>{
+  if(!regex.test(register.account)){
+    Toast.show({
+      icon: 'fail',
+      content: '账号只能是字母或数字',
+      position:'top',
+      duration: 3000
+    })
+    return false;
+  }
+
+
+
+  return true;
+}
+
 
 const Login: React.FC = () => {
 
   const [captcha, setCaptcha] = useState('')
-  let captchaImage;
 
+  //请求图片验证啊
   const captchaImageExchange = async () => {
     const {data} = await Request_GetVerficationCode();
-    captchaImage = data.captchaImage;
+    const captchaImage = data.captchaImage;
     setCaptcha(captchaImage)
   }
 
-  const login = ()=> {
+  //请求注册
+  const register = async (values: Register)=> {
+    const result = checkRegister(values);
+    if(!result){
+      return;
+    }
+    console.log(1)
+    
+    const {code,data,msg} = await Request_Register(values);
+    if(code === -1){
+      Toast.show({
+        icon: 'fail',
+        content: msg,
+        position:'top',
+        duration: 3000
+      }) 
+    }
+
+    
 
   }
 
   useEffect(()=>{
-    console.log(1)
-    //captchaImageExchange();
+    captchaImageExchange();
   },[])
 
   return (
@@ -54,7 +98,7 @@ const Login: React.FC = () => {
 
           <Tabs.Tab title='注册' key='register'>
             <Form className='form'
-              onFinish={login}
+              onFinish={register}
               footer={<Button block color='primary' type='submit' size='middle'> 提交 </Button>}
               layout='horizontal'
               requiredMarkStyle='asterisk'

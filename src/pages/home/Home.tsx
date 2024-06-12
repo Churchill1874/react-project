@@ -206,8 +206,8 @@ const Home = () => {
 
       <header className='header'>
         <div className='logo'>logo</div>
-        <div className='title'>暗中观察</div>
-        <div className='avatar'>level 0 头像</div>
+        <div className='title'>102人在线</div>
+        <div className='avatar'>level1 头像</div>
       </header>
 
       <div className="top-news">
