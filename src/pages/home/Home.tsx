@@ -5,10 +5,17 @@ import '@/pages/home/Home.less';  // 引入Home.less
 
 
 const Home = () => {
+  const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    //聊天对话框直接显示最底部
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+
+
     const scrollContent = scrollContentRef.current;
     const newsList = newsListRef.current;
 
@@ -234,7 +241,7 @@ const Home = () => {
       />
 
       <div className='chat-container'></div>
-      <div className='chat'>
+      <div className='chat' ref={chatRef}>
         <div>刘老六：介绍行了介绍就!</div>
         <span className='time'>2024-09-08 10:05</span>
         <div>吴老二：我浑森发抖</div>

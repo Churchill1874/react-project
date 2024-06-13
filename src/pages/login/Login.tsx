@@ -1,6 +1,7 @@
 import '@/pages/login/Login.less';
-import { useState, useEffect, RefObject,useRef } from 'react';
-import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef ,Popup} from 'antd-mobile'
+import { useState, useEffect, RefObject } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef, Popup } from 'antd-mobile'
 import { AntOutline } from 'antd-mobile-icons'
 import { Request_GetVerficationCode, Request_Register } from '@/pages/login/api'
 import dayjs from 'dayjs'
@@ -34,6 +35,7 @@ const checkRegister = (register: Register): boolean => {
 
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [captcha, setCaptcha] = useState('')
 
   //请求图片验证啊
@@ -58,19 +60,31 @@ const Login: React.FC = () => {
 
     //请求后台
     const { code, data, msg } = await Request_Register(values);
-    if (code === -1) {
+    if (code === 0) {
+      const tokenId = data.tokenId;
+      console.log(tokenId)
+
+      localStorage.setItem('tokenId',tokenId)
+
+
+      Toast.show({
+        icon: 'success',
+        content: '登录成功',
+        duration: 2000
+      });
+
+      // 跳转到 /home 页面
+      navigate('/');
+    } else {
       Toast.show({
         icon: 'fail',
         content: msg,
         position: 'top',
         duration: 3000
       })
-
+      
       captchaImageExchange();
     }
-
-
-
   }
 
   useEffect(() => {
@@ -134,13 +148,13 @@ const Login: React.FC = () => {
                 <Input placeholder='请输入' />
               </Form.Item>
 
-               <Form.Item name='birth' label='生日' trigger='onConfirm' onClick={(e, datePickerRef: RefObject<DatePickerRef>) => {datePickerRef.current?.open()}} rules={[{required: true}]}>
-                <DatePicker min={new Date(1900,0,1)} max={new Date()}>
+              <Form.Item name='birth' label='生日' trigger='onConfirm' onClick={(e, datePickerRef: RefObject<DatePickerRef>) => { datePickerRef.current?.open() }} rules={[{ required: true }]}>
+                <DatePicker min={new Date(1900, 0, 1)} max={new Date()}>
                   {value =>
                     value ? dayjs(value).format('YYYY-MM-DD') : '请选择日期'
                   }
                 </DatePicker>
-              </Form.Item> 
+              </Form.Item>
 
               <Form.Item className='item' label='性别' name='gender'
                 rules={[{ required: true, message: '请输入性别' }]}>
