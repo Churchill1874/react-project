@@ -64,8 +64,11 @@ const Login: React.FC = () => {
         duration: 2000
       });
 
+      setTimeout(() => {
       // 跳转到 /home 页面
       navigate('/');
+      }, 1000); // 2秒后跳转到首页
+
     } else {
       Toast.show({
         icon: 'fail',
