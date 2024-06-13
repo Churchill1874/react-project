@@ -52,24 +52,15 @@ const Login: React.FC = () => {
       return;
     }
 
-    //对所有注册信息进行校验
-
-
-
-
-
     //请求后台
     const { code, data, msg } = await Request_Register(values);
     if (code === 0) {
       const tokenId = data.tokenId;
-      console.log(tokenId)
-
       localStorage.setItem('tokenId',tokenId)
-
 
       Toast.show({
         icon: 'success',
-        content: '登录成功',
+        content: '注册成功',
         duration: 2000
       });
 
@@ -82,7 +73,7 @@ const Login: React.FC = () => {
         position: 'top',
         duration: 3000
       })
-      
+
       captchaImageExchange();
     }
   }
