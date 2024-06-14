@@ -212,7 +212,7 @@ const Home = () => {
     <div>
 
       <header className='header'>
-        <div className='logo'>logo</div>
+        <div className='logo'>BIG NEWS</div>
         <div className='title'>102人在线</div>
         <div className='avatar'>level1 头像</div>
       </header>
