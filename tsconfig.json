@@ -1,27 +1,32 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src",  // 添加这一行，设置项目根目录
+    "target": "ES5", // 指定编译目标版本为 ES5
+    "useDefineForClassFields": true, // 启用对类字段的定义使用声明初始化器语法
+    "lib": ["dom", "ES2015", "ES2016", "ES2017"], // 包含库文件的列表，这里包含 DOM 和 ES2015+ 版本
+    "allowJs": true, // 允许编译 JavaScript 文件
+    "module": "ESNext", // 指定模块系统，这里使用 ESNext
+    "skipLibCheck": true, // 跳过库文件的类型检查
+    "moduleResolution": "node", // 指定模块解析策略为 Node.js
+    "allowImportingTsExtensions": true, // 允许导入带有 TypeScript 文件扩展名的模块
+    "resolveJsonModule": true, // 允许导入 JSON 文件
+    "isolatedModules": true, // 启用每个文件的单独编译
+    "esModuleInterop": true, // 启用对 ES 模块的互操作性支持
+    "forceConsistentCasingInFileNames": true, // 强制文件名一致大小写
+    "noImplicitAny": false, // 允许隐式的 `any` 类型
+    "noEmit": true, // 不生成编译后的文件
+    "jsx": "react-jsx", // 指定 JSX 代码生成目标为 React JSX
+    "strict": true, // 启用所有严格类型检查选项
+    "noUnusedLocals": true, // 发现未使用的局部变量时抛出错误
+    "noUnusedParameters": true, // 发现未使用的函数参数时抛出错误
+    "noFallthroughCasesInSwitch": true, // 禁止 switch 语句中的 case 穿透
+    "baseUrl": "./src", // 设置解析非相对模块的基准目录
     "paths": {
-      "@components/*": ["components/*"],  // 根据需要添加路径别名
-      "@utils/*": ["utils/*"],
-      "@/*": ["*"]
+      // 设置模块导入的路径映射
+      "@components/*": ["components/*"], // 映射 @components 到 components 目录
+      "@utils/*": ["utils/*"], // 映射 @utils 到 utils 目录
+      "@/*": ["*"] // 映射 @ 到 src 目录
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"], // 包含编译的文件
+  "references": [{ "path": "./tsconfig.node.json" }] // 引用另一个 tsconfig 文件
 }
