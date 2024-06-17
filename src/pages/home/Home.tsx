@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, SearchBar, Badge, Tabs, Input, Button, NoticeBar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
-import '@/pages/home/Home.less';  // 引入Home.less
-
+import { Request_HOME_NEWS } from '@/pages/home/api';
+import '@/pages/home/Home.less'; // 引入Home.less
 
 const Home = () => {
   const chatRef = useRef<HTMLDivElement>(null);
@@ -10,11 +10,13 @@ const Home = () => {
   const scrollContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    //请求数据
+    newsListReq();
+
     //聊天对话框直接显示最底部
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-
 
     const scrollContent = scrollContentRef.current;
     const newsList = newsListRef.current;
@@ -77,29 +79,30 @@ const Home = () => {
     }
   }, []);
 
+  const newsListReq = async () => {
+    const newsListResponse = await Request_HOME_NEWS();
+    console.log(newsListResponse);
+  };
 
-
-
-  const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac']
+  const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac'];
 
   const items = colors.map((color, index) => (
     <Swiper.Item key={index}>
       <div
-        className='banner'
+        className="banner"
         style={{ background: color }}
         onClick={() => {
-          Toast.show(`你点击了卡片 ${index + 1}`)
+          Toast.show(`你点击了卡片 ${index + 1}`);
         }}
       >
         {index + 1}
       </div>
     </Swiper.Item>
-  ))
+  ));
 
   const newsItems = (
     <>
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -116,8 +119,7 @@ const Home = () => {
         </div>
       </List.Item>
 
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -134,8 +136,7 @@ const Home = () => {
         </div>
       </List.Item>
 
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -152,8 +153,7 @@ const Home = () => {
         </div>
       </List.Item>
 
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -170,8 +170,7 @@ const Home = () => {
         </div>
       </List.Item>
 
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -188,8 +187,7 @@ const Home = () => {
         </div>
       </List.Item>
 
-      <List.Item extra={<Badge content="新闻" />}
-      >
+      <List.Item extra={<Badge content="新闻" />}>
         <div className="news-item">
           <div className="news-title">1.郭德纲将前往日本访问</div>
           <div className="news-info">
@@ -210,16 +208,15 @@ const Home = () => {
 
   return (
     <div>
-
-      <header className='header'>
-        <div className='logo'>BIG NEWS</div>
-        <div className='title'>102人在线</div>
-        <div className='avatar'>level1 头像</div>
+      <header className="header">
+        <div className="logo">BIG NEWS</div>
+        <div className="title">102人在线</div>
+        <div className="avatar">level1 头像</div>
       </header>
 
       <div className="top-news">
         <div className="list-item">
-          <span className='top'>置顶：</span>国家主席习近平今日召开重要会议
+          <span className="top">置顶：</span>国家主席习近平今日召开重要会议
         </div>
       </div>
 
@@ -234,59 +231,56 @@ const Home = () => {
         </div>
       </div>
 
-      <NoticeBar className='notice-bar' color='info'
+      <NoticeBar
+        className="notice-bar"
+        color="info"
         icon={<SoundOutlined style={{ color: '#1677ff' }} />}
         content="滚动文字，平台公告，系统通知~~~~~~~~~滚动文字，平台公告，系统通知~"
         speed={50}
       />
 
-      <div className='chat-container'></div>
-      <div className='chat' ref={chatRef}>
+      <div className="chat-container"></div>
+      <div className="chat" ref={chatRef}>
         <div>刘老六：介绍行了介绍就!</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>吴老二：我浑森发抖</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：你们都认识我嘛 哈哈哈哈哈哈哈</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>张三白：你是喝多了吗</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：今天郭德纲访日了</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>李大婉：访呀</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：那是他该干的事嘛</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>主教练：中国队夺冠啦~~~~~~</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>刘老六：介绍行了介绍就！</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>吴老二：我浑森发抖</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：你们都认识我嘛 哈哈哈哈哈哈哈</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>张三白：你是喝多了吗</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：今天郭德纲访日了</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>李大婉：访呀</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
         <div>宋大大：那是他该干的事嘛</div>
-        <span className='time'>2024-10-08 10:05</span>
+        <span className="time">2024-10-08 10:05</span>
         <div>主教练：中国队夺冠啦~~~~~~</div>
-        <span className='time'>2024-09-08 10:05</span>
+        <span className="time">2024-09-08 10:05</span>
       </div>
-
 
       <div className="send-container">
-        <Input
-          className="input-field"
-          placeholder="请输入"
-          inputMode="search"
-        />
-        <Button className="send-button" color="primary">发送</Button>
+        <Input className="input-field" placeholder="请输入" inputMode="search" />
+        <Button className="send-button" color="primary">
+          发送
+        </Button>
       </div>
-
-
 
       <Tabs>
         <Tabs.Tab title="首页" key="home" />
@@ -297,6 +291,6 @@ const Home = () => {
       </Tabs>
     </div>
   );
-}
+};
 
 export default Home;

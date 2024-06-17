@@ -5,8 +5,13 @@ import { Toast } from 'antd-mobile';
 import { NavigateFunction } from 'react-router-dom';
 
 const setupAxiosInterceptors = (navigate: NavigateFunction) => {
+  //拦截请求
   axios.interceptors.request.use(
     config => {
+      //请求头设置数据格式
+      config.headers['Content-Type'] = 'application/json';
+
+      //tokenId令牌
       const tokenId = localStorage.getItem('tokenId');
       if (tokenId) {
         config.headers['TOKEN_ID'] = tokenId;
@@ -18,6 +23,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
     },
   );
 
+  //拦截响应
   axios.interceptors.response.use(
     response => {
       if (response.data.code === -2) {
