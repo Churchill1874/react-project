@@ -228,7 +228,7 @@ const Login: React.FC = () => {
                 name="birth"
                 label="生日"
                 trigger="onConfirm"
-                onClick={(e, datePickerRef: RefObject<DatePickerRef>) => {
+                onClick={(_e, datePickerRef: RefObject<DatePickerRef>) => {
                   datePickerRef.current?.open();
                 }}
                 rules={[{ required: true }]}
