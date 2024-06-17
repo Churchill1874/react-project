@@ -1,47 +1,30 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
+interface NewsType {
+  badCount: any;
+  category: any;
+  commentsCount: any;
+  content: any;
+  createName: any;
+  createTime: any;
+  id: any;
+  likesCount: any;
+  newsStatus: any;
+  newsTime: any;
+  photoPath: any;
+  source: any;
+  title: any;
+  updateName: any;
+  updateTime: any;
+  url: any;
+  viewCount: any;
+}
 
 interface HomeNewsType {
   code: number;
   data: {
-    newsList: {
-      badCount: any;
-      category: any;
-      commentsCount: any;
-      content: any;
-      createName: any;
-      createTime: any;
-      id: any;
-      likesCount: any;
-      newsStatus: any;
-      newsTime: any;
-      photoPath: any;
-      source: any;
-      title: any;
-      updateName: any;
-      updateTime: any;
-      url: any;
-      viewCount: any;
-    };
-    topNews: {
-      badCount: any;
-      category: any;
-      commentsCount: any;
-      content: any;
-      createName: any;
-      createTime: any;
-      id: any;
-      likesCount: any;
-      newsStatus: any;
-      newsTime: any;
-      photoPath: any;
-      source: any;
-      title: any;
-      updateName: any;
-      updateTime: any;
-      url: any;
-      viewCount: any;
-    };
+    newsList: NewsType[];
+    topNews: NewsType;
   };
   msg: string;
 }

@@ -1,28 +1,75 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Toast, Swiper, List, SearchBar, Badge, Tabs, Input, Button, NoticeBar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 
 const Home = () => {
+  const [topNews, setTopNews] = useState<JSX.Element | null>(null);
+  const [newsRank, setNewsRank] = useState<JSX.Element[] | []>([]);
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    //请求数据
-    newsListReq();
+  // 获取首页新闻数据
+  const newsListReq = async () => {
+    const newsListResponse = await Request_HOME_NEWS();
+    console.log(newsListResponse);
 
-    //聊天对话框直接显示最底部
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    const { topNews, newsList } = newsListResponse.data;
+
+    // 置顶新闻
+    if (topNews) {
+      const { title } = topNews;
+      const topNewsHtml = (
+        <div className="top-news">
+          <div className="list-item">
+            <span className="top">置顶：</span>
+            {title}
+          </div>
+        </div>
+      );
+
+      setTopNews(topNewsHtml);
     }
 
+    // 新闻排名
+    if (newsList) {
+      const newsRankHtml = newsList.map((news, index) => (
+        <List.Item key={news.id} extra={<Badge content="新闻" />}>
+          <div className="news-item">
+            <div className="news-title">{index + 1 + '.' + news.title}</div>
+            <div className="news-info">
+              <span className="date">{news.newsTime}</span>
+              <span className="space"></span>
+              <span className="views">{'浏览:' + news.viewCount}</span>
+              <span className="space"></span>
+              <span className="likes">{'赞:' + news.likesCount}</span>
+              <span className="space"></span>
+              <span className="dislikes">{'喷:' + news.badCount}</span>
+              <span className="space"></span>
+              <span className="comments">{'评:' + news.commentsCount}</span>
+            </div>
+          </div>
+        </List.Item>
+      ));
+
+      setNewsRank(newsRankHtml);
+    }
+  };
+
+  const setupScroll = () => {
     const scrollContent = scrollContentRef.current;
     const newsList = newsListRef.current;
 
     if (scrollContent && newsList) {
-      const totalHeight = scrollContent.scrollHeight / 2; // 将总高度设置为克隆列表的一半高度
+      const totalHeight = scrollContent.scrollHeight / 2;
+      console.log('Total height:', totalHeight);
+
+      if (totalHeight === 0) {
+        setTimeout(setupScroll, 100);
+        return;
+      }
 
       let isDragging = false;
       let startY: number, scrollTop: number;
@@ -58,12 +105,13 @@ const Home = () => {
       const intervalId = setInterval(() => {
         if (!isDragging) {
           if (newsList.scrollTop >= totalHeight) {
-            newsList.scrollTop = 0; // 无缝重置到顶部
+            newsList.scrollTop = 0;
           } else {
-            newsList.scrollTop += 1; // 控制滚动速度
+            newsList.scrollTop += 1; // 调整步进值
           }
+          console.log('Scrolling', newsList.scrollTop);
         }
-      }, 50); // 控制滚动速度，值越小滚动越快
+      }, 100); // 控制滚动速度
 
       return () => {
         clearInterval(intervalId);
@@ -77,12 +125,22 @@ const Home = () => {
         newsList.removeEventListener('touchcancel', stopDragging);
       };
     }
+  };
+
+  useEffect(() => {
+    newsListReq();
   }, []);
 
-  const newsListReq = async () => {
-    const newsListResponse = await Request_HOME_NEWS();
-    console.log(newsListResponse);
-  };
+  useEffect(() => {
+    if (newsRank.length > 0) {
+      setupScroll();
+    }
+
+    // 聊天对话框直接显示最底部
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [newsRank]);
 
   const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac'];
 
@@ -100,112 +158,6 @@ const Home = () => {
     </Swiper.Item>
   ));
 
-  const newsItems = (
-    <>
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-
-      <List.Item extra={<Badge content="新闻" />}>
-        <div className="news-item">
-          <div className="news-title">1.郭德纲将前往日本访问</div>
-          <div className="news-info">
-            <span className="date">2023-09-10</span>
-            <span className="space"></span>
-            <span className="views">浏览: 1001</span>
-            <span className="space"></span>
-            <span className="likes">赞: 99</span>
-            <span className="space"></span>
-            <span className="dislikes">喷: 3</span>
-            <span className="space"></span>
-            <span className="comments">评: 20</span>
-          </div>
-        </div>
-      </List.Item>
-    </>
-  );
-
   return (
     <div>
       <header className="header">
@@ -214,11 +166,7 @@ const Home = () => {
         <div className="avatar">level1 头像</div>
       </header>
 
-      <div className="top-news">
-        <div className="list-item">
-          <span className="top">置顶：</span>国家主席习近平今日召开重要会议
-        </div>
-      </div>
+      {topNews}
 
       <Swiper loop autoplay allowTouchMove>
         {items}
@@ -226,8 +174,8 @@ const Home = () => {
 
       <div className="news-list" ref={newsListRef}>
         <div className="scroll-content" ref={scrollContentRef}>
-          {newsItems}
-          {newsItems} {/* 复制一份内容以实现无缝滚动 */}
+          {newsRank}
+          {newsRank} {/* 复制一份内容以实现无缝滚动 */}
         </div>
       </div>
 
