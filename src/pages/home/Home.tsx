@@ -33,7 +33,6 @@ const Home = () => {
             <span className="hot">头条：</span>
             头条临时测试数据
           </div>
-
         </div>
       );
 
@@ -173,7 +172,6 @@ const Home = () => {
 
       {topNews}
 
-
       <Swiper loop autoplay allowTouchMove>
         {items}
       </Swiper>
@@ -198,12 +196,12 @@ const Home = () => {
         <div className="event-detail">
           <div className="candidates">
             <div className="candidate">
-              <Avatar className='avatar' src="biden_image_url" />
+              <Avatar className="avatar" src="biden_image_url" />
               <span className="percentage blue">45%</span>
             </div>
             <div className="vs">VS</div>
             <div className="candidate">
-              <Avatar className='avatar' src="trump_image_url" />
+              <Avatar className="avatar" src="trump_image_url" />
               <span className="percentage red">55%</span>
             </div>
           </div>
@@ -211,22 +209,27 @@ const Home = () => {
           <div className="odds">
             <div className="odd-blue">
               <div className="odd-value-left">1.7</div>
-              <div className="odd-people">170人 <span className="event-reward">1001u</span></div>
+              <div className="odd-people">
+                170人 <span className="event-reward">1001u</span>
+              </div>
             </div>
             <div className="official">VS</div>
             <div className="odd-red">
               <div className="odd-value-right">0.7</div>
-              <div className="odd-people">800人 <span className="event-reward">20011u</span></div>
+              <div className="odd-people">
+                800人 <span className="event-reward">20011u</span>
+              </div>
             </div>
           </div>
 
           {/**点击投注 */}
-          <div className='bet-container'>
-            <Button className="bet" color="primary">下注</Button>
+          <div className="bet-container">
+            <Button className="bet" color="primary">
+              下注
+            </Button>
           </div>
         </div>
       </div>
-
 
       <NoticeBar
         className="notice-bar"
