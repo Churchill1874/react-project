@@ -1,7 +1,7 @@
 //所有路由配置文件
 import Home from "@/pages/home/Home"
 import Login from "@/pages/login/Login"
-import UserCenter from "@/pages/usercenter/UserCenter"
+import Personal from "@/pages/personal/Personal"
 
 export default [
     //首页
@@ -16,8 +16,8 @@ export default [
     },
     //个人中心路由
     {
-        path: "/userCenter",
-        component: UserCenter 
+        path: "/personal",
+        component: Personal 
     }
 ]
 

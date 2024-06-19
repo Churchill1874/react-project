@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Toast, Swiper, List, Badge, Tabs, Input, Button, NoticeBar, Avatar, Divider } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Tabs, Input, Button, NoticeBar, Avatar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
@@ -130,6 +130,7 @@ const Home = () => {
       };
     }
   };
+
 
   useEffect(() => {
     newsListReq();
@@ -276,19 +277,12 @@ const Home = () => {
       </div>
 
       <div className="send-container">
-        <Input className="input-field" placeholder="请输入" inputMode="search" />
-        <Button className="send-button" color="primary">
-          发送
-        </Button>
+        <Input
+          className="input-field"
+          placeholder="请输入"
+        />
+        <Button className="send-button" color="primary">发送</Button>
       </div>
-
-      <Tabs>
-        <Tabs.Tab title="首页" key="home" />
-        <Tabs.Tab title="新闻" key="news" />
-        <Tabs.Tab title="市场" key="market" />
-        <Tabs.Tab title="消息" key="hall" />
-        <Tabs.Tab title="我" key="personal" />
-      </Tabs>
     </div>
   );
 };

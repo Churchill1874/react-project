@@ -1,7 +1,47 @@
+html, body {
+  height: 100% ;
+}
 :root {
   --adm-color-primary: #1890ff;
   --adm-color-success: #52c41a;
   --adm-color-warning: #faad14;
   --adm-color-danger: #f5222d;
   --adm-color-info: #13c2c2;
+}
+
+.main-container {
+  height: 100vh; /* 设置高度为视口高度 */
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1; /* 使内容区域扩展以填充剩余空间 */
+  overflow-y: auto; /* 启用垂直滚动 */
+}
+.navbar {
+  .adm-tabs-tab {
+    padding: 4px 0; // 调整上下空白间隔
+    font-size: 18px; // 调整字体大小
+    padding: 0px;
+    margin: 0px;
+  }
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff; /* 根据需要设置背景颜色 */
+  z-index: 1000; /* 保证导航栏在其他内容之上 */
+  padding: 0px;
+  margin: 0px;
+}
+
+/* 针对桌面设备的样式调整 */
+@media (min-width: 768px) {
+  .main-container {
+    flex-direction: row; /* 改为水平布局 */
+  }
+  .navbar {
+    position: static; /* 取消固定 */
+    width: auto; /* 自动宽度 */
+  }
 }
