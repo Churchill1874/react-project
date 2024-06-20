@@ -6,7 +6,6 @@ import '@/pages/home/Home.less'; // 引入Home.less
 
 const Home = () => {
   const [topNews, setTopNews] = useState<JSX.Element | null>(null);
-  const [hotNews, setHotNews] = useState<JSX.Element | null>(null);
   const [newsRank, setNewsRank] = useState<JSX.Element[] | []>([]);
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
@@ -16,23 +15,26 @@ const Home = () => {
   const newsListReq = async () => {
     const newsListResponse = await Request_HOME_NEWS();
 
-    const { topNews, newsList } = newsListResponse.data;
+    const { topNews, newsList, hotNews } = newsListResponse.data;
 
     // 置顶新闻
-    if (topNews) {
-      const { title } = topNews;
+    if (topNews || hotNews) {
+      const { title: topTitle } = topNews;
+      const { title: hotTitle } = hotNews;
+
       const topNewsHtml = (
         <div className="top-news">
-          {title ? (
+          {topTitle ? (
             <div className="list-item">
-              <span className="top">置顶：</span>
-              {title}
+              <span className="top">置顶：</span> {topTitle}
             </div>
           ) : null}
-          <div className="list-item">
-            <span className="hot">头条：</span>
-            头条临时测试数据
-          </div>
+
+          {hotTitle ? (
+            <div className="list-item">
+              <span className="hot">头条：</span> {hotTitle}
+            </div>
+          ) : null}
         </div>
       );
 
@@ -42,7 +44,7 @@ const Home = () => {
     // 新闻排名
     if (newsList) {
       const newsRankHtml = newsList.map((news, index) => (
-        <List.Item key={news.id} extra={<Badge className='badge' content="新闻" />}>
+        <List.Item key={news.id} extra={<Badge className="badge" content="新闻" />}>
           <div className="news-item">
             <div className="news-title">{index + 1 + ' ' + news.title}</div>
             <div className="news-info">
@@ -130,7 +132,6 @@ const Home = () => {
       };
     }
   };
-
 
   useEffect(() => {
     newsListReq();
@@ -277,11 +278,10 @@ const Home = () => {
       </div>
 
       <div className="send-container">
-        <Input
-          className="input-field"
-          placeholder="请输入"
-        />
-        <Button className="send-button" color="primary">发送</Button>
+        <Input className="input-field" placeholder="请输入" />
+        <Button className="send-button" color="primary">
+          发送
+        </Button>
       </div>
     </div>
   );

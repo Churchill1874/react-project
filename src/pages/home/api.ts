@@ -25,6 +25,7 @@ interface HomeNewsType {
   data: {
     newsList: NewsType[];
     topNews: NewsType;
+    hotNews: NewsType;
   };
   msg: string;
 }
