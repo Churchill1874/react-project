@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Toast, Swiper, List, Badge, Tabs, Input, Button, NoticeBar, Avatar } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Input, Button, NoticeBar, Avatar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
