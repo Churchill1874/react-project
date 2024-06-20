@@ -65,7 +65,7 @@
   margin-bottom: -8px;
 
   .news-title {
-    font-size: 13px;
+    font-size: 12px;
     padding: 1px;
     /* 去除内边距 */
   }
@@ -76,35 +76,32 @@
     padding: 0;
 
     /* 去除内边距 */
-    .date,
-    .views,
-    .likes,
-    .dislikes,
-    .comments {
-      font-size: 11px;
-    }
-
     .space {
       margin-right: 5px;
     }
 
     .views {
+      font-size: 11px;
       color: @theme;
     }
 
     .likes {
+      font-size: 11px;
       color: rgb(242, 65, 65);
     }
 
     .dislikes {
+      font-size: 11px;
       color: rgb(70, 68, 68);
     }
 
     .comments {
+      font-size: 11px;
       color: rgb(163, 74, 74);
     }
 
     .date {
+      font-size: 11px;
       color: #a09d9d;
     }
   }
@@ -228,7 +225,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2px 0px;
+  padding: 2px 2px;
   border-top: 0.5px solid @theme;
   background-color: #165d00;
 }
@@ -241,8 +238,7 @@
 }
 
 .event-title {
-  font-weight: bold;
-  color: rgb(245, 117, 117);
+  color: #fff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -384,4 +380,8 @@
   display: flex;
   justify-content: center; // 水平居中
   align-items: center; // 垂直居中
+}
+
+.badge{
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
