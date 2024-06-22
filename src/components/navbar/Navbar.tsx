@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Tabs, Toast } from 'antd-mobile';
+import { Tabs } from 'antd-mobile';
 
 const Navbar = () => {
   const navigate = useNavigate();
