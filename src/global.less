@@ -1,5 +1,6 @@
 html, body {
   height: 100% ;
+  margin: 0;
 }
 :root {
   --adm-color-primary: #1890ff;
@@ -18,22 +19,24 @@ html, body {
 .content {
   flex: 1; /* 使内容区域扩展以填充剩余空间 */
   overflow-y: auto; /* 启用垂直滚动 */
+  padding-bottom: 60px; /* 留出足够的空间以避免被导航栏挡住 */
+
 }
+
+
 .navbar {
-  .adm-tabs-tab {
-    padding: 4px 0; // 调整上下空白间隔
-    font-size: 18px; // 调整字体大小
-    padding: 0px;
-    margin: 0px;
-  }
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #fff; /* 根据需要设置背景颜色 */
   z-index: 1000; /* 保证导航栏在其他内容之上 */
-  padding: 0px;
   margin: 0px;
+  background-color: #fff; /* 根据需要设置背景颜色 */
 }
+
+.adm-tabs-tab {
+  padding: 5px 0; /* 调整上下空白间隔，原为4px，现在改为2px */
+}
+
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {

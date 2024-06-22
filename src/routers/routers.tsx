@@ -6,7 +6,7 @@ import Personal from "@/pages/personal/Personal"
 export default [
     //首页
     {
-        path: "/",
+        path: "/home",
         component: Home 
     },
     //登陆路由

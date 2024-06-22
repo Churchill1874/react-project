@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Toast, Swiper, List, Badge, Input, Button, NoticeBar, Avatar } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Input, Button, Avatar } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
@@ -19,8 +19,8 @@ const Home = () => {
 
     // 置顶新闻
     if (topNews || hotNews) {
-      const { title: topTitle } = topNews;
-      const { title: hotTitle } = hotNews;
+      const topTitle = topNews && topNews.title;
+      const hotTitle = hotNews && hotNews.title;
 
       const topNewsHtml = (
         <div className="top-news">
@@ -168,8 +168,16 @@ const Home = () => {
     <div>
       <header className="header">
         <div className="logo">BIG NEWS</div>
-        <div className="title">102人在线</div>
-        <div className="player">level1 头像</div>
+        <div className="marquee-container">
+          <div className="icon-container">
+            <SoundOutlined className="sound-icon" />
+          </div>
+          <div className="marquee">
+            <span className="marquee-text">
+              当前在线102人～～～～～ 文字，平台公告，系统通知~~~~~~~~~滚动文字，平台公告，系统通知~~~~~~~~~
+            </span>
+          </div>
+        </div>
       </header>
 
       {topNews}
@@ -212,14 +220,14 @@ const Home = () => {
             <div className="odd-blue">
               <div className="odd-value-left">1.7</div>
               <div className="odd-people">
-                170人 <span className="event-reward">1001u</span>
+                170人
               </div>
             </div>
             <div className="official">VS</div>
             <div className="odd-red">
               <div className="odd-value-right">0.7</div>
               <div className="odd-people">
-                800人 <span className="event-reward">20011u</span>
+                800人
               </div>
             </div>
           </div>
@@ -233,15 +241,6 @@ const Home = () => {
         </div>
       </div>
 
-      <NoticeBar
-        className="notice-bar"
-        color="info"
-        icon={<SoundOutlined style={{ color: '#1677ff' }} />}
-        content="滚动文字，平台公告，系统通知~~~~~~~~~滚动文字，平台公告，系统通知~"
-        speed={50}
-      />
-
-      <div className="chat-container"></div>
       <div className="chat" ref={chatRef}>
         <div>刘老六：介绍行了介绍就!</div>
         <span className="time">2024-09-08 10:05</span>

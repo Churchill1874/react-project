@@ -2,6 +2,19 @@ import { createRoot } from 'react-dom/client';
 import App from '@/App';
 import React from 'react';
 import '@/global.less';
+import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
+
+import setupAxiosInterceptors from './api/setupAxiosInterceptors';
+
+// 在应用启动时设置Axios拦截器
+const SetupInterceptors = () => {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    setupAxiosInterceptors(navigate);
+  }, [navigate]);
+
+  return null;
+};
 
 const container = document.getElementById('root');
 
@@ -11,7 +24,10 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+   
+  <Router>
+    <SetupInterceptors />
+    <App />
+  </Router>,
+
 );

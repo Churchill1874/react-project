@@ -1,10 +1,12 @@
-// src/api/setupAxiosInterceptors.ts
-//import axiosInstance from '@/api/axiosInstance';
 import axios from 'axios';
 import { Toast } from 'antd-mobile';
 import { NavigateFunction } from 'react-router-dom';
+let interceptorsRegistered = false; // 添加标志
 
 const setupAxiosInterceptors = (navigate: NavigateFunction) => {
+  if (interceptorsRegistered) {
+    return;
+  }
   //拦截请求
   axios.interceptors.request.use(
     config => {
@@ -40,6 +42,8 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
       return Promise.reject(error);
     },
   );
+  interceptorsRegistered = true; // 标志设置为 true
+
 };
 
 export default setupAxiosInterceptors;

@@ -4,6 +4,7 @@
 .top-news {
   margin: 0;
   margin-bottom: 5px;
+  padding: 0px 5px;
 
   /* 去掉外边距 */
   .list-item {
@@ -28,7 +29,8 @@
 }
 
 .news-list {
-  max-height: 120px;
+  padding: 0px 5px;
+  max-height: 170px;
   /* 设置一个最大高度 */
   overflow: auto;
   /* 隐藏滚动条 */
@@ -113,27 +115,70 @@
   align-items: center;
   height: 30px;
   margin-top: -5px;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
-  .logo {
-    font-weight: 1000;
-    font-size: large;
-    color: @theme;
-    text-shadow: 1px 1px 2px rgba(154, 152, 152, 0.5);
-    /* 添加阴影 */
+.logo {
+  font-weight: 1000;
+  font-size: large;
+  color: var(--adm-color-primary);
+  text-shadow: 1px 1px 2px rgba(154, 152, 152, 0.5); /* 添加阴影 */
+  flex-shrink: 0; /* 防止缩小 */
+}
+
+.marquee-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin: 0 0;
+  overflow: hidden; /* 防止内容溢出 */
+}
+
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0px;
+  margin-right: 0px;
+}
+
+.sound-icon {
+  margin-top: 0px;
+  margin-left: 5px;
+  font-size: 16px;
+  color: var(--adm-color-primary);
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.marquee-text {
+  display: inline-block;
+  animation: marquee 20s linear infinite; /* 修改滚动速度，将 10s 改为 15s */
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
   }
-
-  .player {
-    color: #201f1f;
-    font-size: 15px;
-  }
-
-  .title {
-    color: #201f1f;
-    font-size: 14px;
+  to {
+    transform: translateX(-100%);
   }
 }
+
+@keyframes marqueeFastReturn {
+  0%, 100% {
+    transform: translateX(100%);
+  }
+  99% {
+    transform: translateX(-100%);
+  }
+}
+
+
 
 // 如果 .adm-card-body 是来自一个库的类，可以通过增加以下代码覆盖其样式
 .adm-card-body {
@@ -162,7 +207,8 @@
 .chat {
   font-size: 12px;
   margin-bottom: 1px;
-  padding: 5px;
+  margin-top: 2px;
+  padding:2px;
   text-align: left;
   height: 150px; // 设置固定高度
   overflow-y: auto; // 允许垂直滚动
@@ -191,7 +237,7 @@
 .send-container {
   display: flex;
   align-items: center;
-  padding: 1px;
+  padding: 1px 5px;
   border-radius: 5px;
 }
 
@@ -201,6 +247,7 @@
   padding: 2px;
   border: 1px solid @theme;
   border-radius: 5px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
 
 .input-field ::placeholder {
@@ -278,7 +325,7 @@
 .vs {
   font-size: 14px;
   color: @theme;
-  margin: 0 5px;
+  margin: 0 10px;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -357,7 +404,7 @@
 
 .official {
   margin: 0;
-  padding: 0px 0px;
+  padding: 0px 10px;
   font-size: 14px;
   font-weight: bold;
   color: @theme;

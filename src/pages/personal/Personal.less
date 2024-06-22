@@ -1,0 +1,77 @@
+@theme: #1890ff;
+
+.personal {
+  background-color: rgb(246, 243, 243);
+  height: 100%;
+  width: 100%;
+  padding: 1px 0px;
+}
+
+.card {
+  .adm-card-body{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  margin: 5px 20px;
+  //padding-right: 0px;
+  background-color: #fff; /* 设置背景颜色 */
+  box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2); // 添加阴影
+}
+
+.personal-avatar {
+  --size: 70px;
+  margin: 5px 0px;
+}
+
+.header-text {
+  font-size: 18px;
+  text-align: left;
+}
+
+
+
+.avatar-container {
+  display: flex;
+  align-items: flex-start; /* 对齐到顶部 */
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.avatar-with-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.base-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-left: 12px;
+  font-size: 14px;
+  .name,
+  .account,
+  .level {
+    font-size: 14px;
+    margin-bottom: 6px; /* 设置每个元素的下外边距 */
+  }
+  .account{
+    color: gray;
+  }
+}
+
+.right-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto; /* 自动左边距以将其推到最右边 */
+  font-size: 14px;
+  align-items: flex-end; /* 确保内容对齐到右侧 */
+  .name {
+    font-size: 14px;
+  }
+  .city,
+  .account {
+    font-size: 14px;
+  }
+}
