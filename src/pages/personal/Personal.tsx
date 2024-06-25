@@ -6,7 +6,7 @@ import '@/pages/personal/Personal.less'
 
 const UserCenter: React.FC = () => {
 
-  const [value, setValue] = useState('你们都认识我吗，上海魔哈哈哈哈哈哈')
+  const [value, setValue] = useState('')
 
 
   return (
