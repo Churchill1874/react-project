@@ -1,7 +1,7 @@
 @theme: #1890ff;
 
 .personal {
-  background-color: rgb(246, 243, 243);
+  background-color: @theme;
   height: 100%;
   width: 100%;
   padding: 1px 0px;
@@ -12,10 +12,21 @@
     padding-left: 0px;
     padding-right: 0px;
   }
-  margin: 5px 20px;
+  margin: 5px 10px;
   //padding-right: 0px;
   background-color: #fff; /* 设置背景颜色 */
   box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2); // 添加阴影
+}
+
+.card-personal-info{
+  .adm-card-body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  height: 200px;
+  margin: 5px 10px;
+  //padding-right: 0px;
+  background-color: #fff; /* 设置背景颜色 */
 }
 
 .personal-avatar {
@@ -72,4 +83,49 @@
   .account {
     font-size: 14px;
   }
+}
+
+.card-personal-desc{
+
+  .adm-card-body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  height: 60px;
+  margin: 1px 10px;
+  //padding-right: 0px;
+  background-color: #fff; /* 设置背景颜色 */
+}
+
+.personal-desc{
+  --font-size	: 14px;
+}
+
+
+.personal-info-container {
+  display: flex;
+  height: 300px;
+  width: 100%;
+  box-sizing: border-box; /* 确保padding和border包含在width和height内 */
+  padding: 1px 10px; /* 给容器添加一些内边距 */
+  margin-top: 3px;
+}
+
+.card-personal-info {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1px;
+  height: 100%; /* 确保Card组件高度与容器一致 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-personal-info-container {
+  display: flex;
+  gap: 10px; /* 调整间距 */
+}
+
+.personal-info {
+  font-size: 16px;
 }

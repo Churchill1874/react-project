@@ -9,6 +9,9 @@ const Navbar = () => {
 
   useEffect(() => {
     const currentPath = location.pathname === '/' ? '' : location.pathname.split('/')[1];
+    if(currentPath === ''){
+      navigate('/home')
+    }
     if (activeKey !== currentPath) {
       setActiveKey(currentPath || '');
     }
