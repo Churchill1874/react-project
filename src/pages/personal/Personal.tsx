@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { Card, Avatar, TextArea } from 'antd-mobile'
-import { EditSOutline } from 'antd-mobile-icons'
+import { Card, Avatar, TextArea, Badge, Tag, Form } from 'antd-mobile'
+import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline } from 'antd-mobile-icons'
 import avatar from '../../../public/assets/avatars/1.jpg'
 import '@/pages/personal/Personal.less'
 
 const UserCenter: React.FC = () => {
 
-  const [value, setValue] = useState('')
-
+  const [value, setValue] = useState('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十')
 
   return (
     <>
@@ -18,43 +17,66 @@ const UserCenter: React.FC = () => {
               <Avatar className="personal-avatar" src={avatar} />
             </div>
             <div className="base-info">
-              <span className='name'>昵称: 莫哈</span>
-              <span className='account'>账号: 1231</span>
-              <span className='level'>等级: 0级 (暗中观察)</span>
+              <span className='name'> 昵称: 莫哈莫哈 </span>
+              <span className='account'> 账号: 12311231</span>
+              <span className='level'>
+                <Tag className='tag' color='#ff6430' fill='outline'> Lv.0 暗中观察  </Tag>
+              </span>
             </div>
             <div className="right-info">
-              {/* 你可以在这里添加任何需要的内容 */}
-              <span><EditSOutline fontSize={22} /></span>
+              <span><EditSOutline fontSize={24} /></span>
             </div>
           </div>
         </Card>
 
-        <Card className="card-personal-desc">
-          <TextArea className='personal-desc' placeholder='自我介绍' value={value} readOnly onChange={val => { setValue(val) }} />
-        </Card>
-
-        <div className="personal-info-container">
-
-          <Card className="card-personal-info">
-            <div className="card-personal-info-container">
-              <span className='personal-info'>1</span><span className='personal-info'>|</span><span className='personal-info'>2</span>
-            </div>
-          </Card>
-
-          <Card className="card-personal-info">
-            <div className="card-personal-info-container">
-              <span className='personal-info'>3</span><span className='personal-info'>|</span><span className='personal-info'>4</span>
-            </div>
-          </Card>
-
+        <div className="personal-info-space">
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div>200</div>
+            <div className='label'>粉丝</div>
+          </span>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div>30</div>
+            <div className='label'>收藏</div>
+          </span>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div>100</div>
+            <div className='label'>关注</div>
+          </span>
         </div>
 
 
+        <div className="personal-info-container">
+          <Card className="card-personal-info">
+            <div className="card-personal-info-container">
+              <span className='personal-info'>
+                <span className='left'><FlagOutline /> 城市: </span>
+                <span>北京</span>
+              </span>
+              <span className='personal-info'>
+                <span className='left'><SmileOutline /> 生日: </span>
+                <span>2001-10-11</span>
+              </span>
+              <span className='personal-info'>
+                <span className='left'><PhoneFill /> 手机: </span>
+                <span>13222222222</span>
+              </span>
+              <span className='personal-info'>
+                <span className='left'><MailOutline /> 邮箱: </span>
+                <span>joy1111@gmail.com</span>
+              </span>
+              <span className='personal-info-desc'>
+                 留言板:           
+              </span>
+              <TextArea maxLength={50} className='textArea' placeholder='请输入内容' value={'你们都认识我吗'} readOnly />
+            </div>
 
 
 
+          </Card>
+        </div>
+
+        <Card className='signout' title='退出' extra={<RightOutline />} />
       </div>
-
     </>
   )
 }
