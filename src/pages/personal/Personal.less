@@ -2,14 +2,15 @@
 
 .personal {
   background-color: @theme;
-  height: 100%;
+  min-height: 100vh; /* 确保背景颜色填充整个屏幕 */
   width: 100%;
   padding: 1px 0px;
+  flex-direction: column;
 }
 
 .tag {
-  font-size: 14px;
-  margin: 0px 3px;
+  font-size: 10px;
+  margin: 0px 10px;
   --tag-padding-vertical: 4px; // 上下内边距
   --tag-padding-horizontal: 8px; // 左右内边距
   --tag-font-size: 14px; // 字体大小
@@ -75,16 +76,20 @@
   margin-top: 3px;
   margin-left: 12px;
 
-  .name,
-  .account,
-  .level {
-    font-size: 16px;
-    margin-bottom: 8px;
-    /* 设置每个元素的下外边距 */
-  }
 
+  .name {
+    font-size: 16px;
+    margin-bottom: 1px;
+  }
+  .balance,
   .account {
+    margin-top: 8px;
+    font-size: 14px;
     color: gray;
+  }
+  .status {
+    font-size: 16px;
+    margin-top: 12px;
   }
 }
 
@@ -119,15 +124,16 @@
 }
 
 .personal-info-container {
-  display: flex;
+  flex: 1; /* 使其占据剩余空间 */
   flex-direction: column;
   /* 确保 Card 组件垂直排列 */
-  height: 230px;
+  height: 300px;
   width: 100%;
   box-sizing: border-box;
   /* 确保 padding 和 border 包含在 width 和 height 内 */
   padding: 5px 10px;
-  /* 给容器添加一些内边距 */
+  margin-bottom: 10px;
+
 }
 
 .card-personal-info {
@@ -168,9 +174,19 @@
 
 .signout {
   font-size: 20px;
-  margin: 1px 10px;
+  margin: 0px 10px;
+  margin-top: 2px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 40px; /* 设置卡片的高度，例如50px，可以根据需要调整 */
+  .adm-card-header-title {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    width: 100%;
+    //font-weight: normal; /* 设置字体不加粗 */
+
+  }
 }
+
 
 .gender-man {
   font-size: 20px;
@@ -215,14 +231,14 @@
 }
 
 .personal-info-space .label {
-  background-color: rgba(1, 36, 54, 0.515);
-  /* 灰色半透明背景 */
-  padding: 1px;
-  /* 添加内边距 */
-  border-radius: 5px;
-  /* 圆角 */
+  background-color: rgba(1, 36, 54, 0.515);  /* 灰色半透明背景 */
+  padding: 1px;  /* 添加内边距 */
+  border-radius: 5px;  /* 圆角 */
+
   width: 40%;
   text-align: center;
+  font-size: 13px;
+  margin-bottom: 5px;
 }
 
 .textArea {
@@ -245,3 +261,17 @@
   font-size: 16px;
   margin-top: 5px;
 }
+
+.guessing-competition,
+.recharge-withdraw,
+.customer-service{
+  font-size: 20px;
+  margin: 2px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 40px; /* 设置卡片的高度，例如50px，可以根据需要调整 */
+
+  .adm-card-header-title {
+    font-weight: normal; /* 设置字体不加粗 */
+  }
+}
+

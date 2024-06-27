@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Card, Avatar, TextArea, Badge, Tag, Form } from 'antd-mobile'
-import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline } from 'antd-mobile-icons'
+import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons'
 import avatar from '../../../public/assets/avatars/1.jpg'
 import '@/pages/personal/Personal.less'
 
@@ -18,10 +18,8 @@ const UserCenter: React.FC = () => {
             </div>
             <div className="base-info">
               <span className='name'> 昵称: 莫哈莫哈 </span>
-              <span className='account'> 账号: 12311231</span>
-              <span className='level'>
-                <Tag className='tag' color='#ff6430' fill='outline'> Lv.0 暗中观察  </Tag>
-              </span>
+              <span className='account'> 账号: 12311231 <span className='status'> <Tag className='tag' color='success' fill='outline'> 正常  </Tag> </span></span>
+              <span className='balance'> 余额: 2312 USDT</span>
             </div>
             <div className="right-info">
               <span><EditSOutline fontSize={24} /></span>
@@ -30,17 +28,17 @@ const UserCenter: React.FC = () => {
         </Card>
 
         <div className="personal-info-space">
-          <span style={{ color: 'white', fontSize: '16px' }}>
+          <span style={{ color: 'white', fontSize: '15px' }}>
             <div>200</div>
             <div className='label'>粉丝</div>
           </span>
-          <span style={{ color: 'white', fontSize: '16px' }}>
-            <div>30</div>
-            <div className='label'>收藏</div>
-          </span>
-          <span style={{ color: 'white', fontSize: '16px' }}>
+          <span style={{ color: 'white', fontSize: '15px' }}>
             <div>100</div>
             <div className='label'>关注</div>
+          </span>
+          <span style={{ color: 'white', fontSize: '15px' }}>
+            <div>30</div>
+            <div className='label'>收藏</div>
           </span>
         </div>
 
@@ -48,6 +46,14 @@ const UserCenter: React.FC = () => {
         <div className="personal-info-container">
           <Card className="card-personal-info">
             <div className="card-personal-info-container">
+              <span className='personal-info'>
+                <span className='left'><HistogramOutline /> 等级: </span>
+                <span> 0级 ( 暗中观察 )</span>
+              </span>
+              <span className='personal-info'>
+                <span className='left'><UserCircleOutline /> 性别: </span>
+                <span> 女 </span>
+              </span>
               <span className='personal-info'>
                 <span className='left'><FlagOutline /> 城市: </span>
                 <span>北京</span>
@@ -75,6 +81,9 @@ const UserCenter: React.FC = () => {
           </Card>
         </div>
 
+        <Card className='guessing-competition' title='竞猜' extra={<RightOutline />} />
+        <Card className='recharge-withdraw' title='钱包' extra={<RightOutline />} />
+        <Card className='customer-service' title='客服' extra={<RightOutline />} />
         <Card className='signout' title='退出' extra={<RightOutline />} />
       </div>
     </>
