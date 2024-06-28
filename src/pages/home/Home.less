@@ -1,6 +1,11 @@
 @color: #f3f1f5;
 @theme: #1890ff;
 
+html, body {
+  height: auto; /* Ensure the body and html elements take the full height */
+  margin: 0;
+}
+
 .top-news {
   margin: 0;
   margin-bottom: 5px;
@@ -196,30 +201,7 @@
   color: #4b4949; // 黑色文字
 }
 
-.chat-container {
-  display: flex;
-  justify-content: center;
-  /* 横向居中 */
-  align-items: center;
-  /* 垂直居中 */
-}
 
-.chat {
-  font-size: 12px;
-  margin-bottom: 1px;
-  margin-top: 2px;
-  padding:2px;
-  text-align: left;
-  height: 150px; // 设置固定高度
-  overflow-y: auto; // 允许垂直滚动
-  border: 1px solid #dbe6f5;
-
-  .time {
-    color: #a09d9d;
-    font-size: 11px;
-    text-align: left;
-  }
-}
 
 .banner {
   width: 75%;
@@ -431,4 +413,57 @@
 
 .badge{
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
+}
+ 
+
+/* 针对桌面设备的样式调整 */
+@media (min-width: 768px) {
+  .main-container {
+    flex-direction: row; /* 改为水平布局 */
+  }
+  .navbar {
+    position: static; /* 取消固定 */
+    width: auto; /* 自动宽度 */
+  }
+}
+
+.chat {
+  color: black;
+  font-size: 11px;
+  margin-bottom: 1px;
+  margin: 1px 3px;
+  padding: 2px;
+  text-align: left;
+  height: 175px; // 设置固定高度
+  overflow-y: auto; // 允许垂直滚动
+  border: 1px solid #076af57b;
+
+  .chat-item {
+    display: flex;
+    align-items: flex-start; // 确保头像和内容在一行对齐
+    margin-bottom: 1px; // 每条记录的间距
+
+    .avatar {
+      width: 26px; // 调整头像的宽度
+      height: 26px; // 调整头像的高度
+      margin-right: 5px; // 头像和聊天内容的间距
+    }
+
+    .message-content {
+      display: flex;
+      flex-direction: column;
+
+/*       div {
+        background-color: #fff; // 背景色
+        padding: 5px 10px; // 内边距
+        border-radius: 5px; // 圆角
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 阴影
+      } */
+
+      .time {
+        color: #742201;
+        font-size: 11px;
+      }
+    }
+  }
 }

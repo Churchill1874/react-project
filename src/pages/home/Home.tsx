@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Toast, Swiper, List, Badge, Input, Button, Avatar } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Input, Button, Avatar, Popover } from 'antd-mobile';
 import { SoundOutlined } from '@ant-design/icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
-
+import Jiang from '../../../public/assets/avatars/1.jpg'
 const Home = () => {
   const [topNews, setTopNews] = useState<JSX.Element | null>(null);
   const [newsRank, setNewsRank] = useState<JSX.Element[] | []>([]);
@@ -13,6 +13,7 @@ const Home = () => {
 
   // 获取首页新闻数据
   const newsListReq = async () => {
+    console.log('新闻列表请求执行');
     const newsListResponse = await Request_HOME_NEWS();
 
     const { topNews, newsList, hotNews } = newsListResponse.data;
@@ -242,45 +243,82 @@ const Home = () => {
       </div>
 
       <div className="chat" ref={chatRef}>
-        <div>刘老六：介绍行了介绍就!</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>吴老二：我浑森发抖</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：你们都认识我嘛 哈哈哈哈哈哈哈</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>张三白：你是喝多了吗</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：今天郭德纲访日了</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>李大婉：访呀</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：那是他该干的事嘛</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>主教练：中国队夺冠啦~~~~~~</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>刘老六：介绍行了介绍就！</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>吴老二：我浑森发抖</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：你们都认识我嘛 哈哈哈哈哈哈哈</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>张三白：你是喝多了吗</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：今天郭德纲访日了</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>李大婉：访呀</div>
-        <span className="time">2024-09-08 10:05</span>
-        <div>宋大大：那是他该干的事嘛</div>
-        <span className="time">2024-10-08 10:05</span>
-        <div>主教练：中国队夺冠啦~~~~~~</div>
-        <span className="time">2024-09-08 10:05</span>
+
+
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+        <div className='chat-item'>
+          <Avatar className='avatar' src={Jiang}/>
+          <div className="message-content">
+            <div>刘老六：介绍行了介绍就!</div>
+            <span className="time">2024-09-08 10:05</span>
+          </div>
+        </div>
+
+
+
+
       </div>
 
       <div className="send-container">
         <Input className="input-field" placeholder="请输入" />
-        <Button className="send-button" color="primary">
-          发送
-        </Button>
+          <Button className="send-button" color="primary">
+            发送
+          </Button>
       </div>
     </div>
   );

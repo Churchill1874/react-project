@@ -22,7 +22,7 @@ const UserCenter: React.FC = () => {
               <span className='balance'> 余额: 2312 USDT</span>
             </div>
             <div className="right-info">
-              <span><EditSOutline fontSize={24} /></span>
+              <span><EditSOutline fontSize={20} /></span>
             </div>
           </div>
         </Card>
@@ -82,10 +82,21 @@ const UserCenter: React.FC = () => {
           </Card>
         </div>
 
-        <Card className='guessing-competition' title='竞猜' extra={<RightOutline />} />
-        <Card className='recharge-withdraw' title='钱包' extra={<RightOutline />} />
-        <Card className='customer-service' title='客服' extra={<RightOutline />} />
+        <div className='card-outer-container'>
+          <div className='card-inner-container'>
+            <Card title='钱包' extra={<RightOutline />} />
+            <Card title='客服' extra={<RightOutline />} />
+          </div>
+          <div className='card-inner-container'>
+            <Card title='竞猜' extra={<RightOutline />} />
+            <Card title='代理' extra={<RightOutline />} />
+          </div>
+        </div>
+
+        
         <Card className='signout' title='退出' extra={<RightOutline />} />
+
+        
       </div>
     </>
   )
