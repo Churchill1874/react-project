@@ -48,7 +48,8 @@ const UserCenter: React.FC = () => {
             <div className="card-personal-info-container">
               <span className='personal-info'>
                 <span className='left'><HistogramOutline /> 等级: </span>
-                <span> 0级 ( 暗中观察 )</span>
+                <span> 0级 ( 暗中观察 ) </span>
+                <RightOutline className='right-icon' />
               </span>
               <span className='personal-info'>
                 <span className='left'><UserCircleOutline /> 性别: </span>
