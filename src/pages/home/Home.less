@@ -1,11 +1,10 @@
 @color: #f3f1f5;
 @theme: #1890ff;
 
-html, body {
-  height: auto; /* Ensure the body and html elements take the full height */
-  margin: 0;
+.home {
+  min-height: 100vh; /* 确保背景颜色填充整个屏幕 */
+  width: 100%;
 }
-
 .top-news {
   margin: 0;
   margin-bottom: 5px;
@@ -132,37 +131,10 @@ html, body {
   flex-shrink: 0; /* 防止缩小 */
 }
 
-.marquee-container {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  margin: 0 0;
-  overflow: hidden; /* 防止内容溢出 */
-}
-
-.icon-container {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 0px;
-  margin-right: 0px;
-}
-
-.sound-icon {
-  margin-top: 0px;
-  margin-left: 5px;
-  font-size: 16px;
-  color: var(--adm-color-primary);
-}
-
-.marquee {
-  overflow: hidden;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.marquee-text {
-  display: inline-block;
-  animation: marquee 20s linear infinite; /* 修改滚动速度，将 10s 改为 15s */
+.online {
+  color: rgb(43, 1, 1);
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(154, 152, 152, 0.5); /* 添加阴影 */
 }
 
 @keyframes marquee {
@@ -175,15 +147,14 @@ html, body {
 }
 
 @keyframes marqueeFastReturn {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(100%);
   }
   99% {
     transform: translateX(-100%);
   }
 }
-
-
 
 // 如果 .adm-card-body 是来自一个库的类，可以通过增加以下代码覆盖其样式
 .adm-card-body {
@@ -200,8 +171,6 @@ html, body {
   background-color: #f4f5f7; // 浅灰色背景
   color: #4b4949; // 黑色文字
 }
-
-
 
 .banner {
   width: 75%;
@@ -411,10 +380,9 @@ html, body {
   align-items: center; // 垂直居中
 }
 
-.badge{
+.badge {
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
- 
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
@@ -453,7 +421,7 @@ html, body {
       display: flex;
       flex-direction: column;
 
-/*       div {
+      /*       div {
         background-color: #fff; // 背景色
         padding: 5px 10px; // 内边距
         border-radius: 5px; // 圆角

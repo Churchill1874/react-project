@@ -1,5 +1,6 @@
-html, body {
-  height: 100% ;
+html,
+body {
+  height: 100%;
   margin: 0;
 }
 :root {
@@ -19,10 +20,8 @@ html, body {
 .content {
   flex: 1; /* 使内容区域扩展以填充剩余空间 */
   overflow-y: auto; /* 启用垂直滚动 */
-  padding-bottom: 60px; /* 留出足够的空间以避免被导航栏挡住 */
-
+  padding-bottom: 150px; /* 留出足够的空间以避免被导航栏挡住 */
 }
-
 
 .navbar {
   position: fixed;
@@ -36,7 +35,6 @@ html, body {
 .adm-tabs-tab {
   padding: 5px 0; /* 调整上下空白间隔，原为4px，现在改为2px */
 }
-
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
