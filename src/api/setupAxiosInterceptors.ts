@@ -28,10 +28,21 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
   //拦截响应
   axios.interceptors.response.use(
     response => {
-      if (response.data.code === -2) {
+      if(!response.data || response.data.code === -2){
         navigate('/login');
-        return Promise.reject(new Error('未登录'));
+        Toast.show('请先登录');
+        //return Promise.reject(new Error('未登录'));
       }
+
+      if(response.data.code === -4){
+        navigate('/login');
+        Toast.show(response.data.msg)
+      }
+
+      if(response.data.code === -1){
+        Toast.show(response.data.msg)
+      }
+
       return response;
     },
     error => {

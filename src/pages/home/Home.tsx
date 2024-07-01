@@ -21,19 +21,12 @@ const Home = () => {
     // 置顶新闻
     if (topNews || hotNews) {
       const topTitle = topNews && topNews.title;
-      const hotTitle = hotNews && hotNews.title;
-
+      
       const topNewsHtml = (
         <div className="top-news">
           {topTitle ? (
             <div className="list-item">
               <span className="top">置顶：</span> {topTitle}
-            </div>
-          ) : null}
-
-          {hotTitle ? (
-            <div className="list-item">
-              <span className="hot">头条：</span> {hotTitle}
             </div>
           ) : null}
         </div>
@@ -47,7 +40,7 @@ const Home = () => {
       const newsRankHtml = newsList.map((news, index) => (
         <List.Item key={news.id} extra={<Badge className="badge" content="新闻" />}>
           <div className="news-item">
-            <div className="news-title">{index + 1 + ' ' + news.title}</div>
+            <div className="news-title">{((index + 1)===1? <span className='hot'>头条</span> : (index + 1))} {news.title}</div>
             <div className="news-info">
               <span className="date">{news.newsTime}</span>
               <span className="space"></span>
@@ -134,6 +127,9 @@ const Home = () => {
     }
   };
 
+
+
+
   useEffect(() => {
     newsListReq();
   }, []);
@@ -148,6 +144,9 @@ const Home = () => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [newsRank]);
+
+
+
 
   const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac'];
 
@@ -169,12 +168,11 @@ const Home = () => {
     <div className="home">
       <header className="header">
         <div className="logo">BIG NEWS</div>
-        <div>
-          <GlobalOutline fontSize={16} /> <span className="online"> 102 online</span>
-        </div>
+        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线102人 </span></div>
+        <div className='level'>lv.0 (暗中观察)</div>
       </header>
 
-      {topNews}
+       {topNews}
 
       <Swiper loop autoplay allowTouchMove>
         {items}

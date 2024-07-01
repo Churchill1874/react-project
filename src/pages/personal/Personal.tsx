@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
 import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport } from 'react-icons/fc';
-
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
+import {Request_GetPlayerInfoPath} from '@/pages/personal/api'
 import avatar from '../../../public/assets/avatars/1.jpg';
 import '@/pages/personal/Personal.less';
+import {levelEnum} from '@/common/level'
+import { PlayerInfoType } from '@/pages/personal/api';
 
 const UserCenter: React.FC = () => {
-  const [value, setValue] = useState('一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十');
+  const [player, setPlayer] = useState<PlayerInfoType>();
 
+  const playerReq = async () => {
+    const playerInfo = (await Request_GetPlayerInfoPath()).data;
+    setPlayer(playerInfo)
+  }
+
+  useEffect(()=>{
+    playerReq();
+  }, []);
+  
   return (
     <>
       <div className="personal">
@@ -18,19 +29,18 @@ const UserCenter: React.FC = () => {
               <Avatar className="personal-avatar" src={avatar} />
             </div>
             <div className="base-info">
-              <span className="name"> 昵称: 莫哈莫哈 </span>
+              <span className="name"> 昵称: {player?.name} </span>
               <span className="account">
-                {' '}
-                账号: 12311231{' '}
+                账号: {player?.account}
                 <span className="status">
-                  {' '}
-                  <Tag className="tag" color="success" fill="outline">
-                    {' '}
-                    正常{' '}
-                  </Tag>{' '}
+                  {player?.status? 
+                  (<Tag className="tag" color="success" fill="outline">正常</Tag> )
+                  :
+                  (<Tag className="tag" color="warning" fill="outline">禁用</Tag>)
+                  }
                 </span>
               </span>
-              <span className="balance"> 余额: 2312 USDT</span>
+              <span className="balance"> 余额: {11} USDT</span>
             </div>
             <div className="right-info">
               <span>
@@ -42,15 +52,15 @@ const UserCenter: React.FC = () => {
 
         <div className="personal-info-space">
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div>200</div>
+            <div> 0 </div>
             <div className="label">粉丝</div>
           </span>
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div>100</div>
+            <div> 0 </div>
             <div className="label">关注</div>
           </span>
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div>30</div>
+            <div> 0 </div>
             <div className="label">收藏</div>
           </span>
         </div>
@@ -60,58 +70,50 @@ const UserCenter: React.FC = () => {
             <div className="card-personal-info-container">
               <span className="personal-info">
                 <span className="left">
-                  <HistogramOutline /> 等级:{' '}
+                  <HistogramOutline /> 等级:
                 </span>
-                <span> 0级 ( 暗中观察 ) </span>
+                <span> {player?.level}级 ( {levelEnum(player?.level)} ) </span>
                 <RightOutline className="right-icon" />
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <UserCircleOutline /> 性别:{' '}
+                  <UserCircleOutline /> 性别:
                 </span>
-                <span> 女 </span>
+                <span> {player?.gender === 1? '男' : '女'} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <FlagOutline /> 城市:{' '}
+                  <FlagOutline /> 城市:
                 </span>
-                <span>北京</span>
+                <span> {player?.city} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <SmileOutline /> 生日:{' '}
+                  <SmileOutline /> 生日:
                 </span>
-                <span>2001-10-11</span>
+                <span> {player?.birth} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <PhoneFill /> 手机:{' '}
+                  <PhoneFill /> 手机:
                 </span>
-                <span>13222222222</span>
+                <span> {player?.phone} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <MailOutline /> 邮箱:{' '}
+                  <MailOutline /> 邮箱:
                 </span>
-                <span>joy1111@gmail.com</span>
+                <span> {player?.email} </span>
               </span>
               <span className="personal-info-desc">留言板:</span>
-              <TextArea maxLength={50} className="textArea" placeholder="请输入内容" value={'你们都认识我吗'} readOnly />
+              <TextArea maxLength={50} className="textArea" placeholder="请输入内容" value={player?.selfIntroduction? player.selfIntroduction : ""} />
             </div>
           </Card>
         </div>
 
         <div className="card-outer-container">
           <div className="card-inner-container">
-            <Card
-              title={
-                <div className="card-title">
-                  <FcSalesPerformance fontSize={18} />
-                  <span> 钱包</span>
-                </div>
-              }
-              extra={<RightOutline />}
-            />
+            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} /><span> 钱包</span> </div>}extra={<RightOutline />}/>
 
             <Card
               title={

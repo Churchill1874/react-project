@@ -26,7 +26,6 @@ const Login: React.FC = () => {
   //请求图片验证啊
   const captchaImageExchange = async () => {
     const verification = await Request_GetVerficationCode();
-    console.log(verification);
     const { data } = verification;
     const captchaImage = data.captchaImage;
     setCaptcha(captchaImage);
