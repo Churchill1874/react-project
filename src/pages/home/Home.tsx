@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Toast, Swiper, List, Badge, Input, Button, Avatar, Popover } from 'antd-mobile';
-import { SoundOutlined } from '@ant-design/icons';
+import { Toast, Swiper, List, Badge, Input, Button, Avatar } from 'antd-mobile';
+import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
-import Jiang from '../../../public/assets/avatars/1.jpg'
+import Jiang from '../../../public/assets/avatars/1.jpg';
 const Home = () => {
   const [topNews, setTopNews] = useState<JSX.Element | null>(null);
   const [newsRank, setNewsRank] = useState<JSX.Element[] | []>([]);
@@ -166,18 +166,11 @@ const Home = () => {
   ));
 
   return (
-    <div>
+    <div className="home">
       <header className="header">
         <div className="logo">BIG NEWS</div>
-        <div className="marquee-container">
-          <div className="icon-container">
-            <SoundOutlined className="sound-icon" />
-          </div>
-          <div className="marquee">
-            <span className="marquee-text">
-              当前在线102人～～～～～ 文字，平台公告，系统通知~~~~~~~~~滚动文字，平台公告，系统通知~~~~~~~~~
-            </span>
-          </div>
+        <div>
+          <GlobalOutline fontSize={16} /> <span className="online"> 102 online</span>
         </div>
       </header>
 
@@ -220,16 +213,12 @@ const Home = () => {
           <div className="odds">
             <div className="odd-blue">
               <div className="odd-value-left">1.7</div>
-              <div className="odd-people">
-                170人
-              </div>
+              <div className="odd-people">170人</div>
             </div>
             <div className="official">VS</div>
             <div className="odd-red">
               <div className="odd-value-right">0.7</div>
-              <div className="odd-people">
-                800人
-              </div>
+              <div className="odd-people">800人</div>
             </div>
           </div>
 
@@ -243,82 +232,76 @@ const Home = () => {
       </div>
 
       <div className="chat" ref={chatRef}>
-
-
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-        <div className='chat-item'>
-          <Avatar className='avatar' src={Jiang}/>
+        <div className="chat-item">
+          <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
             <div>刘老六：介绍行了介绍就!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
-
-
-
-
       </div>
 
       <div className="send-container">
         <Input className="input-field" placeholder="请输入" />
-          <Button className="send-button" color="primary">
-            发送
-          </Button>
+        <Button className="send-button" color="primary">
+          发送
+        </Button>
       </div>
     </div>
   );
