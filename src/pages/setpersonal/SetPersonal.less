@@ -1,0 +1,122 @@
+@theme: #1890ff;
+/* SetPersonal.less */
+.set-personal {
+  background-color: @theme;
+  min-height: 100vh;
+  /* 确保背景颜色填充整个屏幕 */
+  width: 100%;
+  padding: 0px 0px;
+  flex-direction: column;
+
+  .edit {
+    height: 35px;
+    color: black;
+    background-color: #fff;
+
+    .adm-nav-bar-title {
+      font-size: 16px;
+    }
+
+    .adm-nav-bar-back-arrow {
+      font-size: 18px;
+    }
+  }
+
+  .card {
+    .adm-card-body {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+    margin: 5px 10px;
+    background-color: #fff;
+    /* 设置背景颜色 */
+    box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2);
+    /* 添加阴影 */
+  }
+
+  .avatar-container {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    /* 对齐到顶部 */
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    .avatar-with-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .button-container {
+      display: flex;
+      //flex-grow: 1;
+      align-items: flex-end;
+      margin-left: 20px;
+      height: 25px;
+      width: 35px;
+      .change-avatar-button {
+        margin: 0px;
+        padding: 0px;
+        font-size: 14px;
+        margin-top: auto;
+        margin: 5px 0px;
+      }
+    }
+  }
+
+  .personal-avatar {
+    --size: 80px;
+    margin: 5px 0px;
+    position: relative;
+  }
+
+  .form {
+    input {
+      font-size: 16px;
+    }
+
+    .adm-list-item-content-prefix {
+      width: 90px;
+      /* 调整这个值以控制左侧空白区域的宽度 */
+    }
+
+    .adm-list-item {
+      padding: 2px 0 !important;
+      /* 控制表单项之间的空白区域，并使用 !important 确保覆盖默认样式 */
+      margin: 0 !important;
+
+      .adm-form-item-label {
+        padding: 0 8px !important;
+        /* 控制标签的内边距 */
+        line-height: 1.5 !important;
+        /* 调整标签行高 */
+      }
+
+      .adm-form-item-control {
+        padding: 0 !important;
+        /* 控制输入框的内边距 */
+      }
+
+      .adm-input {
+        font-size: 12px !important;
+        /* 控制字体大小 */
+      }
+    }
+  }
+}
+
+.textArea {
+  background: rgba(218, 216, 216, 0.319);
+  /* 半透明灰色背景 */
+  //border: none; /* 移除边框 */
+  color: white;
+  /* 设置文本颜色 */
+  border-radius: 5px;
+  /* 圆角 */
+  padding: 5px;
+  margin-bottom: 0px;
+  --font-size: 16px;
+}

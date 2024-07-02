@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
 import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
-import {Request_GetPlayerInfoPath} from '@/pages/personal/api'
+import { Request_GetPlayerInfoPath } from '@/pages/personal/api'
 import avatar from '../../../public/assets/avatars/1.jpg';
 import '@/pages/personal/Personal.less';
-import {levelEnum} from '@/common/level'
+import { levelEnum } from '@/common/level'
 import { PlayerInfoType } from '@/pages/personal/api';
 
 const UserCenter: React.FC = () => {
@@ -13,13 +14,20 @@ const UserCenter: React.FC = () => {
 
   const playerReq = async () => {
     const playerInfo = (await Request_GetPlayerInfoPath()).data;
+    playerInfo.selfIntroduction = "一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
     setPlayer(playerInfo)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     playerReq();
   }, []);
-  
+
+  const navigate = useNavigate();
+  const editPlayerInfo = () => {
+    navigate('/setPersonal')
+  }
+
+
   return (
     <>
       <div className="personal">
@@ -33,17 +41,17 @@ const UserCenter: React.FC = () => {
               <span className="account">
                 账号: {player?.account}
                 <span className="status">
-                  {player?.status? 
-                  (<Tag className="tag" color="success" fill="outline">正常</Tag> )
-                  :
-                  (<Tag className="tag" color="warning" fill="outline">禁用</Tag>)
+                  {player?.status ?
+                    (<Tag className="tag" color="success" fill="outline">正常</Tag>)
+                    :
+                    (<Tag className="tag" color="warning" fill="outline">禁用</Tag>)
                   }
                 </span>
               </span>
               <span className="balance"> 余额: {11} USDT</span>
             </div>
             <div className="right-info">
-              <span>
+              <span onClick={editPlayerInfo}>
                 <EditSOutline fontSize={20} />
               </span>
             </div>
@@ -79,7 +87,7 @@ const UserCenter: React.FC = () => {
                 <span className="left">
                   <UserCircleOutline /> 性别:
                 </span>
-                <span> {player?.gender === 1? '男' : '女'} </span>
+                <span> {player?.gender === 1 ? '男' : '女'} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
@@ -105,15 +113,18 @@ const UserCenter: React.FC = () => {
                 </span>
                 <span> {player?.email} </span>
               </span>
-              <span className="personal-info-desc">留言板:</span>
-              <TextArea maxLength={50} className="textArea" placeholder="请输入内容" value={player?.selfIntroduction? player.selfIntroduction : ""} />
+
+              <div>
+                <span className="personal-info-desc">留言板:</span>
+                <TextArea rows={3} maxLength={50} className="message-board" placeholder="请输入内容" value={player?.selfIntroduction ? player.selfIntroduction : ""} readOnly/>
+              </div>
             </div>
           </Card>
         </div>
 
         <div className="card-outer-container">
           <div className="card-inner-container">
-            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} /><span> 钱包</span> </div>}extra={<RightOutline />}/>
+            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} /><span> 钱包</span> </div>} extra={<RightOutline />} />
 
             <Card
               title={

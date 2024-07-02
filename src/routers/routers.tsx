@@ -2,6 +2,7 @@
 import Home from '@/pages/home/Home';
 import Login from '@/pages/login/Login';
 import Personal from '@/pages/personal/Personal';
+import SetPersonal from '@/pages/setpersonal/SetPersonal'
 
 export default [
   //首页
@@ -22,5 +23,9 @@ export default [
   {
     path: '/personal',
     component: Personal,
+  },
+  {
+    path: '/setPersonal',
+    component: SetPersonal,
   },
 ];

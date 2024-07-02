@@ -40,7 +40,7 @@ const Home = () => {
       const newsRankHtml = newsList.map((news, index) => (
         <List.Item key={news.id} extra={<Badge className="badge" content="新闻" />}>
           <div className="news-item">
-            <div className="news-title">{((index + 1)===1? <span className='hot'>头条</span> : (index + 1))} {news.title}</div>
+            <div className="news-title">{((index + 1)===1? <span className='hot'>头条</span> : <span className='news-index'>{(index + 1)}</span>)} {news.title}</div>
             <div className="news-info">
               <span className="date">{news.newsTime}</span>
               <span className="space"></span>

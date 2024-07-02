@@ -105,7 +105,7 @@ const Login: React.FC = () => {
             <span>大 新 闻 ~</span>
           </div>
         }
-        icon={<AntOutline fontSize={80} className="icon" />}
+        icon={<AntOutline fontSize={80} />}
       >
         <Tabs activeLineMode="fixed" className="tabs">
           <Tabs.Tab title="登陆" key="login">
@@ -114,8 +114,7 @@ const Login: React.FC = () => {
               onFinish={loginReq}
               footer={
                 <Button block color="primary" type="submit" size="middle">
-                  {' '}
-                  提交{' '}
+                  提交
                 </Button>
               }
               layout="horizontal"
@@ -124,7 +123,7 @@ const Login: React.FC = () => {
             >
               <Form.Item
                 className="item"
-                label="账号"
+                label="账号:"
                 name="account"
                 rules={[
                   { required: true, message: '账号不能为空' },
@@ -138,7 +137,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 className="item"
-                label="密码"
+                label="密码:"
                 name="password"
                 rules={[
                   { required: true, message: '密码不能为空' },
@@ -152,7 +151,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 className="item"
-                label="验证码"
+                label="验证码:"
                 name="verificationCode"
                 rules={[
                   { required: true, message: '验证码不能为空' },
@@ -171,8 +170,7 @@ const Login: React.FC = () => {
               onFinish={registerReq}
               footer={
                 <Button block color="primary" type="submit" size="middle">
-                  {' '}
-                  提交{' '}
+                  提交
                 </Button>
               }
               layout="horizontal"
@@ -181,7 +179,7 @@ const Login: React.FC = () => {
             >
               <Form.Item
                 className="item"
-                label="账号"
+                label="账号:"
                 name="account"
                 rules={[
                   { required: true, message: '账号不能为空' },
@@ -195,7 +193,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 className="item"
-                label="昵称"
+                label="昵称:"
                 name="name"
                 rules={[
                   { required: true, message: '昵称不能为空' },
@@ -211,7 +209,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 className="item"
-                label="密码"
+                label="密码:"
                 name="password"
                 rules={[
                   { required: true, message: '密码不能为空' },
@@ -225,7 +223,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 name="birth"
-                label="生日"
+                label="生日:"
                 trigger="onConfirm"
                 onClick={(_e, datePickerRef: RefObject<DatePickerRef>) => {
                   datePickerRef.current?.open();
@@ -252,7 +250,7 @@ const Login: React.FC = () => {
 
               <Form.Item
                 className="item"
-                label="验证码"
+                label="验证码:"
                 name="verificationCode"
                 rules={[
                   { required: true, message: '验证码不能为空' },

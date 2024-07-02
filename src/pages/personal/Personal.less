@@ -36,7 +36,7 @@
     padding-right: 0px;
   }
 
-  height: 200px;
+  height: 250px;
   margin: 5px 10px;
   background-color: #fff;
   /* 设置背景颜色 */
@@ -115,7 +115,7 @@
   flex: 1; /* 使其占据剩余空间 */
   flex-direction: column;
   /* 确保 Card 组件垂直排列 */
-  height: 280px;
+  height: 290px;
   width: 100%;
   box-sizing: border-box;
   /* 确保 padding 和 border 包含在 width 和 height 内 */
@@ -213,17 +213,20 @@
   margin-bottom: 5px;
 }
 
-.textArea {
-  background: rgba(218, 216, 216, 0.319);
-  /* 半透明灰色背景 */
-  //border: none; /* 移除边框 */
-  color: white;
+.message-board {
+  background-color: rgba(231, 227, 227, 0.658);
   /* 设置文本颜色 */
   border-radius: 5px;
   /* 圆角 */
-  padding: 5px;
   margin-bottom: 0px;
-  --font-size: 14px;
+  .adm-text-area-element{
+    padding: 5px 8px;
+
+    font-size: 14px;
+  }
+  .adm-text-area-count{
+    font-size: 12px;
+  }
 }
 
 .personal-info-desc {
