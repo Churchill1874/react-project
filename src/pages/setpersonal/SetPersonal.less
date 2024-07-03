@@ -12,6 +12,7 @@
     height: 35px;
     color: black;
     background-color: #fff;
+    border-top: 1px solid @theme;
 
     .adm-nav-bar-title {
       font-size: 16px;
@@ -23,12 +24,13 @@
   }
 
   .card {
+
     .adm-card-body {
       padding-left: 0px;
       padding-right: 0px;
     }
 
-    margin: 5px 10px;
+    margin: 5px 12px;
     background-color: #fff;
     /* 设置背景颜色 */
     box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2);
@@ -74,14 +76,17 @@
   }
 
   .form {
-    padding: 10px;
-    background: #fff;
+    width: 100%;
+    .adm-list-card{
+      margin-top: 0px;
+      padding-top: 0px;
+    }
     input {
       font-size: 16px;
     }
 
     .adm-list-item-content-prefix {
-      width: 90px;
+      width: 70px;
       /* 调整这个值以控制左侧空白区域的宽度 */
     }
 
@@ -120,5 +125,5 @@
   /* 圆角 */
   padding: 5px;
   margin-bottom: 0px;
-  --font-size: 16px;
+  --font-size: 14px;
 }
