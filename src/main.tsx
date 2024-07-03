@@ -3,7 +3,8 @@ import App from '@/App';
 import React from 'react';
 import '@/global.less';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
-
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import setupAxiosInterceptors from './api/setupAxiosInterceptors';
 
 // 在应用启动时设置Axios拦截器
@@ -27,7 +28,9 @@ root.render(
    
   <Router>
     <SetupInterceptors />
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
 
 );
