@@ -26,6 +26,7 @@ export interface PlayerInfoType {
         "salt": any,
         "selfIntroduction": any,
         "status": any,
+        "balance": any,
         "updateName": any,
         "updateTime": any
 }

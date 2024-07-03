@@ -14,7 +14,6 @@ const UserCenter: React.FC = () => {
 
   const playerReq = async () => {
     const playerInfo = (await Request_GetPlayerInfoPath()).data;
-    playerInfo.selfIntroduction = "一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
     setPlayer(playerInfo)
   }
 
@@ -48,7 +47,7 @@ const UserCenter: React.FC = () => {
                   }
                 </span>
               </span>
-              <span className="balance"> 余额: {11} USDT</span>
+              <span className="balance"> 余额: {player?.balance} USDT</span>
             </div>
             <div className="right-info">
               <span onClick={editPlayerInfo}>

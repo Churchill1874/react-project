@@ -1,17 +1,17 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
-interface LoginType {
+export interface LoginType {
   code: number;
   data: { account: string; loginTime: string; name: string; tokenId: string };
   msg: string;
 }
-interface RegisterType {
+export interface RegisterType {
   code: number;
   data: { account: string; loginTime: string; name: string; tokenId: string };
   msg: string;
 }
-interface VerificationCodeType {
+export interface VerificationCodeType {
   code: number;
   data: { captchaImage: string };
   msg: string;
