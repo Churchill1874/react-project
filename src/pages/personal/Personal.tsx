@@ -4,7 +4,8 @@ import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
 import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfoPath } from '@/pages/personal/api'
-import avatar from '../../../public/assets/avatars/1.jpg';
+import avatars from '@/common/avatar';
+
 import '@/pages/personal/Personal.less';
 import { levelEnum } from '@/common/level'
 import { PlayerInfoType } from '@/pages/personal/api';
@@ -33,7 +34,7 @@ const UserCenter: React.FC = () => {
         <Card className="card">
           <div className="avatar-container">
             <div className="avatar-with-text">
-              <Avatar className="personal-avatar" src={avatar} />
+              <Avatar className="personal-avatar" src={avatars[player?.avatarPath]} />
             </div>
             <div className="base-info">
               <span className="name"> 昵称: {player?.name} </span>
