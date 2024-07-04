@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs } from 'antd-mobile';
-import { Request_GetPlayerInfoPath } from '@/pages/personal/api';
 import '@/pages/setpersonal/SetPersonal.less';
 import avatars from '@/common/avatar';
 //全局状态管理
@@ -42,7 +41,7 @@ const SetPersonal: React.FC = () => {
     const choose = (index : string)=> {
         if(playerInfo){
             //先请求后端接口更新用户信息
-            
+
 
             //更新全局状态中的用户信息的头像信息 并重新渲染
             setPlayerInfo({...playerInfo, avatarPath: index});
