@@ -5,8 +5,6 @@ import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Spa
 import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
-import { useDispatch } from 'react-redux';
-import {login} from '@/redux/reducers/authSlice'
 
 interface RegisterType {
   account: string;
@@ -24,7 +22,6 @@ interface LoginType {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [captcha, setCaptcha] = useState('');
-  const dispatch = useDispatch();
 
   //请求图片验证啊
   const captchaImageExchange = async () => {
@@ -50,12 +47,6 @@ const Login: React.FC = () => {
         // 跳转到 /home 页面
         navigate('/');
       }, 1000); // 2秒后跳转到首页
-
-
-
-
-      //将用户登陆成功返回信息 保存到全局状态管理
-      dispatch(login(values));
 
 
 

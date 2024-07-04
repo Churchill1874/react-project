@@ -31,16 +31,18 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
       if(!response.data || response.data.code === -2){
         navigate('/login');
         Toast.show('请先登录');
-        //return Promise.reject(new Error('未登录'));
+        return Promise.reject(new Error('未登录'));
       }
 
       if(response.data.code === -4){
         navigate('/login');
         Toast.show(response.data.msg)
+        return Promise.reject(new Error('未登陆'));
       }
 
       if(response.data.code === -1){
         Toast.show(response.data.msg)
+        return Promise.reject(new Error('服务异常'));
       }
 
       return response;

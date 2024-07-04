@@ -7,13 +7,6 @@ import Jiang from '../../../public/assets/avatars/1.jpg';
 
 
 
-//全局状态管理的查询钩子
-import { useSelector } from 'react-redux';
-//获取全局状态store的类型 用来声明获取的时候
-import { RootState } from '@/redux/store'
-
-
-
 
 const Home = () => {
   const [topNews, setTopNews] = useState<JSX.Element | null>(null);
@@ -22,15 +15,8 @@ const Home = () => {
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
 
-  //全局状态
-  const loginInfo = useSelector((state : RootState) => state.auth);
-
   // 获取首页新闻数据
   const newsListReq = async () => {
-    //全局状态
-    console.log('获取全局状态管理中的登陆状态数据',loginInfo)
-
-    console.log('新闻列表请求执行');
     const newsListResponse = await Request_HOME_NEWS();
 
     const { topNews, newsList, hotNews } = newsListResponse.data;
@@ -185,8 +171,8 @@ const Home = () => {
     <div className="home">
       <header className="header">
         <div className="logo">BIG NEWS</div>
+        <div className='level'>显现文字</div>
         <div><GlobalOutline fontSize={12} /> <span className="online"> 在线102人 </span></div>
-        <div className='level'>lv.0 (暗中观察)</div>
       </header>
 
        {topNews}

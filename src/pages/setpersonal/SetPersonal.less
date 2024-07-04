@@ -1,11 +1,11 @@
 @theme: #1890ff;
-/* SetPersonal.less */
+
 .set-personal {
   background-color: @theme;
   min-height: 100vh;
-  /* 确保背景颜色填充整个屏幕 */
   width: 100%;
-  padding: 0px 0px;
+  padding: 0px;
+  display: flex;
   flex-direction: column;
 
   .edit {
@@ -24,24 +24,19 @@
   }
 
   .card {
+    margin: 5px 12px;
+    background-color: #fff;
+    box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2);
 
     .adm-card-body {
       padding-left: 0px;
       padding-right: 0px;
     }
-
-    margin: 5px 12px;
-    background-color: #fff;
-    /* 设置背景颜色 */
-    box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2);
-    /* 添加阴影 */
   }
 
   .avatar-container {
-    position: relative;
     display: flex;
     align-items: flex-end;
-    /* 对齐到顶部 */
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -54,11 +49,11 @@
 
     .button-container {
       display: flex;
-      //flex-grow: 1;
       align-items: flex-end;
       margin-left: 20px;
       height: 25px;
       width: 35px;
+
       .change-avatar-button {
         margin: 0px;
         padding: 0px;
@@ -77,56 +72,86 @@
 
   .form {
     width: 100%;
-    .adm-list-card{
+    .adm-list-card {
       margin-top: 0px;
       padding-top: 0px;
     }
+
     input {
       font-size: 16px;
     }
 
     .adm-list-item-content-prefix {
       width: 70px;
-      /* 调整这个值以控制左侧空白区域的宽度 */
     }
 
     .adm-list-item {
       padding: 2px 0 !important;
-      /* 控制表单项之间的空白区域，并使用 !important 确保覆盖默认样式 */
       margin: 0 !important;
 
       .adm-form-item-label {
         padding: 0 8px !important;
-        /* 控制标签的内边距 */
         line-height: 1.5 !important;
-        /* 调整标签行高 */
       }
 
       .adm-form-item-control {
         padding: 0 !important;
-        /* 控制输入框的内边距 */
       }
 
       .adm-input {
         font-size: 12px !important;
-        /* 控制字体大小 */
       }
     }
+
+
   }
 }
 
 .textArea {
   background: rgba(218, 216, 216, 0.319);
-  /* 半透明灰色背景 */
-  //border: none; /* 移除边框 */
   color: white;
-  /* 设置文本颜色 */
   border-radius: 5px;
-  /* 圆角 */
   padding: 5px;
   margin-bottom: 0px;
   --font-size: 14px;
-  .adm-text-area-count{
+
+  .adm-text-area-count {
     font-size: 14px;
   }
+}
+
+.avatar-list {
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* 确保内容可以滚动 */
+  padding: 0; /* 去除任何内边距 */
+}
+
+.tabs-personal {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;  
+  .adm-tabs-header{
+    margin: 0px;
+    padding: 0px;
+    //background-color: #1890ff;
+  }
+  .adm-tabs-tab {
+    font-size: 16px;
+  }
+}
+
+.avatar-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.avatar-style {
+  border: 1px solid @theme; /* 设置边框颜色和宽度 */
+  //border-radius: 50%; /* 使边框圆角，如果头像是圆形 */
+  padding: 1px; /* 如果需要内边距 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+  margin: 1px; /* 每个头像的外边距 */
 }
