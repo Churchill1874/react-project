@@ -34,6 +34,12 @@ export interface PlayerInfoType {
 
 //获取用户信息
 const getPlayerInfoPath = '/player/player/playerInfo';
-export const Request_GetPlayerInfoPath = async (): Promise<Response> => {
+export const Request_GetPlayerInfo = async (): Promise<Response> => {
     return (await axios.post(serverTarget + getPlayerInfoPath, {})).data;
+};
+
+//退出登陆
+const logoutPath = '/player/player/logout';
+export const Request_Logout = async (): Promise<Response> => {
+    return (await axios.post(serverTarget + logoutPath, {})).data;
 };

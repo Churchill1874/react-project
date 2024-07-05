@@ -4,6 +4,7 @@ import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
+import {newsEnum} from '@/common/news'
 
 
 
@@ -40,12 +41,15 @@ const Home = () => {
 
     // 新闻排名
     if (newsList) {
+
       const newsRankHtml = newsList.map((news, index) => (
-        <List.Item key={news.id} extra={<Badge className="badge" content="新闻" />}>
+        <List.Item key={news.id} 
+        extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
+        >
           <div className="news-item">
             <div className="news-title">{((index + 1)===1? <span className='hot'>头条</span> : <span className='news-index'>{(index + 1)}</span>)} {news.title}</div>
             <div className="news-info">
-              <span className="date">{news.newsTime}</span>
+              <span className="date">{news.createTime}</span>
               <span className="space"></span>
               <span className="views">{'浏览:' + news.viewCount}</span>
               <span className="space"></span>

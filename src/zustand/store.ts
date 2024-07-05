@@ -3,7 +3,7 @@ import { PlayerInfoType } from '@/pages/personal/api';
 
 interface PlayerState {
   playerInfo: PlayerInfoType | null;
-  setPlayerInfo: (playerInfo: PlayerInfoType) => void;
+  setPlayerInfo: (playerInfo: PlayerInfoType | null) => void;
 }
 
 const useStore = create<PlayerState>((set) => ({

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
 import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
-import { Request_GetPlayerInfoPath } from '@/pages/personal/api'
+import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
 import { levelEnum } from '@/common/level'
@@ -14,7 +14,7 @@ const UserCenter: React.FC = () => {
   const { playerInfo, setPlayerInfo } = useStore();
 
   const playerReq = async () => {
-    const playerInfo = (await Request_GetPlayerInfoPath()).data;
+    const playerInfo = (await Request_GetPlayerInfo()).data;
     setPlayerInfo(playerInfo)
   }
 
@@ -24,6 +24,12 @@ const UserCenter: React.FC = () => {
     }
     
   }, [playerInfo]);
+
+  //请求退出
+  const logout = async ()=> {
+    await Request_Logout();
+    setPlayerInfo(null);
+  }
 
   const navigate = useNavigate();
   const editPlayerInfo = () => {
@@ -163,8 +169,7 @@ const UserCenter: React.FC = () => {
           </div>
         </div>
 
-        <Card
-          className="signout"
+        <Card className="signout" onClick={logout}
           title={
             <div className="card-title">
               <FcImport fontSize={18} />
