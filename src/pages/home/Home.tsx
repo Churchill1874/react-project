@@ -159,13 +159,7 @@ const Home = () => {
 
   const items = colors.map((color, index) => (
     <Swiper.Item key={index}>
-      <div
-        className="banner"
-        style={{ background: color }}
-        onClick={() => {
-          Toast.show(`你点击了卡片 ${index + 1}`);
-        }}
-      >
+      <div className="banner" style={{ background: color }} onClick={() => { Toast.show(`你点击了卡片 ${index + 1}`)}}>
         {index + 1}
       </div>
     </Swiper.Item>
@@ -175,7 +169,7 @@ const Home = () => {
     <div className="home">
       <header className="header">
         <div className="logo">BIG NEWS</div>
-        <div className='level'>显现文字</div>
+        
         <div><GlobalOutline fontSize={12} /> <span className="online"> 在线102人 </span></div>
       </header>
 

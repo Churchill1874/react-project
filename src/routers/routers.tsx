@@ -3,6 +3,7 @@ import Home from '@/pages/home/Home';
 import Login from '@/pages/login/Login';
 import Personal from '@/pages/personal/Personal';
 import SetPersonal from '@/pages/setpersonal/SetPersonal'
+import News from '@/pages/news/News'
 
 export default [
   //首页
@@ -13,6 +14,10 @@ export default [
   {
     path: '/home',
     component: Home,
+  },
+  {
+    path: '/news',
+    component: News,
   },
   //登陆路由
   {

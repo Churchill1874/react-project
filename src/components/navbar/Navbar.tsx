@@ -29,7 +29,7 @@ const Navbar = () => {
     <Tabs activeKey={activeKey} onChange={handleTabChange} className="navbar">
       <Tabs.Tab title="首页" key="home" />
       <Tabs.Tab title="新闻" key="news" />
-      <Tabs.Tab title="市场" key="market" />
+      <Tabs.Tab title="政治盘" key="market" />
       <Tabs.Tab title="消息" key="message" />
       <Tabs.Tab title="个人" key="personal" />
     </Tabs>

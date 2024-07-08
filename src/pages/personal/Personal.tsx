@@ -57,7 +57,7 @@ const UserCenter: React.FC = () => {
                   }
                 </span>
               </span>
-              <span className="balance"> 余额: {playerInfo?.balance} USDT</span>
+              <span className="balance"> 余额: {playerInfo?.balance} U</span>
             </div>
             <div className="right-info">
               <span onClick={editPlayerInfo}>
