@@ -48,7 +48,7 @@ const News: React.FC = () => {
             likes: 100,
             comments: 50,
             views: 200,
-        },        {
+        },{
             title: '这是标题1',
             images: ['image1.jpg', 'image2.jpg'],
             likes: 100,
