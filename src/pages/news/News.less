@@ -1,35 +1,31 @@
 @theme: #1890ff;
 
-.news-navbar {
-    background-color: #fff; /* 导航栏背景颜色 */
-    //position: -webkit-sticky; /* 兼容Safari */
-    //position: sticky;
-    top: 0;
-    z-index: 1000; /* 确保导航栏在所有内容的上方 */
-    .adm-tabs-tab {
-      font-size: 15px;
-      padding: 5px 0; /* 调整上下空白间隔 */
-    }
-    .adm-tabs-content {
-        background-color: @theme;
-    }
-}
-  
-.news-content {
-    background-color: @theme; /* 页面主体背景颜色 */
-    height: 100vh; /* 确保填充整个屏幕 */
-    overflow-y: auto; /* 使内容可以滚动 */
+.news-page {
+    background-color: @theme;
+    height: calc(100vh - 50px); /* 减去导航栏的高度 */
+    overflow-y: auto;
+    padding: 10px;
     display: flex;
     flex-direction: column;
 }
-  
-@media (min-width: 768px) {
-    .main-container {
-        flex-direction: row; /* 改为水平布局 */
-    }
-    .news-navbar {
-        position: static; /* 取消固定 */
-        width: auto; /* 自动宽度 */
+
+.tabs-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #fff;
+    .adm-tabs-tab {
+        font-size: 15px;
+        padding: 5px 0;
     }
 }
 
+
+.news-content {
+    background-color: @theme;
+    height: calc(100vh - 50px); /* 减去导航栏的高度 */
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}

@@ -15,7 +15,7 @@ const Navbar = () => {
     if (activeKey !== currentPath) {
       setActiveKey(currentPath || '');
     }
-  }, [location.pathname, activeKey]);
+  }, [location.pathname, activeKey,navigate]);
 
   const handleTabChange = (key: string) => {
     if (activeKey !== key) {

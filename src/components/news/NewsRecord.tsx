@@ -6,34 +6,29 @@ export interface NewsRecordType {
     title: string;
     images: string[];
     likes: number;
+    badCount: number;
     comments: number;
     views: number;
 }
 
-interface NewsListType {
-    newsData: NewsRecordType[];
-}
-
-const NewsRecord: React.FC<NewsListType> = ({ newsData }) => {
-  return (
-    <div className="outer-container">
-      {newsData.map((news, index) => (
-        <Card className="inner-container" key={index}>
-          <div className="title">{news.title}</div>
-          <div className="image-container">
-            {news.images.map((src, imgIndex) => (
-              <Image key={imgIndex} src={src} alt={`图片${imgIndex + 1}`} width={100} />
-            ))}
-          </div>
-          <div className="attributes">
-            <span>点赞: {news.likes}</span>
-            <span>评论: {news.comments}</span>
-            <span>浏览: {news.views}</span>
-          </div>
+const NewsRecord: React.FC<NewsRecordType> = ({ title, images, likes,badCount, comments, views }) => {
+    return (
+        <Card className="inner-container">
+            <div className="title">{title}</div>
+            <div className="image-container">
+                {images.map((src, index) => (
+                    <Image key={index} src={src} alt={`图片${index + 1}`} width={100} />
+                ))}
+            </div>
+            <div className="attributes">
+                <span>浏览: {views}</span>
+                <span>点赞: {likes}</span>
+                <span>差评: {badCount}</span>
+                <span>评论: {comments}</span>
+                
+            </div>
         </Card>
-      ))}
-    </div>
-  );
+    );
 };
 
 export default NewsRecord;

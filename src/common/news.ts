@@ -4,8 +4,8 @@ const enumMap = {
     2: {name:'新闻',color:'red'},
     3: {name:'体育',color:'navy'},
     4: {name:'娱乐',color:'orange'},
-    5: {name:'军事',color:'aqua'},
-    6: {name:'科技',color:'yellow'},
+    5: {name:'军事',color:'maroon'},
+    6: {name:'科技',color:'purple'},
     7: {name:'育儿',color:'lime'},
     8: {name:'女性',color:'pink'}
   };

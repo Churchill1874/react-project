@@ -4,6 +4,8 @@ import React from 'react';
 import '@/global.less';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import setupAxiosInterceptors from './api/setupAxiosInterceptors';
+import ScrollToTop from '@/utils/ScrollToTop';
+
 
 // 在应用启动时设置Axios拦截器
 const SetupInterceptors = () => {
@@ -23,10 +25,11 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-   
+
   <Router>
+    <ScrollToTop />
     <SetupInterceptors />
-      <App />
+    <App />
   </Router>,
 
 );

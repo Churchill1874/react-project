@@ -1,14 +1,20 @@
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
 :root {
   --adm-color-primary: #1890ff;
   --adm-color-success: #52c41a;
   --adm-color-warning: #faad14;
   --adm-color-danger: #f5222d;
   --adm-color-info: #13c2c2;
+}
+
+body, html, .main-container, .content {
+  overflow: auto; /* 确保允许滚动 */
+}
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
 .main-container {
