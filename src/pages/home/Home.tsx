@@ -4,28 +4,53 @@ import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
-import {newsEnum} from '@/common/news'
-
+import { newsEnum } from '@/common/news'
+import useStore from '@/zustand/store'
 
 
 
 const Home = () => {
-  const [topNews, setTopNews] = useState<JSX.Element | null>(null);
-  const [newsRank, setNewsRank] = useState<JSX.Element[] | []>([]);
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
+  const {newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml} = useStore();
+
+
+  //新闻html数据
+  const newsRankHtml = () => {
+    return (newsInfoList?.map((news, index) => (
+      <List.Item key={news.id}
+        extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
+      >
+        <div className="news-item">
+          <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span className='news-index'>{(index + 1)}</span>)} {news.title}</div>
+          <div className="news-info">
+            <span className="date">{news.createTime}</span>
+            <span className="space"></span>
+            <span className="views">{'浏览:' + news.viewCount}</span>
+            <span className="space"></span>
+            <span className="likes">{'赞:' + news.likesCount}</span>
+            <span className="space"></span>
+            <span className="dislikes">{'喷:' + news.badCount}</span>
+            <span className="space"></span>
+            <span className="comments">{'评:' + news.commentsCount}</span>
+          </div>
+        </div>
+      </List.Item>
+    )))
+  }
+
 
   // 获取首页新闻数据
   const newsListReq = async () => {
     const newsListResponse = await Request_HOME_NEWS();
 
-    const { topNews, newsList, hotNews } = newsListResponse.data;
+    const { topNews, newsList } = newsListResponse.data;
 
     // 置顶新闻
-    if (topNews || hotNews) {
+    if (topNews) {
       const topTitle = topNews && topNews.title;
-      
+
       const topNewsHtml = (
         <div className="top-news">
           {topTitle ? (
@@ -36,36 +61,16 @@ const Home = () => {
         </div>
       );
 
-      setTopNews(topNewsHtml);
+      setTopNewsTitleHtml(topNewsHtml);
     }
 
     // 新闻排名
-    if (newsList) {
-
-      const newsRankHtml = newsList.map((news, index) => (
-        <List.Item key={news.id} 
-        extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
-        >
-          <div className="news-item">
-            <div className="news-title">{((index + 1)===1? <span className='hot'>头条</span> : <span className='news-index'>{(index + 1)}</span>)} {news.title}</div>
-            <div className="news-info">
-              <span className="date">{news.createTime}</span>
-              <span className="space"></span>
-              <span className="views">{'浏览:' + news.viewCount}</span>
-              <span className="space"></span>
-              <span className="likes">{'赞:' + news.likesCount}</span>
-              <span className="space"></span>
-              <span className="dislikes">{'喷:' + news.badCount}</span>
-              <span className="space"></span>
-              <span className="comments">{'评:' + news.commentsCount}</span>
-            </div>
-          </div>
-        </List.Item>
-      ));
-
-      setNewsRank(newsRankHtml);
+    if(JSON.stringify(newsList) !== JSON.stringify(newsInfoList)){
+      console.log('有新的新闻')
+      setNewsInfoList(newsList)
     }
   };
+
 
   const setupScroll = () => {
     const scrollContent = scrollContentRef.current;
@@ -142,7 +147,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (newsRank.length > 0) {
+    if (newsInfoList && newsInfoList?.length > 0) {
       setupScroll();
     }
 
@@ -150,7 +155,7 @@ const Home = () => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [newsRank]);
+  }, [newsInfoList]);
 
 
 
@@ -159,7 +164,7 @@ const Home = () => {
 
   const items = colors.map((color, index) => (
     <Swiper.Item key={index}>
-      <div className="banner" style={{ background: color }} onClick={() => { Toast.show(`你点击了卡片 ${index + 1}`)}}>
+      <div className="banner" style={{ background: color }} onClick={() => { Toast.show(`你点击了卡片 ${index + 1}`) }}>
         {index + 1}
       </div>
     </Swiper.Item>
@@ -169,11 +174,11 @@ const Home = () => {
     <div className="home">
       <header className="header">
         <div className="logo">BIG NEWS</div>
-        
+
         <div><GlobalOutline fontSize={12} /> <span className="online"> 在线102人 </span></div>
       </header>
 
-       {topNews}
+      {topNewsTitleHtml}
 
       <Swiper loop autoplay allowTouchMove>
         {items}
@@ -181,8 +186,8 @@ const Home = () => {
 
       <div className="news-list" ref={newsListRef}>
         <div className="scroll-content" ref={scrollContentRef}>
-          {newsRank}
-          {newsRank} {/* 复制一份内容以实现无缝滚动 */}
+          {newsRankHtml()}
+          {newsRankHtml()} {/* 复制一份内容以实现无缝滚动 */}
         </div>
       </div>
 

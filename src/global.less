@@ -1,3 +1,4 @@
+@theme: #1890ff;
 :root {
   --adm-color-primary: #1890ff;
   --adm-color-success: #52c41a;
@@ -5,28 +6,26 @@
   --adm-color-danger: #f5222d;
   --adm-color-info: #13c2c2;
 }
-
-body, html, .main-container, .content {
-  overflow: auto; /* 确保允许滚动 */
-}
-
-
 html,
 body {
   height: 100%;
   margin: 0;
+  overflow: hidden; /* 禁止页面整体滚动 */
+
 }
 
 .main-container {
   height: 100vh; /* 设置高度为视口高度 */
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* 确保允许滚动 */
 }
 
 .content {
   flex: 1; /* 使内容区域扩展以填充剩余空间 */
   overflow-y: auto; /* 启用垂直滚动 */
-  padding-bottom: 150px; /* 留出足够的空间以避免被导航栏挡住 */
+  padding-bottom: 150px; /* 确保内容不会被底部导航栏挡住 */
+
 }
 
 .navbar {

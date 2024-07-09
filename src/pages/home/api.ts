@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
-interface NewsType {
+export interface NewsType {
   badCount: any;
   category: any;
   commentsCount: any;

@@ -2,99 +2,43 @@ import { Tabs } from "antd-mobile";
 import { useState, useEffect } from "react";
 import '@/pages/news/News.less'
 import NewsList from '@/components/news/NewsList'
-import { NewsRecordType } from "@components/news/NewsRecord";
-
-const newsListInit: NewsRecordType[] = [
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    },
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    },
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    },
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    },
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    },
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    }, 
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    }, 
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    }, 
-    {
-        title: '这是标题1',
-        images: ['image1.jpg', 'image2.jpg'],
-        likes: 100,
-        badCount: 1,
-        comments: 50,
-        views: 200,
-    }
-]
+import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 
 
 const News: React.FC = () => {
-
-    const [newsList, setNewsList] = useState<NewsRecordType[]>(newsListInit);
+    const [newsList, setNewsList] = useState<NewsInfoType[] | null>([]);
     const [activeKey, setActiveKey] = useState<string>('news');
 
-    useEffect(() => {
-        // 模拟请求不同类型的新闻数据
-        const fetchNews = async (key: string) => {
-            // 请求数据逻辑
-            // const response = await fetch(`/api/news?type=${key}`);
-            // const data = await response.json();
-            const data = newsList;
-            setNewsList(data);
-        };
 
+    // 模拟请求不同类型的新闻数据
+    const fetchNews = async (key: string) => {
+        if (key === 'news') {
+            const pageReq: NewsPageRequestType = { pageNum: 1, pageSize: 10 };
+            const newsList = (await Request_NewsPage(pageReq)).data.records || [];
+            setNewsList(newsList);
+        }
+        if (key === 'abroad') {
+            setNewsList(null)
+        }
+        if (key === 'political') {
+            setNewsList(null)
+
+        }
+        if (key === 'exposure') {
+            setNewsList(null)
+
+        }
+        if (key === 'chatgirl') {
+            setNewsList(null)
+
+        }
+        if (key === 'youtube') {
+            setNewsList(null)
+
+        }
+    };
+
+    useEffect(() => {
         fetchNews(activeKey);
     }, [activeKey]);
 
@@ -114,6 +58,7 @@ const News: React.FC = () => {
                     <Tabs.Tab title='油管' key='youtube' />
                 </Tabs>
             </div>
+            <div>11111</div>
             <div className="news-content">
                 <NewsList newsData={newsList} />
             </div>

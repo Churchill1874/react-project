@@ -1,22 +1,24 @@
 import React from 'react';
-import NewsRecord, { NewsRecordType } from '@/components/news/NewsRecord';
+import {NewsInfoType} from '@/pages/news/api'
+import NewsRecord from '@/components/news/NewsRecord';
 
 interface NewsListProps {
-    newsData: NewsRecordType[];
+    newsData: NewsInfoType[] | null;
 }
 
 const NewsList: React.FC<NewsListProps> = ({ newsData }) => {
     return (
         <div className="outer-container">
-            {newsData.map((news, index) => (
+            {newsData && newsData.map((news, index) => (
                 <NewsRecord
                     key={index}
                     title={news.title}
-                    images={news.images}
-                    likes={news.likes}
+                    photoPath={news.photoPath}
+                    likesCount={news.likesCount}
                     badCount={news.badCount}
-                    comments={news.comments}
-                    views={news.views}
+                    commentsCount={news.commentsCount}
+                    viewCount={news.viewCount}
+                    createTime={news.createTime}
                 />
             ))}
         </div>
