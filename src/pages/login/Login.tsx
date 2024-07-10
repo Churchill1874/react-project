@@ -55,7 +55,7 @@ const Login: React.FC = () => {
         icon: 'fail',
         content: msg,
         position: 'top',
-        duration: 3000,
+        duration: 2000,
       });
 
       captchaImageExchange();
@@ -85,7 +85,7 @@ const Login: React.FC = () => {
         icon: 'fail',
         content: msg,
         position: 'top',
-        duration: 3000,
+        duration: 2000,
       });
 
       captchaImageExchange();

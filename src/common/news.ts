@@ -1,6 +1,6 @@
 // 定义一个枚举映射
-const enumMap = {
-    1: {name:'新闻',color:'red'},
+export const enumMap = {
+    1: {name:'热门',color:'red'},
     2: {name:'新闻',color:'red'},
     3: {name:'体育',color:'navy'},
     4: {name:'娱乐',color:'orange'},

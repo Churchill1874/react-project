@@ -17,6 +17,12 @@ export interface VerificationCodeType {
   msg: string;
 }
 
+export interface RandomPlayerCountTypeResponse{
+  code: number;
+  data: number;
+  msg: string;
+}
+
 //获取验证码
 const getVerificationCodePath = '/player/verificationCode/get';
 export const Request_GetVerficationCode = async (): Promise<VerificationCodeType> => {
@@ -33,4 +39,10 @@ export const Request_Register = async (player: any): Promise<RegisterType> => {
 const LoginPath = '/player/player/login';
 export const Request_Login = async (player: any): Promise<LoginType> => {
   return (await axios.post(serverTarget + LoginPath, player)).data;
+};
+
+//退出登陆
+const randomPlayerCountPath = '/player/player';
+export const Request_RandomPlayerCount = async (): Promise<RandomPlayerCountTypeResponse> => {
+    return (await axios.post(serverTarget + randomPlayerCountPath, {})).data;
 };

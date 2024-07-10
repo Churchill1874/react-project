@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import '@/pages/news/News.less'
 import NewsList from '@/components/news/NewsList'
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
+import NewsTags from '@/components/newstag/NewsTags'
 
 
 const News: React.FC = () => {
@@ -58,7 +59,9 @@ const News: React.FC = () => {
                     <Tabs.Tab title='油管' key='youtube' />
                 </Tabs>
             </div>
-            <div>11111</div>
+
+            <NewsTags />
+
             <div className="news-content">
                 <NewsList newsData={newsList} />
             </div>

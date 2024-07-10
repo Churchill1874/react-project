@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, Badge, Input, Button, Avatar } from 'antd-mobile';
 import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
@@ -14,7 +14,6 @@ const Home = () => {
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const {newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml} = useStore();
-
 
   //新闻html数据
   const newsRankHtml = () => {
