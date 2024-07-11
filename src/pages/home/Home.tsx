@@ -13,7 +13,7 @@ const Home = () => {
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
-  const {newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml} = useStore();
+  const {newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount} = useStore();
 
   //新闻html数据
   const newsRankHtml = () => {
@@ -44,7 +44,11 @@ const Home = () => {
   const newsListReq = async () => {
     const newsListResponse = await Request_HOME_NEWS();
 
-    const { topNews, newsList } = newsListResponse.data;
+    const { topNews, newsList, onlinePlayerCount } = newsListResponse.data;
+
+
+    //在线人数
+    setOnlinePlayerCount(onlinePlayerCount);
 
     // 置顶新闻
     if (topNews) {
@@ -174,7 +178,7 @@ const Home = () => {
       <header className="header">
         <div className="logo">BIG NEWS</div>
 
-        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线102人 </span></div>
+        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
       </header>
 
       {topNewsTitleHtml}

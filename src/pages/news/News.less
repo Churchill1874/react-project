@@ -21,7 +21,68 @@
 .news-content {
     background-color: @theme;
     overflow-y: auto;
-    padding: 3px 10px;
+    padding: 1px 5px;
     display: flex;
     flex-direction: column;
+}
+
+
+.capsule-tabs-container {
+    display: flex;
+    justify-content: space-around; /* 使每个胶囊均匀分布 */
+    background-color: @theme; /* 设置背景颜色 */
+    padding: 1px; /* 根据需要调整间距 */
+}
+
+.adm-capsule-tabs-header{
+    padding: 5px;
+    border: none;
+}
+
+.capsule-tabs-container .adm-capsule-tabs-tab {
+    flex: 1; /* 使每个胶囊平分容器宽度 */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 垂直居中 */
+    font-size: 12px;
+    max-width: 3px; /* 设置每个胶囊的最大宽度 */
+    line-height: 5px; /* 设置行高，使文本垂直居中 */
+}
+
+.capsule-tabs-container .adm-capsule-tabs-tab .adm-capsule-tabs-tab-title {
+    flex: 1;
+    text-align: center; /* 使文本居中 */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center;
+}
+
+//胶囊激活的颜色样式
+.capsule-tabs-container .adm-capsule-tabs-tab-active {
+    background-color: #0b0b0b93; /* 设置选中胶囊的背景颜色 */
+    color: #ffffff; /* 设置选中胶囊内文字的颜色 */
+    //margin: 0 5px; /* 调整胶囊之间的间距 */
+}
+//胶囊颜色
+.capsule-tabs-container .adm-capsule-tabs-tab:hover {
+    background-color: #0b0b0b93; /* 设置胶囊悬停时的背景颜色 */
+    color: #ffffff; /* 设置胶囊悬停时内文字的颜色 */
+}
+.capsule-tabs-container .adm-capsule-tabs-tab:not(.adm-capsule-tabs-tab-active) {
+    background-color: #d3d3d384; /* 设置未选中胶囊的背景颜色 */
+    color: #ffffff; /* 设置未选中胶囊内文字的颜色 */
+}
+
+/* 新增样式以去除白色半透明蒙层 */
+.capsule-tabs-container .adm-capsule-tabs {
+    overflow: hidden; /* 确保没有多余的滚动区域 */
+}
+
+.capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-wrap {
+    overflow: hidden; /* 隐藏可能的滚动条 */
+}
+
+.capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-tab-list {
+    overflow: hidden; /* 隐藏可能的滚动条 */
+    white-space: nowrap; /* 确保胶囊选项卡在一行显示 */
 }

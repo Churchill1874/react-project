@@ -25,7 +25,7 @@ interface HomeNewsType {
   data: {
     newsList: NewsType[];
     topNews: NewsType;
-    randomOnlineCount: number;
+    onlinePlayerCount: number;
   };
   msg: string;
 }
