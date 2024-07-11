@@ -49,7 +49,7 @@ const News: React.FC = () => {
 
     useEffect(() => {
         fetchNews(activeTab);
-    }, [activeKey]);
+    }, []);
 
 
     //切换新闻菜单导航
@@ -65,10 +65,6 @@ const News: React.FC = () => {
 
         }
         if (key === 'exposure') {
-            //setNewsList(null)
-
-        }
-        if (key === 'chatgirl') {
             //setNewsList(null)
 
         }
@@ -118,9 +114,8 @@ const News: React.FC = () => {
                 <Tabs activeKey={activeKey} onChange={handleTabChange}>
                     <Tabs.Tab title='新闻' key='news' />
                     <Tabs.Tab title='境外' key='abroad' />
-                    <Tabs.Tab title='公司' key='political' />
                     <Tabs.Tab title='曝光' key='exposure' />
-                    <Tabs.Tab title='聊妹' key='chatgirl' />
+                    <Tabs.Tab title='公司' key='political' />
                     <Tabs.Tab title='油管' key='youtube' />
                 </Tabs>
             </div>
@@ -140,11 +135,11 @@ const News: React.FC = () => {
                 </div>
             }
 
-            {activeKey === 'news' &&
+   
                 <div className="news-content">
-                    <NewsList newsData={capsuleTabData()} />
+                    {activeKey === 'news' && <NewsList newsData={capsuleTabData()} />}
                 </div>
-            }
+
         </>
     );
 
