@@ -23,26 +23,26 @@ interface AppState {
 
   /**新闻页 */
 
-  newsList: NewsInfoType[] | null; //新闻页的新闻类型列表
-  setNewsList: (newsList: NewsInfoType[] | null) => void;
+  newsList: NewsInfoType[]; //新闻页的新闻类型列表
+  setNewsList: (newsList: NewsInfoType[]) => void;
 
-  sportList: NewsInfoType[] | null; //新闻页的体育新闻
-  setSportList: (sportList: NewsInfoType[] | null) => void;
+  sportList: NewsInfoType[]; //新闻页的体育新闻
+  setSportList: (sportList: NewsInfoType[]) => void;
 
-  entertainmentList: NewsInfoType[] | null; //新闻页的娱乐新闻
-  setEntertainmentList: (entertainmentList: NewsInfoType[] | null) => void;
+  entertainmentList: NewsInfoType[]; //新闻页的娱乐新闻
+  setEntertainmentList: (entertainmentList: NewsInfoType[]) => void;
 
-  militaryList: NewsInfoType[] | null;//新闻页的军事新闻
-  setMilitaryList: (militaryList: NewsInfoType[] | null) => void;
+  militaryList: NewsInfoType[];//新闻页的军事新闻
+  setMilitaryList: (militaryList: NewsInfoType[]) => void;
 
-  scienceList: NewsInfoType[] | null;//新闻页的科技新闻
-  setScienceList: (scienceList: NewsInfoType[] | null) => void;
+  scienceList: NewsInfoType[];//新闻页的科技新闻
+  setScienceList: (scienceList: NewsInfoType[]) => void;
 
-  favorList: NewsInfoType[] | null;//新闻页的人情新闻
-  setFavorList: (favorList: NewsInfoType[] | null) => void;
+  favorList: NewsInfoType[];//新闻页的人情新闻
+  setFavorList: (favorList: NewsInfoType[]) => void;
 
-  netFriendList: NewsInfoType[] | null;//新闻页的网友新闻
-  setNetFriendList: (netFriendList: NewsInfoType[] | null) => void;
+  netFriendList: NewsInfoType[];//新闻页的网友新闻
+  setNetFriendList: (netFriendList: NewsInfoType[]) => void;
 
 
 
@@ -65,25 +65,25 @@ const useStore = create<AppState>((set) => ({
   onlinePlayerCount: 0,
   setOnlinePlayerCount: (onlinePlayerCount) => set(()=>({onlinePlayerCount})),
 
-  newsList: null,
+  newsList: [],
   setNewsList: (newsList) => set(()=>({newsList})),
 
-  sportList: null,
+  sportList: [],
   setSportList: (sportList) => set(()=>({sportList})),
 
-  entertainmentList: null,
+  entertainmentList: [],
   setEntertainmentList: (entertainmentList) => set(()=>({entertainmentList})),
 
-  militaryList: null,
+  militaryList: [],
   setMilitaryList: (militaryList) => set(() => ({militaryList})),
 
-  scienceList: null,
+  scienceList: [],
   setScienceList: (scienceList) => set(() => ({scienceList})),
 
-  favorList: null,
+  favorList: [],
   setFavorList: (favorList) => set(() => ({favorList})),
 
-  netFriendList: null,
+  netFriendList: [],
   setNetFriendList: (netFriendList) => set(() => ({netFriendList}))
 }));
 
