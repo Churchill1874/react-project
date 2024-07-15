@@ -4,6 +4,7 @@ import Login from '@/pages/login/Login';
 import Personal from '@/pages/personal/Personal';
 import SetPersonal from '@/pages/setpersonal/SetPersonal'
 import News from '@/pages/news/News'
+import NewsInfo from '@/components/news/newsinfo/NewsInfo'
 
 export default [
   //首页
@@ -18,6 +19,10 @@ export default [
   {
     path: '/news',
     component: News,
+  },
+  {
+    path: '/newsInfo',
+    component: NewsInfo,
   },
   //登陆路由
   {

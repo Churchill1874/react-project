@@ -26,7 +26,6 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
 
 
 const NewsList: React.FC<any> = ({ newsTab }) => {
-  console.log('newsTab:', newsTab)
   //各种新闻页面是否获取到了下一页的状态数据
   const [newsHasMore, setNewsHasMore] = useState(true)
   const [sportHasMore, setSportHasMore] = useState(true)
@@ -54,7 +53,6 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
   //获取某种新闻类型当前页面是否还有新数据返回的状态
   const getPageHasMore = () => {
-    console.log('getPageHasMore', militaryHasMore)
     if (newsTab === '1') return newsHasMore;
     if (newsTab === '2') return sportHasMore;
     if (newsTab === '3') return entertainmentHasMore;
@@ -90,10 +88,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
   // 模拟请求不同类型的新闻数据
   const reqNewsApi = async (categoryEnum: string) => {
-    console.log('新闻更多数据：', newsHasMore)
-    const pageReq: NewsPageRequestType = { pageNum: getTabPageNum(), pageSize: 10, categoryEnum: categoryEnum };
+    const pageReq: NewsPageRequestType = { pageNum: getTabPageNum(), pageSize: 20, categoryEnum: categoryEnum };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
-    console.log('请求', categoryEnum, '返回', newsListResp)
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
     if (newsListResp.length > 0) {

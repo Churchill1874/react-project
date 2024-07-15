@@ -1,0 +1,44 @@
+.outer-comment {
+    margin-top: 5px;
+    display: flex;
+}
+
+.left-comment {
+    display: flex;
+    align-items: flex-start; /* 垂直顶部对齐 */
+    margin-right: 5px;
+}
+
+.right-comment {
+    display: flex;
+    flex-direction: column; /* 改为纵向排列 */
+    justify-content: flex-start; /* 内容从顶部开始排列 */
+    flex: 1; /* 占用剩余宽度 */
+    padding-bottom: 5px;
+}
+
+.right-comment span {
+    //margin-top: 1px; /* 可选：添加元素之间的间距 */
+}
+
+.comment-time{
+    font-size: 11px;
+    color: gray;
+}
+.reply{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.name{
+    color: gray;
+    font-size: 12px;
+}
+.comment{
+    font-size: 13px;
+}
+
+.show-replay{
+    font-size: 12px;
+    font-weight: bold;
+}
