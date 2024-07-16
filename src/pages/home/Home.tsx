@@ -6,6 +6,8 @@ import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
 import { newsEnum } from '@/common/news'
 import useStore from '@/zustand/store'
+import { FcLike, FcVoicePresentation, FcReading } from "react-icons/fc";
+
 
 
 
@@ -13,7 +15,7 @@ const Home = () => {
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
-  const {newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount} = useStore();
+  const { newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount } = useStore();
 
   //新闻html数据
   const newsRankHtml = () => {
@@ -26,13 +28,12 @@ const Home = () => {
           <div className="news-info">
             <span className="date">{news.createTime}</span>
             <span className="space"></span>
-            <span className="views">{'浏览:' + news.viewCount}</span>
+            <span className="views"><FcReading /> {news.viewCount}</span>
             <span className="space"></span>
-            <span className="likes">{'赞:' + news.likesCount}</span>
+            <span className="likes"><FcLike /> {news.likesCount}</span>
             <span className="space"></span>
-            <span className="dislikes">{'喷:' + news.badCount}</span>
             <span className="space"></span>
-            <span className="comments">{'评:' + news.commentsCount}</span>
+            <span className="comments"><FcVoicePresentation /> {news.commentsCount}</span>
           </div>
         </div>
       </List.Item>
@@ -68,7 +69,7 @@ const Home = () => {
     }
 
     // 新闻排名
-    if(JSON.stringify(newsList) !== JSON.stringify(newsInfoList)){
+    if (JSON.stringify(newsList) !== JSON.stringify(newsInfoList)) {
       console.log('有新的新闻')
       setNewsInfoList(newsList)
     }
