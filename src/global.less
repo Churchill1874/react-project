@@ -64,10 +64,13 @@ body {
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
   .main-container {
-    flex-direction: row; /* 改为水平布局 */
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* 改为水平布局 */
   }
   .navbar {
-    position: static; /* 取消固定 */
-    width: auto; /* 自动宽度 */
+    position: fixed; /* 取消固定 */
+    bottom: 0;
+    width: 100%; /* 自动宽度 */
   }
 }
