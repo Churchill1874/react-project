@@ -1,44 +1,69 @@
+@theme: #1890ff;
+
 .outer-comment {
-    margin-top: 5px;
+    margin-top: 1px;
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .left-comment {
     display: flex;
-    align-items: flex-start; /* 垂直顶部对齐 */
+    flex-direction: column;
+    align-items: flex-start;
     margin-right: 5px;
+    box-sizing: border-box;
 }
 
 .right-comment {
     display: flex;
-    flex-direction: column; /* 改为纵向排列 */
-    justify-content: flex-start; /* 内容从顶部开始排列 */
-    flex: 1; /* 占用剩余宽度 */
-    padding-bottom: 5px;
+    flex-direction: column;
+    flex: 1;
+    padding-bottom: 1px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    width: calc(100% - 50px); /* 确保右侧评论区域宽度适应 */
 }
 
 .right-comment span {
-    //margin-top: 1px; /* 可选：添加元素之间的间距 */
+    margin-top: 1px;
 }
 
-.comment-time{
+.comment-time {
     font-size: 11px;
     color: gray;
 }
-.reply{
+
+.reply {
+    color: black;
     font-size: 12px;
     font-weight: bold;
 }
 
-.name{
+.name {
     color: gray;
     font-size: 12px;
 }
-.comment{
+
+.comment {
     font-size: 13px;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    display: block;
+    width: 100%;
+    color: black;
 }
 
-.show-replay{
+.show-replay {
     font-size: 12px;
     font-weight: bold;
+    color: black;
+}
+
+.comment-attribute{
+    margin-left: 15%;
+    color: gray;
 }

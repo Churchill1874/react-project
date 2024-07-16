@@ -50,6 +50,9 @@ const App: React.FC = () => {
       if(pathname === '/news'){
         return '#1890ff';
       }
+      if(pathname === '/newsinfo'){
+        return '#fff';
+      }
       if(pathname === '/bet'){
         return '#1890ff';
       }

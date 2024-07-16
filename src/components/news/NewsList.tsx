@@ -215,10 +215,12 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
   return (
     <div className="outer-container">
-      {capsuleTabData()?.map((news, index) => (
+      {capsuleTabData()?.map((news, _index) => (
         <NewsRecord
-          key={index}
+          key={news.id}
+          id={news.id}
           title={news.title}
+          content={news.filterContent}
           photoPath={news.photoPath}
           likesCount={news.likesCount}
           badCount={news.badCount}
