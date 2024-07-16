@@ -223,7 +223,6 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
           content={news.filterContent}
           photoPath={news.photoPath}
           likesCount={news.likesCount}
-          badCount={news.badCount}
           commentsCount={news.commentsCount}
           viewCount={news.viewCount}
           createTime={news.createTime}

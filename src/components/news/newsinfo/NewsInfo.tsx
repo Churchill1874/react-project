@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
 import { useLocation } from 'react-router-dom';
-import { FcLike, FcVoicePresentation, FcReading } from "react-icons/fc";
+import { FcLike, FcReading } from "react-icons/fc";
 
 
 import React from 'react'
@@ -22,7 +22,7 @@ const items = colors.map((color, index) => (
 
 const NewsInfo: React.FC = () => {
   const navigate = useNavigate();
-  const { id, title, content, photoPath, likesCount, badCount, commentsCount, viewCount, createTime } = useLocation().state;
+  const { id, title, content, photoPath, likesCount, commentsCount, viewCount, createTime } = useLocation().state;
 
 
   //返回上一层

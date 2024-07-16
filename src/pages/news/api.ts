@@ -2,7 +2,6 @@ import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
 export interface NewsPageRequestType {
-    badSort?: any | null,
 	categoryEnum?: any | null,
 	commentsSort?: any | null,
 	endTime?: any | null,
@@ -16,7 +15,6 @@ export interface NewsPageRequestType {
 }
 
 export interface NewsInfoType{
-    badCount?: any | null,
     category?: any | null,
     commentsCount?: any | null,
     content?: any | null,

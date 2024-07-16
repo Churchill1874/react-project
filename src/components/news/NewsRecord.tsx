@@ -5,10 +5,10 @@ import { NewsInfoType } from '@/pages/news/api';
 import { useNavigate } from 'react-router-dom';
 import { FcLike, FcVoicePresentation, FcReading } from "react-icons/fc";
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, content, title, photoPath, likesCount, badCount, commentsCount, viewCount, createTime }) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, commentsCount, viewCount, createTime }) => {
   const navigate = useNavigate();
 
-  const params = { id, content, title, photoPath, likesCount, badCount, commentsCount, viewCount, createTime }
+  const params = { id, title, content, photoPath, likesCount, commentsCount, viewCount, createTime }
 
   const toNewsInfo = () => {
     navigate('/newsinfo', { state: params })
