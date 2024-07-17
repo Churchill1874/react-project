@@ -13,7 +13,7 @@
     height: 30px;
     color: black;
     background-color: none;
-    //border-top: 1px solid @theme;
+    margin-bottom: 5px;
 
     .adm-nav-bar-title {
       font-size: 12px;
@@ -25,13 +25,31 @@
   }
 
   .newsinfo-content{
-    padding: 2px 5px;
-    //background-color: #ffffff;
+    padding: 2px 0px;
     color: black;
+    --font-size	:14px;
+    --text-align:center;
+    word-wrap: break-word; /* 确保长单词也会换行 */
+    white-space: pre-wrap; /* 保留空白字符 */
+  }
+
+
+  .newsinfo-content textarea{
+    overflow-y: scroll !important; /* 始终显示纵向滚动条 */
+    word-wrap: break-word; /* 确保长单词也会换行 */
+    white-space: pre-wrap; /* 保留空白字符 */
+    margin-top: 5px;
+  }
+
+  .adm-text-area-element{
+    padding: 5px 5px;
+    border-top: 3px double rgba(128, 128, 128, 0.498);
+    border-left: 3px double rgba(128, 128, 128, 0.498);
+    border-right: 3px double rgba(128, 128, 128, 0.498);
   }
 
   .newsinfo-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     margin-top: 0;
     color: black;
@@ -59,9 +77,18 @@
     color: gray;
 }
 
+.attribute-icon{
+  margin-right: 5px;
+}
+
 .line{
   border-color: rgba(240, 236, 236, 0.65);
     font-size: 12px;
     margin: 5px 0;
     color: gray;
+}
+
+.swiper-item {
+  display: flex;
+  justify-content: center;
 }

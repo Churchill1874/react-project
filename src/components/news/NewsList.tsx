@@ -91,6 +91,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     const pageReq: NewsPageRequestType = { pageNum: getTabPageNum(), pageSize: 20, categoryEnum: categoryEnum };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
 
+    console.log('newsListResp:',newsListResp)
+
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
     if (newsListResp.length > 0) {
       if (categoryEnum === '1') {//新闻
@@ -222,6 +224,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
           title={news.title}
           content={news.filterContent}
           photoPath={news.photoPath}
+          contentImagePath={news.contentImagePath}
           likesCount={news.likesCount}
           commentsCount={news.commentsCount}
           viewCount={news.viewCount}

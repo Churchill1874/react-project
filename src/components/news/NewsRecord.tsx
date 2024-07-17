@@ -3,12 +3,13 @@ import { Card, Image } from 'antd-mobile';
 import '@/components/news/NewsRecord.less';
 import { NewsInfoType } from '@/pages/news/api';
 import { useNavigate } from 'react-router-dom';
-import { FcLike, FcVoicePresentation, FcReading } from "react-icons/fc";
+import { FcLike, FcReading } from "react-icons/fc";
+import { MessageOutline} from 'antd-mobile-icons';
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, commentsCount, viewCount, createTime }) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }) => {
   const navigate = useNavigate();
 
-  const params = { id, title, content, photoPath, likesCount, commentsCount, viewCount, createTime }
+  const params = { id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }
 
   const toNewsInfo = () => {
     navigate('/newsinfo', { state: params })
@@ -19,7 +20,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
       <div className="content-container">
         <div className="image-container">
           {photoPath && photoPath.split(',').map((src, index) => (
-            <Image key={index} src={src} alt={`图片${index + 1}`} />
+            <Image lazy key={index} src={src} alt={`图片${index + 1}`} />
           ))}
         </div>
         <div className="text-container">
@@ -28,9 +29,9 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
             <div><span className='time'>{createTime.split(' ')[0]}</span></div>
           </div>
           <div className="attributes">
-            <span><FcReading /> {viewCount}</span>
-            <span><FcLike /> {likesCount}</span>
-            <span><FcVoicePresentation /> {commentsCount}</span>
+            <span><FcReading fontSize={14} /> {viewCount}</span>
+            <span><FcLike fontSize={14}/> {likesCount}</span>
+            <span><MessageOutline fontSize={14}/> {commentsCount}</span>
           </div>
         </div>
       </div>

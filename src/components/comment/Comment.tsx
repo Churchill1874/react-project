@@ -65,9 +65,8 @@ const Comment: React.FC<any> = ({ newsId }) => {
             <span className='name'>{comment.name}</span>
             <span className='comment'>{comment.content}</span>
             <span className='comment-time'>
-              {comment.time}
-              <span className='reply'> 回复</span>
-              <span className="comment-attribute"> <FcLike /> 1</span>
+                <div>{comment.time}<span className='reply'> 回复</span></div>
+                <span className="comment-attribute"> <FcLike fontSize={14}/> 1</span>
             </span>
 
             {comment.replay.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.id)}> 展开 </span>)}
@@ -82,9 +81,8 @@ const Comment: React.FC<any> = ({ newsId }) => {
                     <span className='name'>{replay.name}</span>
                     <span className='comment'>{replay.content}</span>
                     <span className='comment-time'>
-                      {replay.time}
-                      <span className='reply'> 回复</span>
-                      <span className="comment-attribute"><FcLike /> 1</span>
+                        <div>{replay.time}<span className='reply'> 回复</span></div>
+                        <span className="comment-attribute"><FcLike fontSize={14}/> 1</span>
                     </span>
                   </div>
                 </div>

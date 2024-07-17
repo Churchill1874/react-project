@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, Badge, Input, Button, Avatar } from 'antd-mobile';
-import { GlobalOutline } from 'antd-mobile-icons';
+import { GlobalOutline , MessageOutline} from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
 import { newsEnum } from '@/common/news'
 import useStore from '@/zustand/store'
-import { FcLike, FcVoicePresentation, FcReading } from "react-icons/fc";
-
+import { FcLike, FcReading } from "react-icons/fc";
+import { useNavigate } from 'react-router-dom';
+import { NewsInfoType } from '@/pages/news/api';
 
 
 
@@ -16,24 +17,37 @@ const Home = () => {
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const { newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount } = useStore();
+  const navigate = useNavigate();
+
+  const toNewsInfo = (news: NewsInfoType) => {
+    const params = {
+      id: news.id,
+      title: news.title,
+      content: news.filterContent,
+      photoPath: news.photoPath,
+      likesCount: news.likesCount,
+      commentsCount: news.commentsCount,
+      viewCount: news.viewCount,
+      createTime: news.createTime
+    }
+
+    navigate('/newsinfo', { state: params })
+  }
 
   //新闻html数据
   const newsRankHtml = () => {
     return (newsInfoList?.map((news, index) => (
+
       <List.Item key={news.id}
         extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
       >
-        <div className="news-item">
+        <div className="news-item" onClick={() => toNewsInfo(news)}>
           <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span className='news-index'>{(index + 1)}</span>)} {news.title}</div>
           <div className="news-info">
-            <span className="date">{news.createTime}</span>
-            <span className="space"></span>
+            <span className="date"> {news.createTime} </span>
             <span className="views"><FcReading /> {news.viewCount}</span>
-            <span className="space"></span>
             <span className="likes"><FcLike /> {news.likesCount}</span>
-            <span className="space"></span>
-            <span className="space"></span>
-            <span className="comments"><FcVoicePresentation /> {news.commentsCount}</span>
+            <span className="comments"><MessageOutline /> {news.commentsCount}</span>
           </div>
         </div>
       </List.Item>
@@ -70,7 +84,6 @@ const Home = () => {
 
     // 新闻排名
     if (JSON.stringify(newsList) !== JSON.stringify(newsInfoList)) {
-      console.log('有新的新闻')
       setNewsInfoList(newsList)
     }
   };
@@ -179,7 +192,7 @@ const Home = () => {
       <header className="header">
         <div className="logo">BIG NEWS</div>
 
-        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
+        <div><GlobalOutline fontSize={12} /> <span className="online"> 当前在线 {onlinePlayerCount} 人 </span></div>
       </header>
 
       {topNewsTitleHtml}
