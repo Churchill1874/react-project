@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
-import { DotLoading, InfiniteScroll } from 'antd-mobile';
+import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 import useStore from '@/zustand/store'
 
@@ -74,42 +74,35 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
   }
 
 
-  //存储当前新闻类型页面分页号
-  const setTabPageNum = () => {
-    if (newsTab === '1') setNewsPage((prev) => prev + 1);
-    if (newsTab === '2') setSportPage((prev) => prev + 1);
-    if (newsTab === '3') setEntertainmentPage((prev) => prev + 1);
-    if (newsTab === '4') setMilitaryPage((prev) => prev + 1);
-    if (newsTab === '5') setSciencePage((prev) => prev + 1);
-    if (newsTab === '7') setNetFriendPage((prev) => prev + 1);
-  }
-
-
-
   // 模拟请求不同类型的新闻数据
-  const reqNewsApi = async (categoryEnum: string) => {
-    const pageReq: NewsPageRequestType = { pageNum: getTabPageNum(), pageSize: 20, categoryEnum: categoryEnum };
-    const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
+  const reqNewsApi = async (categoryEnum: string, isReset: boolean) => {
+    const pageNum = isReset ? 1 : getTabPageNum();//如果是刷新就从第一页开始
 
-    console.log('newsListResp:',newsListResp)
+    const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 20, categoryEnum: categoryEnum };
+    const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
     if (newsListResp.length > 0) {
       if (categoryEnum === '1') {//新闻
-        if (JSON.stringify(newsListResp) !== JSON.stringify(newsList)) {
+        if(isReset){
+          setNewsPage(2)//下一页是
+          setNewsList(newsListResp);
           setNewsHasMore(true)
-          setTabPageNum();
-          const data = [...newsList, ...newsListResp];
-          setNewsList(data);
-        } else {
-          setNewsHasMore(false);
+        } else{
+          if (JSON.stringify(newsListResp) !== JSON.stringify(newsList)) {
+            setNewsPage((prev) => prev + 1);//新闻页面当前页号
+            setNewsList([...newsList, ...newsListResp]);
+            setNewsHasMore(true)
+          } else {
+            setNewsHasMore(false);
+          }
         }
       }
 
       if (categoryEnum === '2') {//体育
         if (JSON.stringify(newsListResp) !== JSON.stringify(sportList)) {
           setSportHasMore(true)
-          setTabPageNum();
+          isReset? setSportPage(1) : setSportPage((prev) => prev + 1);//新闻页面当前页号
           const data = [...sportList, ...newsListResp];
           setSportList(data);
         } else {
@@ -120,7 +113,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       if (categoryEnum === '3') {//娱乐
         if (JSON.stringify(newsListResp) !== JSON.stringify(entertainmentList)) {
           setEntertainmentHasMore(true)
-          setTabPageNum();
+          isReset? setEntertainmentPage(1) : setEntertainmentPage((prev) => prev + 1);//新闻页面当前页号
           const data = [...entertainmentList, ...newsListResp];
           setEntertainmentList(data);
         } else {
@@ -131,7 +124,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       if (categoryEnum === '4') {//军事
         if (JSON.stringify(newsListResp) !== JSON.stringify(militaryList)) {
           setMilitaryHasMore(true)
-          setTabPageNum();
+          isReset? setMilitaryPage(1) : setMilitaryPage((prev) => prev + 1);//新闻页面当前页号
           const data = [...militaryList, ...newsListResp];
           setMilitaryList(data);
         } else {
@@ -143,7 +136,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       if (categoryEnum === '5') {//科技
         if (JSON.stringify(newsListResp) !== JSON.stringify(scienceList)) {
           setScienceHasMore(true)
-          setTabPageNum();
+          isReset? setSciencePage(1) : setSciencePage((prev) => prev + 1);//新闻页面当前页号
           const data = [...scienceList, ...newsListResp];
           setScienceList(data);
         } else {
@@ -154,7 +147,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       if (categoryEnum === '7') {//网友
         if (JSON.stringify(newsListResp) !== JSON.stringify(netFriendList)) {
           setNetFriendHasMore(true)
-          setTabPageNum();
+          isReset? setNetFriendPage(1) : setNetFriendPage((prev) => prev + 1);//新闻页面当前页号
           const data = [...netFriendList, ...newsListResp];
           setNetFriendList(data);
         } else {
@@ -217,21 +210,24 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
   return (
     <div className="outer-container">
-      {capsuleTabData()?.map((news, _index) => (
-        <NewsRecord
-          key={news.id}
-          id={news.id}
-          title={news.title}
-          content={news.filterContent}
-          photoPath={news.photoPath}
-          contentImagePath={news.contentImagePath}
-          likesCount={news.likesCount}
-          commentsCount={news.commentsCount}
-          viewCount={news.viewCount}
-          createTime={news.createTime}
-        />
-      ))}
-      <InfiniteScroll loadMore={() => reqNewsApi(newsTab)} hasMore={getPageHasMore()}>
+      <PullToRefresh onRefresh={()=>reqNewsApi(newsTab, true)}>
+        {capsuleTabData()?.map((news, index) => (
+          <NewsRecord
+            key={`${news.id}-${index}`}
+            id={news.id}
+            title={news.title}
+            content={news.filterContent}
+            photoPath={news.photoPath}
+            contentImagePath={news.contentImagePath}
+            likesCount={news.likesCount}
+            commentsCount={news.commentsCount}
+            viewCount={news.viewCount}
+            createTime={news.createTime}
+          />
+        ))}
+      </PullToRefresh>
+
+      <InfiniteScroll loadMore={() => reqNewsApi(newsTab, false)} hasMore={getPageHasMore()}>
         <NewsScrollContent hasMore={getPageHasMore()} />
       </InfiniteScroll>
     </div>
