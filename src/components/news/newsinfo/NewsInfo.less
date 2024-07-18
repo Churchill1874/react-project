@@ -31,22 +31,23 @@
     --text-align:center;
     word-wrap: break-word; /* 确保长单词也会换行 */
     white-space: pre-wrap; /* 保留空白字符 */
+
+    .adm-text-area-element{
+      padding: 5px 5px;
+      border-top: 3px double rgba(128, 128, 128, 0.498);
+      border-left: 3px double rgba(128, 128, 128, 0.498);
+      border-right: 3px double rgba(128, 128, 128, 0.498);
+    }
+    
+    textarea{
+      overflow-y: scroll !important; /* 始终显示纵向滚动条 */
+      word-wrap: break-word; /* 确保长单词也会换行 */
+      white-space: pre-wrap; /* 保留空白字符 */
+      margin-top: 5px;
+    }
   }
 
 
-  .newsinfo-content textarea{
-    overflow-y: scroll !important; /* 始终显示纵向滚动条 */
-    word-wrap: break-word; /* 确保长单词也会换行 */
-    white-space: pre-wrap; /* 保留空白字符 */
-    margin-top: 5px;
-  }
-
-  .adm-text-area-element{
-    padding: 5px 5px;
-    border-top: 3px double rgba(128, 128, 128, 0.498);
-    border-left: 3px double rgba(128, 128, 128, 0.498);
-    border-right: 3px double rgba(128, 128, 128, 0.498);
-  }
 
   .newsinfo-title {
     font-size: 15px;

@@ -10,11 +10,13 @@ const News: React.FC = React.memo(() => {
   const handleTabChange = (key: string) => {
     setActiveKey(key);
     if (key === 'news') {
+      console.log('handleTabChange', key)
       setActiveTab('1');
     }
   };
 
   const handleCapsuleTabChange = ((key: string) => {
+    console.log('handleCapsuleTabChange', key)
     setActiveTab(key);
   });
 
