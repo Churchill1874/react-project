@@ -7,7 +7,7 @@
 }
 .top-news {
   margin: 0;
-  margin-bottom: 7px;
+  margin-bottom: 2px;
   padding: 0px 5px;
 
   /* 去掉外边距 */
@@ -15,18 +15,21 @@
     line-height: 1.5;
     font-size: 13px;
     border-bottom: none;
+    display: flex;  /* 添加这一行 */
+    align-items: center;  /* 添加这一行 */
 
     .top {
       //font-weight: bold; /* 加粗字体 */
       color: rgb(144, 27, 1);
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
       /* 添加阴影 */
     }
-  }
-}
 
-.news-index{
-  color: @theme;
+    .adm-ellipsis{
+      flex: 1;
+    }
+  }
 }
 
 .news-list {
@@ -76,6 +79,7 @@
   margin-bottom: -10px;
 
   .news-title {
+    //font-weight: bold;
     font-size: 12px;
     margin-top: 0;
     /* 去除内边距 */
