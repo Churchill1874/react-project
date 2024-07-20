@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs } from 'antd-mobile';
 import '@/pages/setpersonal/SetPersonal.less';
 import avatars from '@/common/avatar';
+import {Request_UpdatePlayerInfo, PersonalUpdateRequestType} from '@/pages/setpersonal/api';
 //全局状态管理
 import useStore from '@/zustand/store';
 
@@ -28,8 +29,14 @@ const SetPersonal: React.FC = () => {
     };
 
     //保存更新
-    const update = () => {
+    const update = async () => {
+        const { name, selfIntroduction } = form.getFieldsValue();
+        const param: PersonalUpdateRequestType = { avatarPath: playerInfo?.avatarPath, email: playerInfo?.email, phone: playerInfo?.phone, name: name, selfIntroduction: selfIntroduction };
         //请求后端更新用户编辑信息
+        const {code} = await Request_UpdatePlayerInfo(param);
+        if(code === 0 && playerInfo){
+            setPlayerInfo({...playerInfo, name, avatarPath:playerInfo?.avatarPath, selfIntroduction});
+        }
     };
 
     //加载后执行钩子
@@ -40,9 +47,6 @@ const SetPersonal: React.FC = () => {
     //获取点击的头像
     const choose = (index : string)=> {
         if(playerInfo){
-            //先请求后端接口更新用户信息
-
-
             //更新全局状态中的用户信息的头像信息 并重新渲染
             setPlayerInfo({...playerInfo, avatarPath: index});
         }
