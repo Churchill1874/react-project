@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
-import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport } from 'react-icons/fc';
+import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport, FcHeadset } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
@@ -19,14 +19,14 @@ const UserCenter: React.FC = () => {
   }
 
   useEffect(() => {
-    if(!playerInfo){
+    if (!playerInfo) {
       playerReq();
     }
-    
+
   }, [playerInfo]);
 
   //请求退出
-  const logout = async ()=> {
+  const logout = async () => {
     await Request_Logout();
     setPlayerInfo(null);
   }
@@ -125,7 +125,7 @@ const UserCenter: React.FC = () => {
 
               <div>
                 <span className="personal-info-desc">留言板:</span>
-                <TextArea rows={3} maxLength={50} className="message-board" placeholder="请输入内容" value={playerInfo?.selfIntroduction ? playerInfo.selfIntroduction : ""} readOnly/>
+                <TextArea rows={3} maxLength={50} className="message-board" placeholder="请输入内容" value={playerInfo?.selfIntroduction ? playerInfo.selfIntroduction : ""} readOnly />
               </div>
             </div>
           </Card>
@@ -150,7 +150,7 @@ const UserCenter: React.FC = () => {
             <Card
               title={
                 <div className="card-title">
-                  <FcOnlineSupport fontSize={18} />
+                  <FcHeadset fontSize={18} />
                   <span> 客服</span>
                 </div>
               }
