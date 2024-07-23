@@ -5,20 +5,26 @@ import NewsList from '@/components/news/NewsList';
 
 const News: React.FC = React.memo(() => {
   const [activeKey, setActiveKey] = useState<string>('news');
-  const [activeTab, setActiveTab] = useState<string>('1');
+  const [chinaActiveTab, setChinaActiveTab] = useState<string>('1');
+  const [abroadActiveTab, setAbroadChinaActiveTab] = useState<string>('1');
 
   const handleTabChange = (key: string) => {
     setActiveKey(key);
     if (key === 'news') {
       console.log('handleTabChange', key)
-      setActiveTab('1');
+      setChinaActiveTab('1');
     }
   };
 
-  const handleCapsuleTabChange = ((key: string) => {
-    console.log('handleCapsuleTabChange', key)
-    setActiveTab(key);
+  const chinaCapsuleTabChange = ((key: string) => {
+    console.log('chinaCapsuleTabChange', key)
+    setChinaActiveTab(key);
   });
+
+  const abroadHandleCapsuleTabChange = ((key: string)=>{
+    console.log('abroadHandleCapsuleTabChange', key)
+    setAbroadChinaActiveTab(key);
+  })
 
   return (
     <>
@@ -26,15 +32,14 @@ const News: React.FC = React.memo(() => {
         <Tabs activeKey={activeKey} onChange={handleTabChange}>
           <Tabs.Tab title='新闻' key='news' />
           <Tabs.Tab title='境外' key='abroad' />
-          <Tabs.Tab title='曝光' key='exposure' />
-          <Tabs.Tab title='公司' key='political' />
           <Tabs.Tab title='油管' key='youtube' />
+          <Tabs.Tab title='聊妹' key='chatgirl' />
         </Tabs>
       </div>
 
       {activeKey === 'news' &&
         <div className="capsule-tabs-container">
-          <CapsuleTabs activeKey={activeTab} onChange={handleCapsuleTabChange}>
+          <CapsuleTabs activeKey={chinaActiveTab} onChange={chinaCapsuleTabChange}>
             <CapsuleTabs.Tab title="新闻" key="1" />
             <CapsuleTabs.Tab title="体育" key="2" />
             <CapsuleTabs.Tab title="娱乐" key="3" />
@@ -45,8 +50,18 @@ const News: React.FC = React.memo(() => {
         </div>
       }
 
+      {activeKey === 'abroad' &&
+              <div className="capsule-tabs-container">
+              <CapsuleTabs activeKey={abroadActiveTab} onChange={abroadHandleCapsuleTabChange}>
+                <CapsuleTabs.Tab title="曝光" key="1" />
+                <CapsuleTabs.Tab title="公司" key="2" />
+              </CapsuleTabs>
+            </div>
+      }
+
       <div className="news-content">
-        {activeKey === 'news' && <NewsList newsTab={activeTab} />}
+        {activeKey === 'news' && <NewsList newsTab={chinaActiveTab} />}
+        {activeKey === 'abroad' && <NewsList abroadTab={abroadActiveTab} />}
       </div>
     </>
   );

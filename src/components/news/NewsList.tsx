@@ -214,11 +214,6 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
   }
 
 
-  /*   useEffect(() => {
-      reqNewsApi(newsTab);
-    }, [newsTab])
-   */
-
   return (
     <div className="outer-container">
       <PullToRefresh onRefresh={() => reqNewsApi(newsTab, true)}>

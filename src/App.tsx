@@ -56,9 +56,6 @@ const App: React.FC = () => {
       if(pathname === '/bet'){
         return '#1890ff';
       }
-      if(pathname === '/chatgirl'){
-        return '#1890ff';
-      }
       if(pathname === '/message'){
         return '#1890ff';
       }

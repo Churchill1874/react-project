@@ -30,7 +30,6 @@ const Navbar = () => {
       <Tabs.Tab title="首页" key="home" />
       <Tabs.Tab title="新闻" key="news" />
       <Tabs.Tab title="投注" key="bet" />
-      <Tabs.Tab title="聊妹" key="chatgirl" />
       <Tabs.Tab title="消息" key="message" />
       <Tabs.Tab title="个人" key="personal" />
     </Tabs>
