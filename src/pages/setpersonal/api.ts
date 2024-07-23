@@ -12,6 +12,7 @@ export interface PersonalUpdateRequestType {
 	"email": string;
 	"name": string;
 	"phone": string;
+    "city": string;
 	"selfIntroduction": string;
 }
 

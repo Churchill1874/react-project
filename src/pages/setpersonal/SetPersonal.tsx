@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs } from 'antd-mobile';
+import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs, Toast } from 'antd-mobile';
 import '@/pages/setpersonal/SetPersonal.less';
 import avatars from '@/common/avatar';
 import {Request_UpdatePlayerInfo, PersonalUpdateRequestType} from '@/pages/setpersonal/api';
@@ -30,12 +30,13 @@ const SetPersonal: React.FC = () => {
 
     //保存更新
     const update = async () => {
-        const { name, selfIntroduction } = form.getFieldsValue();
-        const param: PersonalUpdateRequestType = { avatarPath: playerInfo?.avatarPath, email: playerInfo?.email, phone: playerInfo?.phone, name: name, selfIntroduction: selfIntroduction };
+        const { name, selfIntroduction, city } = form.getFieldsValue();
+        const param: PersonalUpdateRequestType = { avatarPath: playerInfo?.avatarPath, email: playerInfo?.email, phone: playerInfo?.phone, name: name, selfIntroduction: selfIntroduction, city: city};
         //请求后端更新用户编辑信息
         const {code} = await Request_UpdatePlayerInfo(param);
         if(code === 0 && playerInfo){
-            setPlayerInfo({...playerInfo, name, avatarPath:playerInfo?.avatarPath, selfIntroduction});
+            Toast.show("更新成功")
+            setPlayerInfo({...playerInfo, name, avatarPath:playerInfo?.avatarPath, selfIntroduction, city});
         }
     };
 
