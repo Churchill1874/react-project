@@ -44,7 +44,7 @@ const Home = () => {
         <div className="news-item" onClick={() => toNewsInfo(news)}>
           <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1)}</span>)} {news.title}</div>
           <div className="news-info">
-            <span className="date"> {news.createTime} </span>
+            <span className="date"> {news.createTime.split(' ')[0]} </span>
             <span className="views"><FcReading /> {news.viewCount}</span>
             <span className="likes"><FcLike /> {news.likesCount}</span>
             <span className="comments"><MessageOutline /> {news.commentsCount}</span>
