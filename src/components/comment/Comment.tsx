@@ -69,7 +69,7 @@ const Comment: React.FC<any> = ({ newsId }) => {
                 <span className="comment-attribute"> <FcLike fontSize={14}/> 1</span>
             </span>
 
-            {comment.replay.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.id)}> 展开 </span>)}
+            {comment.replay.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.id)}> 展开3条评论 </span>)}
 
             {comment.isExpanded && (
               comment.replay.map((replay, replayIndex) =>

@@ -62,8 +62,8 @@ const NewsInfo: React.FC = () => {
                 <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
 
                 <div className="newsinfo-attribute">
-                    <span><FcReading className='attribute-icon' fontSize={20} /> {viewCount}</span>
-                    <span><FcLike className='attribute-icon' fontSize={20} /> {likesCount}</span>
+                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {viewCount}</span>
+                    <span><FcLike className='attribute-icon' fontSize={20} /> 赞 {likesCount}</span>
                 </div>
 
                 <Comment newsId={id} />
