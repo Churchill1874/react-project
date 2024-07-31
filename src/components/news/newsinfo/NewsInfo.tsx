@@ -11,7 +11,7 @@ import React from 'react'
 const NewsInfo: React.FC = () => {
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false)
-    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, createTime } = useLocation().state;
+    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime} = useLocation().state;
 
     const showImage = () => {
         setVisible( prev => !prev );
@@ -66,7 +66,7 @@ const NewsInfo: React.FC = () => {
                     <span><FcLike className='attribute-icon' fontSize={20} /> 赞 {likesCount}</span>
                 </div>
 
-                <Comment newsId={id} />
+                <Comment commentsCount={commentsCount} newsId={id} />
             </div>
         </>
 

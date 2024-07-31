@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, Badge, Input, Button, Avatar, Ellipsis } from 'antd-mobile';
-import { GlobalOutline , MessageOutline, DownOutline, UpOutline } from 'antd-mobile-icons';
+import { GlobalOutline , MessageOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
@@ -42,7 +42,7 @@ const Home = () => {
         extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
       >
         <div className="news-item" onClick={() => toNewsInfo(news)}>
-          <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1)}</span>)} {news.title}</div>
+          <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}</div>
           <div className="news-info">
             <span className="date"> {news.createTime.split(' ')[0]} </span>
             <span className="views"><FcReading /> {news.viewCount}</span>

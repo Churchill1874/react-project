@@ -4,7 +4,7 @@ import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
 
-const Comment: React.FC<any> = ({ newsId }) => {
+const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
   const [comments, setComments] = useState<CommentType[]>([]);
 
   interface CommentType {
@@ -54,7 +54,7 @@ const Comment: React.FC<any> = ({ newsId }) => {
 
   return (
     <>
-      <Divider className='line'> 共 10 条评论 </Divider>
+      <Divider className='line'> 共 {commentsCount} 条评论 </Divider>
 
       {comments.map((comment, _index) => (
         <div className="outer-comment" key={comment.id}>
