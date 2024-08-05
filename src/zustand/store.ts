@@ -19,47 +19,72 @@ interface AppState {
   setOnlinePlayerCount: (randomOnlineCount: number) => void;
 
   /**新闻页 */
-  newsList: NewsInfoType[]; //新闻页的新闻类型列表
+
+  //新闻页的新闻类型列表
+  newsList: NewsInfoType[]; 
   setNewsList: (newsList: NewsInfoType[]) => void;
   newsHasMore: boolean;
   setNewsHasMore: (newsHasMore: boolean) => void;
   newsPage: number;
   setNewsPage: (newsPage: (prev: number) => number) => void; // 这里的类型修改
 
-  sportList: NewsInfoType[]; //新闻页的体育新闻
+  //新闻页的体育新闻
+  sportList: NewsInfoType[]; 
   setSportList: (sportList: NewsInfoType[]) => void;
   sportHasMore: boolean;
   setSportHasMore: (sportHasMore: boolean) => void;
   sportPage: number;
   setSportPage: (sportPage: (prev: number) => number) => void; // 这里的类型修改
 
-  entertainmentList: NewsInfoType[]; //新闻页的娱乐新闻
+  //新闻页的娱乐新闻
+  entertainmentList: NewsInfoType[]; 
   setEntertainmentList: (entertainmentList: NewsInfoType[]) => void;
   entertainmentHasMore: boolean;
   setEntertainmentHasMore: (entertainmentHasMore: boolean) => void;
   entertainmentPage: number;
   setEntertainmentPage: (entertainmentPage: (prev: number) => number) => void; // 这里的类型修改
 
-  militaryList: NewsInfoType[]; //新闻页的军事新闻
+  //新闻页的军事新闻
+  militaryList: NewsInfoType[]; 
   setMilitaryList: (militaryList: NewsInfoType[]) => void;
   militaryHasMore: boolean;
   setMilitaryHasMore: (militaryHasMore: boolean) => void;
   militaryPage: number;
   setMilitaryPage: (militaryPage: (prev: number) => number) => void; // 这里的类型修改
 
-  scienceList: NewsInfoType[]; //新闻页的科技新闻
+  //新闻页的科技新闻
+  scienceList: NewsInfoType[]; 
   setScienceList: (scienceList: NewsInfoType[]) => void;
   scienceHasMore: boolean;
   setScienceHasMore: (scienceHasMore: boolean) => void;
   sciencePage: number;
   setSciencePage: (sciencePage: (prev: number) => number) => void; // 这里的类型修改
 
-  netFriendList: NewsInfoType[]; //新闻页的网友新闻
+  //新闻页的网友新闻
+  netFriendList: NewsInfoType[]; 
   setNetFriendList: (netFriendList: NewsInfoType[]) => void;
   netFriendHasMore: boolean;
   setNetFriendHasMore: (netFriendHasMore: boolean) => void;
   netFriendPage: number;
   setNetFriendPage: (netFriendPage: (prev: number) => number) => void; // 这里的类型修改
+
+  //东南亚
+  southeastAsiaList: NewsInfoType[],  
+  setSoutheastAsiaList: (southeastAsiaList: NewsInfoType[]) => void;
+  southeastAsiaMore: boolean;
+  setSoutheastAsiaMore: (southeastAsiaMore: boolean) => void;
+  southeastAsiaPage: number;
+  setSoutheastAsiaPage: (southeastAsiaPage: (prev: number) => number) => void;
+
+  
+  //youtube
+  youtubeList: NewsInfoType[];
+  setYoutubeList: (youtubeList: NewsInfoType[]) => void;
+  youtubeMore: boolean;
+  setYoutubeMore: (youtubeMore: boolean) => void;
+  youtubePage: number;
+  setYoutubePage: (youtubePage: (prev: number) => number) => void;
+  
 }
 
 const useStore = create<AppState>((set) => ({
@@ -119,6 +144,23 @@ const useStore = create<AppState>((set) => ({
   setNetFriendHasMore: (netFriendHasMore) => set(() => ({ netFriendHasMore })),
   netFriendPage: 1,
   setNetFriendPage: (netFriendPage) => set((state) => ({ netFriendPage: netFriendPage(state.netFriendPage) })),
+
+  //东南亚
+  southeastAsiaList:[],
+  setSoutheastAsiaList: (southeastAsiaList) => set(() => ({southeastAsiaList})),
+  southeastAsiaMore: true,
+  setSoutheastAsiaMore: (southeastAsiaMore)=> set(() => ({southeastAsiaMore})),
+  southeastAsiaPage: 1,
+  setSoutheastAsiaPage: (southeastAsiaPage)=> set((state) => ({ southeastAsiaPage: southeastAsiaPage(state.southeastAsiaPage)})),
+
+  //youtube
+  youtubeList:[],
+  setYoutubeList: (youtubeList) => set(() => ({youtubeList})),
+  youtubeMore: true,
+  setYoutubeMore: (youtubeMore) => set(() => ({youtubeMore})),
+  youtubePage: 1,
+  setYoutubePage: (youtubePage) => set((state) => ({youtubePage: youtubePage(state.southeastAsiaPage)}))
+
 }));
 
 export default useStore;

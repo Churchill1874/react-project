@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Swiper, NavBar, Image, TextArea, ImageViewer } from 'antd-mobile'
+import { Swiper, NavBar, Image, TextArea, ImageViewer, Input, Button } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom';
 import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
@@ -68,8 +68,12 @@ const NewsInfo: React.FC = () => {
 
                 <Comment commentsCount={commentsCount} newsId={id} />
             </div>
-        </>
 
+            <div className="send-news-comment">
+                <Input className="input-comment" placeholder="请输入" />
+                <Button className="send-comment-button" color="primary">发送</Button>
+            </div>
+        </>
 
     );
 }

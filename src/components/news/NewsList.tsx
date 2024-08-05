@@ -32,7 +32,9 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     entertainmentList, setEntertainmentList,entertainmentHasMore,setEntertainmentHasMore,entertainmentPage,setEntertainmentPage,
     militaryList, setMilitaryList,militaryHasMore,setMilitaryHasMore,militaryPage,setMilitaryPage,
     scienceList, setScienceList,scienceHasMore,setScienceHasMore,sciencePage,setSciencePage,
-    netFriendList, setNetFriendList ,netFriendHasMore,setNetFriendHasMore,netFriendPage,setNetFriendPage
+    netFriendList, setNetFriendList ,netFriendHasMore,setNetFriendHasMore,netFriendPage,setNetFriendPage,
+    southeastAsiaList, setSoutheastAsiaList,southeastAsiaPage, setSoutheastAsiaPage, youtubePage, setYoutubePage, 
+    southeastAsiaMore, setSoutheastAsiaMore, youtubeMore, setYoutubeMore, youtubeList, setYoutubeList
   } = useStore();//新闻的全局变量
 
   //获取某种新闻类型当前页面是否还有新数据返回的状态
@@ -43,6 +45,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     if (newsTab === '4') return militaryHasMore;
     if (newsTab === '5') return scienceHasMore;
     if (newsTab === '7') return netFriendHasMore;
+    if (newsTab === '8') return southeastAsiaMore;
+    if (newsTab === '9') return youtubeMore;
     return false;
   }
 
@@ -55,6 +59,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     if (newsTab === '4') return militaryPage;
     if (newsTab === '5') return sciencePage;
     if (newsTab === '7') return netFriendPage;
+    if (newsTab === '8') return southeastAsiaPage;
+    if (newsTab === '9') return youtubePage;
   }
 
 
@@ -62,10 +68,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
   const reqNewsApi = async (categoryEnum: string, isReset: boolean) => {
     const pageNum = isReset ? 1 : getTabPageNum();//如果是刷新就从第一页开始
 
-    console.log('请求页号:', pageNum,'是否是刷新', isReset)
     const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 20, categoryEnum: categoryEnum };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
-    console.log('返回结果:', newsListResp)
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
     if (newsListResp.length > 0) {
@@ -166,6 +170,38 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
         }
       }
 
+      if (categoryEnum === '8'){//东南亚
+        if (isReset) {
+          setSoutheastAsiaPage(()=>2)
+          setSoutheastAsiaList(newsListResp)
+          setSoutheastAsiaMore(true)
+        } else{
+          if (JSON.stringify(newsListResp) !== JSON.stringify(southeastAsiaList)) {
+            setSoutheastAsiaPage((prev) => prev + 1)
+            setSoutheastAsiaList([...southeastAsiaList, ...newsListResp])
+            setSoutheastAsiaMore(true)
+          } else{
+            setSoutheastAsiaMore(false)
+          }
+        }
+      }
+
+      if (categoryEnum === '9'){//youtube
+        if (isReset) {
+          setYoutubePage(()=>2)
+          setYoutubeList(newsListResp)
+          setYoutubeMore(true)
+        } else{
+          if (JSON.stringify(newsListResp) !== JSON.stringify(youtubeList)) {
+            setYoutubePage((prev) => prev + 1)
+            setYoutubeList([...youtubeList, ...newsListResp])
+            setYoutubeMore(true)
+          } else{
+            setYoutubeMore(false)
+          }
+        }
+      }
+
     } else {
       if (categoryEnum === '1') {//新闻
         setNewsHasMore(false)
@@ -184,6 +220,12 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       }
       if (categoryEnum === '7') {//网友
         setNetFriendHasMore(false)
+      }
+      if (categoryEnum === '8'){
+        setSoutheastAsiaMore(false)
+      }
+      if (categoryEnum === '9'){
+        setYoutubeMore(false)
       }
     }
 

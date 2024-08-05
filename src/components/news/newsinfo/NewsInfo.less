@@ -93,3 +93,41 @@
   display: flex;
   justify-content: center;
 }
+
+.send-news-comment {
+  position: fixed;
+  bottom: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  width: calc(100% - 20px); /* 设置宽度为100%减去一些边距 */
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.input-comment {
+  flex: 1;
+  outline: none;
+  padding: 2px;
+  border: 1px solid @theme;
+  border-radius: 5px;
+  width: calc(100% - 90px); /* 调整宽度以留出按钮的空间 */
+}
+
+.input-comment ::placeholder {
+  font-size: 14px;
+}
+
+.input-comment input {
+  font-size: 18px; // 修改输入文本的字体大小
+  margin-left: 10px;
+}
+
+.send-comment-button {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+  line-height: 1;
+  padding: 6px 7px;
+}
