@@ -48,6 +48,16 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
 
   };
 
+    //回复顶层评论
+    const replyTopComment = ()=>{
+
+    }
+
+    //回复内嵌评论
+    const replyComment = ()=>{
+
+    }
+
   useEffect(() => {
     setComments(commentList);
   }, []);
