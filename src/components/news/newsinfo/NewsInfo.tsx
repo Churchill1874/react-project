@@ -98,9 +98,6 @@ const NewsInfo: React.FC = () => {
         navigate(-1);
     };
 
-    const clearComment = ()=>{
-        setComment('')
-    }
 
     return (
         <>
