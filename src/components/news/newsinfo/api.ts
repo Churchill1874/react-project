@@ -16,7 +16,7 @@ export interface SendNewsCommentResponseType{
 
 
 //发表新闻评论
-const SendNewsCommentPath = '/player/comment/sendComment';
+const SendNewsCommentPath = '/player/comment/sendNewsComment';
 export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Promise<SendNewsCommentResponseType> => {
     return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
 };

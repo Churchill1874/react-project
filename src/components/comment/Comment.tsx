@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Divider, Avatar } from "antd-mobile";
+import { Divider, Avatar, Toast } from "antd-mobile";
 import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
+import { HeartOutlined } from "@ant-design/icons";
 
 const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
   const [comments, setComments] = useState<CommentType[]>([]);
@@ -48,15 +49,24 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
 
   };
 
-    //回复顶层评论
-    const replyTopComment = ()=>{
+  //回复顶层评论
+  const replyTopComment = () => {
 
-    }
+  }
 
-    //回复内嵌评论
-    const replyComment = ()=>{
+  //回复内嵌评论
+  const replyComment = () => {
 
-    }
+  }
+
+  //点赞
+  const clickLikes = () => {
+    Toast.show({
+      icon: <HeartOutlined />,
+      content: '点赞 +1',
+      duration: 600,
+    })
+  }
 
   useEffect(() => {
     setComments(commentList);
@@ -75,8 +85,8 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
             <span className='name'>{comment.name}</span>
             <span className='comment'>{comment.content}</span>
             <span className='comment-time'>
-                <div>{comment.time}<span className='reply'> 回复</span></div>
-                <span className="comment-attribute"> <FcLike fontSize={14}/> 1</span>
+              <div>{comment.time}<span className='reply'> 回复</span></div>
+              <span className="comment-attribute"> <FcLike fontSize={14} onClick={clickLikes} /> 1</span>
             </span>
 
             {comment.replay.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.id)}> 展开3条评论 </span>)}
@@ -91,8 +101,8 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
                     <span className='name'>{replay.name}</span>
                     <span className='comment'>{replay.content}</span>
                     <span className='comment-time'>
-                        <div>{replay.time}<span className='reply'> 回复</span></div>
-                        <span className="comment-attribute"><FcLike fontSize={14}/> 1</span>
+                      <div>{replay.time}<span className='reply'> 回复</span></div>
+                      <span className="comment-attribute"><FcLike fontSize={14} onClick={clickLikes} /> 1</span>
                     </span>
                   </div>
                 </div>
