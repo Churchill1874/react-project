@@ -41,12 +41,15 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId }) => {
   const [pageNum, setPageNum] = useState(1);
-  const [comments, setComments] = useState<CommentPageRespType>();
+  const [comments, setComments] = useState<CommentPageRespType>();//评论记录列表
   const [commentCount, setCommentCount] = useState(0);
-  const [comment, setComment] = useState('')
-  const [showsCommentInput, setShowCommentInput] = useState(false)
+  const [comment, setComment] = useState('')//评论内容
+  const [showsCommentInput, setShowCommentInput] = useState(false)//是否弹出评论输入框
   const textAreaRef = useRef<TextAreaRef>(null);
   const [placeholder, setPlaceholder] = useState('请输入评论内容');
+  const [topId, setTopId] = useState<string>('');//顶层评论id
+  const [replyId, setReplyId] = useState<string>('');//回复内嵌评论id
+
 
 
 
@@ -64,9 +67,8 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
 
   //回复顶层评论
   const replyTopComment = (topId: string, targetPlayerName: string) => {
-    document.body.classList.remove('adm-overflow-hidden');
-
     setPlaceholder('回复 ' + targetPlayerName);
+    setTopId(topId);
     setShowCommentInput(true);
     setTimeout(() => {
       if (textAreaRef.current) {
@@ -77,16 +79,18 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
 
   //回复内嵌评论
   const replyComment = (topId: string, replyId: string, targetPlayerName: string) => {
-    document.body.classList.remove('adm-overflow-hidden');
-
     setPlaceholder('回复 ' + targetPlayerName);
     setShowCommentInput(true);
+    setTopId(topId);
+    setReplyId(replyId);
     setTimeout(() => {
       if (textAreaRef.current) {
         textAreaRef.current.focus();
       }
     }, 0);
   }
+
+
 
   //发送顶层评论
   const sendTopComment = async () => {
@@ -97,7 +101,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
       })
       return;
     }
-    const param: SendNewsCommentReqType = { newsId: newsId, content: comment }
+    const param: SendNewsCommentReqType = { newsId: newsId, content: comment, topId: topId, replyId: replyId }
     const response = await Request_SendNewsComment(param);
 
     if (response.code === 0) {
@@ -106,10 +110,14 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
       }
       Toast.show('发送成功');
       setComment('');
+      setTopId('');
+      setReplyId('');
       setNewsCommentCount((prev) => prev + 1);
       setShowCommentInput(false)
     }
   }
+
+
 
   //请求获取当前新闻评论内容
   const reqCommentPageApi = async () => {
@@ -154,10 +162,10 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
             <span className='comment'>{comment.topComment.content}</span>
             <span className='comment-time'>
               <div>{comment.topComment.createTime}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
-              <span className="comment-attribute"> <FcLike fontSize={14} onClick={clickLikes} /> 1</span>
+              <span className="comment-attribute"> <FcLike fontSize={14} onClick={clickLikes} /> {comment.topComment.likesCount}</span>
             </span>
 
-            {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开回复 </span>)}
+            {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开 {comment.replyCommentList.length} 条回复 </span>)}
 
             {comment.isExpanded && (
               comment.replyCommentList.map((replay, replayIndex) =>
@@ -170,27 +178,26 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
                     <span className='comment'>{replay.content}</span>
                     <span className='comment-time'>
                       <div>{replay.createTime}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
-                      <span className="comment-attribute"><FcLike fontSize={14} onClick={clickLikes} /> 1</span>
+                      <span className="comment-attribute"><FcLike fontSize={14} onClick={clickLikes} /> {replay.likesCount} </span>
                     </span>
                   </div>
                 </div>
               )
             )}
             <Divider className='line' />
-
-            <Popup className='comments-popup'
-              visible={showsCommentInput}
-              onMaskClick={() => { setShowCommentInput(false) }}
-              onClose={() => { setShowCommentInput(false) }}
-              bodyStyle={{ height: '40vh' }} 
-              >
-
-              <CustomTextArea className='comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} placeholder={placeholder} />
-              <Button className="send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
-            </Popup>
           </div>
         </div>
       ))}
+
+      <Popup className='comments-popup'
+        visible={showsCommentInput}
+        onMaskClick={() => { setShowCommentInput(false) }}
+        onClose={() => { setShowCommentInput(false) }}
+        bodyStyle={{ height: '40vh' }}
+      >
+        <CustomTextArea className='comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} placeholder={placeholder} />
+        <Button className="send-comment-button" color="primary" onClick={sendTopComment} > 发送评论 </Button>
+      </Popup>
     </>
   );
 }
