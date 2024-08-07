@@ -10,159 +10,167 @@ import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/ne
 
 
 const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
-  const innerRef = useRef<TextAreaRef>(null);
+    const innerRef = useRef<TextAreaRef>(null);
 
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      if (innerRef.current) {
-        innerRef.current.focus();
-      }
-    },
-    clear: () => {
-      if (innerRef.current) {
-        innerRef.current.clear();
-      }
-    },
-    blur: () => {
-      if (innerRef.current) {
-        innerRef.current.blur();
-      }
-    },
-    get nativeElement() {
-      return innerRef.current ? innerRef.current.nativeElement : null;
-    }
-  }));
+    useImperativeHandle(ref, () => ({
+        focus: () => {
+            if (innerRef.current) {
+                innerRef.current.focus();
+            }
+        },
+        clear: () => {
+            if (innerRef.current) {
+                innerRef.current.clear();
+            }
+        },
+        blur: () => {
+            if (innerRef.current) {
+                innerRef.current.blur();
+            }
+        },
+        get nativeElement() {
+            return innerRef.current ? innerRef.current.nativeElement : null;
+        }
+    }));
 
-  return <TextArea {...props} placeholder='请输入评论内容' ref={innerRef} />;
+    return <TextArea {...props} placeholder='请输入评论内容' ref={innerRef} />;
 });
 
 const NewsInfo: React.FC = () => {
-  const textAreaRef = useRef<TextAreaRef>(null);
-  const [comment, setComment] = useState('')
-  const [showsCommentInput, setShowCommentInput] = useState(false)
-  const navigate = useNavigate();
-  const [visible, setVisible] = useState(false)
-  const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime } = useLocation().state;
+    const textAreaRef = useRef<TextAreaRef>(null);
+    const [comment, setComment] = useState('')
+    const [showsCommentInput, setShowCommentInput] = useState(false)
+    const navigate = useNavigate();
+    const [visible, setVisible] = useState(false)
+    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime } = useLocation().state;
+    const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);
 
-  const showImage = () => {
-    setVisible(prev => !prev);
-  }
-
-  const getImages = () => {
-    return contentImagePath ? contentImagePath.split(',') : [photoPath];
-  };
-
-  const getContentRows = () => {
-    const contentLength = content.length / 28;
-    return contentLength < 12 ? Math.ceil(contentLength) : 12;
-  }
-
-  //发送顶层评论
-  const sendTopComment = async () => {
-    if (!comment) {
-      Toast.show({
-        content: '请输入评论内容',
-        duration: 1000
-      })
-      return;
+    const showImage = () => {
+        setVisible(prev => !prev);
     }
-    const param: SendNewsCommentReqType = { newsId: id, content: comment }
-    const response = await Request_SendNewsComment(param);
 
-    if (response.code === 0) {
-      setComment('');
-      if (textAreaRef.current) {
-        textAreaRef.current.clear();
-      }
-      Toast.show('评论成功');
+    const getImages = () => {
+        return contentImagePath ? contentImagePath.split(',') : [photoPath];
+    };
+
+    const getContentRows = () => {
+        const contentLength = content.length / 28;
+        return contentLength < 12 ? Math.ceil(contentLength) : 12;
     }
-  }
 
-  //输入文本域的内容存入状态
-  const inputCommentChange = (value: string) => {
-    setComment(value);
-  }
-
-  // 处理 Input 聚焦事件，阻止其获取焦点
-  const handleInputFocus = (event) => {
-    event.preventDefault();
-    event.target.blur();
-  };
-
-  //点击输入框时候 让文本域获取到焦点
-  const inputCommentClick = () => {
-    setShowCommentInput(true);
-    setTimeout(() => {
-      if (textAreaRef.current) {
-        textAreaRef.current.focus();
-      }
-    }, 0);
-  }
-
-  //点赞
-  const clickLikes = () => {
-    Toast.show({
-      icon: <HeartOutlined />,
-      content: '点赞 +1',
-      duration: 600,
-    })
-  }
-
-  //返回上一层
-  const back = () => {
-    navigate(-1);
-  };
-
-
-
-  return (
-    <>
-      <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
-
-      <div className='news-info'>
-        <NavBar className="edit" onBack={back}></NavBar>
-
-        <div className='newsinfo-title'>{title}</div>
-        <div className='newsinfo-time'>{createTime}</div>
-
-        {contentImagePath &&
-          <Swiper loop autoplay allowTouchMove>
-            {contentImagePath.split(',').map((imagePath, index) => (
-              <Swiper.Item className="swiper-item" key={index} >
-                <Image fit='contain' width={300} height={200} src={imagePath} onClick={showImage} />
-              </Swiper.Item>
-            ))}
-          </Swiper>
+    //发送顶层评论
+    const sendTopComment = async () => {
+        if (!comment) {
+            Toast.show({
+                content: '请输入评论内容',
+                duration: 1000
+            })
+            return;
         }
-        {!contentImagePath &&
-          <Swiper loop autoplay allowTouchMove>
-            <Swiper.Item className="swiper-item" key={1} >
-              <Image fit='contain' width={300} height={200} src={photoPath} onClick={showImage} />
-            </Swiper.Item>
-          </Swiper>
+        const param: SendNewsCommentReqType = { newsId: id, content: comment }
+        const response = await Request_SendNewsComment(param);
+
+        if (response.code === 0) {
+            if (textAreaRef.current) {
+                textAreaRef.current.clear();
+            }
+            Toast.show('发送成功');
+            setComment('');
+            setNewsCommentCount((prev) => prev + 1);
+            setShowCommentInput(false)
         }
+    }
+
+    //输入文本域的内容存入状态
+    const inputCommentChange = (value: string) => {
+        setComment(value);
+    }
+
+    // 处理 Input 聚焦事件，阻止其获取焦点
+    const handleInputFocus = (event) => {
+        event.preventDefault();
+        event.target.blur();
+    };
+
+    //点击输入框时候 让文本域获取到焦点
+    const inputCommentClick = () => {
+        setShowCommentInput(true);
+        setTimeout(() => {
+            if (textAreaRef.current) {
+                textAreaRef.current.focus();
+            }
+        }, 0);
+    }
+
+    //点赞
+    const clickLikes = () => {
+        Toast.show({
+            icon: <HeartOutlined />,
+            content: '点赞 +1',
+            duration: 600,
+        })
+    }
+
+    //返回上一层
+    const back = () => {
+        navigate(-1);
+    };
 
 
-        <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
+    return (
+        <>
+            <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
-        <div className="newsinfo-attribute">
-          <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {viewCount}</span>
-          <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {likesCount}</span>
-        </div>
+            <div className='news-info'>
+                <NavBar className="edit" onBack={back}></NavBar>
 
-        <Comment commentsCount={commentsCount} newsId={id} />
-      </div>
+                <div className='newsinfo-title'>{title}</div>
+                <div className='newsinfo-time'>{createTime}</div>
 
-      <div className="send-news-comment">
-        <Input className="input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
-        <Popup className='comment-popup' visible={showsCommentInput} onMaskClick={() => { setShowCommentInput(false) }} onClose={() => { setShowCommentInput(false) }} bodyStyle={{ height: '40vh' }}>
-          <CustomTextArea className='commentArea' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
-          <Button className="send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
-        </Popup>
-      </div>
-    </>
+                {contentImagePath &&
+                    <Swiper loop autoplay allowTouchMove>
+                        {contentImagePath.split(',').map((imagePath, index) => (
+                            <Swiper.Item className="swiper-item" key={index} >
+                                <Image fit='contain' width={300} height={200} src={imagePath} onClick={showImage} />
+                            </Swiper.Item>
+                        ))}
+                    </Swiper>
+                }
+                {!contentImagePath &&
+                    <Swiper loop autoplay allowTouchMove>
+                        <Swiper.Item className="swiper-item" key={1} >
+                            <Image fit='contain' width={300} height={200} src={photoPath} onClick={showImage} />
+                        </Swiper.Item>
+                    </Swiper>
+                }
 
-  );
+
+                <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
+
+                <div className="newsinfo-attribute">
+                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {viewCount}</span>
+                    <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {likesCount}</span>
+                </div>
+
+                <Comment setNewsCommentCount={setNewsCommentCount} newsCommentCount={newsCommentCount} newsId={id} />
+            </div>
+
+            <div className="send-news-comment">
+                <Input className="news-input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
+                <Popup className='news-comment-popup'
+                    visible={showsCommentInput}
+                    onMaskClick={() => { setShowCommentInput(false) }}
+                    onClose={() => { setShowCommentInput(false) }}
+                    bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }} 
+                    maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
+                >
+                    <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
+                    <Button className="news-send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
+                </Popup>
+            </div>
+        </>
+
+    );
 }
 
 export default NewsInfo;

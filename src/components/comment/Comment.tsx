@@ -1,62 +1,128 @@
-import { useEffect, useState } from "react";
-import { Divider, Avatar, Toast } from "antd-mobile";
+import { useEffect, useState, forwardRef, useRef, useImperativeHandle } from "react";
+import { Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea } from "antd-mobile";
 import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
 import { HeartOutlined } from "@ant-design/icons";
+import { Request_GetCommentPage, CommentPageRespType } from "@/components/comment/api";
+import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
 
-const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
-  const [comments, setComments] = useState<CommentType[]>([]);
-
-  interface CommentType {
-    id: number;
-    avatarPath: string;
-    account: string;
-    name: string;
-    content: string;
-    time: string;
-    replay: ReplayType[]
-    isExpanded?: boolean;
+const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
+  let placeholder = props.placeholder;
+  if (!placeholder) {
+    placeholder = '请输入评论内容';
   }
 
-  interface ReplayType {
-    avatarPath: string;
-    account: string;
-    name: string;
-    content: string;
-    time: string;
-  }
+  const innerRef = useRef<TextAreaRef>(null);
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (innerRef.current) {
+        innerRef.current.focus();
+      }
+    },
+    clear: () => {
+      if (innerRef.current) {
+        innerRef.current.clear();
+      }
+    },
+    blur: () => {
+      if (innerRef.current) {
+        innerRef.current.blur();
+      }
+    },
+    get nativeElement() {
+      return innerRef.current ? innerRef.current.nativeElement : null;
+    }
+  }));
 
-  const replayList: ReplayType[] = [
-    { avatarPath: '1', account: 'test1', name: 'test1', content: 'goodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgood', time: '2022-10-11 09:10' },
-    { avatarPath: '2', account: 'test2', name: 'test2', content: 'bad', time: '2022-10-12 09:10' },
-    { avatarPath: '3', account: 'test3', name: 'test3', content: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', time: '2022-10-13 09:10' }
-  ];
-
-  const commentList: CommentType[] = [
-    { id: 1, avatarPath: '1', account: 'test1', name: 'test1', content: 'goodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgood', time: '2022-10-11 09:10', replay: replayList, isExpanded: false },
-    { id: 2, avatarPath: '2', account: 'test2', name: 'test2', content: 'bad', time: '2022-10-12 09:10', replay: [], isExpanded: false },
-    { id: 3, avatarPath: '3', account: 'test3', name: 'test3', content: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊', time: '2022-10-13 09:10', replay: [], isExpanded: false }
-  ];
+  return <TextArea {...props} placeholder={placeholder} ref={innerRef} />;
+});
 
 
-  const reqCommentApi = (selectId: number) => {
-    setComments((prevComments) =>
-      prevComments.map((comment, _index) =>
-        comment.id === selectId ? { ...comment, isExpanded: true } : comment
-      )
-    );
+const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId }) => {
+  const [pageNum, setPageNum] = useState(1);
+  const [comments, setComments] = useState<CommentPageRespType>();
+  const [commentCount, setCommentCount] = useState(0);
+  const [comment, setComment] = useState('')
+  const [showsCommentInput, setShowCommentInput] = useState(false)
+  const textAreaRef = useRef<TextAreaRef>(null);
+  const [placeholder, setPlaceholder] = useState('请输入评论内容');
 
+
+
+  const reqCommentApi = (selectId: string) => {
+    setComments((prevComments) => {
+      if (!prevComments) return prevComments;
+      return {
+        ...prevComments,
+        list: prevComments.list.map((comment) =>
+          comment.topComment.id === selectId ? { ...comment, isExpanded: true } : comment
+        ),
+      };
+    });
   };
 
   //回复顶层评论
-  const replyTopComment = () => {
+  const replyTopComment = (topId: string, targetPlayerName: string) => {
+    document.body.classList.remove('adm-overflow-hidden');
 
+    setPlaceholder('回复 ' + targetPlayerName);
+    setShowCommentInput(true);
+    setTimeout(() => {
+      if (textAreaRef.current) {
+        textAreaRef.current.focus();
+      }
+    }, 0);
   }
 
   //回复内嵌评论
-  const replyComment = () => {
+  const replyComment = (topId: string, replyId: string, targetPlayerName: string) => {
+    document.body.classList.remove('adm-overflow-hidden');
 
+    setPlaceholder('回复 ' + targetPlayerName);
+    setShowCommentInput(true);
+    setTimeout(() => {
+      if (textAreaRef.current) {
+        textAreaRef.current.focus();
+      }
+    }, 0);
+  }
+
+  //发送顶层评论
+  const sendTopComment = async () => {
+    if (!comment) {
+      Toast.show({
+        content: '请输入评论内容',
+        duration: 1000
+      })
+      return;
+    }
+    const param: SendNewsCommentReqType = { newsId: newsId, content: comment }
+    const response = await Request_SendNewsComment(param);
+
+    if (response.code === 0) {
+      if (textAreaRef.current) {
+        textAreaRef.current.clear();
+      }
+      Toast.show('发送成功');
+      setComment('');
+      setNewsCommentCount((prev) => prev + 1);
+      setShowCommentInput(false)
+    }
+  }
+
+  //请求获取当前新闻评论内容
+  const reqCommentPageApi = async () => {
+    const param = { newsId: newsId, pageNum: pageNum, pageSize: 10 }
+    const response = await Request_GetCommentPage(param);
+
+    setComments(response.data);
+    setCommentCount(response.data.count);
+  }
+
+  //输入文本域的内容存入状态
+  const inputCommentChange = (value: string) => {
+    setComment(value);
   }
 
   //点赞
@@ -68,40 +134,42 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
     })
   }
 
+
   useEffect(() => {
-    setComments(commentList);
-  }, []);
+    reqCommentPageApi();
+    setCommentCount(newsCommentCount)
+  }, [newsCommentCount, newsId, pageNum]);
 
   return (
     <>
-      <Divider className='line'> 共 {commentsCount} 条评论 </Divider>
+      <Divider className='line'> 共 {commentCount} 条评论 </Divider>
 
-      {comments.map((comment, _index) => (
-        <div className="outer-comment" key={comment.id}>
+      {comments?.list?.map((comment, _index) => (
+        <div className="outer-comment" key={comment.topComment.id}>
           <div className="left-comment">
-            <Avatar src={avatars[comment.avatarPath]} style={{ '--size': '30px' }} />
+            <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '30px' }} />
           </div>
           <div className="right-comment">
-            <span className='name'>{comment.name}</span>
-            <span className='comment'>{comment.content}</span>
+            <span className='name'>{comment.topComment.commentator}</span>
+            <span className='comment'>{comment.topComment.content}</span>
             <span className='comment-time'>
-              <div>{comment.time}<span className='reply'> 回复</span></div>
+              <div>{comment.topComment.createTime}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
               <span className="comment-attribute"> <FcLike fontSize={14} onClick={clickLikes} /> 1</span>
             </span>
 
-            {comment.replay.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.id)}> 展开3条评论 </span>)}
+            {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开回复 </span>)}
 
             {comment.isExpanded && (
-              comment.replay.map((replay, replayIndex) =>
+              comment.replyCommentList.map((replay, replayIndex) =>
                 <div className="outer-comment" key={replayIndex}>
                   <div className="left-comment">
                     <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '25px' }} />
                   </div>
                   <div className="right-comment">
-                    <span className='name'>{replay.name}</span>
+                    <span className='name'>{replay.commentator}</span>
                     <span className='comment'>{replay.content}</span>
                     <span className='comment-time'>
-                      <div>{replay.time}<span className='reply'> 回复</span></div>
+                      <div>{replay.createTime}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
                       <span className="comment-attribute"><FcLike fontSize={14} onClick={clickLikes} /> 1</span>
                     </span>
                   </div>
@@ -109,6 +177,17 @@ const Comment: React.FC<any> = ({ commentsCount, newsId }) => {
               )
             )}
             <Divider className='line' />
+
+            <Popup className='comments-popup'
+              visible={showsCommentInput}
+              onMaskClick={() => { setShowCommentInput(false) }}
+              onClose={() => { setShowCommentInput(false) }}
+              bodyStyle={{ height: '40vh' }} 
+              >
+
+              <CustomTextArea className='comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} placeholder={placeholder} />
+              <Button className="send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
+            </Popup>
           </div>
         </div>
       ))}
