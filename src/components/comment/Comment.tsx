@@ -69,6 +69,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsCommentCount, newsId 
   const replyTopComment = (topId: string, targetPlayerName: string) => {
     setPlaceholder('回复 ' + targetPlayerName);
     setTopId(topId);
+    setReplyId('');
     setShowCommentInput(true);
     setTimeout(() => {
       if (textAreaRef.current) {
