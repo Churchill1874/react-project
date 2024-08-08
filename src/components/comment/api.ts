@@ -40,7 +40,9 @@ export interface CommentPageType{
 }
 
 export interface CommentPageRespType {
-	count: number;
+	commentCount: number;
+    likesCount: number;
+    viewsCount: number;
     list: CommentPageType[];
 }
 

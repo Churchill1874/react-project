@@ -43,7 +43,9 @@ const NewsInfo: React.FC = () => {
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false)
     const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime } = useLocation().state;
-    const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);
+    const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
+    const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
+    const [newsViewCount, setNewsViewCount] = useState(viewCount);
 
     const showImage = () => {
         setVisible(prev => !prev);
@@ -148,11 +150,11 @@ const NewsInfo: React.FC = () => {
                 <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
 
                 <div className="newsinfo-attribute">
-                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {viewCount}</span>
-                    <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {likesCount}</span>
+                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {newsViewCount}</span>
+                    <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {newsLikesCount}</span>
                 </div>
 
-                <Comment setNewsCommentCount={setNewsCommentCount} newsCommentCount={newsCommentCount} newsId={id} />
+                <Comment setNewsViewCount={setNewsViewCount} setNewsLikesCount={setNewsLikesCount} setNewsCommentCount={setNewsCommentCount} newsId={id} />
             </div>
 
             <div className="send-news-comment">

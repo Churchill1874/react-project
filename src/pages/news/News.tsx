@@ -36,7 +36,7 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs activeKey={chinaActiveTab} onChange={chinaCapsuleTabChange}>
             <CapsuleTabs.Tab title="热门" key="1" />
             <CapsuleTabs.Tab title="东南亚" key="8" />
-            <CapsuleTabs.Tab title="油管" key="9" />
+            <CapsuleTabs.Tab title="youtube" key="9" />
             <CapsuleTabs.Tab title="军事" key="4" />
             <CapsuleTabs.Tab title="体育" key="2" />
             <CapsuleTabs.Tab title="娱乐" key="3" />

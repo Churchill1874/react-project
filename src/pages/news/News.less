@@ -37,11 +37,15 @@
     position: sticky;
     top: 31px; /* 设置距离顶部的距离 */
     z-index: 999; /* 确保在其他内容之上 */
+
 }
 
 .adm-capsule-tabs-header{
     padding: 5px;
     border: none;
+    backdrop-filter: none; /* 确保没有模糊效果 */
+    
+
 }
 
 .capsule-tabs-container .adm-capsule-tabs-tab {
@@ -50,8 +54,10 @@
     justify-content: center;
     align-items: center; /* 垂直居中 */
     font-size: 12px;
-    max-width: 8px; /* 设置每个胶囊的最大宽度 */
-    line-height: 5px; /* 设置行高，使文本垂直居中 */
+    max-width: 16px; /* 设置每个胶囊的最大宽度 */
+    line-height: 8px; /* 设置行高，使文本垂直居中 */
+    backdrop-filter: none; /* 确保没有模糊效果 */
+
 }
 
 .capsule-tabs-container .adm-capsule-tabs-tab .adm-capsule-tabs-tab-title {
@@ -60,6 +66,7 @@
     display: flex;
     align-items: center; /* 垂直居中 */
     justify-content: center;
+
 }
 
 //胶囊激活的颜色样式
@@ -67,27 +74,41 @@
     background-color: #0b0b0bd3; /* 设置选中胶囊的背景颜色 */
     color: #ffffff; /* 设置选中胶囊内文字的颜色 */
     //margin: 0 5px; /* 调整胶囊之间的间距 */
+
 }
 //胶囊颜色
 .capsule-tabs-container .adm-capsule-tabs-tab:hover {
     background-color: #0b0b0bdc; /* 设置胶囊悬停时的背景颜色 */
-    color: #ffffff; /* 设置胶囊悬停时内文字的颜色 */
+    //color: #ffffff; /* 设置胶囊悬停时内文字的颜色 */
+    box-shadow: none; /* Remove any box-shadow that might cause the overlay effect */
+
+
 }
 .capsule-tabs-container .adm-capsule-tabs-tab:not(.adm-capsule-tabs-tab-active) {
     background-color: #5b58585c; /* 设置未选中胶囊的背景颜色 */
     color: #ffffff; /* 设置未选中胶囊内文字的颜色 */
+
 }
 
 /* 新增样式以去除白色半透明蒙层 */
 .capsule-tabs-container .adm-capsule-tabs {
     overflow: hidden; /* 确保没有多余的滚动区域 */
+    box-shadow: none; /* Remove any box-shadow that might cause the overlay effect */
+    background-color: transparent; /* Set the background to transparent */
+
 }
 
 .capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-wrap {
-    overflow: hidden; /* 隐藏可能的滚动条 */
+    //overflow: hidden; /* 隐藏可能的滚动条 */
+    background-color: transparent; /* Ensure the inner wrap is also transparent */
+
+
 }
 
 .capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-tab-list {
-    overflow: hidden; /* 隐藏可能的滚动条 */
-    white-space: nowrap; /* 确保胶囊选项卡在一行显示 */
+    //overflow: hidden; /* 隐藏可能的滚动条 */
+    //white-space: nowrap; /* 确保胶囊选项卡在一行显示 */
+    background-color: transparent; /* Ensure the tab list is transparent */
+
+
 }
