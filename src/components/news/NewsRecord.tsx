@@ -20,7 +20,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
       <div className="content-container">
         <div className="image-container">
           {photoPath && photoPath.split(',').map((src, index) => (
-            <Image lazy key={index} src={src} alt={`图片${index + 1}`} />
+            <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} />
           ))}
         </div>
         <div className="text-container">
@@ -29,9 +29,9 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
             <div><span className='time'>{createTime.split(' ')[0]}</span></div>
           </div>
           <div className="attributes">
-            <span><FcReading fontSize={14} /> {viewCount}</span>
-            <span><FcLike fontSize={14}/> {likesCount}</span>
-            <span><MessageOutline fontSize={14}/> {commentsCount}</span>
+            <span><FcReading fontSize={15} /> {viewCount}</span>
+            <span><FcLike fontSize={15}/> {likesCount}</span>
+            <span><MessageOutline fontSize={15}/> {commentsCount}</span>
           </div>
         </div>
       </div>
