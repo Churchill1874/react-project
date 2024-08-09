@@ -6,7 +6,15 @@ import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
 import { useLocation } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
-import { Request_SendNewsComment, Request_NewsInfo, NewsInfoReqType, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
+import {
+    Request_SendNewsComment,
+    Request_NewsInfo,
+    NewsInfoReqType,
+    SendNewsCommentReqType,
+    Request_IncreaseLikesCount,
+    IncreaseLikesCountReqType
+} from '@/components/news/newsinfo/api'
+
 
 
 const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
@@ -85,11 +93,11 @@ const NewsInfo: React.FC = () => {
 
     //查询新闻详情
     const reqNewsInfoApi = async () => {
-        const param: NewsInfoReqType = {id: id};
+        const param: NewsInfoReqType = { id: id };
         const response = await Request_NewsInfo(param);
-        
-        const {code, data} = response;
-        if(code === 0){
+
+        const { code, data } = response;
+        if (code === 0) {
             setNewsCommentCount(data.commentsCount);
             setNewsLikesCount(data.likesCount);
             setNewsViewCount(data.viewCount);
@@ -119,12 +127,24 @@ const NewsInfo: React.FC = () => {
     }
 
     //点赞
-    const clickLikes = () => {
-        Toast.show({
-            icon: <HeartOutlined />,
-            content: '点赞 +1',
-            duration: 600,
-        })
+    const clickLikes = async () => {
+        const resp = await Request_IncreaseLikesCount(id);
+        console.log('新闻点赞响应结果:', resp)
+
+        if (resp.code === 0){
+            const reslut = resp.data ? "点赞 +1" : "已点赞";
+            Toast.show({
+                icon: <HeartOutlined />,
+                content: reslut,
+                duration: 600,
+            })
+        } else {
+            Toast.show({
+                content: '网络异常,请稍后重试',
+                duration: 600,
+            })
+        }
+
     }
 
     //返回上一层

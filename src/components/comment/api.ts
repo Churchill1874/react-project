@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
+//请求查询分页评论信息
 export interface CommentPageReqType {
 	endTime?: string,
 	newsId: string,
@@ -14,6 +15,7 @@ export interface CommentPageReqType {
 	topId?: string;
 }
 
+//评论对象信息
 export interface CommentType{
     avatarPath: string;
     commentator: string;
@@ -21,36 +23,50 @@ export interface CommentType{
     content: string;
     createName: string;
     createTime: string;
-    id: string;
+    id: number;
     infoType: any;
     level: any;
     likesCount: number;
-    newsId: string;
-    playerId: string;
+    newsId: number;
+    playerId: number;
     readStatus: boolean;
-    replyId: string;
-    targetPlayerId: string;
-    topId: string;
+    replyId: number;
+    targetPlayerId: number;
+    topId: number;
 }
 
+//评论列表
 export interface CommentPageType{
     replyCommentList: CommentType[];
     topComment: CommentType;
     isExpanded?: boolean;
 }
 
+//评论分页数据
 export interface CommentPageRespType {
 	commentCount: number;
-    likesCount: number;
-    viewsCount: number;
     list: CommentPageType[];
 }
 
+//查询新闻评论响应
 export interface ResponseType{
     code: number;
     data: CommentPageRespType;
     msg: string;
 }
+
+//查询新闻评论响应
+export interface IncreaseLikesCountRespType{
+    code: number;
+    data: boolean;
+    msg: string;
+}
+
+//查询新闻评论响应
+export interface IncreaseLikesCountReqType{
+    id: number;
+}
+
 
 /**
  * 获取新闻评论记录
@@ -58,4 +74,12 @@ export interface ResponseType{
 const GetCommentPagePath = '/player/comment/findNewsComments';
 export const Request_GetCommentPage = async (param: CommentPageReqType): Promise<ResponseType> => {
     return (await axios.post(serverTarget + GetCommentPagePath, param)).data;
+};
+
+/**
+ * 点赞评论
+ */
+const IncreaseLikesCountPath = '/player/comment/increaseLikesCount';
+export const Request_LikesCount = async (param: IncreaseLikesCountReqType): Promise<IncreaseLikesCountRespType> => {
+    return (await axios.post(serverTarget + IncreaseLikesCountPath, param)).data;
 };

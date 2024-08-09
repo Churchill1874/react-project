@@ -4,7 +4,7 @@ import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
 import { HeartOutlined } from "@ant-design/icons";
-import { Request_GetCommentPage, CommentPageType } from "@/components/comment/api";
+import { Request_GetCommentPage, CommentPageType, Request_LikesCount } from "@/components/comment/api";
 import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
 import { highlightReply } from '@/utils/commentUtils'
 
@@ -67,12 +67,12 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
   const [showsCommentInput, setShowCommentInput] = useState(false)//是否弹出评论输入框
   const textAreaRef = useRef<TextAreaRef>(null);
   const [placeholder, setPlaceholder] = useState('请输入评论内容');
-  const [topId, setTopId] = useState<string>('');//顶层评论id
-  const [replyId, setReplyId] = useState<string>('');//回复内嵌评论id
+  const [topId, setTopId] = useState<number | null>();//顶层评论id
+  const [replyId, setReplyId] = useState<number | null>();//回复内嵌评论id
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
 
 
-  const reqCommentApi = (selectId: string) => {
+  const reqCommentApi = (selectId: number) => {
     setCommentsList((prevComments) => {
       return prevComments.map((comment) => comment.topComment.id === selectId ? { ...comment, isExpanded: true } : comment)
     });
@@ -80,10 +80,10 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
 
 
   //回复顶层评论
-  const replyTopComment = (topId: string, targetPlayerName: string) => {
+  const replyTopComment = (topId: number, targetPlayerName: string) => {
     setPlaceholder('回复 ' + targetPlayerName);
     setTopId(topId);
-    setReplyId('');
+    setReplyId(null);
     setShowCommentInput(true);
     setTimeout(() => {
       if (textAreaRef.current) {
@@ -93,7 +93,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
   }
 
   //回复内嵌评论
-  const replyComment = (topId: string, replyId: string, targetPlayerName: string) => {
+  const replyComment = (topId: number, replyId: number, targetPlayerName: string) => {
     setPlaceholder('回复 ' + targetPlayerName);
     setShowCommentInput(true);
     setTopId(topId);
@@ -125,8 +125,8 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
       }
       Toast.show('发送成功');
       setComment('');
-      setTopId('');
-      setReplyId('');
+      setTopId(null);
+      setReplyId(null);
       setNewsCommentCount((prev) => prev + 1);
       setShowCommentInput(false)
     }
@@ -167,12 +167,24 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
 
 
   //点赞
-  const clickLikes = () => {
-    Toast.show({
-      icon: <HeartOutlined />,
-      content: '点赞 +1',
-      duration: 600,
-    })
+  const clickLikes = async(id: number) => {
+    const param = {id: id}
+    const resp = await Request_LikesCount(param);
+    const {code , data} = resp;
+
+    if (code === 0) {
+      const result = data ? '点赞 +1' : '已点赞';
+      Toast.show({
+        icon: <HeartOutlined />,
+        content: result,
+        duration: 600,
+      })
+    } else {
+      Toast.show({
+        content: '网络异常,请稍后重试',
+        duration: 600,
+      })
+    }
   }
 
 
@@ -191,7 +203,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
               <span className='comment'>{comment.topComment.content}</span>
               <span className='comment-time'>
                 <div>{comment.topComment.createTime}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
-                <span className="comment-attribute"> <FcLike fontSize={14} onClick={clickLikes} /> {comment.topComment.likesCount}</span>
+                <span className="comment-attribute"> <FcLike fontSize={14} onClick={() => clickLikes(comment.topComment.id)} /> {comment.topComment.likesCount}</span>
               </span>
 
               {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开 {comment.replyCommentList.length} 条回复 </span>)}
@@ -207,7 +219,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
                       <span className='comment' dangerouslySetInnerHTML={{ __html: highlightReply(replay.content) }}></span>
                       <span className='comment-time'>
                         <div>{replay.createTime}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
-                        <span className="comment-attribute"><FcLike fontSize={14} onClick={clickLikes} /> {replay.likesCount} </span>
+                        <span className="comment-attribute"><FcLike fontSize={14} onClick={() => clickLikes(replay.id)} /> {replay.likesCount} </span>
                       </span>
                     </div>
                   </div>

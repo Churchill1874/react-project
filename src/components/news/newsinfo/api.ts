@@ -46,6 +46,17 @@ export interface NewsInfoRespType {
     data: NewsInfoType;
 }
 
+//点赞请求类型
+export interface IncreaseLikesCountReqType{
+    id: number;
+}
+
+//查询新闻响应
+export interface IncreaseLikesCountRespType {
+    code: number;
+    msg: string;
+    data: boolean;
+}
 
 //发表新闻评论
 const SendNewsCommentPath = '/player/comment/sendNewsComment';
@@ -53,9 +64,14 @@ export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Pr
     return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
 };
 
-
 //查询新闻详情
 const NewsInfoPath = '/player/news/find';
 export const Request_NewsInfo = async (param: NewsInfoReqType): Promise<NewsInfoRespType> => {
     return (await axios.post(serverTarget + NewsInfoPath, param)).data;
+};
+
+//点赞新闻
+const IncreaseLikesCountPath = '/player/news/increaseLikesCount';
+export const Request_IncreaseLikesCount = async (param: IncreaseLikesCountReqType): Promise<IncreaseLikesCountRespType> => {
+    return (await axios.post(serverTarget + IncreaseLikesCountPath, param)).data;
 };

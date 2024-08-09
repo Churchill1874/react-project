@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
-import { FcOnlineSupport, FcBusinessman, FcSalesPerformance, FcCopyright, FcImport, FcHeadset } from 'react-icons/fc';
+import { FcBusinessman, FcSalesPerformance, FcReading, FcImport, FcHeadset } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
@@ -78,7 +78,7 @@ const UserCenter: React.FC = () => {
           </span>
           <span style={{ color: 'white', fontSize: '15px' }}>
             <div> 0 </div>
-            <div className="label">收藏</div>
+            <div className="label">被赞</div>
           </span>
         </div>
 
@@ -138,8 +138,8 @@ const UserCenter: React.FC = () => {
             <Card
               title={
                 <div className="card-title">
-                  <FcCopyright fontSize={18} />
-                  <span> 竞猜</span>
+                  <FcReading fontSize={18} />
+                  <span> 浏览记录</span>
                 </div>
               }
               extra={<RightOutline />}
