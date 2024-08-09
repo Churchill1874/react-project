@@ -1,17 +1,49 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
+//请求发送评论参数
 export interface SendNewsCommentReqType {
     newsId: any;
 	replyId?: any ;
 	topId?: any;
     content: any;
 }
-
-export interface SendNewsCommentResponseType{
+//发送评论响应
+export interface SendNewsCommentResponseType {
     code: number;
     data: any;
     msg: string;
+}
+//查询新闻请求参数
+export interface NewsInfoReqType {
+    id: number;
+}
+//新闻信息类型
+export interface NewsInfoType {
+    category: number;
+    commentsCount: number;
+    content: string;
+    contentImagePath: string;
+    createName: string;
+    createTime: string;
+    filterContent: string;
+    id: number;
+    likesCount: number;
+    newsStatus: boolean;
+    photoPath: string;
+    source: string;
+    title: string;
+    updateName: string;
+    updateTime: string;
+    url: string;
+    viewCount: number;
+}
+
+//查询新闻响应
+export interface NewsInfoRespType {
+    code: number;
+    msg: string;
+    data: NewsInfoType;
 }
 
 
@@ -22,3 +54,8 @@ export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Pr
 };
 
 
+//查询新闻详情
+const NewsInfoPath = '/player/news/find';
+export const Request_NewsInfo = async (param: NewsInfoReqType): Promise<NewsInfoRespType> => {
+    return (await axios.post(serverTarget + NewsInfoPath, param)).data;
+};

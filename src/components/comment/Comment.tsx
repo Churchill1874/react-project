@@ -7,7 +7,6 @@ import { HeartOutlined } from "@ant-design/icons";
 import { Request_GetCommentPage, CommentPageType } from "@/components/comment/api";
 import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
 import { highlightReply } from '@/utils/commentUtils'
-import { isExternal } from "util/types";
 
 
 const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -60,7 +59,7 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 });
 
 
-const Comment: React.FC<any> = ({ setNewsViewCount, setNewsLikesCount, setNewsCommentCount, newsId }) => {
+const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [commentCount, setCommentCount] = useState(0);
@@ -142,8 +141,6 @@ const Comment: React.FC<any> = ({ setNewsViewCount, setNewsLikesCount, setNewsCo
     const response = await Request_GetCommentPage(param);
 
     setCommentCount(response.data.commentCount);
-    setNewsLikesCount(response.data.likesCount);
-    setNewsViewCount(response.data.viewsCount);
 
     if (response.data.list?.length > 0) {
       //如果新取回来的评论数据和上一次的不一样

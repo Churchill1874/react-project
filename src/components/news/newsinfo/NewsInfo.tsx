@@ -1,4 +1,4 @@
-import { useState, useRef, useImperativeHandle, forwardRef } from 'react';
+import { useState, useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
 import { Swiper, NavBar, Image, TextArea, ImageViewer, Input, Button, Toast, Popup, TextAreaRef } from 'antd-mobile'
 import { HeartOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
 import { useLocation } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
-import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
+import { Request_SendNewsComment, Request_NewsInfo, NewsInfoReqType, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
 
 
 const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
@@ -83,6 +83,20 @@ const NewsInfo: React.FC = () => {
         }
     }
 
+    //查询新闻详情
+    const reqNewsInfoApi = async () => {
+        const param: NewsInfoReqType = {id: id};
+        const response = await Request_NewsInfo(param);
+        
+        const {code, data} = response;
+        if(code === 0){
+            setNewsCommentCount(data.commentsCount);
+            setNewsLikesCount(data.likesCount);
+            setNewsViewCount(data.viewCount);
+            console.log(response)
+        }
+    }
+
     //输入文本域的内容存入状态
     const inputCommentChange = (value: string) => {
         setComment(value);
@@ -118,6 +132,9 @@ const NewsInfo: React.FC = () => {
         navigate(-1);
     };
 
+    useEffect(() => {
+        reqNewsInfoApi();
+    }, [])
 
     return (
         <>
@@ -154,7 +171,7 @@ const NewsInfo: React.FC = () => {
                     <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {newsLikesCount}</span>
                 </div>
 
-                <Comment setNewsViewCount={setNewsViewCount} setNewsLikesCount={setNewsLikesCount} setNewsCommentCount={setNewsCommentCount} newsId={id} />
+                <Comment setNewsCommentCount={setNewsCommentCount} newsId={id} />
             </div>
 
             <div className="send-news-comment">
@@ -163,7 +180,7 @@ const NewsInfo: React.FC = () => {
                     visible={showsCommentInput}
                     onMaskClick={() => { setShowCommentInput(false) }}
                     onClose={() => { setShowCommentInput(false) }}
-                    bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }} 
+                    bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
                     maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
                 >
                     <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
