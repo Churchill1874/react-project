@@ -69,6 +69,8 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
   const [topId, setTopId] = useState<number | null>();//顶层评论id
   const [replyId, setReplyId] = useState<number | null>();//回复内嵌评论id
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
+  const [likesIdList, setLikesIdList] = useState<number[]>([]);
+
 
   const reqCommentApi = (selectId: number) => {
     setCommentsList((prevComments) => {
@@ -152,27 +154,72 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
   }
 
 
-
   //输入文本域的内容存入状态
   const inputCommentChange = (value: string) => {
     setComment(value);
   }
 
 
-
   //点赞
-  const clickLikes = async (id: number) => {
+  const clickLikes = async (id: number, isTopReply) => {
+    console.log('id', id, 'isTopReply', isTopReply)
+    if (likesIdList.includes(id)) {
+      Toast.show({
+        content: '已点赞',
+        duration: 600,
+      })
+      return;
+    } else {
+      setLikesIdList((prev) => [...prev, id])
+    }
+
     const param = { id: id }
     const resp = await Request_LikesCount(param);
     const { code, data } = resp;
 
     if (code === 0) {
-      const result = data ? '点赞 +1' : '已点赞';
-      Toast.show({
-        icon: <HeartOutlined />,
-        content: result,
-        duration: 600,
-      })
+      if (data) {
+        Toast.show({
+          icon: <HeartOutlined />,
+          content: '点赞 +1',
+          duration: 600,
+        })
+
+        // 判断点赞的是外层评论还是内嵌的评论
+        if (isTopReply) {
+          // 处理顶层评论
+          const updateCommentsList = commentsList.map(
+            (comment) => comment.topComment.id === id ?
+              { ...comment, topComment: { ...comment.topComment, likesCount: comment.topComment.likesCount + 1 } }
+              :
+              comment
+          );
+
+          console.log('updateCommentsList:', updateCommentsList)
+          setCommentsList(updateCommentsList);
+        } else {
+          // 处理回复评论
+          const updateCommentsList = commentsList.map(
+            (comment) => {
+              const newReplyCommentList = comment.replyCommentList?.map(
+                (reply) => reply.id === id ? { ...reply, likesCount: reply.likesCount + 1 } : reply
+              );
+
+              return { ...comment, replyCommentList: newReplyCommentList };
+            }
+          );
+
+          console.log('updateCommentsList:', updateCommentsList)
+          setCommentsList(updateCommentsList);
+        }
+
+      } else {
+        Toast.show({
+          content: '已点赞',
+          duration: 600,
+        })
+      }
+
     } else {
       Toast.show({
         content: '网络异常,请稍后重试',
@@ -197,7 +244,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
               <span className='comment'>{comment.topComment.content}</span>
               <span className='comment-time'>
                 <div>{comment.topComment.createTime}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
-                <span className="comment-attribute"> <FcLike fontSize={14} onClick={() => clickLikes(comment.topComment.id)} /> {comment.topComment.likesCount}</span>
+                <span className="comment-attribute"> <FcLike fontSize={14} onClick={() => clickLikes(comment.topComment.id, true)} /> {comment.topComment.likesCount}</span>
               </span>
 
               {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开 {comment.replyCommentList.length} 条回复 </span>)}
@@ -213,7 +260,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
                       <span className='comment' dangerouslySetInnerHTML={{ __html: highlightReply(replay.content) }}></span>
                       <span className='comment-time'>
                         <div>{replay.createTime}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
-                        <span className="comment-attribute"><FcLike fontSize={14} onClick={() => clickLikes(replay.id)} /> {replay.likesCount} </span>
+                        <span className="comment-attribute"><FcLike fontSize={14} onClick={() => clickLikes(replay.id, false)} /> {replay.likesCount} </span>
                       </span>
                     </div>
                   </div>

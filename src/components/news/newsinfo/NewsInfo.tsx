@@ -52,6 +52,7 @@ const NewsInfo: React.FC = () => {
   const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
   const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
   const [newsViewCount, setNewsViewCount] = useState(viewCount);
+  const [likesIdList, setLikesIdList] = useState<number[]>([]);
 
 
 
@@ -139,17 +140,37 @@ const NewsInfo: React.FC = () => {
 
   //点赞
   const clickLikes = async () => {
-    const param = { id: id }
-    const resp = await Request_IncreaseLikesCount(param);
-    console.log('新闻点赞响应结果:', resp)
-
-    if (resp.code === 0) {
-      const reslut = resp.data ? "点赞 +1" : "已点赞";
+    if (likesIdList.includes(id)) {
       Toast.show({
-        icon: <HeartOutlined />,
-        content: reslut,
+        content: '已点赞',
         duration: 600,
       })
+      return;
+    } else {
+      setLikesIdList((prev) => [...prev, id])
+    }
+
+    const param = { id: id }
+    const resp = await Request_IncreaseLikesCount(param);
+
+    if (resp.code === 0) {
+      if (resp.data) {
+        Toast.show({
+          icon: <HeartOutlined />,
+          content: '点赞 +1',
+          duration: 600,
+        })
+      } else {
+        Toast.show({
+          content: '已点赞',
+          duration: 600,
+        })
+      }
+
+
+      if (resp.data) {
+        setNewsLikesCount((prev) => prev + 1)
+      }
     } else {
       Toast.show({
         content: '网络异常,请稍后重试',
