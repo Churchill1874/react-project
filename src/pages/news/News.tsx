@@ -4,35 +4,35 @@ import '@/pages/news/News.less';
 import NewsList from '@/components/news/NewsList';
 import { useParams, useNavigate } from 'react-router-dom';
 
-
 const News: React.FC = React.memo(() => {
   const [activeKey, setActiveKey] = useState<string>('news');
   const [chinaActiveTab, setChinaActiveTab] = useState<string>('1');
   const { typeId } = useParams();  // 获取路由参数
   const navigate = useNavigate();
 
-
+  // 处理 Tabs 的切换
   const handleTabChange = (key: string) => {
     setActiveKey(key);
     if (key === 'news') {
-      console.log('handleTabChange', key)
       setChinaActiveTab('1');
-      navigate(`/news/1`);
+      navigate(`/news/1`);  // 导航到默认的新闻类型
     }
   };
 
+  // 处理 CapsuleTabs 的切换
   const chinaCapsuleTabChange = ((key: string) => {
-    console.log('chinaCapsuleTabChange', key)
     setChinaActiveTab(key);
     navigate(`/news/${key}`);  // 修改 URL 以反映当前选中的 tab
   });
 
+  // 当组件首次加载时，如果 typeId 不存在，则导航到默认类型
   useEffect(() => {
-    // 每当 typeId 变化时，更新 chinaActiveTab
-    if (typeId) {
+    if (!typeId) {
+      navigate(`/news/1`, { replace: true });  // 使用 replace 以避免返回到重定向前的页面
+    } else {
       setChinaActiveTab(typeId);
     }
-  }, [typeId]);
+  }, [typeId, navigate]);
 
   return (
     <>

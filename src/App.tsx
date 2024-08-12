@@ -47,7 +47,7 @@ const App: React.FC = () => {
       if(pathname === '/home'){
         return '#fff';
       }
-      if(pathname === '/news'){
+      if (pathname.startsWith('/news') && !pathname.startsWith('/newsinfo')) { // 检查路径是否以 "/news" 开头
         return '#1890ff';
       }
       if(pathname === '/newsinfo'){
