@@ -6,6 +6,7 @@ import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
 import { useLocation } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
+import useStore from '@/zustand/store'
 import {
     Request_SendNewsComment,
     Request_NewsInfo,
@@ -14,8 +15,6 @@ import {
     Request_IncreaseLikesCount,
     IncreaseLikesCountReqType
 } from '@/components/news/newsinfo/api'
-
-
 
 const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
     const innerRef = useRef<TextAreaRef>(null);
@@ -50,10 +49,24 @@ const NewsInfo: React.FC = () => {
     const [showsCommentInput, setShowCommentInput] = useState(false)
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false)
-    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType} = useLocation().state;
+    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType } = useLocation().state;
     const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
     const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
     const [newsViewCount, setNewsViewCount] = useState(viewCount);
+
+
+
+    //各种新闻类型全局状态数据
+    const { newsList, setNewsList,
+        sportList, setSportList,
+        entertainmentList, setEntertainmentList,
+        militaryList, setMilitaryList,
+        scienceList, setScienceList,
+        netFriendList, setNetFriendList,
+        southeastAsiaList, setSoutheastAsiaList,
+        youtubeList, setYoutubeList
+    } = useStore();//新闻的全局变量
+
 
     const showImage = () => {
         setVisible(prev => !prev);
@@ -158,8 +171,49 @@ const NewsInfo: React.FC = () => {
     };
 
     useEffect(() => {
+        //刷新新闻信息
         reqNewsInfoApi();
+        //获取当前胶囊新闻类型所用的新闻数据状态
+        updateNewsListViewsCount(id)
+        
     }, [])
+
+      //获取当前胶囊新闻类型所用的新闻数据状态
+  const updateNewsListViewsCount = (id: number) => {
+    if (previousType === '1') {
+        const updateList = newsList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setNewsList(updateList);
+    }
+    if (previousType === '2') {
+        const updateList = sportList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setSportList(updateList);
+    }
+    if (previousType === '3') {
+        const updateList = entertainmentList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setEntertainmentList(updateList);
+    }
+    if (previousType === '4') {
+        const updateList = militaryList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setMilitaryList(updateList);
+    }
+    if (previousType === '5') {
+        const updateList = scienceList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setScienceList(updateList)
+    }
+    if (previousType === '7') {
+        const updateList = netFriendList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setNetFriendList(updateList)
+    }
+    if (previousType === '8') {
+        const updateList = southeastAsiaList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setSoutheastAsiaList(updateList)
+    }
+    if (previousType === '9') {
+        const updateList = youtubeList.map((data, _index)=>(data.id === id) ? {...data, viewCount: viewCount + 1} : data)
+        setYoutubeList(updateList)
+    }
+  }
+
 
     return (
         <>
