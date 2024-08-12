@@ -59,10 +59,9 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 });
 
 
-const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
+const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId }) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
-  const [commentCount, setCommentCount] = useState(0);
   const [comment, setComment] = useState('')//评论内容
   const [showsCommentInput, setShowCommentInput] = useState(false)//是否弹出评论输入框
   const textAreaRef = useRef<TextAreaRef>(null);
@@ -70,7 +69,6 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
   const [topId, setTopId] = useState<number | null>();//顶层评论id
   const [replyId, setReplyId] = useState<number | null>();//回复内嵌评论id
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
-
 
   const reqCommentApi = (selectId: number) => {
     setCommentsList((prevComments) => {
@@ -140,14 +138,10 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
     const param = { newsId: newsId, pageNum: reqPageNum, pageSize: 10 }
     const response = await Request_GetCommentPage(param);
 
-    setCommentCount(response.data.commentCount);
-
     if (response.data.list?.length > 0) {
       //如果新取回来的评论数据和上一次的不一样
       if (JSON.stringify(response.data.list) !== JSON.stringify(commentsList)) {
         //将新请求回来的评论和之前的评论放在一起保存更新状态
-        const list = [...commentsList ?? [], ...response.data.list];
-        console.log(list)
         setCommentsList([...commentsList ?? [], ...response.data.list]);
       }
 
@@ -167,10 +161,10 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
 
 
   //点赞
-  const clickLikes = async(id: number) => {
-    const param = {id: id}
+  const clickLikes = async (id: number) => {
+    const param = { id: id }
     const resp = await Request_LikesCount(param);
-    const {code , data} = resp;
+    const { code, data } = resp;
 
     if (code === 0) {
       const result = data ? '点赞 +1' : '已点赞';
@@ -191,7 +185,7 @@ const Comment: React.FC<any> = ({ setNewsCommentCount, newsId }) => {
   return (
     <>
       <PullToRefresh onRefresh={() => reqCommentPageApi(true)}>
-        <Divider className='line'> 共 {commentCount} 条评论 </Divider>
+        <Divider className='line'> 共 {newsCommentCount} 条评论 </Divider>
 
         {commentsList?.map((comment, _index) => (
           <div className="outer-comment" key={comment.topComment.id}>
