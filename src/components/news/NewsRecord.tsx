@@ -1,18 +1,39 @@
 import React from 'react';
 import { Card, Image } from 'antd-mobile';
 import '@/components/news/NewsRecord.less';
-import { NewsInfoType } from '@/pages/news/api';
 import { useNavigate } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
 import { MessageOutline} from 'antd-mobile-icons';
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }) => {
+export interface NewsInfoType{
+  category?: any | null;
+  commentsCount?: any | null;
+  content?: any | null;
+  contentImagePath?: any | null;
+  createName?: any | null;
+  createTime?: any | null;
+  filterContent?: any | null;
+  id?: any | null;
+  likesCount?: any | null;
+  newsStatus?: any | null;
+  photoPath?: any | null;
+  source?: any | null;
+  title?: any | null;
+  updateName?: any | null;
+  updateTime?: any | null;
+  url?: any | null;
+  viewCount?: any | null;
+  newsTab?: any;
+}
+
+
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime , newsTab}) => {
   const navigate = useNavigate();
 
   const params = { id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }
 
   const toNewsInfo = () => {
-    navigate('/newsinfo', { state: params })
+    navigate('/newsinfo', { state: { ...params, previousType: newsTab } });
   }
 
   return (

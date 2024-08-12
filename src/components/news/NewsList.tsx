@@ -271,6 +271,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
             commentsCount={news.commentsCount}
             viewCount={news.viewCount}
             createTime={news.createTime}
+            newsTab={newsTab}
           />
         ))}
       </PullToRefresh>

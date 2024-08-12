@@ -50,7 +50,7 @@ const NewsInfo: React.FC = () => {
     const [showsCommentInput, setShowCommentInput] = useState(false)
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false)
-    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime } = useLocation().state;
+    const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType} = useLocation().state;
     const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
     const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
     const [newsViewCount, setNewsViewCount] = useState(viewCount);
@@ -131,7 +131,7 @@ const NewsInfo: React.FC = () => {
         const resp = await Request_IncreaseLikesCount(id);
         console.log('新闻点赞响应结果:', resp)
 
-        if (resp.code === 0){
+        if (resp.code === 0) {
             const reslut = resp.data ? "点赞 +1" : "已点赞";
             Toast.show({
                 icon: <HeartOutlined />,
@@ -149,7 +149,12 @@ const NewsInfo: React.FC = () => {
 
     //返回上一层
     const back = () => {
-        navigate(-1);
+        // 如果有 previousType，则导航回对应的新闻列表页面
+        if (previousType) {
+            navigate(`/news/${previousType}`);
+        } else {
+            navigate(-1); // 否则使用默认的返回行为
+        }
     };
 
     useEffect(() => {
@@ -187,7 +192,7 @@ const NewsInfo: React.FC = () => {
                 <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
 
                 <div className="newsinfo-attribute">
-                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {newsViewCount}</span>
+                    <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {newsViewCount + 1}</span>
                     <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {newsLikesCount}</span>
                 </div>
 

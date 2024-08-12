@@ -17,7 +17,7 @@ export default [
     component: Home,
   },
   {
-    path: '/news',
+    path: '/news/:typeId',
     component: News,
   },
   {
