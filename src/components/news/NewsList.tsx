@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
@@ -28,27 +28,9 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
   const navigate = useNavigate();
 
 
-  const toNewsInfo = (params) => {
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString()); // 保存当前的滚动位置
-    console.log('toNewsInfo', sessionStorage.getItem('scrollPosition'));
-    navigate('/newsinfo', { state: { ...params, previousType: newsTab } });
-  };
 
-  // 在组件挂载时恢复滚动位置
   useEffect(() => {
-    const savedScrollPosition = sessionStorage.getItem('scrollPosition');
-    
-    // 使用 requestAnimationFrame 确保在下一帧执行滚动操作
-    if (savedScrollPosition) {
-      setTimeout(() => {
-        window.scrollTo(0, parseInt(savedScrollPosition, 10));
-      }, 100); // 0 毫秒延迟
-    }
   }, []);
-  
-  
-  
-
 
 
   //各种新闻类型全局状态数据
@@ -93,7 +75,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
   const reqNewsApi = async (categoryEnum: string, isReset: boolean) => {
     const pageNum = isReset ? 1 : getTabPageNum();//如果是刷新就从第一页开始
 
-    const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 20, categoryEnum: categoryEnum };
+    const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 50, categoryEnum: categoryEnum };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
@@ -305,19 +287,6 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
             viewCount={news.viewCount}
             createTime={news.createTime}
             newsTab={newsTab}
-            onClick={() => toNewsInfo({
-              id: news.id,
-              title: news.title,
-              content: news.filterContent,
-              photoPath: news.photoPath,
-              likesCount: news.likesCount,
-              contentImagePath: news.contentImagePath,
-              commentsCount: news.commentsCount,
-              viewCount: news.viewCount,
-              createTime: news.createTime,
-              newsTab
-            })}
-
             data-id={news.id} // 为每个新闻条目添加唯一标识符
           />
         ))}

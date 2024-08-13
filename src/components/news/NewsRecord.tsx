@@ -1,11 +1,11 @@
-import { useRef } from 'react';
-import { Card, Image } from 'antd-mobile';
+import { useState } from 'react';
+import { Card, Image, Popup } from 'antd-mobile';
 import '@/components/news/NewsRecord.less';
 import { FcLike, FcReading } from "react-icons/fc";
-import { MessageOutline} from 'antd-mobile-icons';
-import useStore from '@/zustand/store'
+import { MessageOutline } from 'antd-mobile-icons';
+import NewsInfo from '@/components/news/newsinfo/NewsInfo';
 
-export interface NewsInfoType{
+export interface NewsInfoType {
   category?: any | null;
   commentsCount?: any | null;
   content?: any | null;
@@ -24,33 +24,60 @@ export interface NewsInfoType{
   url?: any | null;
   viewCount?: any | null;
   newsTab?: any;
-  onClick?: any;
 }
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime ,newsTab, onClick}) => {
+
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, newsTab }) => {
+  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
 
   return (
-    <Card className="inner-container" onClick={onClick} data-id={id}>
-      <div className="content-container">
-        <div className="image-container">
-          {photoPath && photoPath.split(',').map((src, index) => (
-            <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} />
-          ))}
-        </div>
-        <div className="text-container">
-          <div className="title">
-            {title}
-            <div><span className='time'>{createTime.split(' ')[0]}</span></div>
+    <>
+      <Card className="inner-container" data-id={id} onClick={() => { setVisibleCloseRight(true) }}>
+        <div className="content-container">
+          <div className="image-container">
+            {photoPath && photoPath.split(',').map((src, index) => (
+              <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} />
+            ))}
           </div>
-          <div className="attributes">
-            <span><FcReading fontSize={15} /> {viewCount}</span>
-            <span><FcLike fontSize={15}/> {likesCount}</span>
-            <span><MessageOutline fontSize={15}/> {commentsCount}</span>
+          <div className="text-container">
+            <div className="title">
+              {title}
+              <div><span className='time'>{createTime.split(' ')[0]}</span></div>
+            </div>
+            <div className="attributes">
+              <span><FcReading fontSize={15} /> {viewCount}</span>
+              <span><FcLike fontSize={15} /> {likesCount}</span>
+              <span><MessageOutline fontSize={15} /> {commentsCount}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+
+      <Popup bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', minHeight: '100vh', width: '100%' }}
+        position='right'
+        closeOnSwipe={true}
+        closeOnMaskClick
+        visible={visibleCloseRight}
+        onClose={() => { setVisibleCloseRight(false) }}>
+
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          <NewsInfo
+            setVisibleCloseRight={setVisibleCloseRight}
+            id={id}
+            title={title}
+            content={content}
+            photoPath={photoPath}
+            likesCount={likesCount}
+            contentImagePath={contentImagePath}
+            commentsCount={commentsCount}
+            viewCount={viewCount}
+            createTime={createTime}
+            newsTab={newsTab} />
+        </div>
+
+      </Popup>
+    </>
   );
 };
 

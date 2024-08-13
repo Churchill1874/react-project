@@ -1,12 +1,13 @@
 @theme: #1890ff;
 
 .news-info{
-    padding: 0px 5px;
+    padding: 5px;
     .adm-card-body{
       margin: 0px;
       padding: 0px;
 
     }
+    padding-bottom: 30px;
 }
 
 .edit {
@@ -32,6 +33,7 @@
     --text-align:center;
     word-wrap: break-word; /* 确保长单词也会换行 */
     white-space: pre-wrap; /* 保留空白字符 */
+    overflow-y: auto;
 
     .adm-text-area-element{
       padding: 5px 5px;
@@ -97,7 +99,9 @@
 
 .send-news-comment {
   position: fixed;
-  bottom: 33px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   padding: 0px 10px;
@@ -108,9 +112,11 @@
 }
 
 .news-input-comment {
+  display: absolute;
   flex: 1;
   outline: none;
   padding: 2px;
+  margin-bottom: 5px;
   border: 1px solid @theme;
   border-radius: 10px;
   width: calc(100% - 200px); /* 调整宽度以留出按钮的空间 */

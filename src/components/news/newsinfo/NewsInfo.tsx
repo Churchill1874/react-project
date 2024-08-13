@@ -1,10 +1,8 @@
 import { useState, useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
-import { Swiper, NavBar, Image, TextArea, ImageViewer, Input, Button, Toast, Popup, TextAreaRef } from 'antd-mobile'
-import { HeartOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Swiper, Image, TextArea, ImageViewer, Input, Button, Toast, Popup, TextAreaRef } from 'antd-mobile'
+import { HeartOutline, LeftOutline } from 'antd-mobile-icons';
 import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
-import { useLocation } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
 import useStore from '@/zustand/store'
 import {
@@ -42,19 +40,39 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
   return <TextArea {...props} placeholder='请输入评论内容' ref={innerRef} />;
 });
 
-const NewsInfo: React.FC = () => {
+
+export interface NewsInfoType {
+  category?: any | null;
+  commentsCount?: any | null;
+  content?: any | null;
+  contentImagePath?: any | null;
+  createName?: any | null;
+  createTime?: any | null;
+  filterContent?: any | null;
+  id?: any | null;
+  likesCount?: any | null;
+  newsStatus?: any | null;
+  photoPath?: any | null;
+  source?: any | null;
+  title?: any | null;
+  updateName?: any | null;
+  updateTime?: any | null;
+  url?: any | null;
+  viewCount?: any | null;
+  newsTab?: any;
+  previousType?: any;
+  setVisibleCloseRight: any;
+}
+
+const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType }) => {
   const textAreaRef = useRef<TextAreaRef>(null);
   const [comment, setComment] = useState('')
   const [showsCommentInput, setShowCommentInput] = useState(false)
-  const navigate = useNavigate();
   const [visible, setVisible] = useState(false)
-  const { id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType } = useLocation().state;
+  const [likesIdList, setLikesIdList] = useState<number[]>([]);
   const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
   const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
   const [newsViewCount, setNewsViewCount] = useState(viewCount);
-  const [likesIdList, setLikesIdList] = useState<number[]>([]);
-
-
 
   //各种新闻类型全局状态数据
   const { newsList, setNewsList,
@@ -73,6 +91,7 @@ const NewsInfo: React.FC = () => {
   }
 
   const getImages = () => {
+    console.log('contentImagePath:', contentImagePath)
     return contentImagePath ? contentImagePath.split(',') : [photoPath];
   };
 
@@ -156,7 +175,7 @@ const NewsInfo: React.FC = () => {
     if (resp.code === 0) {
       if (resp.data) {
         Toast.show({
-          icon: <HeartOutlined />,
+          icon: <HeartOutline />,
           content: '点赞 +1',
           duration: 600,
         })
@@ -180,22 +199,12 @@ const NewsInfo: React.FC = () => {
 
   }
 
-  //返回上一层
-  const back = () => {
-    // 如果有 previousType，则导航回对应的新闻列表页面
-    if (previousType) {
-      navigate(`/news/${previousType}`);
-    } else {
-      navigate(-1); // 否则使用默认的返回行为
-    }
-  };
-
   useEffect(() => {
     //刷新新闻信息
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
     updateNewsListViewsCount(id)
-  }, [id])
+  }, [])
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
@@ -239,9 +248,7 @@ const NewsInfo: React.FC = () => {
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
       <div className='news-info'>
-        <NavBar className="edit" onBack={back}></NavBar>
-
-        <div className='newsinfo-title'>{title}</div>
+        <div className='newsinfo-title'><LeftOutline style={{ paddingRight: '5px' }} onClick={() => setVisibleCloseRight(false)} fontSize={24} /> {title}</div>
         <div className='newsinfo-time'>{createTime}</div>
 
         {contentImagePath &&
