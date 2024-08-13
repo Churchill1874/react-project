@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
 
+type SetStateAction<T> = T | ((prevState: T) => T);
+
 //定义综合状态类型
 interface AppState {
   /**用户信息 */
@@ -21,7 +23,7 @@ interface AppState {
   /**新闻页 */
 
   //新闻页的新闻类型列表
-  newsList: NewsInfoType[]; 
+  newsList: NewsInfoType[];
   setNewsList: (newsList: NewsInfoType[]) => void;
   newsHasMore: boolean;
   setNewsHasMore: (newsHasMore: boolean) => void;
@@ -29,7 +31,7 @@ interface AppState {
   setNewsPage: (newsPage: (prev: number) => number) => void; // 这里的类型修改
 
   //新闻页的体育新闻
-  sportList: NewsInfoType[]; 
+  sportList: NewsInfoType[];
   setSportList: (sportList: NewsInfoType[]) => void;
   sportHasMore: boolean;
   setSportHasMore: (sportHasMore: boolean) => void;
@@ -37,7 +39,7 @@ interface AppState {
   setSportPage: (sportPage: (prev: number) => number) => void; // 这里的类型修改
 
   //新闻页的娱乐新闻
-  entertainmentList: NewsInfoType[]; 
+  entertainmentList: NewsInfoType[];
   setEntertainmentList: (entertainmentList: NewsInfoType[]) => void;
   entertainmentHasMore: boolean;
   setEntertainmentHasMore: (entertainmentHasMore: boolean) => void;
@@ -45,7 +47,7 @@ interface AppState {
   setEntertainmentPage: (entertainmentPage: (prev: number) => number) => void; // 这里的类型修改
 
   //新闻页的军事新闻
-  militaryList: NewsInfoType[]; 
+  militaryList: NewsInfoType[];
   setMilitaryList: (militaryList: NewsInfoType[]) => void;
   militaryHasMore: boolean;
   setMilitaryHasMore: (militaryHasMore: boolean) => void;
@@ -53,7 +55,7 @@ interface AppState {
   setMilitaryPage: (militaryPage: (prev: number) => number) => void; // 这里的类型修改
 
   //新闻页的科技新闻
-  scienceList: NewsInfoType[]; 
+  scienceList: NewsInfoType[];
   setScienceList: (scienceList: NewsInfoType[]) => void;
   scienceHasMore: boolean;
   setScienceHasMore: (scienceHasMore: boolean) => void;
@@ -61,7 +63,7 @@ interface AppState {
   setSciencePage: (sciencePage: (prev: number) => number) => void; // 这里的类型修改
 
   //新闻页的网友新闻
-  netFriendList: NewsInfoType[]; 
+  netFriendList: NewsInfoType[];
   setNetFriendList: (netFriendList: NewsInfoType[]) => void;
   netFriendHasMore: boolean;
   setNetFriendHasMore: (netFriendHasMore: boolean) => void;
@@ -69,14 +71,14 @@ interface AppState {
   setNetFriendPage: (netFriendPage: (prev: number) => number) => void; // 这里的类型修改
 
   //东南亚
-  southeastAsiaList: NewsInfoType[],  
+  southeastAsiaList: NewsInfoType[],
   setSoutheastAsiaList: (southeastAsiaList: NewsInfoType[]) => void;
   southeastAsiaMore: boolean;
   setSoutheastAsiaMore: (southeastAsiaMore: boolean) => void;
   southeastAsiaPage: number;
   setSoutheastAsiaPage: (southeastAsiaPage: (prev: number) => number) => void;
 
-  
+
   //youtube
   youtubeList: NewsInfoType[];
   setYoutubeList: (youtubeList: NewsInfoType[]) => void;
@@ -84,7 +86,12 @@ interface AppState {
   setYoutubeMore: (youtubeMore: boolean) => void;
   youtubePage: number;
   setYoutubePage: (youtubePage: (prev: number) => number) => void;
-  
+
+  //保存新闻列表屏幕位置
+  scrollPosition: number;
+  setScrollPosition: (scrollPosition: SetStateAction<number>) => void;
+  // 其他状态
+
 }
 
 const useStore = create<AppState>((set) => ({
@@ -146,21 +153,27 @@ const useStore = create<AppState>((set) => ({
   setNetFriendPage: (netFriendPage) => set((state) => ({ netFriendPage: netFriendPage(state.netFriendPage) })),
 
   //东南亚
-  southeastAsiaList:[],
-  setSoutheastAsiaList: (southeastAsiaList) => set(() => ({southeastAsiaList})),
+  southeastAsiaList: [],
+  setSoutheastAsiaList: (southeastAsiaList) => set(() => ({ southeastAsiaList })),
   southeastAsiaMore: true,
-  setSoutheastAsiaMore: (southeastAsiaMore)=> set(() => ({southeastAsiaMore})),
+  setSoutheastAsiaMore: (southeastAsiaMore) => set(() => ({ southeastAsiaMore })),
   southeastAsiaPage: 1,
-  setSoutheastAsiaPage: (southeastAsiaPage)=> set((state) => ({ southeastAsiaPage: southeastAsiaPage(state.southeastAsiaPage)})),
+  setSoutheastAsiaPage: (southeastAsiaPage) => set((state) => ({ southeastAsiaPage: southeastAsiaPage(state.southeastAsiaPage) })),
 
   //youtube
-  youtubeList:[],
-  setYoutubeList: (youtubeList) => set(() => ({youtubeList})),
+  youtubeList: [],
+  setYoutubeList: (youtubeList) => set(() => ({ youtubeList })),
   youtubeMore: true,
-  setYoutubeMore: (youtubeMore) => set(() => ({youtubeMore})),
+  setYoutubeMore: (youtubeMore) => set(() => ({ youtubeMore })),
   youtubePage: 1,
-  setYoutubePage: (youtubePage) => set((state) => ({youtubePage: youtubePage(state.southeastAsiaPage)}))
+  setYoutubePage: (youtubePage) => set((state) => ({ youtubePage: youtubePage(state.youtubePage) })),
 
+
+  //保存滚动位置
+  scrollPosition: 0,
+  setScrollPosition: (scrollPosition) => set((state) => ({
+    scrollPosition: typeof scrollPosition === 'function' ? scrollPosition(state.scrollPosition) : scrollPosition,
+  })),
 }));
 
 export default useStore;

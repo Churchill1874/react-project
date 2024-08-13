@@ -4,6 +4,7 @@ import '@/components/news/NewsRecord.less';
 import { useNavigate } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
 import { MessageOutline} from 'antd-mobile-icons';
+import useStore from '@/zustand/store'
 
 export interface NewsInfoType{
   category?: any | null;
@@ -28,11 +29,13 @@ export interface NewsInfoType{
 
 
 const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime , newsTab}) => {
+  const { setScrollPosition } = useStore(); // 从状态管理中获取 setScrollPosition
   const navigate = useNavigate();
 
   const params = { id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }
 
   const toNewsInfo = () => {
+    setScrollPosition(window.scrollY); // 保存当前滚动位置到全局状态
     navigate('/newsinfo', { state: { ...params, previousType: newsTab } });
   }
 

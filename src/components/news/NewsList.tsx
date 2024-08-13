@@ -1,10 +1,8 @@
-import  React from 'react';
+import {useEffect} from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 import useStore from '@/zustand/store'
-
-
 
 const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -26,6 +24,9 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
 
 
 const NewsList: React.FC<any> = ({ newsTab }) => {
+  //从新闻详情返回列表的时候 返回页面之前的位置
+  const { scrollPosition } = useStore(); // 从状态管理中获取 scrollPosition
+
   //各种新闻类型全局状态数据
   const { newsList, setNewsList, newsHasMore, setNewsHasMore, newsPage, setNewsPage,
     sportList, setSportList,sportHasMore,setSportHasMore,sportPage,setSportPage,
@@ -254,6 +255,12 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     }
     return [];
   }
+
+
+  useEffect(() => {
+    // 恢复滚动位置
+    window.scrollTo(0, scrollPosition);
+  }, [scrollPosition]);
 
 
   return (

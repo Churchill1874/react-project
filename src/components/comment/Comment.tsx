@@ -70,6 +70,8 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
   const [replyId, setReplyId] = useState<number | null>();//回复内嵌评论id
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
+
 
 
   const reqCommentApi = (selectId: number) => {
@@ -136,6 +138,9 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
 
   //请求获取当前新闻评论内容
   const reqCommentPageApi = async (isReset: boolean) => {
+    if (loading) return; // 如果正在加载，直接返回，防止重复请求
+    setLoading(true);
+
     const reqPageNum = isReset ? 1 : pageNum;
     const param = { newsId: newsId, pageNum: reqPageNum, pageSize: 10 }
     const response = await Request_GetCommentPage(param);
@@ -151,6 +156,8 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
     } else {
       setCommentHasMore(false)
     }
+
+    setLoading(false);
   }
 
 
