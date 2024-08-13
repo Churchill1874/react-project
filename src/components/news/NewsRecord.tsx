@@ -54,7 +54,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
         </div>
       </Card>
 
-      <Popup bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', minHeight: '100vh', width: '100%' }}
+      <Popup bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', height: '100vh', width: '100%' }}
         position='right'
         closeOnSwipe={true}
         closeOnMaskClick
