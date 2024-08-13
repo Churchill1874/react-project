@@ -1,7 +1,8 @@
-import {useEffect} from 'react';
+import { useEffect, useRef } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
+import { useNavigate } from 'react-router-dom';
 import useStore from '@/zustand/store'
 
 const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -24,17 +25,40 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
 
 
 const NewsList: React.FC<any> = ({ newsTab }) => {
-  //从新闻详情返回列表的时候 返回页面之前的位置
-  const { scrollPosition } = useStore(); // 从状态管理中获取 scrollPosition
+  const navigate = useNavigate();
+
+
+  const toNewsInfo = (params) => {
+    sessionStorage.setItem('scrollPosition', window.scrollY.toString()); // 保存当前的滚动位置
+    console.log('toNewsInfo', sessionStorage.getItem('scrollPosition'));
+    navigate('/newsinfo', { state: { ...params, previousType: newsTab } });
+  };
+
+  // 在组件挂载时恢复滚动位置
+  useEffect(() => {
+    const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+    
+    // 使用 requestAnimationFrame 确保在下一帧执行滚动操作
+    if (savedScrollPosition) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }, 100); // 0 毫秒延迟
+    }
+  }, []);
+  
+  
+  
+
+
 
   //各种新闻类型全局状态数据
   const { newsList, setNewsList, newsHasMore, setNewsHasMore, newsPage, setNewsPage,
-    sportList, setSportList,sportHasMore,setSportHasMore,sportPage,setSportPage,
-    entertainmentList, setEntertainmentList,entertainmentHasMore,setEntertainmentHasMore,entertainmentPage,setEntertainmentPage,
-    militaryList, setMilitaryList,militaryHasMore,setMilitaryHasMore,militaryPage,setMilitaryPage,
-    scienceList, setScienceList,scienceHasMore,setScienceHasMore,sciencePage,setSciencePage,
-    netFriendList, setNetFriendList ,netFriendHasMore,setNetFriendHasMore,netFriendPage,setNetFriendPage,
-    southeastAsiaList, setSoutheastAsiaList,southeastAsiaPage, setSoutheastAsiaPage, youtubePage, setYoutubePage, 
+    sportList, setSportList, sportHasMore, setSportHasMore, sportPage, setSportPage,
+    entertainmentList, setEntertainmentList, entertainmentHasMore, setEntertainmentHasMore, entertainmentPage, setEntertainmentPage,
+    militaryList, setMilitaryList, militaryHasMore, setMilitaryHasMore, militaryPage, setMilitaryPage,
+    scienceList, setScienceList, scienceHasMore, setScienceHasMore, sciencePage, setSciencePage,
+    netFriendList, setNetFriendList, netFriendHasMore, setNetFriendHasMore, netFriendPage, setNetFriendPage,
+    southeastAsiaList, setSoutheastAsiaList, southeastAsiaPage, setSoutheastAsiaPage, youtubePage, setYoutubePage,
     southeastAsiaMore, setSoutheastAsiaMore, youtubeMore, setYoutubeMore, youtubeList, setYoutubeList
   } = useStore();//新闻的全局变量
 
@@ -76,7 +100,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     if (newsListResp.length > 0) {
       if (categoryEnum === '1') {//新闻
         if (isReset) {
-          setNewsPage(()=>2)//下一页是
+          setNewsPage(() => 2)//下一页是
           setNewsList(newsListResp);
           setNewsHasMore(true)
         } else {
@@ -92,7 +116,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
       if (categoryEnum === '2') {//体育
         if (isReset) {
-          setSportPage(()=>2)
+          setSportPage(() => 2)
           setSportList(newsListResp)
           setSportHasMore(true)
         } else {
@@ -108,7 +132,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
       if (categoryEnum === '3') {//娱乐
         if (isReset) {
-          setEntertainmentPage(()=>2)
+          setEntertainmentPage(() => 2)
           setEntertainmentList(newsListResp)
           setEntertainmentHasMore(true)
         } else {
@@ -124,7 +148,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
       if (categoryEnum === '4') {//军事
         if (isReset) {
-          setMilitaryPage(()=>2)
+          setMilitaryPage(() => 2)
           setMilitaryList(newsListResp)
           setMilitaryHasMore(true)
         } else {
@@ -141,7 +165,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
       if (categoryEnum === '5') {//科技
         if (isReset) {
-          setSciencePage(()=>2)
+          setSciencePage(() => 2)
           setScienceList(newsListResp)
           setScienceHasMore(true)
         } else {
@@ -157,7 +181,7 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
 
       if (categoryEnum === '7') {//网友
         if (isReset) {
-          setNetFriendPage(()=>2)
+          setNetFriendPage(() => 2)
           setNetFriendList(newsListResp)
           setNetFriendHasMore(true)
         } else {
@@ -171,33 +195,33 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
         }
       }
 
-      if (categoryEnum === '8'){//东南亚
+      if (categoryEnum === '8') {//东南亚
         if (isReset) {
-          setSoutheastAsiaPage(()=>2)
+          setSoutheastAsiaPage(() => 2)
           setSoutheastAsiaList(newsListResp)
           setSoutheastAsiaMore(true)
-        } else{
+        } else {
           if (JSON.stringify(newsListResp) !== JSON.stringify(southeastAsiaList)) {
             setSoutheastAsiaPage((prev) => prev + 1)
             setSoutheastAsiaList([...southeastAsiaList, ...newsListResp])
             setSoutheastAsiaMore(true)
-          } else{
+          } else {
             setSoutheastAsiaMore(false)
           }
         }
       }
 
-      if (categoryEnum === '9'){//youtube
+      if (categoryEnum === '9') {//youtube
         if (isReset) {
-          setYoutubePage(()=>2)
+          setYoutubePage(() => 2)
           setYoutubeList(newsListResp)
           setYoutubeMore(true)
-        } else{
+        } else {
           if (JSON.stringify(newsListResp) !== JSON.stringify(youtubeList)) {
             setYoutubePage((prev) => prev + 1)
             setYoutubeList([...youtubeList, ...newsListResp])
             setYoutubeMore(true)
-          } else{
+          } else {
             setYoutubeMore(false)
           }
         }
@@ -222,10 +246,10 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       if (categoryEnum === '7') {//网友
         setNetFriendHasMore(false)
       }
-      if (categoryEnum === '8'){
+      if (categoryEnum === '8') {
         setSoutheastAsiaMore(false)
       }
-      if (categoryEnum === '9'){
+      if (categoryEnum === '9') {
         setYoutubeMore(false)
       }
     }
@@ -253,18 +277,20 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
     if (newsTab === '7') {
       return netFriendList || [];
     }
+    if (newsTab === '8') {
+      return southeastAsiaList || [];
+    }
+    if (newsTab === '9') {
+      return youtubeList || [];
+    }
     return [];
   }
 
 
-  useEffect(() => {
-    // 恢复滚动位置
-    window.scrollTo(0, scrollPosition);
-  }, [scrollPosition]);
-
 
   return (
-    <div className="outer-container">
+    <div className="outer-container" >
+
       <PullToRefresh onRefresh={() => reqNewsApi(newsTab, true)}>
         {capsuleTabData()?.map((news, index) => (
           <NewsRecord
@@ -279,6 +305,20 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
             viewCount={news.viewCount}
             createTime={news.createTime}
             newsTab={newsTab}
+            onClick={() => toNewsInfo({
+              id: news.id,
+              title: news.title,
+              content: news.filterContent,
+              photoPath: news.photoPath,
+              likesCount: news.likesCount,
+              contentImagePath: news.contentImagePath,
+              commentsCount: news.commentsCount,
+              viewCount: news.viewCount,
+              createTime: news.createTime,
+              newsTab
+            })}
+
+            data-id={news.id} // 为每个新闻条目添加唯一标识符
           />
         ))}
       </PullToRefresh>
@@ -286,6 +326,8 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
       <InfiniteScroll loadMore={() => reqNewsApi(newsTab, false)} hasMore={getPageHasMore()}>
         <NewsScrollContent hasMore={getPageHasMore()} />
       </InfiniteScroll>
+
+
     </div>
 
   );

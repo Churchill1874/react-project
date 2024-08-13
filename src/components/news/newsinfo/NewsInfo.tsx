@@ -195,7 +195,7 @@ const NewsInfo: React.FC = () => {
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
     updateNewsListViewsCount(id)
-  }, [])
+  }, [id])
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {

@@ -1,7 +1,6 @@
-import React from 'react';
+import { useRef } from 'react';
 import { Card, Image } from 'antd-mobile';
 import '@/components/news/NewsRecord.less';
-import { useNavigate } from 'react-router-dom';
 import { FcLike, FcReading } from "react-icons/fc";
 import { MessageOutline} from 'antd-mobile-icons';
 import useStore from '@/zustand/store'
@@ -25,22 +24,14 @@ export interface NewsInfoType{
   url?: any | null;
   viewCount?: any | null;
   newsTab?: any;
+  onClick?: any;
 }
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime , newsTab}) => {
-  const { setScrollPosition } = useStore(); // 从状态管理中获取 setScrollPosition
-  const navigate = useNavigate();
-
-  const params = { id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }
-
-  const toNewsInfo = () => {
-    setScrollPosition(window.scrollY); // 保存当前滚动位置到全局状态
-    navigate('/newsinfo', { state: { ...params, previousType: newsTab } });
-  }
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime ,newsTab, onClick}) => {
 
   return (
-    <Card className="inner-container" onClick={() => toNewsInfo()}>
+    <Card className="inner-container" onClick={onClick} data-id={id}>
       <div className="content-container">
         <div className="image-container">
           {photoPath && photoPath.split(',').map((src, index) => (
