@@ -169,7 +169,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
 
   //点赞
   const clickLikes = async (id: number, isTopReply) => {
-    console.log('id', id, 'isTopReply', isTopReply)
     if (likesIdList.includes(id)) {
       Toast.show({
         content: '已点赞',
@@ -185,7 +184,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
     const { code, data } = resp;
 
     if (code === 0) {
-      if (data) {
+      if (data.value) {
         Toast.show({
           icon: <HeartOutlined />,
           content: '点赞 +1',
@@ -202,7 +201,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
               comment
           );
 
-          console.log('updateCommentsList:', updateCommentsList)
           setCommentsList(updateCommentsList);
         } else {
           // 处理回复评论
@@ -216,7 +214,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
             }
           );
 
-          console.log('updateCommentsList:', updateCommentsList)
           setCommentsList(updateCommentsList);
         }
 
@@ -225,6 +222,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
           content: '已点赞',
           duration: 600,
         })
+        return;
       }
 
     } else {

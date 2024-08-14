@@ -55,7 +55,7 @@ export interface IncreaseLikesCountReqType{
 export interface IncreaseLikesCountRespType {
     code: number;
     msg: string;
-    data: boolean;
+    data: {value:boolean};
 }
 
 //发表新闻评论

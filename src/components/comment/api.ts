@@ -58,7 +58,7 @@ export interface ResponseType{
 //查询新闻评论响应
 export interface IncreaseLikesCountRespType{
     code: number;
-    data: boolean;
+    data: {value: boolean};
     msg: string;
 }
 

@@ -61,7 +61,7 @@ export interface NewsInfoType {
   viewCount?: any | null;
   newsTab?: any;
   previousType?: any;
-  setVisibleCloseRight: any;
+  setVisibleCloseRight?: any;
 }
 
 const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, newsTab }) => {
@@ -172,7 +172,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
     const resp = await Request_IncreaseLikesCount(param);
 
     if (resp.code === 0) {
-      if (resp.data) {
+      if (resp.data.value) {
         Toast.show({
           icon: <HeartOutline />,
           content: '点赞 +1',
@@ -183,10 +183,11 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
           content: '已点赞',
           duration: 600,
         })
+        return;
       }
 
 
-      if (resp.data) {
+      if (resp.data.value) {
         setNewsLikesCount((prev) => prev + 1)
       }
     } else {
@@ -250,7 +251,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
       <div className='news-info'>
-        <div className='newsinfo-title'  onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px' , color: 'gray'}} ><LeftOutline fontSize={24} />返回</span> {title}</div>
+        <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={24} />返回</span> {title}</div>
         <div className='newsinfo-time'>{createTime}</div>
 
         {contentImagePath &&
@@ -282,7 +283,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
         <Comment key={newsCommentCount} newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} />
       </div>
 
-      <FloatingBubble onClick={inputCommentClick} 
+      <FloatingBubble onClick={inputCommentClick}
         axis='xy'
         magnetic='x'
         style={{
@@ -294,16 +295,16 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
         <MessageFill fontSize={32} />
       </FloatingBubble>
 
-        <Popup className='news-comment-popup'
-          visible={showsCommentInput}
-          onMaskClick={() => { setShowCommentInput(false) }}
-          onClose={() => { setShowCommentInput(false) }}
-          bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
-          maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
-        >
-          <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
-          <Button className="news-send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
-        </Popup>
+      <Popup className='news-comment-popup'
+        visible={showsCommentInput}
+        onMaskClick={() => { setShowCommentInput(false) }}
+        onClose={() => { setShowCommentInput(false) }}
+        bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
+        maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
+      >
+        <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
+        <Button className="news-send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
+      </Popup>
 
     </>
 
