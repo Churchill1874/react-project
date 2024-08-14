@@ -84,13 +84,22 @@
     padding: 0px;
     margin-right: 2%;
     font-size: 12px;
-    /* 间距可以根据需要调整 */
-    margin-bottom: 0px;
-
 }
 
 //下拉刷新样式
-.adm-pull-to-refresh-head-content{
+.outer-container .adm-pull-to-refresh-head-content{
   color: #fff;
+}
+
+
+.popup-scrollable-content{
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+     /* 添加适当的内边距，避免内容过长时遮挡 */
+}
+
+.news-record-popup{
+    overflow-y: auto;
+
 }
 

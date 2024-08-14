@@ -1,6 +1,6 @@
 import { useState, useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
-import { Swiper, Image, TextArea, ImageViewer, Input, Button, Toast, Popup, TextAreaRef } from 'antd-mobile'
-import { HeartOutline, LeftOutline } from 'antd-mobile-icons';
+import { Swiper, Image, TextArea, ImageViewer, Input, Button, Toast, Popup, TextAreaRef, FloatingBubble } from 'antd-mobile'
+import { HeartOutline, LeftOutline, MessageFill } from 'antd-mobile-icons';
 import '@/components/news/newsinfo/NewsInfo.less'
 import Comment from '@/components/comment/Comment'
 import { FcLike, FcReading } from "react-icons/fc";
@@ -64,7 +64,7 @@ export interface NewsInfoType {
   setVisibleCloseRight: any;
 }
 
-const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, previousType }) => {
+const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, newsTab }) => {
   const textAreaRef = useRef<TextAreaRef>(null);
   const [comment, setComment] = useState('')
   const [showsCommentInput, setShowCommentInput] = useState(false)
@@ -91,7 +91,6 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
   }
 
   const getImages = () => {
-    console.log('contentImagePath:', contentImagePath)
     return contentImagePath ? contentImagePath.split(',') : [photoPath];
   };
 
@@ -200,6 +199,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
   }
 
   useEffect(() => {
+    console.log(123)
     //刷新新闻信息
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
@@ -208,35 +208,38 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
-    if (previousType === '1') {
+
+    console.log('previousType:', newsTab)
+    if (newsTab === '1') {
       const updateList = newsList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
+      console.log('updateList:', updateList)
       setNewsList(updateList);
     }
-    if (previousType === '2') {
+    if (newsTab === '2') {
       const updateList = sportList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setSportList(updateList);
     }
-    if (previousType === '3') {
+    if (newsTab === '3') {
       const updateList = entertainmentList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setEntertainmentList(updateList);
     }
-    if (previousType === '4') {
+    if (newsTab === '4') {
       const updateList = militaryList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setMilitaryList(updateList);
     }
-    if (previousType === '5') {
+    if (newsTab === '5') {
       const updateList = scienceList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setScienceList(updateList)
     }
-    if (previousType === '7') {
+    if (newsTab === '7') {
       const updateList = netFriendList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setNetFriendList(updateList)
     }
-    if (previousType === '8') {
+    if (newsTab === '8') {
       const updateList = southeastAsiaList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setSoutheastAsiaList(updateList)
     }
-    if (previousType === '9') {
+    if (newsTab === '9') {
       const updateList = youtubeList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       setYoutubeList(updateList)
     }
@@ -248,7 +251,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
       <div className='news-info'>
-        <div className='newsinfo-title'><LeftOutline style={{ paddingRight: '5px' }} onClick={() => setVisibleCloseRight(false)} fontSize={24} /> {title}</div>
+        <div className='newsinfo-title'  onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px' , color: 'gray'}} ><LeftOutline fontSize={24} />返回</span> {title}</div>
         <div className='newsinfo-time'>{createTime}</div>
 
         {contentImagePath &&
@@ -274,13 +277,24 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
         <div className="newsinfo-attribute">
           <span><FcReading className='attribute-icon' fontSize={20} /> 浏览  {newsViewCount + 1}</span>
           <span><FcLike className='attribute-icon' fontSize={20} onClick={clickLikes} /> 赞 {newsLikesCount}</span>
+          <Input className="news-input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
         </div>
 
         <Comment key={newsCommentCount} newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} />
       </div>
 
-      <div className="send-news-comment">
-        <Input className="news-input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
+      <FloatingBubble onClick={inputCommentClick} 
+        axis='xy'
+        magnetic='x'
+        style={{
+          '--initial-position-bottom': '24px',
+          '--initial-position-right': '24px',
+          '--edge-distance': '24px',
+        }}
+      >
+        <MessageFill fontSize={32} />
+      </FloatingBubble>
+
         <Popup className='news-comment-popup'
           visible={showsCommentInput}
           onMaskClick={() => { setShowCommentInput(false) }}
@@ -291,7 +305,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
           <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
           <Button className="news-send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
         </Popup>
-      </div>
+
     </>
 
   );

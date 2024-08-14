@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
-import { useNavigate } from 'react-router-dom';
 import useStore from '@/zustand/store'
 
 const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -25,9 +24,6 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
 
 
 const NewsList: React.FC<any> = ({ newsTab }) => {
-  const navigate = useNavigate();
-
-
 
   useEffect(() => {
   }, []);

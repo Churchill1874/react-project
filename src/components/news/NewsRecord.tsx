@@ -54,14 +54,14 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
         </div>
       </Card>
 
-      <Popup bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', height: '100vh', width: '100%' }}
+      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
         position='right'
         closeOnSwipe={true}
         closeOnMaskClick
         visible={visibleCloseRight}
         onClose={() => { setVisibleCloseRight(false) }}>
 
-        <div style={{ flex: 1, overflowY: 'auto' }}>
+        <div className="popup-scrollable-content" >
           <NewsInfo
             setVisibleCloseRight={setVisibleCloseRight}
             id={id}

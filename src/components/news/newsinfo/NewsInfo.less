@@ -1,95 +1,113 @@
 @theme: #1890ff;
 
-.news-info{
-    padding: 5px;
-    .adm-card-body{
-      margin: 0px;
-      padding: 0px;
+.news-info {
+  padding: 5px;
 
-    }
-    //padding-bottom: 30px;
+  .adm-card-body {
+    margin: 0px;
+    padding: 0px;
+
+  }
+
+
+}
+
+.popup-scrollable-content {
+  padding-bottom: 300px;
 }
 
 .edit {
-    height: 30px;
-    color: black;
-    background-color: none;
-    margin-bottom: 5px;
+  height: 30px;
+  color: black;
+  background-color: none;
+  margin-bottom: 5px;
 
-    .adm-nav-bar-title {
-      font-size: 12px;
-    }
-
-    .adm-nav-bar-back-arrow {
-      
-      font-size: 18px;
-    }
-  }
-
-  .newsinfo-content{
-    padding: 2px 0px;
-    color: black;
-    --font-size	:14px;
-    --text-align:center;
-    word-wrap: break-word; /* 确保长单词也会换行 */
-    white-space: pre-wrap; /* 保留空白字符 */
-    overflow-y: auto;
-
-    .adm-text-area-element{
-      padding: 5px 5px;
-      border-top: 3px double rgba(128, 128, 128, 0.199);
-      border-left: 3px double rgba(128, 128, 128, 0.199);
-      border-right: 3px double rgba(128, 128, 128, 0.199);
-    }
-    
-    textarea{
-      overflow-y: scroll !important; /* 始终显示纵向滚动条 */
-      word-wrap: break-word; /* 确保长单词也会换行 */
-      white-space: pre-wrap; /* 保留空白字符 */
-      margin-top: 5px;
-    }
-  }
-
-
-
-  .newsinfo-title {
-    font-size: 15px;
-    font-weight: bold;
-    margin-top: 0;
-    color: black;
-  }
-
-  .newsinfo-time {
+  .adm-nav-bar-title {
     font-size: 12px;
-    color: gray;
-    margin-bottom: 5px;
   }
 
-  .newsinfo-attribute {
-    display: flex;
-    justify-content: space-between; /* 平均分配空间 */
+  .adm-nav-bar-back-arrow {
+
+    font-size: 18px;
+  }
+}
+
+.newsinfo-content {
+  padding: 2px 0px;
+  color: black;
+  --font-size: 14px;
+  --text-align: center;
+  word-wrap: break-word;
+  /* 确保长单词也会换行 */
+  white-space: pre-wrap;
+  /* 保留空白字符 */
+  overflow-y: auto;
+
+  .adm-text-area-element {
+    overflow-y: auto;
+    /* 始终显示纵向滚动条 */
+    padding: 5px 5px;
+    border-top: 3px double rgba(128, 128, 128, 0.199);
+    border-left: 3px double rgba(128, 128, 128, 0.199);
+    border-right: 3px double rgba(128, 128, 128, 0.199);
+  }
+
+  textarea {
+    overflow-y: auto !important;
+    /* 始终显示纵向滚动条 */
+    word-wrap: break-word;
+    /* 确保长单词也会换行 */
+    white-space: pre-wrap;
+    /* 保留空白字符 */
+    margin-top: 5px;
+  }
+
+
+}
+
+.newsinfo-title {
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 0;
+  color: black;
+}
+
+.newsinfo-time {
+  font-size: 12px;
+  color: gray;
+  margin-bottom: 5px;
+}
+
+.newsinfo-attribute {
+  display: flex;
+  margin-top: 5px;
+  //justify-content: center; /* 平均分配空间 */
+  padding: 0px 10px;
 }
 
 .newsinfo-attribute span {
-    flex: 1; /* 每个 span 平均分配空间 */
-    text-align: center; /* 水平居中 */
-    display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    height: 20px; /* 可选：设置 span 高度 */
-    margin-top: 5px;
-    color: gray;
+  flex: 1;
+  /* 每个 span 平均分配空间 */
+  //text-align: center; /* 水平居中 */
+  display: flex;
+  //align-items: center; /* 垂直居中 */
+  justify-content: flex-start;
+  /* 水平居中 */
+  height: 20px;
+  /* 可选：设置 span 高度 */
+  margin-top: 5px;
+  color: gray;
 }
 
-.attribute-icon{
-  margin-right: 5px;
+.attribute-icon {
+  margin-right: 3px;
 }
 
-.line{
+.line {
   border-color: rgba(240, 236, 236, 0.65);
-    font-size: 12px;
-    margin: 5px 0;
-    color: gray;
+  font-size: 12px;
+  margin: 5px 0;
+  color: gray;
 }
 
 .swiper-item {
@@ -97,38 +115,24 @@
   justify-content: center;
 }
 
-.send-news-comment {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 0px 10px;
-  width: calc(100% - 20px); /* 设置宽度为100%减去一些边距 */
-  border-radius: 10px;
-  background-color: #fff;
-  z-index: 1000;
-}
-
 .news-input-comment {
   display: absolute;
   flex: 1;
   outline: none;
   padding: 2px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   border: 1px solid @theme;
   border-radius: 10px;
-  width: calc(100% - 200px); /* 调整宽度以留出按钮的空间 */
+  padding-right: 10px;
 }
 
 .news-input-comment ::placeholder {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .news-input-comment input {
   font-size: 18px; // 修改输入文本的字体大小
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .news-send-comment-button {
@@ -146,18 +150,26 @@
   padding: 5px;
   --font-size: 16px;
   border: 1px solid gray;
+
   .adm-text-area-count {
     font-size: 12px;
   }
-  width: 95%; /* 调整宽度以确保在居中时不会溢出 */
-  margin: auto; /* 自动左右边距 */
+
+  width: 95%;
+  /* 调整宽度以确保在居中时不会溢出 */
+  margin: auto;
+  /* 自动左右边距 */
   margin-top: 5px;
 
 }
 
-.news-comment-popup{
+.news-comment-popup {
   display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
   padding-top: 10px;
+
+
 }
