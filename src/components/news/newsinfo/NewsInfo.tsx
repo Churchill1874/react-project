@@ -199,7 +199,6 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
   }
 
   useEffect(() => {
-    console.log(123)
     //刷新新闻信息
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
