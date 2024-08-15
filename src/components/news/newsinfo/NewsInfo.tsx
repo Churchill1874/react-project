@@ -75,15 +75,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
   const [newsViewCount, setNewsViewCount] = useState(viewCount);
 
   //各种新闻类型全局状态数据
-  const { newsList, setNewsList,
-    sportList, setSportList,
-    entertainmentList, setEntertainmentList,
-    militaryList, setMilitaryList,
-    scienceList, setScienceList,
-    netFriendList, setNetFriendList,
-    southeastAsiaList, setSoutheastAsiaList,
-    youtubeList, setYoutubeList
-  } = useStore();//新闻的全局变量
+  const { newsList, setNewsList } = useStore();//新闻的全局变量
 
 
   const showImage = () => {
@@ -214,34 +206,6 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
       const updateList = newsList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
       console.log('updateList:', updateList)
       setNewsList(updateList);
-    }
-    if (newsTab === '2') {
-      const updateList = sportList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setSportList(updateList);
-    }
-    if (newsTab === '3') {
-      const updateList = entertainmentList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setEntertainmentList(updateList);
-    }
-    if (newsTab === '4') {
-      const updateList = militaryList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setMilitaryList(updateList);
-    }
-    if (newsTab === '5') {
-      const updateList = scienceList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setScienceList(updateList)
-    }
-    if (newsTab === '7') {
-      const updateList = netFriendList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setNetFriendList(updateList)
-    }
-    if (newsTab === '8') {
-      const updateList = southeastAsiaList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setSoutheastAsiaList(updateList)
-    }
-    if (newsTab === '9') {
-      const updateList = youtubeList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-      setYoutubeList(updateList)
     }
   }
 
