@@ -37,7 +37,7 @@ const NewsList: React.FC<any> = () => {
   const reqNewsApi = async (isReset: boolean) => {
     const pageNum = isReset ? 1 : newsPage;//如果是刷新就从第一页开始
 
-    const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 50 };
+    const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 30 };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态

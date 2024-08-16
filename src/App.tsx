@@ -41,41 +41,41 @@ const App: React.FC = () => {
   const location = useLocation();
   const [bgColor, setBgColor] = useState<string>('#fff');
 
-    //获取不同菜单页面的背景颜色
-    const getBgColor = ()=>{
-      const pathname = location.pathname;
-      if(pathname === '/home'){
-        return '#fff';
-      }
-      if (pathname.startsWith('/news') && !pathname.startsWith('/newsinfo')) { // 检查路径是否以 "/news" 开头
-        return '#1890ff';
-      }
-      if(pathname === '/newsinfo'){
-        return '#fff';
-      }
-      if(pathname === '/bet'){
-        return '#1890ff';
-      }
-      if(pathname === '/message'){
-        return '#1890ff';
-      }
-      if(pathname === '/personal'){
-        return '#fff';
-      }
+  //获取不同菜单页面的背景颜色
+  const getBgColor = () => {
+    const pathname = location.pathname;
+    if (pathname === '/home') {
       return '#fff';
     }
+    if (pathname.startsWith('/news')) { // 检查路径是否以 "/news" 开头
+      return '#1890ff';
+    }
+    if (pathname === '/newsinfo') {
+      return '#fff';
+    }
+    if (pathname === '/bet') {
+      return '#1890ff';
+    }
+    if (pathname === '/message') {
+      return '#1890ff';
+    }
+    if (pathname === '/personal') {
+      return '#fff';
+    }
+    return '#fff';
+  }
 
   useLayoutEffect(() => {
     setBgColor(getBgColor())
   }, [location.pathname])
 
-  return(
-      <div className="main-container" style={{backgroundColor: bgColor}}>
-        <InnerApp />
-        <Navbar />
-      </div>
-    )
+  return (
+    <div className="main-container" style={{ backgroundColor: bgColor }}>
+      <InnerApp />
+      <Navbar />
+    </div>
+  )
 }
-;
+  ;
 
 export default App;

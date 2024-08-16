@@ -1,159 +1,147 @@
 import { useState } from 'react';
-import { Card, Divider, Space, Tag } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading } from 'antd-mobile';
 import '@/components/job/Job.less'
+import { Request_JobPage } from '@/components/job/api';
 
-interface JobType {
-    ageConditions: string;
-    city: string;
-    companyEncapsulate: string;
-    companyName: string;
-    createName: string;
-    createTime: string;
-    educationConditions: string;
-    environment: string;
-    holiday: string;
-    id: number;
-    image: string;
-    lastTime: string;
-    name: string;
-    room: string;
-    roomOut: string;
-    salaryRange: string;
-    skillConditions: string;
-    teamScale: string;
-    welfare: string;
-    contact: string;
+const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
+  return (
+    <>
+      {hasMore ? (
+        <>
+          <div className="dot-loading-custom" >
+            <span >Loading</span>
+            <DotLoading color='#fff' />
+          </div>
+        </>
+      ) : (
+        <span color='#fff'>--- 我是有底线的 ---</span>
+      )}
+    </>
+  )
+}
+
+
+export interface JobType {
+  ageConditions: string;
+  city: string;
+  companyEncapsulate: string;
+  companyName: string;
+  createName: string;
+  createTime: string;
+  educationConditions: string;
+  environment: string;
+  holiday: string;
+  id: number;
+  image: string;
+  lastTime: string;
+  name: string;
+  room: string;
+  roomOut: string;
+  salaryRange: string;
+  skillConditions: string;
+  teamScale: string;
+  welfare: string;
+  contact: string;
+  tag: string;
+  annualLeave: string;
+  project: string;
 }
 
 const Job: React.FC = () => {
-    const [jobList, setJobList] = useState<JobType[]>([]);
+  const [jobList, setJobList] = useState<JobType[]>([]);
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+
+  //分页查询工作岗位招聘记录
+  const reqJobPage = async (isReset: boolean) => {
+    const param = { pageNum: isReset ? 1 : pageNum, pageSize: 20 }
+    const resp = await Request_JobPage(param);
+    console.log(resp)
+
+    if (resp.data.records && resp.data.records.length > 0) {
+      if (isReset) {
+        setPageNum(2)
+        setHasMore(true)
+        setJobList(resp.data.records)
+      } else {
+        if (JSON.stringify(jobList) !== JSON.stringify(resp.data.records)) {
+          setPageNum(prev => prev + 1)
+          setJobList([...jobList, ...(resp.data.records || [])])
+        } else {
+          setHasMore(false)
+        }
+      }
+
+    } else {
+      setHasMore(false)
+    }
+  }
 
 
-    //请求后端岗位招聘记录数据
-
-    //
-    return (
-        <div className="card-container">
+  //请求后端岗位招聘记录数据
+  return (
+    <>
+      <PullToRefresh onRefresh={() => reqJobPage(true)}>
+        {jobList?.map((job, _index) => (
+          <div className="card-container" key={job.id}>
             <Card className="custom-card">
-                <div className="card-content">
-                    <div className="line1">AG IVI 招聘 java 前端 运维 测试岗位</div>
+              <div className="card-content">
+                <div className="line1">{job.companyName} {job.name}</div>
 
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">马尼拉,东京</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">单人间</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">写字楼办公</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">30k-45k</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">20天年假</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">无学历要求</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">15薪</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">棋牌,视讯,交易所</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">双休 +菲假</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div >
-                        <Space>
-                            <Tag color='primary' fill='outline' style={{ '--border-radius': '6px' }}>老公司</Tag>
-                            <Tag color='danger' fill='outline' style={{ '--border-color': 'var(--adm-color-weak)' }}> 氛围好 </Tag>
-                            <Tag color='#ff6430' fill='outline'> 平台推荐 </Tag>
-                        </Space>
-                    </div>
-                    <div className="text-area">
-                        长达15年的大型集团在线娱乐企业,菲律宾上市公司
-                        <br />
-                        更新时间: 2024-08-19 14:00
-                    </div>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <div className="line">{job.city}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.room}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.environment}</div>
                 </div>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <div className="line">{job.salaryRange}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.annualLeave}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.educationConditions}</div>
+                </div>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <div className="line">{job.welfare}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.project}</div>
+                  <Divider className='divider-line' direction="vertical" />
+                  <div className="line">{job.holiday}</div>
+                </div>
+                <Divider className='divider-line' />
+                <div >
+                  <Space>
+                    {job.tag && job.tag.includes('老公司') && <Tag color='primary' fill='outline'> 老公司 </Tag>}
+                    {job.tag && job.tag.includes('氛围好') && <Tag color='green' fill='outline'> 氛围好 </Tag>}
+                    {job.tag && job.tag.includes('高绩效') && <Tag color='danger' > 高绩效 </Tag>}
+                    {job.tag && job.tag.includes('领导nice') && <Tag color='danger' fill='outline' style={{ '--border-color': 'var(--adm-color-weak)' }}> 领导nice </Tag>}
+                    {job.tag && job.tag.includes('休假多') && <Tag color='#2db7f5' > 休假多 </Tag>}
+                    {job.tag && job.tag.includes('龙头公司') && <Tag color='#ff6430' > 龙头公司 </Tag>}
+                    {job.tag && job.tag.includes('团建丰富') && <Tag fill='outline' color='gray' > 团建丰富 </Tag>}
+                  </Space>
+                </div>
+                <div className="text-area">
+                  {job.companyEncapsulate}
+                  <br />
+                  <span className='last-time'>最后更新时间: {job.lastTime}</span>
+                </div>
+              </div>
             </Card>
 
-            <Card className="custom-card">
-                <div className="card-content">
-                    <div className="line1">凤凰集团 招聘 java 前端 运维 测试岗位</div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">东京, 帕赛</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">单人间</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">写字楼办公</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">45k-70k</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">15天年假</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">无学历要求</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">14薪 项目分红</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">棋牌,视讯,交易所</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">大小周</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="text-area">
-                        长达15年的大型集团在线娱乐企业,菲律宾上市公司
-                        <br />
-                        更新时间: 2024-08-19 14:00
-                    </div>
-                </div>
-            </Card>
+          </div>
+        ))}
 
+      </PullToRefresh>
 
-            <Card className="custom-card">
-                <div className="card-content">
-                    <div className="line1">亚美尼亚公司 招聘 java 前端</div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">亚美尼亚首都</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">双人间</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">别墅办公</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">50k-70k</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">20天年假</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">无学历要求</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="line-group">
-                        <div className="line">14薪</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">视讯,交易所</div>
-                        <Divider className='divider-line' direction="vertical" />
-                        <div className="line">大小周</div>
-                    </div>
-                    <Divider className='divider-line' />
-                    <div className="text-area">
-                        长达15年的大型集团在线娱乐企业,菲律宾上市公司
-                        <br />
-                        更新时间: 2024-08-19 14:00
-                    </div>
-                </div>
-            </Card>
-
-
-        </div>
-    );
+      <InfiniteScroll loadMore={() => reqJobPage(false)} hasMore={hasMore}>
+        <NewsScrollContent hasMore={hasMore} />
+      </InfiniteScroll>
+    </>
+  );
 }
 
 export default Job;
