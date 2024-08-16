@@ -23,7 +23,7 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
 
 
 
-const NewsList: React.FC<any> = ({ newsTab }) => {
+const NewsList: React.FC<any> = () => {
 
   useEffect(() => {
   }, []);
@@ -77,7 +77,6 @@ const NewsList: React.FC<any> = ({ newsTab }) => {
             commentsCount={news.commentsCount}
             viewCount={news.viewCount}
             createTime={news.createTime}
-            newsTab={newsTab}
             data-id={news.id} // 为每个新闻条目添加唯一标识符
           />
         ))}

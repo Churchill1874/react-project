@@ -28,7 +28,7 @@ export interface NewsInfoType {
 
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, newsTab }) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }) => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
 
   return (
@@ -73,7 +73,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
             commentsCount={commentsCount}
             viewCount={viewCount}
             createTime={createTime}
-            newsTab={newsTab} />
+          />
         </div>
 
       </Popup>
