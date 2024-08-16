@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Card, Image, Popup } from 'antd-mobile';
+import { Card, Image, Popup, Badge } from 'antd-mobile';
 import '@/components/news/NewsRecord.less';
 import { FcLike, FcReading } from "react-icons/fc";
 import { MessageOutline } from 'antd-mobile-icons';
 import NewsInfo from '@/components/news/newsinfo/NewsInfo';
+import { newsEnum } from '@/common/news'
+
 
 export interface NewsInfoType {
   category?: any | null;
@@ -28,8 +30,15 @@ export interface NewsInfoType {
 
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime }) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, category}) => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
+  const [imageHeights, setImageHeights] = useState<number[]>([]);
+  const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const imgElement = event.currentTarget;
+    const newImageHeights = [...imageHeights];
+    newImageHeights[index] = imgElement.naturalHeight;
+    setImageHeights(newImageHeights);
+  };
 
   return (
     <>
@@ -37,13 +46,14 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
         <div className="content-container">
           <div className="image-container">
             {photoPath && photoPath.split(',').map((src, index) => (
-              <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} />
+              <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} onLoad={(event) => handleImageLoad(index, event)}/>
             ))}
           </div>
           <div className="text-container">
             <div className="title">
               {title}
               <div><span className='time'>{createTime.split(' ')[0]}</span></div>
+              <Badge className="badge" color={newsEnum(category).color} content={newsEnum(category).name} />
             </div>
             <div className="attributes">
               <span><FcReading fontSize={15} /> {viewCount}</span>

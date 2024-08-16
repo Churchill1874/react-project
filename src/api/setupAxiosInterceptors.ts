@@ -9,7 +9,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
   }
 
   // 设置全局请求超时时间为 10 秒（10000 毫秒）
-  axios.defaults.timeout = 10000;
+  axios.defaults.timeout = 20000;
   
 
   //拦截请求

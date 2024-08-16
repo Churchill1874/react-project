@@ -5,6 +5,7 @@
 
 .content-container {
     display: flex;
+    align-items: stretch; /* 保持图片和文本容器高度一致 */
 }
 
 .outer-container {
@@ -49,10 +50,7 @@
 .image-container {
     flex-shrink: 0;
     display: flex;
-    flex-wrap: nowrap; /* 确保图片不换行 */
-    /* 允许换行 */
-    gap: 10px;
-    /* 图片之间的间距 */
+    align-items: stretch;
     margin-bottom: 1px;
 }
 
@@ -61,7 +59,7 @@
     max-width: 300px;
     
     /* 图片最大宽度可以根据需要调整 */
-    height: auto;    
+    height: 100%;    
 }
 
 .adm-image-img{
@@ -69,7 +67,10 @@
 }
 
 .news-image{
-    max-height: 150px;
+    width: 160px; /* 固定图片宽度 */
+    height: 100%; /* 高度填满容器 */
+    object-fit: cover; /* 填满容器并保持比例 */
+    max-height: 100%; /* 确保图片不会超出容器高度 */
 }
 
 .attributes {

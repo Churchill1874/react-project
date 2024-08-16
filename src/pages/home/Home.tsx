@@ -1,15 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, Badge, Input, Button, Avatar, Ellipsis } from 'antd-mobile';
-import { GlobalOutline , MessageOutline } from 'antd-mobile-icons';
+import { GlobalOutline, MessageOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
 import { newsEnum } from '@/common/news'
 import useStore from '@/zustand/store'
 import { FcLike, FcReading } from "react-icons/fc";
-import { useNavigate } from 'react-router-dom';
-import { NewsInfoType } from '@/pages/news/api';
-
 
 
 const Home = () => {
@@ -17,50 +14,32 @@ const Home = () => {
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const { newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount } = useStore();
-  const navigate = useNavigate();
-
-  const toNewsInfo = (news: NewsInfoType) => {
-    const params = {
-      id: news.id,
-      title: news.title,
-      content: news.filterContent,
-      photoPath: news.photoPath,
-      likesCount: news.likesCount,
-      commentsCount: news.commentsCount,
-      viewCount: news.viewCount,
-      createTime: news.createTime
-    }
-
-    navigate('/newsinfo', { state: params })
-  }
 
   //新闻html数据
   const newsRankHtml = () => {
-    return (newsInfoList?.map((news, index) => (
-
-      <List.Item key={news.id}
-        extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
-      >
-        <div className="news-item" onClick={() => toNewsInfo(news)}>
-          <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}</div>
-          <div className="news-info">
-            <span className="date"> {news.createTime.split(' ')[0]} </span>
-            <span className="views"><FcReading /> {news.viewCount}</span>
-            <span className="likes"><FcLike /> {news.likesCount}</span>
-            <span className="comments"><MessageOutline /> {news.commentsCount}</span>
+    return (
+      newsInfoList?.map((news, index) => (
+        <List.Item key={news.id} 
+          extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
+        >
+          <div className="news-item">
+            <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}</div>
+            <div className="news-info">
+              <span className="date"> {news.createTime.split(' ')[0]} </span>
+              <span className="views"><FcReading /> {news.viewCount}</span>
+              <span className="likes"><FcLike /> {news.likesCount}</span>
+              <span className="comments"><MessageOutline /> {news.commentsCount}</span>
+            </div>
           </div>
-        </div>
-      </List.Item>
-    )))
+        </List.Item>
+      )))
   }
 
 
   // 获取首页新闻数据
   const newsListReq = async () => {
     const newsListResponse = await Request_HOME_NEWS();
-
     const { topNews, newsList, onlinePlayerCount } = newsListResponse.data;
-
 
     //在线人数
     setOnlinePlayerCount(onlinePlayerCount);
@@ -73,8 +52,8 @@ const Home = () => {
         <div className="top-news">
           {topTitle ? (
             <div className="list-item">
-              <span className="top">置顶：</span> 
-              <Ellipsis direction='end' content={topTitle} expandText='展开' collapseText='收起'/>
+              <span className="top">置顶：</span>
+              <Ellipsis direction='end' content={topTitle} expandText='展开' collapseText='收起' />
             </div>
           ) : null}
         </div>

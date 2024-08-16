@@ -64,7 +64,8 @@ export interface NewsInfoType {
     setVisibleCloseRight?: any;
 }
 
-const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime }) => {
+const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime}) => {
+
     const textAreaRef = useRef<TextAreaRef>(null);
     const [comment, setComment] = useState('')
     const [showsCommentInput, setShowCommentInput] = useState(false)
@@ -73,6 +74,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
     const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
     const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
     const [newsViewCount, setNewsViewCount] = useState(viewCount);
+
 
     //各种新闻类型全局状态数据
     const { newsList, setNewsList } = useStore();//新闻的全局变量
@@ -201,7 +203,6 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
     //获取当前胶囊新闻类型所用的新闻数据状态
     const updateNewsListViewsCount = (id: number) => {
         const updateList = newsList.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-        console.log('updateList:', updateList)
         setNewsList(updateList);
     }
 
