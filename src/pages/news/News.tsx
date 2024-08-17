@@ -3,6 +3,8 @@ import { Tabs, CapsuleTabs } from "antd-mobile";
 import '@/pages/news/News.less';
 import NewsList from '@/components/news/NewsList';
 import Job from '@/components/job/Job';
+import Company from '@/components/company/Company'
+
 
 const News: React.FC = React.memo(() => {
   const [activeKey, setActiveKey] = useState<string>('news');
@@ -46,7 +48,7 @@ const News: React.FC = React.memo(() => {
         {activeKey === 'news' && newsActiveTab==='news' && <NewsList />}
         {activeKey === 'news' && newsActiveTab==='southeastAsia' && 'southeastAsia'}
         {activeKey === 'news' && newsActiveTab==='job' && <Job />}
-        {activeKey === 'news' && newsActiveTab==='company' && 'company'}
+        {activeKey === 'news' && newsActiveTab==='company' && <Company />}
       </div>
     </>
   );

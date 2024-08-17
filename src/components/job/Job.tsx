@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup } from 'antd-mobile';
 import '@/components/job/Job.less'
 import { Request_JobPage } from '@/components/job/api';
 
@@ -51,6 +51,8 @@ const Job: React.FC = () => {
   const [jobList, setJobList] = useState<JobType[]>([]);
   const [pageNum, setPageNum] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
+
 
   //分页查询工作岗位招聘记录
   const reqJobPage = async (isReset: boolean) => {
@@ -83,7 +85,7 @@ const Job: React.FC = () => {
     <>
       <PullToRefresh onRefresh={() => reqJobPage(true)}>
         {jobList?.map((job, _index) => (
-          <div className="card-container" key={job.id}>
+          <div className="card-container" key={job.id} onClick={() => setVisibleCloseRight(true)}>
             <Card className="custom-card">
               <div className="card-content">
                 <div className="line1">{job.companyName} {job.name}</div>
@@ -131,6 +133,67 @@ const Job: React.FC = () => {
                 </div>
               </div>
             </Card>
+
+
+            <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+              position='right'
+              closeOnSwipe={true}
+              closeOnMaskClick
+              visible={visibleCloseRight}
+              onClose={() => { setVisibleCloseRight(false) }}>
+
+              <Card className="popup-custom-card">
+                <div className="card-content">
+                  <div className="line1"> {job.companyName} 公司</div>
+                  <Divider className='divider-line' />
+                  <div className="line-group">
+                    <div className="line">地点: {job.city}</div>
+                    <Divider className='divider-line' direction="vertical" />
+                    <div className="line">住宿: {job.room}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className="line-group">
+                    <div className="line">办公环境: {job.environment}</div>
+                    <Divider className='divider-line' direction="vertical" />
+                    <div className="line">学历要求: {job.educationConditions}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className="line-group">
+                    <div className="line">薪资范围: {job.salaryRange}</div>
+                    <Divider className='divider-line' direction="vertical" />
+                    <div className="line">年假: {job.annualLeave}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className="line-group">
+                    <div className="line">休假制度: {job.holiday}</div>
+                    <Divider className='divider-line' direction="vertical" />
+                    <div className="line">经营项目: {job.project}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className="line-group">
+                    <div className="line">其他福利: {job.welfare}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div>招聘要求: </div>
+                  <div className="line-group">
+                  <div className="line">{job.skillConditions}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div>公司简介: </div>
+                  <div className="text-area">
+                    {job.companyEncapsulate}
+                  </div>
+                </div>
+                <br />
+                <span className='last-time'>最后更新时间: {job.lastTime}</span>
+              </Card>
+            </Popup>
 
           </div>
         ))}
