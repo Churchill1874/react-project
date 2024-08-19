@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup, Swiper, Image, ImageViewer } from 'antd-mobile';
+import {  LeftOutline } from 'antd-mobile-icons';
 import '@/components/job/Job.less'
 import { Request_JobPage } from '@/components/job/api';
 
@@ -52,7 +53,11 @@ const Job: React.FC = () => {
   const [pageNum, setPageNum] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
+  const [visible, setVisible] = useState(false)
 
+  const showImage = () => {
+    setVisible(prev => !prev);
+}
 
   //分页查询工作岗位招聘记录
   const reqJobPage = async (isReset: boolean) => {
@@ -77,6 +82,10 @@ const Job: React.FC = () => {
     } else {
       setHasMore(false)
     }
+  }
+
+  const getImages = ()=>{
+    return ['https://img.zcool.cn/community/0121e65c3d83bda8012090dbb6566c.jpg@3000w_1l_0o_100sh.jpg'];
   }
 
 
@@ -142,9 +151,29 @@ const Job: React.FC = () => {
               visible={visibleCloseRight}
               onClose={() => { setVisibleCloseRight(false) }}>
 
-              <Card className="popup-custom-card">
-                <div className="card-content">
-                  <div className="line1"> {job.companyName} 公司</div>
+              <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
+
+              <Card className="popup-custom-card" >
+                <div className="card-content" >
+                  <div className="line1" onClick={()=>{setVisibleCloseRight(false) }}>
+                     <span style={{ paddingRight: '5px', color: 'gray', fontSize:'14px' }} ><LeftOutline fontSize={24} /></span>
+                     <span style={{fontSize:'14px'}}>{job.companyName} 公司</span>  
+                  </div>
+                  <Divider className='divider-line' />
+
+
+                <Image fit='contain' src={'https://img.zcool.cn/community/0121e65c3d83bda8012090dbb6566c.jpg@3000w_1l_0o_100sh.jpg'} onClick={()=>setVisible(true)}/>
+
+{/*                 {job.image &&
+                    <Swiper loop autoplay allowTouchMove>
+                        {job.image.split(',').map((imagePath, index) => (
+                            <Swiper.Item className="swiper-item" key={index} >
+                                <Image fit='contain' width={300} height={200} src={imagePath} onClick={showImage} />
+                            </Swiper.Item>
+                        ))}
+                    </Swiper>
+                } */}
+
                   <Divider className='divider-line' />
                   <div className="line-group">
                     <div className="line">地点: {job.city}</div>
@@ -175,20 +204,42 @@ const Job: React.FC = () => {
 
                   <Divider className='divider-line' />
                   <div className="line-group">
+                    <div className="line">团队规模: {job.teamScale}</div>
+                    <Divider className='divider-line' direction="vertical" />
+                    <div className="line">外宿补贴: {job.roomOut}</div>
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className="line-group">
                     <div className="line">其他福利: {job.welfare}</div>
                   </div>
 
                   <Divider className='divider-line' />
-                  <div>招聘要求: </div>
-                  <div className="line-group">
-                  <div className="line">{job.skillConditions}</div>
+                  <div className='left-font'> 招聘岗位: </div>
+                  <div className="text-area">
+                    {job.name}
                   </div>
 
                   <Divider className='divider-line' />
-                  <div>公司简介: </div>
+                  <div className='left-font'> 条件要求: </div>
+                  <div className="text-area">
+                    {job.skillConditions}
+                  </div>
+
+                  <Divider className='divider-line' />
+                  <div className='left-font'>公司简介: </div>
                   <div className="text-area">
                     {job.companyEncapsulate}
                   </div>
+
+                  <Divider className='divider-line' />
+                  <div >
+                    <span className='left-font'> 
+                      联系方式:
+                    </span>
+                    {job.contact}
+                  </div>
+
                 </div>
                 <br />
                 <span className='last-time'>最后更新时间: {job.lastTime}</span>
