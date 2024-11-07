@@ -30,7 +30,7 @@ export interface NewsInfoType {
 
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, category}) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, category }) => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [imageHeights, setImageHeights] = useState<number[]>([]);
   const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -46,7 +46,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
         <div className="content-container">
           <div className="image-container">
             {photoPath && photoPath.split(',').map((src, index) => (
-              <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} onLoad={(event) => handleImageLoad(index, event)}/>
+              <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} onLoad={(event) => handleImageLoad(index, event)} />
             ))}
           </div>
           <div className="text-container">
