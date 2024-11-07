@@ -52,11 +52,10 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
           <div className="text-container">
             <div className="title">
               {title}
-              <div><span className='time'>{createTime.split(' ')[0]}</span> <Badge className="badge" color={newsEnum(category).color} content={newsEnum(category).name} /></div>
+              <div><span className='time'>{createTime.split(' ')[0]}</span> <Badge color={newsEnum(category).color} content={newsEnum(category).name} /></div>
             </div>
 
             <div className="flex-spacer"></div> {/* 用来填充多余空间 */}
-
 
             <div className="attributes">
               <span><FcReading fontSize={15} /> {viewCount}</span>
