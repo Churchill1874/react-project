@@ -1,0 +1,104 @@
+@theme: #1890ff;
+
+.card-container {
+    background-color: @theme;
+    height: 100%;
+    padding: 3px;
+    padding-bottom: 5px;
+  }
+  
+  .adm-card-body{
+    padding: 5px;
+    
+  }
+
+  .custom-card {
+    padding: 0px;
+    margin-bottom: 10px;
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .adm-divider adm-divider-horizontal adm-divider-center{
+    padding: 0px;
+    
+  }
+
+  .southeastasia-news-image-container{            /* 容器最大高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(237, 232, 232); /* 默认背景颜色 */
+    width: 100%;
+  }
+  
+  .southeastasia-news-image{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    object-fit: cover; /* 填满容器并保持比例 */
+    //object-fit: contain;        /* 保持图片的比例，适应容器 */
+    min-width: 300px;
+  }
+
+  .line-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .line {
+    flex: 1;
+    padding: 3px;
+    text-align: center;
+    margin: 0px;
+    color: black;
+  }
+  
+  .text-area {
+    padding: 3px 0;
+    text-align: start;
+    color:rgb(44, 44, 44);
+    text-indent: 2em; /* 首行缩进两格 */
+  }
+  
+  .divider-line{
+    margin: 5px 1px;
+  }
+
+  .last-time{
+    color: rgb(168, 166, 166);
+  }
+
+  .adm-pull-to-refresh-head-content{
+    color: #fff;
+  }
+
+  .tracking{
+    display: inline-block;       /* 防止文字过长时的换行 */
+    text-align: center;       
+  }
+  .city{
+    //color: black;
+    font-weight: bold;
+  }
+
+  .click{
+    color: black;
+    font-weight: bold;
+  }
+
+  .button-info{
+    display: flex;               /* 使用 Flexbox 布局 */
+    justify-content: space-between; /* 横向平分空间 */
+    align-items:center;         /* 垂直居中 */
+    padding: 0 20px;     
+  }
+
+.southeastasia-time{
+    text-align: right;
+    color: gray;
+    padding: 5px;
+}

@@ -4,6 +4,7 @@ import '@/pages/news/News.less';
 import NewsList from '@/components/news/NewsList';
 import Job from '@/components/job/Job';
 import Company from '@/components/company/Company'
+import SoutheastAsia from '@/components/southeastasia/SoutheastAsia'
 
 
 const News: React.FC = React.memo(() => {
@@ -46,7 +47,7 @@ const News: React.FC = React.memo(() => {
 
       <div className="news-content">
         {activeKey === 'news' && newsActiveTab==='news' && <NewsList />}
-        {activeKey === 'news' && newsActiveTab==='southeastAsia' && 'southeastAsia'}
+        {activeKey === 'news' && newsActiveTab==='southeastAsia' && <SoutheastAsia />}
         {activeKey === 'news' && newsActiveTab==='job' && <Job />}
         {activeKey === 'news' && newsActiveTab==='company' && <Company />}
       </div>

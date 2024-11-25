@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup} from 'antd-mobile';
 import '@/components/company/Company.less'
 
 const Company: React.FC = () => {
@@ -68,8 +68,6 @@ const Company: React.FC = () => {
                     </div>
                 </Card>
             </div>
-
-
         </>
     );
 }
