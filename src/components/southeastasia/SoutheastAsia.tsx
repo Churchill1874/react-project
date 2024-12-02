@@ -10,7 +10,7 @@ const Company: React.FC = () => {
     const [newsCommentCount, setNewsCommentCount] = useState(0);//新闻评论数量
     const [visibleCloseRight, setVisibleCloseRight] = useState(false)
     const content = '上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接';
-    const [popupInfo, setPopupInfo] = useState<PopupInfo>({id: "", area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: ''}); 
+    const [popupInfo, setPopupInfo] = useState<PopupInfo>({id: null, area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: ''}); 
 
     interface PopupInfo {
         id: any | null;
