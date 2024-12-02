@@ -102,7 +102,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
             })
             return;
         }
-        const param: SendNewsCommentReqType = { newsId: id, content: comment }
+        const param: SendNewsCommentReqType = { newsType: 1, newsId: id, content: comment }
         const response = await Request_SendNewsComment(param);
 
         if (response.code === 0) {
@@ -241,7 +241,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
                     <Input className="news-input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
                 </div>
 
-                <Comment key={newsCommentCount} newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} />
+                <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} newsType={1} />
             </div>
 
             <FloatingBubble onClick={inputCommentClick}

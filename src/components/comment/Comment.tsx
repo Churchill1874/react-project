@@ -59,7 +59,7 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 });
 
 
-const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId }) => {
+const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType }) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -71,7 +71,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
-
 
 
   const reqCommentApi = (selectId: number) => {
@@ -94,6 +93,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
     }, 0);
   }
 
+
   //回复内嵌评论
   const replyComment = (topId: number, replyId: number, targetPlayerName: string) => {
     setPlaceholder('回复 ' + targetPlayerName);
@@ -108,7 +108,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
   }
 
 
-
   //发送顶层评论
   const sendTopComment = async () => {
     if (!comment) {
@@ -118,7 +117,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
       })
       return;
     }
-    const param: SendNewsCommentReqType = { newsId: newsId, content: comment, topId: topId, replyId: replyId }
+    const param: SendNewsCommentReqType = { newsType: 2, newsId: newsId, content: comment, topId: topId, replyId: replyId }
     const response = await Request_SendNewsComment(param);
 
     if (response.code === 0) {
@@ -142,7 +141,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
     setLoading(true);
 
     const reqPageNum = isReset ? 1 : pageNum;
-    const param = { newsId: newsId, pageNum: reqPageNum, pageSize: 10 }
+    const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: 10 }
     const response = await Request_GetCommentPage(param);
 
     if (response.data.list?.length > 0) {
@@ -294,5 +293,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId 
     </>
   );
 }
+
 
 export default Comment;

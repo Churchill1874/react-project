@@ -3,6 +3,7 @@ import { serverTarget } from '@/common/api';
 
 //请求发送评论参数
 export interface SendNewsCommentReqType {
+    newsType: any;
     newsId: any;
 	replyId?: any ;
 	topId?: any;

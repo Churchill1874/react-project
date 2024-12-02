@@ -3,6 +3,7 @@ import { serverTarget } from '@/common/api';
 
 //请求查询分页评论信息
 export interface CommentPageReqType {
+    newsType: number,
 	endTime?: string,
 	newsId: string,
 	pageNum: number,

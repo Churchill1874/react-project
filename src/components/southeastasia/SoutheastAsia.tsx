@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, Ellipsis, Image, Popup } from 'antd-mobile';
+import { useState, useEffect } from "react";
+import { Card, Divider, Tag, Ellipsis, Image, Popup } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
 
 import { FcReading } from "react-icons/fc";
@@ -7,8 +7,28 @@ import { MessageOutline, LeftOutline} from 'antd-mobile-icons';
 import '@/components/southeastasia/SoutheastAsia.less'
 
 const Company: React.FC = () => {
+    const [newsCommentCount, setNewsCommentCount] = useState(0);//新闻评论数量
     const [visibleCloseRight, setVisibleCloseRight] = useState(false)
     const content = '上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接';
+    const [popupInfo, setPopupInfo] = useState<PopupInfo>({id: "", area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: ''}); 
+
+    interface PopupInfo {
+        id: any | null;
+        southeastasiaNewsImage: any | null; //图片路径
+        readCount: any | null; // 读取次数
+        commentCount: any | null; //评论数量
+        area: any | null; //地区
+        content: any | null; //新闻内容
+    }
+
+    const showPopupInfo = (id, area, content, readCount, commentCount, southeastasiaNewsImage) => {
+        setVisibleCloseRight(true)
+        setPopupInfo({id, area, content, readCount, commentCount, southeastasiaNewsImage})
+    }
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <>
@@ -36,7 +56,7 @@ const Company: React.FC = () => {
                         <div className="button-info">
                             <span className="tracking">菲律宾</span>
                             <span><FcReading fontSize={15} /> 10</span>
-                            <span className="tracking"> <MessageOutline fontSize={15} /> 90 <span className="click" onClick={() => {setVisibleCloseRight(true)}}>点击查看</span> </span>
+                            <span className="tracking"> <MessageOutline fontSize={15} /> 90 <span className="click" onClick={() => {showPopupInfo(1, '菲律宾', content, 0, 90, 'https://ichef.bbci.co.uk/ace/ws/800/cpsprodpb/0123/production/_127419200_mediaitem127419198.jpg.webp')}}>点击查看</span> </span>
                         </div> 
                     </div>
                 </Card>
@@ -91,7 +111,8 @@ const Company: React.FC = () => {
                             <span className="tracking"> <MessageOutline fontSize={15} /> 90 <span className="click">点击查看</span> </span>
                         </div> 
                     </div>
-                </Card>            <Card className="custom-card">
+                </Card>            
+                <Card className="custom-card">
                     <div className="card-content">
                     <div className="southeastasia-news-image-container">
                             <Image
@@ -172,18 +193,23 @@ const Company: React.FC = () => {
                             <div className="text-area">
                                 {content}
                             </div>
+
                             <span className="southeastasia-time"></span>
 
-                            
                             <div className="button-info">
-                                <span className="tracking"><span className="city">菲律宾</span></span>
-                                <span className="tracking">浏览: 10</span>
+                                <span className="tracking">
+                                    <span className="city">菲律宾</span>
+                                </span>
+                                <span className="tracking">
+                                    <span className="icon-and-text">
+                                        <FcReading fontSize={15} />
+                                        <span className="number">10</span>
+                                    </span>
+                                </span>
                                 <span className="tracking"><Tag color='red' fill='outline'>热门</Tag>  2024-10-01</span>
                             </div> 
 
-
-                            <Divider className='line'> 共 {1} 条评论 </Divider>
-
+                            <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={popupInfo.id} newsType={2} />
                         </div>
                     </Card>
                 </div>
