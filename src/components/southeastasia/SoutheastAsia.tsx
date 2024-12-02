@@ -198,12 +198,12 @@ const Company: React.FC = () => {
 
                             <div className="button-info">
                                 <span className="tracking">
-                                    <span className="city">菲律宾</span>
+                                    <span className="city">{popupInfo.area}</span>
                                 </span>
                                 <span className="tracking">
                                     <span className="icon-and-text">
                                         <FcReading fontSize={15} />
-                                        <span className="number">10</span>
+                                        <span className="number">{popupInfo.readCount}</span>
                                     </span>
                                 </span>
                                 <span className="tracking"><Tag color='red' fill='outline'>热门</Tag>  2024-10-01</span>
