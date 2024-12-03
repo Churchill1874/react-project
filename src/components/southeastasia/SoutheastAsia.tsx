@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Card, Divider, Tag, Ellipsis, Image, Popup } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
-
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LeftOutline} from 'antd-mobile-icons';
 import '@/components/southeastasia/SoutheastAsia.less'
+import useStore from '@/zustand/store'
 
 const Company: React.FC = () => {
     const [newsCommentCount, setNewsCommentCount] = useState(0);//新闻评论数量
@@ -27,6 +27,9 @@ const Company: React.FC = () => {
     }
 
     useEffect(() => {
+        //获取api东南亚新闻数据
+
+        //循环便利
 
     }, []);
 

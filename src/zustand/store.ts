@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
+import { SoutheastAsiaNewsType } from '@/components/southeastasia/api';
 
 type SetStateAction<T> = T | ((prevState: T) => T);
 
@@ -31,10 +32,13 @@ interface AppState {
   newsPage: number;
   setNewsPage: (newsPage: (prev: number) => number) => void; // 这里的类型修改
 
-  //保存新闻列表屏幕位置
-  scrollPosition: number;
-  setScrollPosition: (scrollPosition: SetStateAction<number>) => void;
-
+  //东南亚新闻列表
+  southeastAsiaNewsList: SoutheastAsiaNewsType[];
+  setSoutheastAsiaNewsList: ( southeastAsiaNewsList: SoutheastAsiaNewsType[] ) => void;
+  southeastAsiaNewsHasHore: boolean;
+  setSoutheastAsiaNewsHasHore: ( southeastAsiaNewsHasHore: boolean ) => void;
+  southeastAsiaNewsPage: number;
+  setSoutheastAsiaNewsPage: (southeastAsiaNewsPage: (prev: number) => number) => void;
 }
 
 const useStore = create<AppState>((set) => ({
@@ -57,11 +61,13 @@ const useStore = create<AppState>((set) => ({
   setNewsPage: (newsPage) => set((state) => ({ newsPage: newsPage(state.newsPage) })),
 
 
-  //保存滚动位置
-  scrollPosition: 0,
-  setScrollPosition: (scrollPosition) => set((state) => ({
-    scrollPosition: typeof scrollPosition === 'function' ? scrollPosition(state.scrollPosition) : scrollPosition,
-  })),
+  //东南亚新闻
+  southeastAsiaNewsList: [],
+  setSoutheastAsiaNewsList: (southeastAsiaNewsList) => set(() => ({southeastAsiaNewsList})),
+  southeastAsiaNewsHasHore: true,
+  setSoutheastAsiaNewsHasHore: (southeastAsiaNewsHasHore) => set(() => ({southeastAsiaNewsHasHore})),
+  southeastAsiaNewsPage: 1,
+  setSoutheastAsiaNewsPage: (southeastAsiaNewsPage) => set((state) => ({southeastAsiaNewsPage: southeastAsiaNewsPage(state.southeastAsiaNewsPage)}))
 }));
 
 export default useStore;
