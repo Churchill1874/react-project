@@ -226,7 +226,7 @@ const Company: React.FC = () => {
                             </div>
                       
                             <div className="text-area">
-                                {content}
+                                {popupInfo.content}
                             </div>
 
                             <span className="southeastasia-time"><span >{popupInfo.isHot && <Tag color='red' fill='outline'>热门</Tag>}  {popupInfo.createTime}</span></span>
