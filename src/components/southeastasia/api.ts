@@ -1,6 +1,22 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
+//请求发送评论参数
+export interface SendNewsCommentReqType {
+    newsType: any;
+    newsId: any;
+	replyId?: any ;
+	topId?: any;
+    content: any;
+}
+
+//发送评论响应
+export interface SendNewsCommentResponseType {
+    code: number;
+    data: any;
+    msg: string;
+}
+
 //查询新闻响应
 export interface SoutheastAsiaNewsRespType {
     code: number;
@@ -38,19 +54,25 @@ export interface SoutheastAsiaNewsType {
 export interface SoutheastAsiaNewsPageReqType {
     pageNum: number;
     pageSize: number;
-    id: number;
-    area: string;
-    content: string;
-    startTime: string;
-    endTime: string;
-    isHot: boolean;
-    isTop: boolean;
-    source: string;
-    status: boolean;
+    id?: number;
+    area?: string;
+    content?: string;
+    startTime?: string;
+    endTime?: string;
+    isHot?: boolean;
+    isTop?: boolean;
+    source?: string;
+    status?: boolean;
 }
 
+//查询东南亚新闻
 const SoutheastAsiaNewsPagePath = '/player/southeastAsia/queryPage';
 export const SoutheastAsiaNewsPageReq = async(param: SoutheastAsiaNewsPageReqType): Promise<SoutheastAsiaNewsRespType> => {
     return (await axios.post(serverTarget + SoutheastAsiaNewsPagePath, param)).data;
 } 
 
+//发表新闻评论
+const SendNewsCommentPath = '/player/comment/sendNewsComment';
+export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Promise<SendNewsCommentResponseType> => {
+    return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
+};

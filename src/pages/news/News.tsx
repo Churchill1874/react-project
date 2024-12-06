@@ -28,7 +28,7 @@ const News: React.FC = React.memo(() => {
     <>
       <div className="tabs-container">
         <Tabs activeKey={activeKey} onChange={handleTabChange}>
-          <Tabs.Tab title='报纸' key='news' />
+          <Tabs.Tab title='新闻' key='news' />
           <Tabs.Tab title='youtube' key='youtube' />
           <Tabs.Tab title='聊妹' key='chatGirl' />
         </Tabs>
@@ -37,7 +37,7 @@ const News: React.FC = React.memo(() => {
       {activeKey === 'news' &&
         <div className="capsule-tabs-container">
           <CapsuleTabs activeKey={newsActiveTab} onChange={chinaCapsuleTabChange}>
-            <CapsuleTabs.Tab title="新闻" key="news" />
+            <CapsuleTabs.Tab title="国内" key="news" />
             <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
             <CapsuleTabs.Tab title="工作" key="job" />
             <CapsuleTabs.Tab title="公司" key="company" />

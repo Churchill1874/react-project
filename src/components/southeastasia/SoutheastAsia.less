@@ -94,13 +94,15 @@
     display: flex;               /* 使用 Flexbox 布局 */
     justify-content: space-between; /* 横向平分空间 */
     align-items:center;         /* 垂直居中 */
-    padding: 0 20px;     
+    padding: 0 10px;     
   }
 
 .southeastasia-time{
     text-align: right;
     color: gray;
-    padding: 5px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 10px;
 }
 
 .icon-and-text {
@@ -110,5 +112,35 @@
 }
 
 .number{
-    line-height: 1; /* 确保数字没有额外的行高 */
+  font-size: 14px;
+  padding-left: 2px;
+  line-height: 1; /* 确保数字没有额外的行高 */
+}
+
+
+.newsinfo-title {
+  font-size: 15px;
+  margin-top: 0;
+}
+
+
+.southeastAsia-input-comment{
+  display: absolute;
+  flex: 1;
+  outline: none;
+  padding: 2px;
+  margin-bottom: 2px;
+  border: 1px solid @theme;
+  border-radius: 10px;
+  padding-right: 1px;
+  width: 130px;
+}
+
+.southeastAsia-input-comment ::placeholder {
+  font-size: 12px;
+}
+
+.southeastAsia-input-comment input {
+  font-size: 18px; // 修改输入文本的字体大小
+  margin-left: 5px;
 }

@@ -244,15 +244,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
                 <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} newsType={1} />
             </div>
 
-            <FloatingBubble onClick={inputCommentClick}
-                axis='xy'
-                magnetic='x'
-                style={{
-                    '--initial-position-bottom': '24px',
-                    '--initial-position-right': '24px',
-                    '--edge-distance': '24px',
-                }}
-            >
+            <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{'--initial-position-bottom': '24px','--initial-position-right': '24px','--edge-distance': '24px'}}>
                 <MessageFill fontSize={32} />
             </FloatingBubble>
 
