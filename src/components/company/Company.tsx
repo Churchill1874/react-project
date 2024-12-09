@@ -39,7 +39,7 @@ const Company: React.FC = () => {
                         <span className="tracking">10条追踪动态 <span className="click">点击查看</span> </span>
                     </div>
                 </Card>
-                <Card className="custom-card">
+                <Card className="company-custom-card">
                     <div className="card-content">
                         <div className="line1">AG集团 IVI公司</div>
 
