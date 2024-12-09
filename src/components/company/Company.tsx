@@ -11,7 +11,7 @@ const Company: React.FC = () => {
     return (
         <>
             <div className="card-container" >
-                <Card className="custom-card">
+                <Card className="company-custom-card">
                     <div className="card-content">
                         <div className="line1">AG集团 IVI公司</div>
 
@@ -71,6 +71,8 @@ const Company: React.FC = () => {
         </>
     );
 }
+
+
 
 
 

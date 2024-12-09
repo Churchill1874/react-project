@@ -1,8 +1,11 @@
+import React from 'react';
 import { useState } from 'react';
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup, Image, ImageViewer } from 'antd-mobile';
-import {  LeftOutline } from 'antd-mobile-icons';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup, Image, ImageViewer, Swiper } from 'antd-mobile';
+import { LeftOutline } from 'antd-mobile-icons';
 import '@/components/job/Job.less'
 import { Request_JobPage } from '@/components/job/api';
+import dayjs from 'dayjs'
+
 
 const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -54,16 +57,16 @@ const Job: React.FC = () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [visible, setVisible] = useState(false)
+  const [popupInfo, setPopupInfo] = useState<JobType>();
 
   const showImage = () => {
     setVisible(prev => !prev);
-}
+  }
 
   //分页查询工作岗位招聘记录
   const reqJobPage = async (isReset: boolean) => {
     const param = { pageNum: isReset ? 1 : pageNum, pageSize: 20 }
     const resp = await Request_JobPage(param);
-    console.log(resp)
 
     if (resp.data.records && resp.data.records.length > 0) {
       if (isReset) {
@@ -84,20 +87,23 @@ const Job: React.FC = () => {
     }
   }
 
-  const getImages = ()=>{
-    return ['https://img.zcool.cn/community/0121e65c3d83bda8012090dbb6566c.jpg@3000w_1l_0o_100sh.jpg'];
-  }
 
+  const showPopup = (job: JobType) => {
+    setVisibleCloseRight(true)
+    setPopupInfo(job)
+  }
 
   //请求后端岗位招聘记录数据
   return (
     <>
-      <PullToRefresh onRefresh={() => reqJobPage(true)}>
-        {jobList?.map((job, _index) => (
-          <div className="card-container" key={job.id} onClick={() => setVisibleCloseRight(true)}>
-            <Card className="custom-card">
+      <div className="job-card-container" >
+        <PullToRefresh onRefresh={() => reqJobPage(true)}>
+          {jobList?.map((job, _index) => (
+            <Card key={job.id} className="job-custom-card" onClick={() => showPopup(job)}>
               <div className="card-content">
                 <div className="line1">{job.companyName} {job.name}</div>
+
+                {job.image && <Image className='job-news-image-container' fit='contain' src={job.image} />}
 
                 <Divider className='divider-line' />
                 <div className="line-group">
@@ -138,119 +144,117 @@ const Job: React.FC = () => {
                 <div className="text-area">
                   {job.companyEncapsulate}
                   <br />
-                  <span className='last-time'>最后更新时间: {job.lastTime}</span>
                 </div>
+                <span className='job-record-bottom'>
+                  <span className='last-time'>最后更新时间: {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')}</span>
+                  <span className='job-info'>查看详情</span>
+                </span>
               </div>
             </Card>
+          ))}
+        </PullToRefresh>
 
 
-            <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
-              position='right'
-              closeOnSwipe={true}
-              closeOnMaskClick
-              visible={visibleCloseRight}
-              onClose={() => { setVisibleCloseRight(false) }}>
-
-              <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
-
+        <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+          position='right'
+          closeOnSwipe={true}
+          closeOnMaskClick
+          visible={visibleCloseRight}
+          onClose={() => setVisibleCloseRight(false)}
+        >
+          {popupInfo &&
+            <>
+              <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body' }} images={popupInfo.image ? popupInfo.image.split(',') : []} visible={visible} onClose={() => { setVisible(false) }} />
               <Card className="popup-custom-card" >
                 <div className="card-content" >
-                  <div className="line1" onClick={()=>{setVisibleCloseRight(false) }}>
-                     <span style={{ paddingRight: '5px', color: 'gray', fontSize:'14px' }} ><LeftOutline fontSize={24} /></span>
-                     <span style={{fontSize:'14px'}}>{job.companyName} 公司</span>  
+                  <div className="line1" onClick={() => { setVisibleCloseRight(false) }} >
+                    <span style={{ paddingRight: '5px', color: 'gray', fontSize: '14px' }} ><LeftOutline fontSize={24} /></span>
+                    <span style={{ fontSize: '14px' }}>{popupInfo.companyName} 公司</span>
                   </div>
-                  <Divider className='divider-line' />
 
-
-                <Image fit='contain' src={'https://img.zcool.cn/community/0121e65c3d83bda8012090dbb6566c.jpg@3000w_1l_0o_100sh.jpg'} onClick={()=>setVisible(true)}/>
-
-{/*                 {job.image &&
+                  {popupInfo.image &&
                     <Swiper loop autoplay allowTouchMove>
-                        {job.image.split(',').map((imagePath, index) => (
-                            <Swiper.Item className="swiper-item" key={index} >
-                                <Image fit='contain' width={300} height={200} src={imagePath} onClick={showImage} />
-                            </Swiper.Item>
-                        ))}
+                      {popupInfo.image.split(',').map((imagePath, index) => (
+                        <Swiper.Item className="swiper-item" key={index} >
+                          <Image className='job-news-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                        </Swiper.Item>
+                      ))}
                     </Swiper>
-                } */}
+                  }
 
                   <Divider className='divider-line' />
+
                   <div className="line-group">
-                    <div className="line">地点: {job.city}</div>
+                    <div className="line">地点: {popupInfo.city}</div>
                     <Divider className='divider-line' direction="vertical" />
-                    <div className="line">住宿: {job.room}</div>
+                    <div className="line">住宿: {popupInfo.room}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className="line-group">
-                    <div className="line">办公环境: {job.environment}</div>
+                    <div className="line">办公环境: {popupInfo.environment}</div>
                     <Divider className='divider-line' direction="vertical" />
-                    <div className="line">学历要求: {job.educationConditions}</div>
+                    <div className="line">学历要求: {popupInfo.educationConditions}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className="line-group">
-                    <div className="line">薪资范围: {job.salaryRange}</div>
+                    <div className="line">薪资范围: {popupInfo.salaryRange}</div>
                     <Divider className='divider-line' direction="vertical" />
-                    <div className="line">年假: {job.annualLeave}</div>
+                    <div className="line">年假: {popupInfo.annualLeave}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className="line-group">
-                    <div className="line">休假制度: {job.holiday}</div>
+                    <div className="line">休假制度: {popupInfo.holiday}</div>
                     <Divider className='divider-line' direction="vertical" />
-                    <div className="line">经营项目: {job.project}</div>
+                    <div className="line">经营项目: {popupInfo.project}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className="line-group">
-                    <div className="line">团队规模: {job.teamScale}</div>
+                    <div className="line">团队规模: {popupInfo.teamScale}</div>
                     <Divider className='divider-line' direction="vertical" />
-                    <div className="line">外宿补贴: {job.roomOut}</div>
+                    <div className="line">外宿补贴: {popupInfo.roomOut}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className="line-group">
-                    <div className="line">其他福利: {job.welfare}</div>
+                    <div className="line">其他福利: {popupInfo.welfare}</div>
                   </div>
 
                   <Divider className='divider-line' />
                   <div className='left-font'> 招聘岗位: </div>
                   <div className="text-area">
-                    {job.name}
+                    {popupInfo.name}
                   </div>
 
                   <Divider className='divider-line' />
                   <div className='left-font'> 条件要求: </div>
                   <div className="text-area">
-                    {job.skillConditions}
+                    {popupInfo.skillConditions}
                   </div>
 
                   <Divider className='divider-line' />
                   <div className='left-font'>公司简介: </div>
                   <div className="text-area">
-                    {job.companyEncapsulate}
+                    {popupInfo.companyEncapsulate}
                   </div>
 
                   <Divider className='divider-line' />
-                  <div >
-                    <span className='left-font'> 
-                      联系方式:
-                    </span>
-                    {job.contact}
-                  </div>
+                  <div className='left-font'>联系方式:</div>
+                  <div className="text-area">{popupInfo.contact}</div>
 
                 </div>
                 <br />
-                <span className='last-time'>最后更新时间: {job.lastTime}</span>
+                <span className='last-time'>最后更新时间: {dayjs(popupInfo.lastTime).format('YYYY-MM-DD HH:mm')}</span>
               </Card>
-            </Popup>
+            </>
+          }
 
-          </div>
-        ))}
+        </Popup>
 
-      </PullToRefresh>
-
+      </div>
       <InfiniteScroll loadMore={() => reqJobPage(false)} hasMore={hasMore}>
         <NewsScrollContent hasMore={hasMore} />
       </InfiniteScroll>
