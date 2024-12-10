@@ -9,7 +9,6 @@
   
   .adm-card-body{
     padding: 5px;
-    
   }
 
   .company-custom-card {
@@ -27,18 +26,21 @@
     
   }
 
-  .line1 {
-    padding: 3px 0;
+  .company-line1 {
+    padding: 0 0;
     font-weight: bold;
+    text-align: center;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 15px;
   }
   
   .line-group {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
   }
   
   .line {
-    flex: 1;
+    flex: 1;/* 基于内容宽度调整 */
     padding: 3px;
     text-align: center;
     margin: 0px;
@@ -52,8 +54,13 @@
     text-indent: 2em; /* 首行缩进两格 */
   }
   
-  .divider-line{
+  .company-divider-line{
+    margin: 1px 1px;
+  }
+
+  .blue-divider-line{
     margin: 5px 1px;
+    border-color: #1890ff;
   }
 
   .last-time{
@@ -70,7 +77,28 @@
     //display: block; /* 确保块级显示 */
   }
 
-  .click{
-    color: black;
+  .company-click{
+    color :black;
     font-weight: bold;
+  }
+
+  .company-record-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .company-info{
+    color: black;
+  }
+  
+  .company-image-container{            /* 容器最大高度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+  }
+
+  .advertise{
+    margin-bottom: 5px;
   }

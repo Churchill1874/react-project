@@ -146,7 +146,7 @@ const Job: React.FC = () => {
                   <br />
                 </div>
                 <span className='job-record-bottom'>
-                  <span className='last-time'>最后更新时间: {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')}</span>
+                  <span className='last-time'>最后一次更新时间: {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')}</span>
                   <span className='job-info'>查看详情</span>
                 </span>
               </div>
@@ -247,7 +247,7 @@ const Job: React.FC = () => {
 
                 </div>
                 <br />
-                <span className='last-time'>最后更新时间: {dayjs(popupInfo.lastTime).format('YYYY-MM-DD HH:mm')}</span>
+                <span className='last-time'>最后一次更新时间: {dayjs(popupInfo.lastTime).format('YYYY-MM-DD HH:mm')}</span>
               </Card>
             </>
           }

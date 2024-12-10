@@ -1,21 +1,145 @@
-import { useState } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup} from 'antd-mobile';
+import { useState, forwardRef, useImperativeHandle, useRef } from "react";
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup, FloatingBubble, ImageViewer, Image, Button, TextAreaRef, Swiper } from 'antd-mobile';
+import { MessageFill, LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/company/Company.less'
+import dayjs from 'dayjs'
+
 
 const Company: React.FC = () => {
     //const [jobList, setJobList] = useState<JobType[]>([]);
     const [pageNum, setPageNum] = useState<number>(1);
     const [hasMore, setHasMore] = useState<boolean>(true);
+    const [visibleCloseRight, setVisibleCloseRight] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const images = ''
+
+    const showPopupInfo = () => {
+        console.log(visibleCloseRight)
+        setVisibleCloseRight(true)
+    }
+
+    const showImage = () => {
+        setVisible(prev => !prev);
+    }
 
 
     return (
         <>
             <div className="card-container" >
+
                 <Card className="company-custom-card">
                     <div className="card-content">
-                        <div className="line1">AG集团 IVI公司</div>
+                        <div className="company-line1">AG集团 IVI公司</div>
+                        <Divider className='company-divider-line' />
+
+                        {'公司图片变量' &&
+                            <Swiper loop autoplay allowTouchMove>
+                                {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
+                                    <Swiper.Item className="swiper-item" key={index} >
+                                        <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                                    </Swiper.Item>
+                                ))}
+                            </Swiper>
+                        }
+                        <Divider className='company-divider-line' />
+                        <div className="text-area">
+                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                        </div>
 
                         <Divider className='divider-line' />
+                        <div className="line-group">
+                            <div className="line">加班调休</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">双休制</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">大公司</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">绩效奖金</div>
+                        </div>
+
+                        <Divider className='divider-line' />
+                        <div className="line-group">
+                            <div className="line">30k-50k</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">领导nice</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">单人间</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">办公环境nice</div>
+                        </div>
+                        <Divider className='divider-line' />
+                        <div className="line-group">
+                            <span><LocationFill className="area" />泰国 菲律宾</span>
+                        </div>
+                        <Divider className='divider-line' />
+
+                        <span className='company-record-bottom'>
+                            <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
+                            <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
+                        </span>
+
+                    </div>
+                </Card>
+                <Card className="company-custom-card">
+                    <div className="card-content">
+                        <div className="company-line1">AG集团 IVI公司</div>
+
+                        <Divider className='company-divider-line' />
+
+                        <div className="text-area">
+                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                        </div>
+
+                        <Divider className='company-divider-line' />
+
+                        <div className="line-group">
+                            <div className="line">加班调休</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">双休制</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">大公司</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">绩效奖金</div>
+                        </div>
+
+                        <Divider className='divider-line' />
+                        <div className="line-group">
+                            <div className="line">30k-50k</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">领导nice</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">单人间</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">办公环境nice</div>
+                        </div>
+                        <Divider className='divider-line' />
+                        <div className="line-group">
+                            <span><LocationFill className="area" />泰国 菲律宾</span>
+                        </div>
+                        <Divider className='divider-line' />
+
+                        <span className='company-record-bottom'>
+                            <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
+                            <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
+                        </span>                    </div>
+                </Card>
+                <Card className="company-custom-card">
+                    <div className="card-content">
+                        <div className="company-line1">AG集团 IVI公司</div>
+
+                        <Divider className='company-divider-line' />
+                        {'公司图片变量' &&
+                            <Swiper loop autoplay allowTouchMove>
+                                {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
+                                    <Swiper.Item className="swiper-item" key={index} >
+                                        <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                                    </Swiper.Item>
+                                ))}
+                            </Swiper>
+                        }
+                        <Divider className='company-divider-line' />
 
                         <div className="text-area">
                             上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
@@ -25,48 +149,101 @@ const Company: React.FC = () => {
                         <Divider className='divider-line' />
 
                         <div className="line-group">
-                            <div className="line">菲律宾</div>
-                            <Divider className='divider-line' direction="vertical" />
+                            <div className="line">加班调休</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
                             <div className="line">双休制</div>
-                            <Divider className='divider-line' direction="vertical" />
-                            <div className="line">1000人以上</div>
-                            <Divider className='divider-line' direction="vertical" />
-                            <div className="line">评价良好</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">大公司</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">绩效奖金</div>
                         </div>
 
                         <Divider className='divider-line' />
-
-                        <span className="tracking">10条追踪动态 <span className="click">点击查看</span> </span>
-                    </div>
-                </Card>
-                <Card className="company-custom-card">
-                    <div className="card-content">
-                        <div className="line1">AG集团 IVI公司</div>
-
-                        <Divider className='divider-line' />
-
-                        <div className="text-area">
-                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                            上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                        </div>
-
-                        <Divider className='divider-line' />
-
                         <div className="line-group">
-                            <div className="line">菲律宾</div>
-                            <Divider className='divider-line' direction="vertical" />
-                            <div className="line">双休制</div>
-                            <Divider className='divider-line' direction="vertical" />
-                            <div className="line">1000人以上</div>
-                            <Divider className='divider-line' direction="vertical" />
-                            <div className="line">评价良好</div>
+                            <div className="line">30k-50k</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">领导nice</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">单人间</div>
+                            <Divider className='blue-divider-line' direction="vertical" />
+                            <div className="line">办公环境nice</div>
                         </div>
-
+                        <Divider className='divider-line' />
+                        <div className="line-group">
+                            <span><LocationFill className="area" />泰国 菲律宾</span>
+                        </div>
                         <Divider className='divider-line' />
 
-                        <span className="tracking">10条追踪动态 <span className="click">点击查看</span> </span>
+                        <span className='company-record-bottom'>
+                            <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
+                            <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
+                        </span>
                     </div>
                 </Card>
+
+                <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+                    position='right'
+                    closeOnSwipe={true}
+                    closeOnMaskClick
+                    visible={visibleCloseRight}
+                    onClose={() => { setVisibleCloseRight(false) }}>
+
+                    <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={16} />返回 </span></div>
+
+
+                    <Card className="company-custom-card">
+                        <div className="card-content">
+                            <div className="company-line1">AG集团 IVI公司</div>
+
+                            <Divider className='company-divider-line' />
+                            {'公司图片变量' &&
+                                <Swiper loop autoplay allowTouchMove>
+                                    {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
+                                        <Swiper.Item className="swiper-item" key={index} >
+                                            <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                                        </Swiper.Item>
+                                    ))}
+                                </Swiper>
+                            }
+                            <Divider className='company-divider-line' />
+
+                            <div className="text-area">
+                                上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                                上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                            </div>
+
+                            <Divider className='company-divider-line' />
+                            <div className="line-group">
+                                <div className="line">加班调休</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">双休制</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">大公司</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">绩效奖金</div>
+                            </div>
+
+                            <Divider className='divider-line' />
+                            <div className="line-group">
+                                <div className="line">30k-50k</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">领导nice</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">单人间</div>
+                                <Divider className='blue-divider-line' direction="vertical" />
+                                <div className="line">办公环境nice</div>
+                            </div>
+                            <Divider className='divider-line' />
+                            <div className="line-group">
+                                <span><LocationFill className="area" />泰国 菲律宾</span>
+                            </div>
+                            <Divider className='divider-line' />
+
+                            <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
+                        </div>
+                    </Card>
+
+                </Popup>
             </div>
         </>
     );
