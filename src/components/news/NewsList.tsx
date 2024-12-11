@@ -78,6 +78,7 @@ const NewsList: React.FC<any> = () => {
             viewCount={news.viewCount}
             createTime={news.createTime}
             category={news.category}
+            source={news.source}
             data-id={news.id} // 为每个新闻条目添加唯一标识符
           />
         ))}

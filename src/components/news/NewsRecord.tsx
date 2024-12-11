@@ -30,7 +30,7 @@ export interface NewsInfoType {
 
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, category }) => {
+const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, likesCount, contentImagePath, commentsCount, viewCount, createTime, category, source }) => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [imageHeights, setImageHeights] = useState<number[]>([]);
   const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -52,7 +52,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
           <div className="text-container">
             <div className="title">
               {title}
-              <div><span className='time'>{createTime.split(' ')[0]}</span></div>
+              <div><span className='source'>{source}</span> <span className='time'>{createTime.split(' ')[0]}</span></div>
               <Badge color={newsEnum(category).color} content={newsEnum(category).name} />
             </div>
             
@@ -87,6 +87,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
             commentsCount={commentsCount}
             viewCount={viewCount}
             createTime={createTime}
+            source={source}
           />
         </div>
 

@@ -64,7 +64,7 @@ export interface NewsInfoType {
     setVisibleCloseRight?: any;
 }
 
-const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime}) => {
+const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, content, contentImagePath, photoPath, likesCount, viewCount, commentsCount, createTime, source}) => {
 
     const textAreaRef = useRef<TextAreaRef>(null);
     const [comment, setComment] = useState('')
@@ -213,7 +213,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
 
             <div className='news-info'>
                 <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={24} />返回</span> {title}</div>
-                <div className='newsinfo-time'>{createTime}</div>
+                <div><span className='source'>{source}</span> <span className='newsinfo-time'>{createTime}</span></div>
 
                 {contentImagePath &&
                     <Swiper loop autoplay allowTouchMove>
@@ -231,7 +231,6 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
                         </Swiper.Item>
                     </Swiper>
                 }
-
 
                 <TextArea defaultValue={content} readOnly rows={getContentRows()} className='newsinfo-content' />
 
