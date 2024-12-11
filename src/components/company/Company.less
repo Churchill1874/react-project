@@ -4,7 +4,7 @@
     background-color: @theme;
     height: 100%;
     padding: 3px;
-    padding-bottom: 5px;
+    padding-bottom: 5px;    
   }
   
   .adm-card-body{
@@ -14,12 +14,9 @@
   .company-custom-card {
     padding: 0px;
     margin-bottom: 5px;
+    background-color: #fff;
   }
   
-  .card-content {
-    display: flex;
-    flex-direction: column;
-  }
   
   .adm-divider adm-divider-horizontal adm-divider-center{
     padding: 0px;
@@ -89,7 +86,11 @@
     width: 100%;
   }
   .company-info{
-    color: black;
+    display: flex;
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 水平居中 */
+    padding: 10px;
+    height: 100%;
   }
   
   .company-image-container{            /* 容器最大高度 */
@@ -99,6 +100,7 @@
     width: 80%;
   }
 
-  .advertise{
-    margin-bottom: 5px;
-  }
+
+
+  
+  
