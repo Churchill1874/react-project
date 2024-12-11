@@ -12,6 +12,7 @@ import { Button, FloatingBubble, Image, ImageViewer, Input, Popup, Swiper, TextA
 import { HeartOutline, LeftOutline, MessageFill } from 'antd-mobile-icons';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
+import dayjs from 'dayjs'
 
 const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
     const innerRef = useRef<TextAreaRef>(null);
@@ -213,7 +214,9 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight, id, title, con
 
             <div className='news-info'>
                 <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={24} />返回</span> {title}</div>
-                <div><span className='source'>{source}</span> <span className='newsinfo-time'>{createTime}</span></div>
+                <div><span className='source'>{source}</span> <span className='newsinfo-time'>{dayjs(createTime).format('YYYY-MM-DD HH:mm')}</span></div>
+
+
 
                 {contentImagePath &&
                     <Swiper loop autoplay allowTouchMove>

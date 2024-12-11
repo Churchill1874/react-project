@@ -5,6 +5,7 @@ import { FcLike, FcReading } from "react-icons/fc";
 import { MessageOutline } from 'antd-mobile-icons';
 import NewsInfo from '@/components/news/newsinfo/NewsInfo';
 import { newsEnum } from '@/common/news'
+import dayjs from 'dayjs'
 
 
 export interface NewsInfoType {
@@ -52,7 +53,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
           <div className="text-container">
             <div className="title">
               {title}
-              <div><span className='source'>{source}</span> <span className='time'>{createTime.split(' ')[0]}</span></div>
+              <div><span className='source'>{source}</span> <span className='time'>{dayjs(createTime).format('YYYY-MM-DD HH:mm')}</span></div>
               <Badge color={newsEnum(category).color} content={newsEnum(category).name} />
             </div>
             
