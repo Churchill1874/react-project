@@ -1,17 +1,17 @@
 import { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, DotLoading, Popup, FloatingBubble, ImageViewer, Image, Button, TextAreaRef, Swiper } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, Popup, FloatingBubble, ImageViewer, Image, Steps, Ellipsis, Swiper } from 'antd-mobile';
 import { MessageFill, LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/company/Company.less'
+import {Request_CompanyPage, CompanyResponseType} from '@/components/company/api'
 import dayjs from 'dayjs'
+import useStore from "@/zustand/store";
 
 
 const Company: React.FC = () => {
-  //const [jobList, setJobList] = useState<JobType[]>([]);
-  const [pageNum, setPageNum] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const { Step } = Steps
+
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [visible, setVisible] = useState(false)
-  const images = ''
 
   const showPopupInfo = () => {
     console.log(visibleCloseRight)
@@ -43,8 +43,8 @@ const Company: React.FC = () => {
             }
             <Divider className='company-divider-line' />
             <div className="text-area">
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
             </div>
 
             <Divider className='divider-line' />
@@ -88,8 +88,8 @@ const Company: React.FC = () => {
             <Divider className='company-divider-line' />
 
             <div className="text-area">
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
             </div>
 
             <Divider className='company-divider-line' />
@@ -142,8 +142,8 @@ const Company: React.FC = () => {
             <Divider className='company-divider-line' />
 
             <div className="text-area">
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-              上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
             </div>
 
             <Divider className='divider-line' />
@@ -188,7 +188,7 @@ const Company: React.FC = () => {
           visible={visibleCloseRight}
           onClose={() => { setVisibleCloseRight(false) }}>
 
-          <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span></div>
+          <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={16} />返回 </span></div>
 
           <div className="company-info-popup">
             <Card className="company-custom-card">
@@ -207,8 +207,7 @@ const Company: React.FC = () => {
               <Divider className='company-divider-line' />
 
               <div className="text-area">
-                上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
+                {'上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接'}
               </div>
 
               <Divider className='company-divider-line' />
@@ -242,9 +241,23 @@ const Company: React.FC = () => {
             </Card>
 
 
-
-
-
+            <Steps direction='vertical'>
+              <Step
+                title='填写机构信息'
+                status='finish'
+                description='完成时间：2020-12-01 12:30'
+              />
+              <Step
+                title='签约机构'
+                status='finish'
+                description='完成时间：2020-12-01 12:30'
+              />
+              <Step
+                title='关联服务区'
+                status='finish'
+                description='完成时间：2020-12-01 12:30'
+              />
+            </Steps>
 
           </div>
 

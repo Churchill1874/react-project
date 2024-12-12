@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
 import { SoutheastAsiaNewsType } from '@/components/southeastasia/api';
+import { CompanyPageType } from '@/components/company/api'
 
 type SetStateAction<T> = T | ((prevState: T) => T);
 
@@ -39,6 +40,14 @@ interface AppState {
   setSoutheastAsiaNewsHasHore: ( southeastAsiaNewsHasHore: boolean ) => void;
   southeastAsiaNewsPage: number;
   setSoutheastAsiaNewsPage: (southeastAsiaNewsPage: (prev: number) => number) => void;
+
+  //公司及公司事件列表
+  companyList: CompanyPageType[];
+  setCompanyList: (companyList: CompanyPageType[]) => void;
+  companyHasHore: boolean;
+  setCompanyHasHore: (companyHasHore: boolean) => void;
+  companyPage: number;
+  setCompanyPage: (companyPage: (prev: number) => number) => void;
 }
 
 const useStore = create<AppState>((set) => ({
@@ -67,7 +76,15 @@ const useStore = create<AppState>((set) => ({
   southeastAsiaNewsHasHore: true,
   setSoutheastAsiaNewsHasHore: (southeastAsiaNewsHasHore) => set(() => ({southeastAsiaNewsHasHore})),
   southeastAsiaNewsPage: 1,
-  setSoutheastAsiaNewsPage: (southeastAsiaNewsPage) => set((state) => ({southeastAsiaNewsPage: southeastAsiaNewsPage(state.southeastAsiaNewsPage)}))
+  setSoutheastAsiaNewsPage: (southeastAsiaNewsPage) => set((state) => ({southeastAsiaNewsPage: southeastAsiaNewsPage(state.southeastAsiaNewsPage)})),
+
+  //公司信息
+  companyList: [],
+  setCompanyList: (companyList) => set(()=>({companyList})),
+  companyHasHore: true,
+  setCompanyHasHore: (companyHasHore) => set(()=>({companyHasHore})),
+  companyPage: 1,
+  setCompanyPage: (companyPage) => set((state) => ({companyPage: companyPage(state.companyPage)}))
 }));
 
 export default useStore;
