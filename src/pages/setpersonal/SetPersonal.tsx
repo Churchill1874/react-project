@@ -107,7 +107,7 @@ const SetPersonal: React.FC = () => {
 
 
                 <Form form={form} className="form" onFinish={update}
-                    footer={<Button block color="default" type="submit" size="middle"> 更新 </Button>}
+                    footer={<Button className='button' block color="default" type="submit" size="middle"> 更新 </Button>}
                     layout="horizontal"
                     requiredMarkStyle="asterisk"
                     mode="card"

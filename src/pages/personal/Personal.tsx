@@ -56,8 +56,10 @@ const UserCenter: React.FC = () => {
                     (<Tag className="tag" color="warning" fill="outline">禁用</Tag>)
                   }
                 </span>
+
+                <span className="balance"> 余额: {playerInfo?.balance} U</span>
+
               </span>
-              <span className="balance"> 余额: {playerInfo?.balance} U</span>
             </div>
             <div className="right-info">
               <span onClick={editPlayerInfo}>
@@ -133,51 +135,22 @@ const UserCenter: React.FC = () => {
 
         <div className="card-outer-container">
           <div className="card-inner-container">
-            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} /><span> 钱包</span> </div>} extra={<RightOutline />} />
-
-            <Card
-              title={
-                <div className="card-title">
-                  <FcReading fontSize={18} />
-                  <span> 浏览记录</span>
-                </div>
-              }
-              extra={<RightOutline />}
-            />
-          </div>
-
-          <div className="card-inner-container">
-            <Card
-              title={
-                <div className="card-title">
-                  <FcHeadset fontSize={18} />
-                  <span> 客服</span>
-                </div>
-              }
-              extra={<RightOutline />}
-            />
-
-            <Card
-              title={
-                <div className="card-title">
-                  <FcBusinessman fontSize={18} />
-                  <span> 代理</span>
-                </div>
-              }
-              extra={<RightOutline />}
-            />
+            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} />钱包</div>} />
+            <Card title={<div className="card-title"><FcReading fontSize={18} />浏览</div>}/>
+            <Card title={<div className="card-title"><FcHeadset fontSize={18} />客服</div>}/>
+            <Card title={<div className="card-title"><FcBusinessman fontSize={18} /> 代理</div>}/>
           </div>
         </div>
 
-        <Card className="signout" onClick={logout}
-          title={
-            <div className="card-title">
-              <FcImport fontSize={18} />
-              <span>退出</span>
-            </div>
-          }
-          extra={<RightOutline />}
-        />
+
+        <div className="signout-outer">
+          <div className="signout-inner">
+
+          <Card title={<div ><FcImport fontSize={18} /> 退出</div>}/>
+
+          </div>
+        </div>
+
       </div>
     </>
   );

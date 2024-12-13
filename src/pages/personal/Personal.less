@@ -21,6 +21,7 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+  padding: 1px 5px;
 
   margin: 5px 10px;
   background-color: #fff;
@@ -32,21 +33,19 @@
 .card-personal-info {
   .adm-card-body {
     width: 100%;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0px;
   }
 
   height: 250px;
-  margin: 5px 10px;
+  margin: 5px 5px;
   background-color: #fff;
   /* 设置背景颜色 */
 }
 
 .personal-avatar {
-  --size: 50px;
+  --size: 60px;
   margin: 5px 0px;
   position: relative;
-
   border: 1px solid @theme; /* 设置边框颜色和宽度 */
   //border-radius: 50%; /* 使边框圆角，如果头像是圆形 */
   padding: 1px; /* 如果需要内边距 */
@@ -81,7 +80,7 @@
   margin-left: 12px;
 
   .name {
-    font-size: 14px;
+    font-size: 13px;
     margin-bottom: 1px;
   }
   .balance,
@@ -124,7 +123,7 @@
   width: 100%;
   box-sizing: border-box;
   /* 确保 padding 和 border 包含在 width 和 height 内 */
-  padding: 5px 10px;
+  padding: 1px 10px;
   margin-bottom: 5px;
 }
 
@@ -149,7 +148,7 @@
 }
 
 .personal-info {
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   /* 使用 flexbox 布局 */
   align-items: center;
@@ -166,20 +165,6 @@
   .right-icon {
     margin-left: auto; /* 将图标推到最右边 */
     align-self: center; /* 垂直居中 */
-  }
-}
-
-.signout {
-  font-size: 16px;
-  margin: 0px 10px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 40px; /* 设置卡片的高度，例如50px，可以根据需要调整 */
-  .adm-card-header-title {
-    display: flex;
-    justify-content: center; /* 水平居中 */
-    width: 100%;
-    //font-weight: normal; /* 设置字体不加粗 */
   }
 }
 
@@ -227,7 +212,7 @@
   .adm-text-area-element{
     padding: 5px 8px;
 
-    font-size: 14px;
+    font-size: 13px;
   }
   .adm-text-area-count{
     font-size: 12px;
@@ -236,7 +221,7 @@
 
 .personal-info-desc {
   color: gray;
-  font-size: 14px;
+  font-size: 13px;
   margin-top: 5px;
 }
 
@@ -249,28 +234,47 @@
 
 .card-inner-container {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: calc(50% - 5px); /* 每个内层容器占据50%的宽度，减去左右间隙 */
+  //width: calc(50% - 5px); /* 每个内层容器占据50%的宽度，减去左右间隙 */
   margin: 1px 0; /* 控制上下间隙 */
+  width: 100%;
+  gap: 30px;
 }
 
 .card-title {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  
 }
 
 .card-title span {
   margin-left: 5px; /* 控制图标和文字之间的间距 */
-  font-size: 14px; /* 控制文字的大小 */
+  font-size: 13px; /* 控制文字的大小 */
 }
 
 .card-inner-container .adm-card {
-  margin: 1px 0;
-  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
-  height: 40px; /* 设置卡片的高度，例如40px，可以根据需要调整 */
+  display: flex;
+  flex: 1; /* 使用 Flexbox 让内容居中 */
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.1);
+  height: 50px; /* 设置卡片的高度，例如40px，可以根据需要调整 */
   .adm-card-header-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: normal; /* 设置字体不加粗 */
   }
 }
+
+.signout-outer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px 10px; /* 控制外层容器的左右间隙 */
+}
+
+.signout-inner {
+  margin: 1px 0; /* 控制上下间隙 */
+  width: 100px;
+}
+
