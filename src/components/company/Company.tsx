@@ -1,8 +1,8 @@
-import { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, Popup, FloatingBubble, ImageViewer, Image, Steps, Ellipsis, Swiper } from 'antd-mobile';
-import { MessageFill, LeftOutline, LocationFill } from 'antd-mobile-icons';
+import { useState } from "react";
+import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, Popup, ImageViewer, DotLoading, Image, Steps, Ellipsis, Swiper } from 'antd-mobile';
+import { LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/company/Company.less'
-import {Request_CompanyPage, CompanyResponseType} from '@/components/company/api'
+import { Request_CompanyPage, CompanyPageType, CompanyPageReqType } from '@/components/company/api'
 import dayjs from 'dayjs'
 import useStore from "@/zustand/store";
 
@@ -12,257 +12,218 @@ const Company: React.FC = () => {
 
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [visible, setVisible] = useState(false)
+  const { companyList, setCompanyList, companyHasHore, setCompanyHasHore, companyPage, setCompanyPage } = useStore();
+  const [popupInfo, setPopupInfo] = useState<CompanyPageType>();
 
-  const showPopupInfo = () => {
+  const showPopupInfo = (companyData: CompanyPageType) => {
     console.log(visibleCloseRight)
     setVisibleCloseRight(true)
+    setPopupInfo(companyData);
   }
 
   const showImage = () => {
     setVisible(prev => !prev);
   }
 
+  const CompanyScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
+    return (
+      <>
+        {hasMore ? (
+          <>
+            <div className="dot-loading-custom" >
+              <span >Loading</span>
+              <DotLoading color='#fff' />
+            </div>
+          </>
+        ) : (
+          <span color='#fff'>--- 我是有底线的 ---</span>
+        )}
+      </>
+    )
+  }
+
+  //获取api东南亚新闻数据
+  const companyPageRequest = async (isReset: boolean) => {
+    const pageNum = isReset ? 1 : companyPage;
+    const param: CompanyPageReqType = { pageNum: pageNum, pageSize: 20 };
+    const list: CompanyPageType[] = (await Request_CompanyPage(param)).data.records || [];
+
+    console.log('获取api公司数据:', JSON.stringify(list))
+
+    //循环便利
+    if (list.length > 0) {
+      if (isReset) {
+        setCompanyPage(() => 2);
+        setCompanyList(list);
+        setCompanyHasHore(true);
+      } else {
+        if (JSON.stringify(list) !== JSON.stringify(companyList)) {
+          setCompanyPage(prev => (prev + 1))
+          setCompanyList([...companyList, ...list])
+          setCompanyHasHore(true)
+        } else {
+          setCompanyHasHore(false)
+        }
+      }
+    } else {
+      setCompanyHasHore(false)
+    }
+
+  }
 
   return (
     <>
+
       <div className="card-container" >
+        <PullToRefresh onRefresh={() => companyPageRequest(true)}>
+          {companyList?.map((company, index) => (
+            <Card className="company-custom-card" key={index}>
+              <div className="card-content">
+                <div className="company-line1"> {company.name}</div>
 
-        <Card className="company-custom-card">
-          <div className="card-content">
-            <div className="company-line1">AG集团 IVI公司</div>
-            <Divider className='company-divider-line' />
 
-            {'公司图片变量' &&
-              <Swiper loop autoplay allowTouchMove>
-                {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
-                  <Swiper.Item className="swiper-item" key={index} >
-                    <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
-                  </Swiper.Item>
-                ))}
-              </Swiper>
-            }
-            <Divider className='company-divider-line' />
-            <div className="text-area">
-              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
-            </div>
+                {company.image &&
+                  <>
+                    <Divider className='company-divider-line' />
+                    <Swiper loop autoplay allowTouchMove>
+                      {company.image.split(',').map((imagePath, index) => (
+                        <Swiper.Item className="swiper-item" key={index} >
+                          <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                        </Swiper.Item>
+                      ))}
+                    </Swiper>
+                  </>
 
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <div className="line">加班调休</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">双休制</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">大公司</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">绩效奖金</div>
-            </div>
+                }
 
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <div className="line">30k-50k</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">领导nice</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">单人间</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">办公环境nice</div>
-            </div>
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <span><LocationFill className="area" />泰国 菲律宾</span>
-            </div>
-            <Divider className='divider-line' />
+                <Divider className='company-divider-line' />
+                <div className="text-area">
+                  <Ellipsis direction='end' rows={3} content={company.description} />
+                </div>
 
-            <span className='company-record-bottom'>
-              <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
-              <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
-            </span>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <div className="line">{company.overtimeCompensation}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.holiday}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.teamScale}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.bonus}</div>
+                </div>
 
-          </div>
-        </Card>
-        <Card className="company-custom-card">
-          <div className="card-content">
-            <div className="company-line1">AG集团 IVI公司</div>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <div className="line">{company.salaryRange}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.leadershipCharacter}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.live}</div>
+                  <Divider className='blue-divider-line' direction="vertical" />
+                  <div className="line">{company.officeEnvironment}</div>
+                </div>
+                <Divider className='divider-line' />
+                <div className="line-group">
+                  <span><LocationFill className="area" />{company.city}</span>
+                </div>
+                <Divider className='divider-line' />
 
-            <Divider className='company-divider-line' />
+                <span className='company-record-bottom'>
+                  <span className='last-time'>最后一次更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
+                  <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击查看</span> </span>
+                </span>
 
-            <div className="text-area">
-              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
-            </div>
+              </div>
+            </Card>
+          ))}
+        </PullToRefresh>
 
-            <Divider className='company-divider-line' />
+        <InfiniteScroll loadMore={() => companyPageRequest(false)} hasMore={companyHasHore}>
+          <CompanyScrollContent hasMore={companyHasHore} />
+        </InfiniteScroll>
+      </div>
 
-            <div className="line-group">
-              <div className="line">加班调休</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">双休制</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">大公司</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">绩效奖金</div>
-            </div>
+      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+        position='right'
+        closeOnSwipe={true}
+        closeOnMaskClick
+        visible={visibleCloseRight}
+        onClose={() => { setVisibleCloseRight(false) }}>
 
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <div className="line">30k-50k</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">领导nice</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">单人间</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">办公环境nice</div>
-            </div>
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <span><LocationFill className="area" />泰国 菲律宾</span>
-            </div>
-            <Divider className='divider-line' />
+        <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={popupInfo?.image?.split(',')} visible={visible} onClose={() => { setVisible(false) }} />
 
-            <span className='company-record-bottom'>
-              <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
-              <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
-            </span>                    </div>
-        </Card>
-        <Card className="company-custom-card">
-          <div className="card-content">
-            <div className="company-line1">AG集团 IVI公司</div>
+        <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={16} />返回 </span></div>
 
-            <Divider className='company-divider-line' />
-            {'公司图片变量' &&
-              <Swiper loop autoplay allowTouchMove>
-                {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
-                  <Swiper.Item className="swiper-item" key={index} >
-                    <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
-                  </Swiper.Item>
-                ))}
-              </Swiper>
-            }
-            <Divider className='company-divider-line' />
+        <div className="company-info-popup">
+          <Card className="company-custom-card">
+            <div className="company-line1">{popupInfo?.image}</div>
 
-            <div className="text-area">
-              <Ellipsis direction='end' rows={3} content='上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接
-                  上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接' />
-            </div>
 
-            <Divider className='divider-line' />
-
-            <div className="line-group">
-              <div className="line">加班调休</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">双休制</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">大公司</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">绩效奖金</div>
-            </div>
-
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <div className="line">30k-50k</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">领导nice</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">单人间</div>
-              <Divider className='blue-divider-line' direction="vertical" />
-              <div className="line">办公环境nice</div>
-            </div>
-            <Divider className='divider-line' />
-            <div className="line-group">
-              <span><LocationFill className="area" />泰国 菲律宾</span>
-            </div>
-            <Divider className='divider-line' />
-
-            <span className='company-record-bottom'>
-              <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
-              <span className="company-info" onClick={showPopupInfo}> <span className="company-click">点击查看</span> </span>
-            </span>
-          </div>
-        </Card>
-
-        <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
-          position='right'
-          closeOnSwipe={true}
-          closeOnMaskClick
-          visible={visibleCloseRight}
-          onClose={() => { setVisibleCloseRight(false) }}>
-
-          <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={16} />返回 </span></div>
-
-          <div className="company-info-popup">
-            <Card className="company-custom-card">
-              <div className="company-line1">AG集团 IVI公司</div>
-
-              <Divider className='company-divider-line' />
-              {'公司图片变量' &&
+            {popupInfo?.image &&
+              <>
+                <Divider className='company-divider-line' />
                 <Swiper loop autoplay allowTouchMove>
-                  {'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s'.split(',').map((imagePath, index) => (
+                  {popupInfo?.image.split(',').map((imagePath, index) => (
                     <Swiper.Item className="swiper-item" key={index} >
                       <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
                     </Swiper.Item>
                   ))}
                 </Swiper>
-              }
-              <Divider className='company-divider-line' />
+              </>
+            }
+            <Divider className='company-divider-line' />
 
-              <div className="text-area">
-                {'上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接上千人公司,主要提供东南亚,行业龙头,主要经营项目为线上游戏源头,对接第三方大厅,和第三方支付项目提供对接'}
-              </div>
+            <div className="text-area">
+              {popupInfo?.description}
+            </div>
 
-              <Divider className='company-divider-line' />
-              <div className="line-group">
-                <div className="line">加班调休</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">双休制</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">大公司</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">绩效奖金</div>
-              </div>
+            <Divider className='company-divider-line' />
+            <div className="line-group">
+              <div className="line">{popupInfo?.overtimeCompensation}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.holiday}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.teamScale}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.bonus}</div>
+            </div>
 
-              <Divider className='divider-line' />
-              <div className="line-group">
-                <div className="line">30k-50k</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">领导nice</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">单人间</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">办公环境nice</div>
-              </div>
-              <Divider className='divider-line' />
-              <div className="line-group">
-                <span><LocationFill className="area" />泰国 菲律宾</span>
-              </div>
-              <Divider className='divider-line' />
+            <Divider className='divider-line' />
+            <div className="line-group">
+              <div className="line">{popupInfo?.salaryRange}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.leadershipCharacter}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.live}</div>
+              <Divider className='blue-divider-line' direction="vertical" />
+              <div className="line">{popupInfo?.officeEnvironment}</div>
+            </div>
+            <Divider className='divider-line' />
+            <div className="line-group">
+              <span><LocationFill className="area" />{popupInfo?.city}</span>
+            </div>
+            <Divider className='divider-line' />
 
-              <span className='last-time'>{/* {dayjs(job.lastTime).format('YYYY-MM-DD HH:mm')} */}最后一次更新时间: 2024-12-01 02:10</span>
-            </Card>
+            <span className='last-time'>最后一次更新时间:  {dayjs(popupInfo?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
+          </Card>
 
+          <Steps direction='vertical' >
+            {popupInfo?.companyEventList && popupInfo.companyEventList.length > 0 &&
+              popupInfo?.companyEventList?.map((event, index) => {
+                return (
+                  <Step
+                    title={event.description}
+                    status='finish'
+                    description={event.createTime}
+                    key={index}
+                  />
+                )
+              })
+            }
+          </Steps>
+        </div>
 
-            <Steps direction='vertical'>
-              <Step
-                title='填写机构信息'
-                status='finish'
-                description='完成时间：2020-12-01 12:30'
-              />
-              <Step
-                title='签约机构'
-                status='finish'
-                description='完成时间：2020-12-01 12:30'
-              />
-              <Step
-                title='关联服务区'
-                status='finish'
-                description='完成时间：2020-12-01 12:30'
-              />
-            </Steps>
-
-          </div>
-
-        </Popup>
-      </div>
+      </Popup>
     </>
   );
 }

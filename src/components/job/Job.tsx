@@ -77,6 +77,7 @@ const Job: React.FC = () => {
         if (JSON.stringify(jobList) !== JSON.stringify(resp.data.records)) {
           setPageNum(prev => prev + 1)
           setJobList([...jobList, ...(resp.data.records || [])])
+          setHasMore(true)
         } else {
           setHasMore(false)
         }

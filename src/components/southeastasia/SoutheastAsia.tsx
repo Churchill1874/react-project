@@ -139,7 +139,6 @@ const Company: React.FC = () => {
       setSoutheastAsiaNewsHasHore(false)
     }
 
-    setSoutheastAsiaNewsList(list);
   }
 
   const SoutheastAsiaNewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
