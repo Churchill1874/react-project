@@ -48,8 +48,6 @@ export interface CompanyEvent{
     createName: any;
     createTime: any;
     description: any;
-    encapsulate: any;
-    haveDetails: any;
     image: any;
 }
 
