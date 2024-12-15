@@ -80,8 +80,6 @@ const Company: React.FC = () => {
             <Card className="company-custom-card" key={index}>
               <div className="card-content">
                 <div className="company-line1"> {company.name}</div>
-
-
                 {company.image &&
                   <>
                     <Divider className='company-divider-line' />
@@ -156,7 +154,7 @@ const Company: React.FC = () => {
 
         <div className="company-info-popup">
           <Card className="company-custom-card">
-            <div className="company-line1">{popupInfo?.image}</div>
+            <div className="company-line1">{popupInfo?.name}</div>
 
 
             {popupInfo?.image &&
