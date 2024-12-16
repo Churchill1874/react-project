@@ -5,6 +5,7 @@ import Personal from '@/pages/personal/Personal';
 import SetPersonal from '@/pages/setpersonal/SetPersonal'
 import News from '@/pages/news/News'
 import NewsInfo from '@/components/news/newsinfo/NewsInfo'
+import Message from '@/pages/message/Message';
 
 export default [
   //首页
@@ -38,4 +39,8 @@ export default [
     path: '/setPersonal',
     component: SetPersonal,
   },
+  {
+    path: '/message',
+    component: Message,
+  }
 ];
