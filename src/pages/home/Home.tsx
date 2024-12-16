@@ -172,7 +172,7 @@ const Home = () => {
       <header className="header">
         <div className="logo">BIG NEWS</div>
 
-        <div><GlobalOutline fontSize={12} /> <span className="online"> 当前在线 {onlinePlayerCount} 人 </span></div>
+        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
       </header>
 
       {topNewsTitleHtml}
