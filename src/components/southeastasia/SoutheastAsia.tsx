@@ -236,7 +236,7 @@ const Company: React.FC = () => {
         onClose={() => { setVisibleCloseRight(false) }}>
 
         <div className="popup-scrollable-content" >
-          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={16} />返回 </span><span className="newsinfo-title">东南亚新闻</span></div>
+          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={16} />返回 </span><span className="southeast-asia-title">东南亚新闻</span></div>
 
           <Card className="southeastasia-custom-card">
             <div className="card-content">

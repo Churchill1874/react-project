@@ -134,21 +134,27 @@ const UserCenter: React.FC = () => {
         </div>
 
         <div className="card-outer-container">
-          <div className="card-inner-container">
-            <Card title={<div className="card-title"><FcSalesPerformance fontSize={18} />钱包</div>} />
-            <Card title={<div className="card-title"><FcReading fontSize={18} />浏览</div>}/>
-            <Card title={<div className="card-title"><FcHeadset fontSize={18} />客服</div>}/>
-            <Card title={<div className="card-title"><FcBusinessman fontSize={18} /> 代理</div>}/>
-          </div>
-        </div>
+          <Card className="card-inner-container">
+            <div className='fucation'>
+              <div className='card-title'><FcBusinessman className='icon' fontSize={22} /> 代理</div> <RightOutline className="right-icon" />
+            </div>
 
+            <div className='fucation'>
+              <div className='card-title'><FcSalesPerformance className='icon' fontSize={22} /> 钱包 </div> <RightOutline className="right-icon" />
+            </div>
 
-        <div className="signout-outer">
-          <div className="signout-inner">
+            <div className='fucation'>
+              <div className='card-title'><FcReading className='icon' fontSize={22} /> 浏览</div> <RightOutline className="right-icon" />
+            </div>
 
-          <Card title={<div ><FcImport fontSize={18} /> 退出</div>}/>
+            <div className='fucation'>
+              <div className='card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />
+            </div>
 
-          </div>
+            <div className='fucation'>
+              <div className='card-title' onClick={logout}><FcImport className='icon' fontSize={22} /> 退出</div> <RightOutline className="right-icon" />
+            </div>
+          </Card>
         </div>
 
       </div>

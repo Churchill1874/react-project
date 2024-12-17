@@ -30,20 +30,38 @@
   /* 添加阴影 */
 }
 
-.card-personal-info {
-  .adm-card-body {
-    width: 100%;
-    padding: 0px;
-  }
 
-  height: 250px;
-  margin: 5px 5px;
+.card-personal-info {
+  height: 230px;
   background-color: #fff;
-  /* 设置背景颜色 */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 1px;
+  height: 100%;
+  /* 确保 Card 组件高度与容器一致 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding-right: 10px;
+
+  .adm-card-body {
+    padding: 0px;
+    width: 100%;
+
+  }
 }
 
+.card-personal-info-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  /* 垂直排列 */
+}
+
+
 .personal-avatar {
-  --size: 60px;
+  --size: 50px;
   margin: 5px 0px;
   position: relative;
   border: 1px solid @theme; /* 设置边框颜色和宽度 */
@@ -124,28 +142,10 @@
   box-sizing: border-box;
   /* 确保 padding 和 border 包含在 width 和 height 内 */
   padding: 1px 10px;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
 }
 
-.card-personal-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 1px;
-  height: 100%;
-  /* 确保 Card 组件高度与容器一致 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding-right: 20px;
-}
 
-.card-personal-info-container {
-  display: flex;
-  flex-direction: column;
-  margin: 0px;
-  /* 垂直排列 */
-}
 
 .personal-info {
   font-size: 13px;
@@ -234,47 +234,34 @@
 
 .card-inner-container {
   display: flex;
-  //width: calc(50% - 5px); /* 每个内层容器占据50%的宽度，减去左右间隙 */
+  flex-direction: column;
   margin: 1px 0; /* 控制上下间隙 */
   width: 100%;
-  gap: 30px;
+  .adm-card-body{
+    padding: 0;
+
+  }
 }
 
 .card-title {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  
-}
-
-.card-title span {
-  margin-left: 5px; /* 控制图标和文字之间的间距 */
-  font-size: 13px; /* 控制文字的大小 */
+  width: 100%;
 }
 
 .card-inner-container .adm-card {
   display: flex;
-  flex: 1; /* 使用 Flexbox 让内容居中 */
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
   box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.1);
-  height: 50px; /* 设置卡片的高度，例如40px，可以根据需要调整 */
-  .adm-card-header-title {
-    font-size: 13px;
-    font-weight: normal; /* 设置字体不加粗 */
-  }
 }
 
-.signout-outer {
+.fucation{
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 10px 10px; /* 控制外层容器的左右间隙 */
-}
-
-.signout-inner {
-  margin: 1px 0; /* 控制上下间隙 */
-  width: 100px;
+  justify-content: space-between;
+  margin: 15px 0px;
+  .icon{
+    margin-right: 10px;
+  }
 }
 
