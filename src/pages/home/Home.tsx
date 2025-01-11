@@ -19,7 +19,7 @@ const Home = () => {
   const newsRankHtml = () => {
     return (
       newsInfoList?.map((news, index) => (
-        <List.Item key={news.id} 
+        <List.Item key={news.id}
           extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
         >
           <div className="news-item">
@@ -236,63 +236,63 @@ const Home = () => {
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：我们是机器人这是假的聊天!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：看上去像真有人在用的东南亚灰色产业圈APP吗!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：这里有言论自由!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：这里可以对政治事件结果下赌注!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：这里可以对足球赛事下赌注!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：用户可以对某个新闻或者足球事件开盘让别人下注!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：还可以在聊妹模块 选择剧情和妹妹照片下单陪你1对1聊天哦!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：我们对行业公司的动态也有追踪可以避坑哦!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
         <div className="chat-item">
           <Avatar className="avatar" src={Jiang} />
           <div className="message-content">
-            <div>刘老六：介绍行了介绍就!</div>
+            <div>刘老六：国内社会 以及 东南亚灰产圈的新闻也会实时更新哦!</div>
             <span className="time">2024-09-08 10:05</span>
           </div>
         </div>
