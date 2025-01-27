@@ -1,141 +1,139 @@
 @theme: #1890ff;
 
 .card-container {
-    background-color: @theme;
-    height: 100%;
-    padding: 3px;
-    padding-bottom: 5px;
-  }
-  
-  .adm-card-body{
-    padding: 5px;
-    
-  }
+  background-color: @theme;
+  height: 100%;
+  padding: 3px;
+  padding-bottom: 5px;
+}
 
-  .southeastasia-custom-card {
-    padding: 0px;
-    margin-bottom: 5px;
-  }
-  
-  .card-content {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .adm-divider adm-divider-horizontal adm-divider-center{
-    padding: 0px;
-    
-  }
+.adm-card-body {
+  padding: 5px;
+}
 
-  .southeastasia-news-image-container{            /* 容器最大高度 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(237, 232, 232); /* 默认背景颜色 */
-    width: 100%;
-  }
-  
-  .southeastasia-news-image{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    object-fit: cover; /* 填满容器并保持比例 */
-    //object-fit: contain;        /* 保持图片的比例，适应容器 */
-    min-width: 300px;
-  }
+.southeastasia-custom-card {
+  padding: 0px;
+  margin-bottom: 5px;
+}
 
-  .line-group {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .line {
-    flex: 1;
-    padding: 3px;
-    text-align: center;
-    margin: 0px;
-    color: black;
-  }
-  
-  .text-area {
-    padding: 3px 0;
-    text-align: start;
-    color:rgb(44, 44, 44);
-    text-indent: 2em; /* 首行缩进两格 */
-  }
-  
-  .divider-line{
-    margin: 5px 1px;
-  }
+.card-content {
+  display: flex;
+  flex-direction: column;
+}
 
-  .last-time{
-    color: rgb(168, 166, 166);
-  }
+.adm-divider adm-divider-horizontal adm-divider-center {
+  padding: 0px;
+}
 
-  .adm-pull-to-refresh-head-content{
-    color: #fff;
-  }
+.southeastasia-news-image-container {
+  /* 容器最大高度 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //background-color: rgb(237, 232, 232); /* 默认背景颜色 */
+  width: 100%;
+}
 
-  .tracking{
-    display: inline-block;       /* 防止文字过长时的换行 */
-    text-align: center;       
-    .area{
-      margin-right: 3px;
-    }
-  }
-  .city{
-    //color: black;
-    font-weight: bold;
-  }
+.southeastasia-news-image {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  object-fit: cover; /* 填满容器并保持比例 */
+  //object-fit: contain;        /* 保持图片的比例，适应容器 */
+  min-width: 150px;
+  max-width: 300px;
+}
 
-  .click{
-    color: black;
-    font-weight: bold;
-  }
+.line-group {
+  display: flex;
+  justify-content: space-between;
+}
 
-  .button-info{
-    display: flex;               /* 使用 Flexbox 布局 */
-    justify-content: space-between; /* 横向平分空间 */
-    align-items:center;         /* 垂直居中 */
-    padding: 0 10px;     
-  }
+.line {
+  flex: 1;
+  padding: 3px;
+  text-align: center;
+  margin: 0px;
+  color: black;
+}
 
-.southeastasia-time{
-    text-align: right;
-    color: gray;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-right: 10px;
+.southeast-asia-text-area {
+  padding: 1px 0;
+  text-align: start;
+  color: rgb(44, 44, 44);
+  text-indent: 2em; /* 首行缩进两格 */
+}
+
+.southeast-asia-text-area p {
+  margin-bottom: 1px; /* 段落间距 */
+  line-height: 1; /* 行间距 */
+  text-indent: 2em; /* 首行缩进 */
+}
+
+.divider-line {
+  margin: 5px 1px;
+}
+
+.last-time {
+  color: rgb(168, 166, 166);
+}
+
+.adm-pull-to-refresh-head-content {
+  color: #fff;
+}
+
+.tracking {
+  display: inline-block; /* 防止文字过长时的换行 */
+  text-align: center;
+  .area {
+    margin-right: 3px;
+  }
+}
+.city {
+  //color: black;
+  font-weight: bold;
+}
+
+.click {
+  color: black;
+  font-weight: bold;
+}
+
+.button-info {
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: space-between; /* 横向平分空间 */
+  align-items: center; /* 垂直居中 */
+  padding: 0 10px;
+}
+
+.southeastasia-time {
+  text-align: right;
+  color: gray;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 10px;
 }
 
 .icon-and-text {
-    display: inline-flex;
-    align-items: center; /* 垂直居中 */
-    gap: 1px; /* 图标和数字之间的间距，可调整 */
+  display: inline-flex;
+  align-items: center; /* 垂直居中 */
+  gap: 1px; /* 图标和数字之间的间距，可调整 */
 }
 
-.number{
+.number {
   font-size: 14px;
   padding-left: 2px;
   line-height: 1; /* 确保数字没有额外的行高 */
 }
 
-.message-number{
+.message-number {
   font-size: 14px;
   padding-left: 2px;
   line-height: 1; /* 确保数字没有额外的行高 */
   margin-right: 50px;
 }
 
-
-
-.southeast-asia-title {
-  font-size: 15px;
-  margin-top: 0;
-}
-
-
-.southeastAsia-input-comment{
+.southeastAsia-input-comment {
   display: absolute;
   flex: 1;
   outline: none;
@@ -156,9 +154,15 @@
   margin-left: 5px;
 }
 
-.southeastasia-tag{
+.southeastasia-tag {
   margin-right: 10px;
-  .source{
-    color:#1e77ca;
+  .source {
+    color: #1e77ca;
   }
+}
+
+.southeast-asia-title {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
 }

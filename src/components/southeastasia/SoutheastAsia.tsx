@@ -44,7 +44,7 @@ const Company: React.FC = () => {
   const [comment, setComment] = useState('')
   const [newsCommentCount, setNewsCommentCount] = useState(0);//新闻评论数量
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
-  const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: '', createTime: '', isHot: false, isTop: false, source: "" });
+  const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
   const { southeastAsiaNewsList, setSoutheastAsiaNewsList, southeastAsiaNewsHasHore, setSoutheastAsiaNewsHasHore, southeastAsiaNewsPage, setSoutheastAsiaNewsPage } = useStore();
 
   interface PopupInfo {
@@ -58,6 +58,7 @@ const Company: React.FC = () => {
     isHot: any | null;//热门
     isTop: any | null;//置顶
     source: any | null;
+    title: any | null;
   }
 
   // 处理 Input 聚焦事件，阻止其获取焦点
@@ -106,9 +107,9 @@ const Company: React.FC = () => {
   }
 
 
-  const showPopupInfo = (id, area, content, readCount, commentCount, southeastasiaNewsImage, createTime, isHot, isTop, source) => {
+  const showPopupInfo = (id, area, content, readCount, commentCount, southeastasiaNewsImage, createTime, isHot, isTop, source, title) => {
     setVisibleCloseRight(true)
-    setPopupInfo({ id, area, content, readCount, commentCount, southeastasiaNewsImage, createTime, isHot, isTop, source })
+    setPopupInfo({ id, area, content, readCount, commentCount, southeastasiaNewsImage, createTime, isHot, isTop, source, title })
   }
 
 
@@ -158,6 +159,19 @@ const Company: React.FC = () => {
     )
   }
 
+  function splitByKeywords(text, keywords = ['后来', '然后', '接着', '因此', '但是', '所以']) {
+    const regex = new RegExp(`(${keywords.join('|')})`, 'g');
+    return text.split(regex).reduce((acc, cur, idx) => {
+      if (idx % 2 === 0) {
+        acc.push(cur); // 添加非关键词的部分
+      } else {
+        acc[acc.length - 1] += cur; // 将关键词拼接到上一段
+      }
+      return acc;
+    }, []);
+  }
+
+
   useEffect(() => {
 
   }, []);
@@ -181,14 +195,20 @@ const Company: React.FC = () => {
 
                 <Divider className='divider-line' />
 
-                <div className="text-area">
-                  <Ellipsis direction='end' rows={3} content={southeastAsiaNews.content} />
-                </div>
+                {southeastAsiaNews.title &&
+                  <div className="text-area">
+                    <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
+                  </div>
+                }
+
+                {/*                 <div className="text-area">
+                  <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} />
+                </div> */}
                 <span className="southeastasia-time">
 
                   {southeastAsiaNews.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
                   {southeastAsiaNews.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
-                  {southeastAsiaNews.source && <span className="southeastasia-tag" > <span className="source"> {southeastAsiaNews.source} </span></span>}
+                  {southeastAsiaNews.source && <span className="southeastasia-tag" >来源: <span className="source"> {southeastAsiaNews.source} </span></span>}
                   {southeastAsiaNews.createTime && dayjs(southeastAsiaNews.createTime).format('YYYY-MM-DD HH:mm')}
 
                 </span>
@@ -205,13 +225,13 @@ const Company: React.FC = () => {
                   <span className="tracking">
                     <span className="icon-and-text">
                       <MessageOutline fontSize={17} />
-                      <span className="message-number"> {/* {southeastAsiaNews.commentCount} */} 99999</span>
+                      <span className="message-number"> {southeastAsiaNews.commentCount} </span>
                       <span className="click"
                         onClick={() => {
                           showPopupInfo(southeastAsiaNews.id, southeastAsiaNews.area, southeastAsiaNews.content,
                             southeastAsiaNews.readCount, southeastAsiaNews.commentCount, southeastAsiaNews.imagePath,
                             southeastAsiaNews.createTime, southeastAsiaNews.isHot, southeastAsiaNews.isTop,
-                            southeastAsiaNews.source)
+                            southeastAsiaNews.source, southeastAsiaNews.title)
                         }}>点击查看</span>
                     </span>
                   </span>
@@ -249,8 +269,16 @@ const Company: React.FC = () => {
                 />
               </div>
 
-              <div className="text-area">
-                {popupInfo.content}
+              <div className="southeast-asia-title">
+                {popupInfo.title}
+              </div>
+
+              <div className="southeast-asia-text-area">
+                {splitByKeywords(popupInfo.content).map((paragraph, index) => (
+                  <p key={index} style={{ marginBottom: '5px', lineHeight: '1.5' }}>
+                    {paragraph}
+                  </p>
+                ))}
               </div>
 
               <span className="southeastasia-time">

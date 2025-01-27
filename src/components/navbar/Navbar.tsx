@@ -9,13 +9,13 @@ const Navbar = () => {
 
   useEffect(() => {
     const currentPath = location.pathname === '/' ? '' : location.pathname.split('/')[1];
-    if(currentPath === ''){
+    if (currentPath === '') {
       navigate('/home')
     }
     if (activeKey !== currentPath) {
       setActiveKey(currentPath || '');
     }
-  }, [location.pathname, activeKey,navigate]);
+  }, [location.pathname, activeKey, navigate]);
 
   const handleTabChange = (key: string) => {
     if (activeKey !== key) {
