@@ -193,7 +193,6 @@ const Home = () => {
         <div className="event-info">
           <span className="event-title">事件: 美国大选</span>
           <span className="event-date">2024-12-01 浏览: 1200</span>
-          <span className="event-views"></span>
           <span className="event-reward">奖池: 82402 usdt</span>
         </div>
 
@@ -304,6 +303,7 @@ const Home = () => {
           发送
         </Button>
       </div>
+
     </div>
   );
 };

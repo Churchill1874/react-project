@@ -196,7 +196,7 @@ const Company: React.FC = () => {
                 <Divider className='divider-line' />
 
                 {southeastAsiaNews.title &&
-                  <div className="text-area">
+                  <div className="southeast-asia-text-area">
                     <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
                   </div>
                 }
@@ -275,7 +275,7 @@ const Company: React.FC = () => {
 
               <div className="southeast-asia-text-area">
                 {splitByKeywords(popupInfo.content).map((paragraph, index) => (
-                  <p key={index} style={{ marginBottom: '5px', lineHeight: '1.5' }}>
+                  <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                     {paragraph}
                   </p>
                 ))}
@@ -285,7 +285,7 @@ const Company: React.FC = () => {
                 <span>
                   {popupInfo.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
                   {popupInfo.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
-                  {popupInfo.source && <span className="southeastasia-tag" > <span className="source"> {popupInfo.source} </span></span>}
+                  {popupInfo.source && <span className="southeastasia-tag" > 来源: <span className="source"> {popupInfo.source} </span></span>}
                   {popupInfo.createTime && dayjs(popupInfo.createTime).format('YYYY-MM-DD HH:mm')}
                 </span>
               </span>

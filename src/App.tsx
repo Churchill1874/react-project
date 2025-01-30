@@ -12,7 +12,7 @@ const InnerApp = () => {
   useEffect(() => {
     if (contentRef.current) {
       const contentHeight = contentRef.current.scrollHeight;//增加20是为了超过底部固定不动的导航高度 不被遮挡
-      document.documentElement.style.height = `${contentHeight}px`;
+      document.documentElement.style.minHeight = `${contentHeight}px`;
     }
   }, [location.pathname]);
 
@@ -52,6 +52,9 @@ const App: React.FC = () => {
     }
     if (pathname === '/newsinfo') {
       return '#fff';
+    }
+    if (pathname === '/chatgirl') {
+      return '#1890ff';
     }
     if (pathname === '/bet') {
       return '#1890ff';
