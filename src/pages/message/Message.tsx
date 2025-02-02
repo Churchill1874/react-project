@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tabs, Badge, Card, Image, Divider, Avatar, DotLoading, PullToRefresh, InfiniteScroll } from 'antd-mobile'
+import { Tabs, Badge, Card, Image, Divider, Avatar, DotLoading, PullToRefresh, InfiniteScroll, Ellipsis } from 'antd-mobile'
 import '@/pages/message/Message.less'
 import { FcReading, } from "react-icons/fc";
 import { MessageOutline, LeftOutline, MessageFill, ClockCircleOutline } from 'antd-mobile-icons';
@@ -68,7 +68,52 @@ const Message: React.FC = () => {
       <Tabs className="message-tabs" activeLineMode='fixed'>
         <Tabs.Tab title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
 
-          评论1
+          <Card className="private-messgae-card" title={
+            <div className="private-messgae-title">
+              {/* 头像 */}
+              <Avatar src={avatars[1]} className="private-messgae-avatar" />
+
+              {/* 右侧内容：玩家名称 + 聊天内容 */}
+              <div className="private-messgae-content">
+                <span className="private-messgae-name">老登</span>
+                <Ellipsis className="private-message-chat" direction='end' rows={1} content='沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈' />
+              </div>
+            </div>
+          }>
+            <span className="private-message-time"> 2021-10-01 14:10 </span>
+          </Card>
+
+          <Card className="private-messgae-card" title={
+            <div className="private-messgae-title">
+              {/* 头像 */}
+              <Avatar src={avatars[3]} className="private-messgae-avatar" />
+
+              {/* 右侧内容：玩家名称 + 聊天内容 */}
+              <div className="private-messgae-content">
+                <span className="private-messgae-name">老登</span>
+                <Ellipsis className="private-message-chat" direction='end' rows={1} content='沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈' />
+              </div>
+            </div>
+          }>
+            <span className="private-message-time"> 2021-10-01 14:10 </span>
+          </Card>
+
+          <Card className="private-messgae-card" title={
+            <div className="private-messgae-title">
+              {/* 头像 */}
+              <Avatar src={avatars[2]} className="private-messgae-avatar" />
+
+              {/* 右侧内容：玩家名称 + 聊天内容 */}
+              <div className="private-messgae-content">
+                <span className="private-messgae-name">老登</span>
+                <Ellipsis className="private-message-chat" direction='end' rows={1} content='沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕沙雕哈哈哈哈哈哈哈哈沙雕哈哈哈哈沙雕 哈哈哈哈' />
+              </div>
+            </div>
+          }>
+            <span className="private-message-time"> 2021-10-01 14:10 </span>
+          </Card>
+
+
         </Tabs.Tab>
 
 

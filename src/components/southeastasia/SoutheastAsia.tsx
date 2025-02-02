@@ -184,14 +184,16 @@ const Company: React.FC = () => {
           {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
             <Card className="southeastasia-custom-card" key={index}>
               <div className="card-content">
-                <div className="southeastasia-news-image-container">
-                  <Image
-                    className="southeastasia-news-image"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s"
-                    alt="Example"
-                    fit="contain"
-                  />
-                </div>
+                {southeastAsiaNews.imagePath &&
+                  <div className="southeastasia-news-image-container">
+                    <Image
+                      className="southeastasia-news-image"
+                      src={southeastAsiaNews.imagePath}
+                      alt="Example"
+                      fit="contain"
+                    />
+                  </div>}
+
 
                 <Divider className='divider-line' />
 
@@ -261,12 +263,13 @@ const Company: React.FC = () => {
           <Card className="southeastasia-custom-card">
             <div className="card-content">
               <div className="southeastasia-news-image-container">
-                <Image
+                {popupInfo.southeastasiaNewsImage && <Image
                   className="southeastasia-news-image"
-                  src={popupInfo.southeastasiaNewsImage ? popupInfo.southeastasiaNewsImage : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s"}
+                  src={popupInfo.southeastasiaNewsImage}
                   alt="Example"
                   fit="contain"
-                />
+                />}
+
               </div>
 
               <div className="southeast-asia-title">
