@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Tabs, Badge, Card, Image, Divider, Avatar, DotLoading, PullToRefresh, InfiniteScroll, Ellipsis } from 'antd-mobile'
 import '@/pages/message/Message.less'
-import { FcReading, } from "react-icons/fc";
+import { FcReading } from "react-icons/fc";
 import { MessageOutline, LeftOutline, MessageFill, ClockCircleOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import { Request_SystemMessagePage, SystemMessagePageReqType, SystemMessagePageType, SystemMessagePageResponseType } from '@/pages/message/api'
 import dayjs from 'dayjs'
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+
+interface PrivateChatType {
+  id: any;
+  sendAccount: any;
+  receiveAccount: any;
+  content: any;
+  status: any;
+  createTime: any;
+  createName: any;
+}
 
 
 
 const Message: React.FC = () => {
+  //ws相关
 
+  const [messages, setMessages] = useState<string[]>([]); // 用于显示接收到的消息
+  const [input, setInput] = useState("");
+  const username = "user1"; // 当前用户，可动态设置
+
+  //评论相关
   const [commentList, setCommentList] = useState<SystemMessagePageType[]>();
   const [commentPageNum, setCommentPageNum] = useState<number>(1);
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
@@ -61,6 +79,66 @@ const Message: React.FC = () => {
       </>
     )
   }
+
+  // 连接 STOMP 客户端
+  useEffect(() => {
+    const stompClient = new Client({
+      brokerURL: "ws://localhost:8009/ws", // WebSocket 连接地址
+      connectHeaders: { //这一段先放在这里，以后后端可以写拦截器根据每次连接ws协议时候校验 连接的账号和密钥 类似用户信息和密码用 类似token校验
+        login: username, // 可根据实际需求设置
+        passcode: "password",
+      },
+      webSocketFactory: () => new SockJS("http://localhost:8009/ws"), // 使用 SockJS 连接后端
+      //debug: (str) => console.log("STOMP: " + str), // 打印调试日志
+      reconnectDelay: 5000, // 自动重连时间间隔
+    });
+
+    // 连接成功后订阅消息
+    stompClient.onConnect = () => {
+      console.log("WebSocket 连接成功");
+
+      stompClient.subscribe("/topic/messages", (message) => {
+        setMessages((prev) => [...prev, message.body]);
+      });
+    };
+
+    // 连接失败
+    stompClient.onStompError = (error) => {
+      console.error("STOMP 连接失败:", error);
+    };
+
+    stompClient.activate(); // 激活客户端
+
+    // 组件卸载时关闭连接
+    return () => {
+      stompClient.deactivate();
+    };
+  }, [username]);
+
+
+  // 发送消息
+  const sendMessage = () => {
+    if (input.trim()) {
+      const message = {
+        sender: username,
+        content: input,
+        timestamp: new Date().toISOString(),
+      };
+
+      const stompClient = new Client({
+        brokerURL: "ws://localhost:8009/ws",
+        webSocketFactory: () => new SockJS("http://localhost:8009/ws"),
+      });
+
+      stompClient.publish({
+        destination: "/app/chat",
+        body: JSON.stringify(message),
+      });
+
+      setInput(""); // 清空输入框
+    }
+  };
+
 
 
   return (
