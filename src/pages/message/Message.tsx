@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Tabs, Badge, Card, Image, Divider, Avatar, DotLoading, PullToRefresh, InfiniteScroll, Ellipsis } from 'antd-mobile'
+import { Tabs, Badge, Card, Image, Divider, Avatar, DotLoading, PullToRefresh, InfiniteScroll, Ellipsis, Popup } from 'antd-mobile'
 import '@/pages/message/Message.less'
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LeftOutline, MessageFill, ClockCircleOutline } from 'antd-mobile-icons';
@@ -8,6 +8,8 @@ import { Request_SystemMessagePage, SystemMessagePageReqType, SystemMessagePageT
 import dayjs from 'dayjs'
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import useStore from '@/zustand/store';
+
 
 interface PrivateChatType {
   id: any;
@@ -19,14 +21,20 @@ interface PrivateChatType {
   createName: any;
 }
 
-
+interface PrivateChatTargetType {
+  account: any;
+  name: any;
+  avatar: any;
+}
 
 const Message: React.FC = () => {
-  //ws相关
+  const { playerInfo, setPlayerInfo } = useStore();
+  const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
+  const [privateChatPopup, setPrivateChatPopup] = useState<PrivateChatTargetType>({ account: "", name: "", avatar: "" })
 
+  //ws相关
   const [messages, setMessages] = useState<string[]>([]); // 用于显示接收到的消息
   const [input, setInput] = useState("");
-  const username = "user1"; // 当前用户，可动态设置
 
   //评论相关
   const [commentList, setCommentList] = useState<SystemMessagePageType[]>();
@@ -80,12 +88,13 @@ const Message: React.FC = () => {
     )
   }
 
+
   // 连接 STOMP 客户端
   useEffect(() => {
     const stompClient = new Client({
       brokerURL: "ws://localhost:8009/ws", // WebSocket 连接地址
       connectHeaders: { //这一段先放在这里，以后后端可以写拦截器根据每次连接ws协议时候校验 连接的账号和密钥 类似用户信息和密码用 类似token校验
-        login: username, // 可根据实际需求设置
+        login: 'test', // 可根据实际需求设置
         passcode: "password",
       },
       webSocketFactory: () => new SockJS("http://localhost:8009/ws"), // 使用 SockJS 连接后端
@@ -113,14 +122,14 @@ const Message: React.FC = () => {
     return () => {
       stompClient.deactivate();
     };
-  }, [username]);
+  }, [playerInfo]);
 
 
   // 发送消息
   const sendMessage = () => {
     if (input.trim()) {
       const message = {
-        sender: username,
+        sender: playerInfo?.account,
         content: input,
         timestamp: new Date().toISOString(),
       };
@@ -140,13 +149,70 @@ const Message: React.FC = () => {
   };
 
 
+  const ChatMessage = ({ message, avatar, time, isSender }) => {
+    return (
+      <>
+        <div
+          className={`private-chat-message ${isSender ? "right" : "left"}`}
+        >
+          {/* 左侧头像 */}
+          {!isSender && (
+            <Avatar
+              src={avatar}
+              className="private-chat-avatar"
+            />
+          )}
+
+          {/* 内容区域 */}
+          <div className="private-chat-content">
+            {/* 聊天气泡 */}
+            <div
+              className={`private-chat-bubble ${isSender ? "right" : "left"}`}
+            >
+              {message}
+            </div>
+          </div>
+
+          {/* 右侧头像 */}
+          {isSender && (
+            <Avatar
+              src={avatar}
+              className="private-chat-avatar right"
+            />
+          )}
+        </div>
+
+
+        {/* 时间 */}
+        <div
+          className={`private-message-time ${isSender ? "right" : "left"}`}
+        >
+          {time}
+        </div>
+      </>
+
+    );
+  };
+
+
+
+
+
+
+  //展示聊天弹窗
+  const showPrivateChatPopup = (account, name, avatar) => {
+    setVisiblePrivateChatCloseRight(true)
+    setPrivateChatPopup({ account, name, avatar })
+  }
+
+
 
   return (
     <>
       <Tabs className="message-tabs" activeLineMode='fixed'>
         <Tabs.Tab title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
 
-          <Card className="private-messgae-card" title={
+          <Card onClick={() => { showPrivateChatPopup('laodeng', '老登', '1') }} className="private-messgae-card" title={
             <div className="private-messgae-title">
               {/* 头像 */}
               <Avatar src={avatars[1]} className="private-messgae-avatar" />
@@ -293,6 +359,55 @@ const Message: React.FC = () => {
           </InfiniteScroll>
         </Tabs.Tab>
       </Tabs>
+
+
+
+
+
+      {/********************聊天详情********************/}
+      <Popup bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+        position='right' closeOnSwipe={true} closeOnMaskClick visible={visiblePrivateChatCloseRight} onClose={() => { setVisiblePrivateChatCloseRight(false) }}>
+
+        <div className="private-chat-popup">
+
+          <div className="private-icon-avatar-wrapper" onClick={() => setVisiblePrivateChatCloseRight(false)} >
+            <LeftOutline className="icon" /> <Avatar className="avatar" src={avatars[1]} /> <span className="name"> {privateChatPopup.name} </span>
+          </div>
+
+          <ChatMessage
+            message="这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={true}
+          />
+
+          <ChatMessage
+            message="这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行这是.一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={true}
+          />
+
+          <ChatMessage
+            message="这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行这是一个聊天消息超过宽度自动换行"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={false}
+          />
+
+          <ChatMessage
+            message="这是一个聊天消息"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={false}
+          />
+
+          <ChatMessage
+            message="这"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={true}
+          />
+
+          <ChatMessage
+            message="这是一个聊天消息"
+            avatar={avatars[1]} time="2021-10-01 10:11" isSender={true}
+          />
+
+        </div>
+
+
+      </Popup>
     </>
   )
 }
