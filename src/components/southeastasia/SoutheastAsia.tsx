@@ -192,10 +192,12 @@ const Company: React.FC = () => {
                       alt="Example"
                       fit="contain"
                     />
-                  </div>}
+                  </div>
+                }
 
-
-                <Divider className='divider-line' />
+                {southeastAsiaNews.imagePath &&
+                  <Divider className='divider-line' />
+                }
 
                 {southeastAsiaNews.title &&
                   <div className="southeast-asia-text-area">

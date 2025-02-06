@@ -255,6 +255,7 @@
   letter-spacing: 1px;
   word-wrap: break-word; /* 长文字自动换行 */
   max-width: 100%; /* 限制内容宽度 */
+  font-size: 15px;
 }
 
 .private-chat-bubble.left {
@@ -277,4 +278,47 @@
 .private-message-time.left {
   text-align: left; /* 右对齐时间 */
   margin-left: 40px;
+}
+
+.private-send-container {
+  display: flex;
+  align-items: center;
+  padding: 1px 10px;
+  //border-radius: 5px;
+  height: 50px;
+  //position: fixed; /* Make the container fixed */
+  //bottom: 35px; /* Adjust this value if needed to fit above the navigation bar */
+  left: 0;
+  right: 0;
+  background-color: rgb(238, 236, 236); /* Adjust background color if needed */
+  z-index: 1000; /* Ensure it is above other elements */
+}
+
+.private-input-field {
+  flex: 1;
+  outline: none;
+  height: 80%;
+  //padding: 2px;
+  //border: 1px solid white;
+  background-color: white;
+  border-radius: 8px;
+  //box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
+}
+
+.private-input-field ::placeholder {
+  font-size: 18px;
+}
+
+.private-input-field input {
+  font-size: 16px; // 修改输入文本的字体大小
+  margin-left: 10px;
+}
+
+.private-send-button {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 20px;
+  line-height: 1; // 调整行高
+  padding: 8px 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
