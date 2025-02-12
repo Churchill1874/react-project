@@ -183,7 +183,7 @@ const Company: React.FC = () => {
         <PullToRefresh onRefresh={() => southeastAsiaNewsPageRequest(true)}>
           {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
             <Card className="southeastasia-custom-card" key={index}>
-              <div className="card-content">
+              <div className="southeastasia-card-content">
                 {southeastAsiaNews.imagePath &&
                   <div className="southeastasia-news-image-container">
                     <Image
@@ -263,7 +263,7 @@ const Company: React.FC = () => {
           <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={16} />返回 </span><span className="southeast-asia-title">东南亚新闻</span></div>
 
           <Card className="southeastasia-custom-card">
-            <div className="card-content">
+            <div className="southeastasia-card-content">
               <div className="southeastasia-news-image-container">
                 {popupInfo.southeastasiaNewsImage && <Image
                   className="southeastasia-news-image"

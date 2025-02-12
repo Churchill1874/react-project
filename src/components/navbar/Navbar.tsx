@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Tabs } from 'antd-mobile';
+import { Badge, Tabs } from 'antd-mobile';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Navbar = () => {
       <Tabs.Tab title="报纸" key="news" />
       <Tabs.Tab title="聊妹" key="chatgirl" />
       <Tabs.Tab title="投注" key="bet" />
-      <Tabs.Tab title="消息" key="message" />
+      <Tabs.Tab title={<Badge content={Badge.dot}>消息</Badge>} key="message" />
       <Tabs.Tab title="个人" key="personal" />
     </Tabs>
   );
