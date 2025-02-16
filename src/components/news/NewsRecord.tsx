@@ -61,7 +61,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id, title, content, photoPath, lik
             </div>
 
             <div className='news-info-container'>
-              <Badge color={newsEnum(category).color} content={newsEnum(category).name} />
+              <Badge className='news-info-badge' color={newsEnum(category).color} content={newsEnum(category).name} />
             </div>
 
             <div className='news-info-source-container'>

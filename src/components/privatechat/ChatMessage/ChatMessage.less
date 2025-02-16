@@ -1,0 +1,76 @@
+.private-chat-popup {
+  padding: 3px 5px;
+}
+
+.private-chat-message {
+  display: flex;
+  align-items: flex-start; /* 确保头像与内容顶部对齐 */
+  justify-content: flex-start; /* 默认左对齐 */
+}
+
+.private-chat-message.right {
+  justify-content: flex-end; /* 右对齐 */
+}
+
+.private-chat-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0; /* 防止头像被压缩 */
+  margin-right: 5px;
+}
+
+.private-chat-avatar.right {
+  margin-right: 0;
+  margin-left: 5px; /* 调整右侧头像的间距 */
+}
+
+.private-chat-content {
+  display: flex;
+  flex-direction: column; /* 让气泡和时间垂直排列 */
+  max-width: 75%; /* 限制聊天内容最大宽度 */
+}
+
+.private-chat-bubble {
+  display: inline-block; /* 动态宽度，随内容调整 */
+  padding: 8px 12px; /* 保持文字与边界的合理间距 */
+  border-radius: 12px;
+  background-color: #1677ff; /* 发送者气泡颜色 */
+  color: white;
+  text-align: left; /* 确保文字从左对齐 */
+  line-height: 1.5;
+  letter-spacing: 1px;
+  word-wrap: break-word; /* 长文字自动换行 */
+  max-width: 100%; /* 限制内容宽度 */
+  font-size: 15px;
+}
+
+.private-chat-bubble.left {
+  background-color: #f1f1f1; /* 接收者气泡颜色 */
+  color: black;
+}
+
+.private-chat-time {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+  margin-bottom: 15px; /* 消息之间的间距 */
+
+  &.left {
+    text-align: left;
+    padding-left: 40px;
+  }
+
+  &.right {
+    text-align: right;
+    padding-right: 40px;
+  }
+}
+
+.chat-loading {
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: 15px;
+  margin-top: 10px;
+}

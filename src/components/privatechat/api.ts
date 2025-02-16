@@ -7,11 +7,12 @@ export interface PrivateChatType {
   receiveAccount: any;
   content: any;
   status: any;
+  type: any;
   createTime: any;
   createName: any;
 }
 
-export interface PrivateChatRespType {
+export interface PrivateChatType {
   id: any;
   sendName: any;
   sendAccount: any;
@@ -28,17 +29,47 @@ export interface PrivateChatRespType {
   createName: any;
 }
 
-//查询新闻评论响应
-export interface PrivateChatResponseType {
+//查询聊天记录外层响应
+export interface PrivateChatRespType {
   code: number;
-  data: PrivateChatRespType[];
+  data: PrivateChatType[];
   msg: string;
 }
 
+//与玩家一对一分页聊天记录查询
+export interface ChatPageRespType {
+  current: any;
+  pages: any;
+  records: PrivateChatType[];
+  searchCount: any;
+  size: any;
+  total: any;
+}
+
+//玩家一对一聊天响应
+export interface PlayerPrivateChatPageRespType {
+  code: number;
+  data: ChatPageRespType;
+  msg: string;
+}
+
+//请求查询一对一私聊参数
+export interface ChatPageReqType {
+  accountA: any;
+  pageNum: any;
+  pageSize: any;
+}
+
 /**
- * 获取聊天记录列表
+ * 获取外层聊天记录列表
  */
-const PrivateChatListPath = '/player/privateChat/privateChatPage';
-export const Request_PrivateChatList = async (): Promise<PrivateChatResponseType> => {
+const PrivateChatListPath = '/player/privateChat/privateChatList';
+export const Request_PrivateChatList = async (): Promise<PrivateChatRespType> => {
   return (await axios.post(serverTarget + PrivateChatListPath)).data;
+};
+
+//查询一对一私聊聊天记录
+const PlayerPrivateChatPagePath = '/player/privateChat/playerPrivateChatPage';
+export const Request_PlayerPrivateChatPage = async (param: ChatPageReqType): Promise<PlayerPrivateChatPageRespType> => {
+  return (await axios.post(serverTarget + PlayerPrivateChatPagePath, param)).data;
 };

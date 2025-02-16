@@ -200,7 +200,7 @@ const Company: React.FC = () => {
                 }
 
                 {southeastAsiaNews.title &&
-                  <div className="southeast-asia-text-area">
+                  <div className="southeast-asia-title">
                     <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
                   </div>
                 }

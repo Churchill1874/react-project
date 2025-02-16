@@ -6,7 +6,6 @@ import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
 import { newsEnum } from '@/common/news'
 import useStore from '@/zustand/store'
-import { FcLike, FcReading } from "react-icons/fc";
 
 
 const Home = () => {
@@ -26,9 +25,6 @@ const Home = () => {
             <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}</div>
             <div className="news-info">
               <span className="date"> {news.createTime.split(' ')[0]} </span>
-              <span className="views"><FcReading /> {news.viewCount}</span>
-              <span className="likes"><FcLike /> {news.likesCount}</span>
-              <span className="comments"><MessageOutline /> {news.commentsCount}</span>
             </div>
           </div>
         </List.Item>
