@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatRespType, PrivateChatPageRespType } from '@/components/privatechat/api'
+import { useState, useEffect } from "react";
+import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatPageRespType } from '@/components/privatechat/api'
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button } from 'antd-mobile'
