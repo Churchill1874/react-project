@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { PrivateChatType, Request_PrivateChatList } from '@/components/privatechat/api'
+import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatRespType, PrivateChatPageRespType } from '@/components/privatechat/api'
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import useStore from '@/zustand/store';
 import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
@@ -13,25 +12,24 @@ import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage'
 
 const PrivateChat: React.FC = () => {
 
-  interface PrivateChatTargetType {
+  interface PlayerBaseType {
     account: any;
     name: any;
     avatar: any;
     level: any;
   }
 
-  const { playerInfo } = useStore();
-  const currentAccount = playerInfo?.account;
+  const [loginPlayer, setLoginPlayer] = useState<PlayerBaseType>();
   //弹窗状态相关
   const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
-  const [privateChatPopup, setPrivateChatPopup] = useState<PrivateChatTargetType>({ account: "", name: "", avatar: "", level: "" })
+  const [privateChatPopup, setPrivateChatPopup] = useState<PlayerBaseType>({ account: "", name: "", avatar: "", level: "" })
   const [chatMessageList, setChatMessageList] = useState<PrivateChatType[]>([]);
   const [chatMessagePageNum, setChatMessagePageNum] = useState<number>(1);
 
   // 输入框的内容
   const [input, setInput] = useState("");
   // 用于显示接收到的消息
-  const [privateChatList, setPrivateChatList] = useState<PrivateChatType[]>([]);
+  const [privateChatList, setPrivateChatList] = useState<PrivateChatListType[]>([]);
   //websocket实例
   const [stompClient, setStompClient] = useState<Client | null>(null);
 
@@ -42,19 +40,24 @@ const PrivateChat: React.FC = () => {
 
   // 获取聊天记录外层列表
   const privateChatListRequest = async () => {
-    const privateChatList: PrivateChatType[] = (await Request_PrivateChatList()).data || [];
-    setPrivateChatList(privateChatList);
+    const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
+    setLoginPlayer({ 'account': privateChatListResp.loginAccount, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
+    setPrivateChatList(privateChatListResp.list);
   }
 
 
   //打开私信弹窗
-  const showPrivateChatPopup = (param: PrivateChatType) => {
+  const showPrivateChatPopup = (param: PrivateChatListType) => {
     setVisiblePrivateChatCloseRight(true)
-    let account: any;
-    let name: any;
-    let avatar: any;
-    let level: any;
-    if (currentAccount === param.sendAccount) {
+
+    let account;
+    let name;
+    let avatar;
+    let level;
+
+    //如果当前弹窗记录 正好 发送人账号 是 登录人
+    //整理获取聊天对方账号信息
+    if (param.sendAccount === loginPlayer?.account) {
       account = param.receiveAccount;
       name = param.receiveName;
       avatar = param.receiveAvatarPath;
@@ -66,15 +69,13 @@ const PrivateChat: React.FC = () => {
       level = param.sendLevel;
     }
 
-    const targetAccount = privateChatPopup.account;
-    //如果当前点击的不是上一次点击的聊天人 就要清理之前的聊天内容 以及分页参数等
-    if (targetAccount !== account) {
+    if (privateChatPopup.account !== account) {
       //  清空子组件的聊天记录
       setChatMessageList([]);
       setChatMessagePageNum(1);
     }
 
-    const target: PrivateChatTargetType = { account, name, avatar, level }
+    const target: PlayerBaseType = { account, name, avatar, level }
     setPrivateChatPopup(target)
   }
 
@@ -100,6 +101,7 @@ const PrivateChat: React.FC = () => {
       stompClient.subscribe("/user/queue/private", (message) => {
 
         const receiveMessage = JSON.parse(message.body);
+        console.log(receiveMessage)
 
       });
     };
@@ -148,7 +150,7 @@ const PrivateChat: React.FC = () => {
     return () => {
       stompClient?.deactivate();
     };
-  }, [currentAccount]);
+  }, []);
 
 
 
@@ -162,7 +164,7 @@ const PrivateChat: React.FC = () => {
         className="private-messgae-card"
         title={
           <div className="private-messgae-title">
-            <Avatar src={avatars[chatInfo.sendAccount === playerInfo?.account ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
+            <Avatar src={avatars[chatInfo.sendAccount === loginPlayer?.account ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
             <div className="private-messgae-content">
               <span className="private-messgae-name">{chatInfo.sendName}</span>
               <Ellipsis
@@ -191,7 +193,7 @@ const PrivateChat: React.FC = () => {
       // 让弹窗本身铺满手机可视区域
       bodyStyle={{
         width: '100%',
-        height: '100vh',        // 占满视口高度
+        height: '100%',        // 占满视口高度
         display: 'flex',
         flexDirection: 'column' // 弹性布局，方便上下分区
       }}
@@ -212,8 +214,8 @@ const PrivateChat: React.FC = () => {
         accountA={privateChatPopup.account}
         avatar={privateChatPopup.avatar}
         level={privateChatPopup.level}
-        currentPlayerAccount={currentAccount}
-        currentPlayerAvatar={playerInfo?.avatarPath}
+        currentPlayerAccount={loginPlayer?.account}
+        currentPlayerAvatar={loginPlayer?.avatar}
         chatMessageList={chatMessageList}
         setChatMessageList={setChatMessageList}
         chatMessagePageNum={chatMessagePageNum}

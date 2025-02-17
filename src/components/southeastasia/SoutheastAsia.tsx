@@ -159,17 +159,30 @@ const Company: React.FC = () => {
     )
   }
 
-  function splitByKeywords(text, keywords = ['后来', '然后', '接着', '因此', '但是', '所以']) {
-    const regex = new RegExp(`(${keywords.join('|')})`, 'g');
-    return text.split(regex).reduce((acc, cur, idx) => {
-      if (idx % 2 === 0) {
-        acc.push(cur); // 添加非关键词的部分
-      } else {
-        acc[acc.length - 1] += cur; // 将关键词拼接到上一段
+
+  function splitBySentenceLength(text: string, maxChars = 200): string[] {
+    const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
+    const result: string[] = []; // 确保 result 是 string 数组
+    let currentParagraph: string = '';
+
+    for (let i = 0; i < sentences.length; i++) {
+      currentParagraph += sentences[i] || ''; // 处理分割后的空元素
+
+      // 遇到 `。` 并且当前段落字数超过 `maxChars`，就另起一行
+      if (sentences[i] === '。' && currentParagraph.length >= maxChars) {
+        result.push(currentParagraph);
+        currentParagraph = ''; // 清空，准备下一段
       }
-      return acc;
-    }, []);
+    }
+
+    // 处理剩余的文本
+    if (currentParagraph.trim()) {
+      result.push(currentParagraph);
+    }
+
+    return result;
   }
+
 
 
   useEffect(() => {
@@ -260,7 +273,7 @@ const Company: React.FC = () => {
         onClose={() => { setVisibleCloseRight(false) }}>
 
         <div className="popup-scrollable-content" >
-          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={16} />返回 </span><span className="southeast-asia-title">东南亚新闻</span></div>
+          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '18px' }}>东南亚新闻</span></div>
 
           <Card className="southeastasia-custom-card">
             <div className="southeastasia-card-content">
@@ -279,7 +292,7 @@ const Company: React.FC = () => {
               </div>
 
               <div className="southeast-asia-text-area">
-                {splitByKeywords(popupInfo.content).map((paragraph, index) => (
+                {splitBySentenceLength(popupInfo.content).map((paragraph, index) => (
                   <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                     {paragraph}
                   </p>

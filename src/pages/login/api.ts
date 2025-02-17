@@ -3,7 +3,7 @@ import { serverTarget } from '@/common/api';
 
 export interface LoginType {
   code: number;
-  data: { account: string; loginTime: string; name: string; tokenId: string };
+  data: { account: string; level: any; avatarPath: string; loginTime: string; name: string; status: any; tokenId: string };
   msg: string;
 }
 export interface RegisterType {
@@ -17,7 +17,7 @@ export interface VerificationCodeType {
   msg: string;
 }
 
-export interface RandomPlayerCountTypeResponse{
+export interface RandomPlayerCountTypeResponse {
   code: number;
   data: number;
   msg: string;
@@ -44,5 +44,5 @@ export const Request_Login = async (player: any): Promise<LoginType> => {
 //退出登陆
 const randomPlayerCountPath = '/player/player';
 export const Request_RandomPlayerCount = async (): Promise<RandomPlayerCountTypeResponse> => {
-    return (await axios.post(serverTarget + randomPlayerCountPath, {})).data;
+  return (await axios.post(serverTarget + randomPlayerCountPath, {})).data;
 };

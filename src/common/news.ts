@@ -2,7 +2,7 @@
 export const enumMap = {
   1: { name: '热门', color: 'rgb(192, 2, 2)' },
   2: { name: '体育', color: 'rgb(56, 56, 253)' },
-  3: { name: '娱乐', color: 'orange' },
+  3: { name: '娱乐', color: 'rgb(194, 113, 8)' },
   4: { name: '军事', color: 'green' },
   5: { name: '科技', color: 'purple' },
   6: { name: '社会', color: 'blue' }, //暂时没有

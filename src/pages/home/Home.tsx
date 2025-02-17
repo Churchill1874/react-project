@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Toast, Swiper, List, Badge, Input, Button, Avatar, Ellipsis } from 'antd-mobile';
-import { GlobalOutline, MessageOutline } from 'antd-mobile-icons';
+import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import Jiang from '../../../public/assets/avatars/1.jpg';
@@ -168,7 +168,7 @@ const Home = () => {
       <header className="header">
         <div className="logo">BIG NEWS</div>
 
-        <div><GlobalOutline fontSize={12} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
+        <div><GlobalOutline fontSize={14} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
       </header>
 
       {topNewsTitleHtml}

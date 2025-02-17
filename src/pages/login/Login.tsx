@@ -5,6 +5,7 @@ import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Spa
 import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
+import useStore from '@/zustand/store'
 
 interface RegisterType {
   account: string;
@@ -22,6 +23,8 @@ interface LoginType {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [captcha, setCaptcha] = useState('');
+  const { playerInfo, setPlayerInfo } = useStore();
+
 
   //请求图片验证啊
   const captchaImageExchange = async () => {
@@ -37,6 +40,9 @@ const Login: React.FC = () => {
     if (code === 0) {
       const tokenId = data.tokenId;
       localStorage.setItem('tokenId', tokenId);
+
+      setPlayerInfo({ account: data.account, name: data.name, avatarPath: data.avatarPath, level: data.level, status: data.status })
+
       Toast.show({
         icon: 'success',
         content: '登录成功',
@@ -47,9 +53,6 @@ const Login: React.FC = () => {
         // 跳转到 /home 页面
         navigate('/');
       }, 1000); // 2秒后跳转到首页
-
-
-
     } else {
       Toast.show({
         icon: 'fail',

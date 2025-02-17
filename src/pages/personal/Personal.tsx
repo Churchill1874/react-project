@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, TextArea, Tag } from 'antd-mobile';
+import { Card, Avatar, TextArea, Tag, Toast } from 'antd-mobile';
 import { FcBusinessman, FcSalesPerformance, FcReading, FcImport, FcHeadset } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
@@ -22,13 +22,24 @@ const UserCenter: React.FC = () => {
     if (!playerInfo) {
       playerReq();
     }
-
   }, [playerInfo]);
 
   //请求退出
   const logout = async () => {
     await Request_Logout();
-    setPlayerInfo(null);
+
+    Toast.show({
+      icon: 'success',
+      content: '已退出',
+      duration: 2000,
+    });
+
+    setTimeout(() => {
+      setPlayerInfo(null);
+
+      navigate('/login');
+    }, 2000); // 1秒后跳转到首页
+
   }
 
   const navigate = useNavigate();

@@ -10,9 +10,10 @@ export interface PrivateChatType {
   type: any;
   createTime: any;
   createName: any;
+  isSender?: any;
 }
 
-export interface PrivateChatType {
+export interface PrivateChatListType {
   id: any;
   sendName: any;
   sendAccount: any;
@@ -32,7 +33,7 @@ export interface PrivateChatType {
 //查询聊天记录外层响应
 export interface PrivateChatRespType {
   code: number;
-  data: PrivateChatType[];
+  data: PrivateChatPageRespType;
   msg: string;
 }
 
@@ -44,6 +45,15 @@ export interface ChatPageRespType {
   searchCount: any;
   size: any;
   total: any;
+}
+
+//一对一 并 包含了登陆人信息的 聊天记录分页
+export interface PrivateChatPageRespType {
+  loginAccount: any;
+  loginAvatar: any;
+  loginLevel: any;
+  loginName: any;
+  list: PrivateChatListType[];
 }
 
 //玩家一对一聊天响应
