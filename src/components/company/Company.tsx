@@ -4,19 +4,19 @@ import { LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/company/Company.less'
 import { Request_CompanyPage, CompanyPageType, CompanyPageReqType } from '@/components/company/api'
 import dayjs from 'dayjs'
-import useStore from "@/zustand/store";
 
 
 const Company: React.FC = () => {
-  const { Step } = Steps
+  const [companyList, setCompanyList] = useState<CompanyPageType[]>([]);
+  const [companyHasHore, setCompanyHasHore] = useState<boolean>(true);
+  const [companyPage, setCompanyPage] = useState<number>(1);
 
+  const { Step } = Steps
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [visible, setVisible] = useState(false)
-  const { companyList, setCompanyList, companyHasHore, setCompanyHasHore, companyPage, setCompanyPage } = useStore();
   const [popupInfo, setPopupInfo] = useState<CompanyPageType>();
 
   const showPopupInfo = (companyData: CompanyPageType) => {
-    console.log(visibleCloseRight)
     setVisibleCloseRight(true)
     setPopupInfo(companyData);
   }
@@ -47,8 +47,6 @@ const Company: React.FC = () => {
     const pageNum = isReset ? 1 : companyPage;
     const param: CompanyPageReqType = { pageNum: pageNum, pageSize: 20 };
     const list: CompanyPageType[] = (await Request_CompanyPage(param)).data.records || [];
-
-    console.log('获取api公司数据:', JSON.stringify(list))
 
     //循环便利
     if (list.length > 0) {

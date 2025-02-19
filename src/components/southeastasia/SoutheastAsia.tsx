@@ -5,7 +5,6 @@ import { FcReading } from "react-icons/fc";
 import { MessageOutline, LeftOutline, MessageFill, LocationFill } from 'antd-mobile-icons';
 import '@/components/southeastasia/SoutheastAsia.less'
 import { SendNewsCommentReqType, Request_SendNewsComment, SoutheastAsiaNewsPageReq, SoutheastAsiaNewsPageReqType, SoutheastAsiaNewsType } from '@/components/southeastasia/api'
-import useStore from '@/zustand/store'
 import dayjs from 'dayjs'
 
 
@@ -45,7 +44,11 @@ const Company: React.FC = () => {
   const [newsCommentCount, setNewsCommentCount] = useState(0);//新闻评论数量
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", readCount: 0, commentCount: 0, southeastasiaNewsImage: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
-  const { southeastAsiaNewsList, setSoutheastAsiaNewsList, southeastAsiaNewsHasHore, setSoutheastAsiaNewsHasHore, southeastAsiaNewsPage, setSoutheastAsiaNewsPage } = useStore();
+
+  const [southeastAsiaNewsList, setSoutheastAsiaNewsList] = useState<SoutheastAsiaNewsType[]>([]);
+  const [southeastAsiaNewsHasHore, setSoutheastAsiaNewsHasHore] = useState<boolean>(true);
+  const [southeastAsiaNewsPage, setSoutheastAsiaNewsPage] = useState<number>(1);
+
 
   interface PopupInfo {
     id: any | null;
@@ -119,7 +122,6 @@ const Company: React.FC = () => {
     const param: SoutheastAsiaNewsPageReqType = { pageNum: pageNum, pageSize: 20 };
     const list: SoutheastAsiaNewsType[] = (await SoutheastAsiaNewsPageReq(param)).data.records || [];
 
-    console.log('获取api东南亚新闻数据:', JSON.stringify(list))
 
     //循环便利
     if (list.length > 0) {
@@ -217,6 +219,8 @@ const Company: React.FC = () => {
                     <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
                   </div>
                 }
+
+                <Ellipsis direction='end' rows={5} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px" }} />
 
                 {/*                 <div className="text-area">
                   <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} />

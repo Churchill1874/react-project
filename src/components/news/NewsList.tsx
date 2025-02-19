@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
@@ -29,8 +29,10 @@ const NewsList: React.FC<any> = () => {
   }, []);
 
 
-  //各种新闻类型全局状态数据
-  const { newsList, setNewsList, newsHasMore, setNewsHasMore, newsPage, setNewsPage } = useStore();//新闻的全局变量
+  //各种新闻类型状态数据
+  const [newsList, setNewsList] = useState<NewsInfoType[]>([])
+  const [newsHasMore, setNewsHasMore] = useState<boolean>(true)
+  const [newsPage, setNewsPage] = useState<number>(1);
 
 
   // 模拟请求不同类型的新闻数据

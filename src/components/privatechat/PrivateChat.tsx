@@ -79,57 +79,22 @@ const PrivateChat: React.FC = () => {
     setPrivateChatPopup(target)
   }
 
-  //websocket连接
-  const websocketClient = () => {
-    //tokenId令牌
-    const tokenId = localStorage.getItem('tokenId') || '';
-    const socket = new SockJS(`http://localhost:8009/ws?token_id=${tokenId}`);
 
-    const stompClient = new Client({
-      brokerURL: "ws://localhost:8009/ws",
-      connectHeaders: {},
-      webSocketFactory: () => socket,
-      reconnectDelay: 5000,
-    });
-
-    stompClient.onConnect = () => {
-      /*       stompClient.subscribe("/topic/messages", (message) => {
-              console.log(message.body)
-              setMessages((prev) => [...prev, message.body]);
-            }); */
-
-      stompClient.subscribe("/user/queue/private", (message) => {
-
-        const receiveMessage = JSON.parse(message.body);
-        console.log(receiveMessage)
-
-      });
-    };
-
-    stompClient.onStompError = (error) => {
-      console.error("STOMP 连接失败:", error);
-    };
-
-    stompClient.activate();
-    // 存到 state
-    setStompClient(stompClient);
-  }
 
   // 发送消息
   const sendMessage = () => {
-    if (!stompClient || !stompClient.connected) {
+    if (!stompClient || !stompClient.connected) { // 🔄 修正 `active` 为 `connected`
       console.warn("STOMP 未连接，无法发送消息");
       return;
     }
+
     if (!input.trim()) return;
 
-    // 这里前端指定要发给谁
     const message = {
-      receiveAccount: 'test3',
+      receiveAccount: privateChatPopup.account,
       content: input,
     };
 
-    // 直接用 stompClient.publish
     stompClient.publish({
       destination: "/app/chat/private",
       body: JSON.stringify(message),
@@ -140,17 +105,44 @@ const PrivateChat: React.FC = () => {
 
 
   useEffect(() => {
+    const client = new Client({
+      webSocketFactory: () => new SockJS(`http://localhost:8009/ws?token_id=${localStorage.getItem('tokenId') || ''}`),
+      reconnectDelay: 5000, // STOMP 内置重连，不需要手动 activate()
+    });
 
-    //私信列表
-    privateChatListRequest();
+    client.onConnect = () => {
+      console.log("STOMP 连接成功");
+      client.subscribe("/user/queue/private", (message) => {
+        const receiveMessage = JSON.parse(message.body);
+        console.log("收到消息:", receiveMessage);
+      });
+    };
 
-    //连接websocket
-    websocketClient();
+    client.onStompError = (error) => {
+      console.error("STOMP 连接失败:", error);
+    };
+
+    client.onDisconnect = () => {
+      console.warn("STOMP 连接已断开");
+    };
+
+    client.activate();
+    setStompClient(client);
 
     return () => {
-      stompClient?.deactivate();
+      console.log("组件卸载，关闭 WebSocket 连接");
+      client.deactivate(); // 确保组件卸载时正确关闭 WebSocket
     };
-  }, []);
+  }, []); // 组件挂载时执行，卸载时清理
+
+
+
+
+
+  useEffect(() => {
+    privateChatListRequest();
+  }, []); // 组件挂载时执行
+
 
 
 
@@ -201,10 +193,11 @@ const PrivateChat: React.FC = () => {
       closeOnSwipe={true}
       closeOnMaskClick
       visible={visiblePrivateChatCloseRight}
-      onClose={() => { setVisiblePrivateChatCloseRight(false); console.log('chatlistpop', chatMessageList)/*  setPrivateChatPopup({ account: "", name: "", avatar: "", level: "" }) */ }}
+      onClose={() => { setVisiblePrivateChatCloseRight(false) }}
+      key={visiblePrivateChatCloseRight ? "open" : "close"}
     >
 
-      <div className="private-icon-avatar-wrapper" onClick={() => { setVisiblePrivateChatCloseRight(false); console.log('chatlist', chatMessageList) }}>
+      <div className="private-icon-avatar-wrapper" onClick={() => { setVisiblePrivateChatCloseRight(false); }}>
         <LeftOutline className="icon" />
         <Avatar className="avatar" src={avatars[privateChatPopup.avatar]} />
         <span className="name"> {privateChatPopup.name} </span>
@@ -220,6 +213,7 @@ const PrivateChat: React.FC = () => {
         setChatMessageList={setChatMessageList}
         chatMessagePageNum={chatMessagePageNum}
         setChatMessagePageNum={setChatMessagePageNum}
+        visiblePrivateChatCloseRight={visiblePrivateChatCloseRight}
       />
 
       <div className="private-send-container">

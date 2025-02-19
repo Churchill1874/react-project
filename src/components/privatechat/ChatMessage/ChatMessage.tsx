@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 import avatars from '@/common/avatar';
 import { PrivateChatType, Request_PlayerPrivateChatPage, ChatPageReqType } from '@/components/privatechat/api'
 import { Avatar, PullToRefresh } from 'antd-mobile'
@@ -16,6 +16,7 @@ interface ChatMessageProps {
   setChatMessageList: React.Dispatch<React.SetStateAction<PrivateChatType[]>>;
   chatMessagePageNum: number;
   setChatMessagePageNum: React.Dispatch<React.SetStateAction<number>>;
+  visiblePrivateChatCloseRight;
 }
 
 
@@ -29,23 +30,34 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   setChatMessageList,
   chatMessagePageNum,
   setChatMessagePageNum,
+  visiblePrivateChatCloseRight
 }) => {
 
-
-  console.log('currentPlayerAvatar:', currentPlayerAvatar);
+  const loadCountRef = useRef(0);
+  const bottomRef = useRef<HTMLDivElement | null>(null); // 用于滚动到底部
 
   useEffect(() => {
     chatMessagePageRequest();
   }, [accountA])
 
+  //滚动到底部聊天最后一句
+  useEffect(() => {
+    console.log(loadCountRef.current)
+    if (loadCountRef.current <= 1) {
+      loadCountRef.current++;
+      bottomRef.current?.scrollIntoView({ behavior: "auto" });
+    }
+  }, [chatMessageList]); // 仅在 `Popup` 组件打开时执行
+
+
   // 获取聊天记录
   const chatMessagePageRequest = async () => {
-    const param: ChatPageReqType = { accountA, pageNum: chatMessagePageNum, pageSize: 50 };
+    const param: ChatPageReqType = { accountA, pageNum: chatMessagePageNum, pageSize: 10 };
     const list: PrivateChatType[] = (await Request_PlayerPrivateChatPage(param)).data.records || [];
 
     if (list.length > 0) {
       setChatMessagePageNum(prev => prev + 1);
-      setChatMessageList(prevList => [...list, ...(prevList ?? [])]);
+      setChatMessageList(prevList => [...list.reverse(), ...(prevList ?? [])]);
     }
   };
 
@@ -56,7 +68,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       <div className="private-chat-popup" style={{ flex: 1, overflowY: 'auto' }}>
         {chatMessageList.length === 0 && <div className="chat-loading"> 加载中... </div>}
         {chatMessageList.map((chatMessage, index) => {
-          console.log('当前操作人是:', currentPlayerAccount, '聊天记录:', chatMessage)
           return (
             <div key={index}>
 
@@ -89,6 +100,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
           );
         })}
+
+
+
+        {/* 滚动到底部的占位符 */}
+        <div ref={bottomRef}></div>
       </div>
 
     </PullToRefresh>
