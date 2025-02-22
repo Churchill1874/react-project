@@ -2,15 +2,19 @@
 
 .news-info {
   padding: 5px;
-
+  overflow-y: auto; /* 允许滚动 */
+  height: 100%;
   .adm-card-body {
     margin: 0px;
     padding: 0px;
   }
+
+  margin-bottom: 30px;
 }
 
 .popup-scrollable-content {
-  padding-bottom: 300px;
+  //padding-bottom: 50px;
+  height: 100%;
 }
 
 .edit {
@@ -38,7 +42,6 @@
   white-space: pre-wrap;
   /* 保留空白字符 */
   overflow-y: auto;
-
   .adm-text-area-element {
     overflow-y: auto;
     /* 始终显示纵向滚动条 */
@@ -76,34 +79,27 @@
 
 .newsinfo-attribute {
   display: flex;
-  margin-top: 5px;
+  margin-bottom: 10px;
   //justify-content: center; /* 平均分配空间 */
-  padding: 0px 10px;
+  padding: 10px 10px;
+
+  .adm-divider-content {
+    color: gray;
+  }
 }
 
 .newsinfo-attribute span {
   flex: 1;
-  /* 每个 span 平均分配空间 */
-  //text-align: center; /* 水平居中 */
   display: flex;
-  //align-items: center; /* 垂直居中 */
-  justify-content: flex-start;
+  align-items: center; /* 垂直居中 */
+  justify-content: center;
   /* 水平居中 */
   height: 20px;
-  /* 可选：设置 span 高度 */
-  margin-top: 5px;
   color: gray;
 }
 
 .attribute-icon {
   margin-right: 3px;
-}
-
-.line {
-  border-color: rgba(240, 236, 236, 0.65);
-  font-size: 12px;
-  margin: 1px 0;
-  color: gray;
 }
 
 .swiper-item {
@@ -165,4 +161,11 @@
   justify-content: center;
   /* 水平居中 */
   padding-top: 10px;
+}
+
+.line {
+  border-color: rgba(240, 236, 236, 0.65);
+  font-size: 13px;
+  margin: 1px 0;
+  color: gray;
 }

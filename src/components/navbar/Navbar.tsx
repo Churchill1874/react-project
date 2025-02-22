@@ -12,6 +12,8 @@ const Navbar = () => {
     if (currentPath === '') {
       navigate('/home')
     }
+
+
     if (activeKey !== currentPath) {
       setActiveKey(currentPath || '');
     }

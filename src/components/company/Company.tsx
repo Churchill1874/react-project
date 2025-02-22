@@ -31,7 +31,7 @@ const Company: React.FC = () => {
         {hasMore ? (
           <>
             <div className="dot-loading-custom" >
-              <span >Loading</span>
+              <span >加载中</span>
               <DotLoading color='#fff' />
             </div>
           </>

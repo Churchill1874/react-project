@@ -2,7 +2,7 @@ import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
 export interface PrivateChatType {
-  id: any;
+  id?: any;
   sendAccount: any;
   receiveAccount: any;
   content: any;

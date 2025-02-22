@@ -1,114 +1,162 @@
 @theme: #1890ff;
 
+.adm-pull-to-refresh-content {
+  height: 100%;
+}
 .outer-comment {
-    margin-top: 1px;
-    display: flex;
-    width: 100%;
-    box-sizing: border-box;
+  margin-top: 1px;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .left-comment {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-right: 5px;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 5px;
+  box-sizing: border-box;
 }
 
 .right-comment {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding-bottom: 1px;
-    word-wrap: break-word;
-    white-space: normal;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-    width: calc(100% - 50px);
-    /* 确保右侧评论区域宽度适应 */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 1px;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  width: calc(100% - 50px);
+  /* 确保右侧评论区域宽度适应 */
 }
 
 .right-comment span {
-    margin-top: 1px;
+  margin-top: 1px;
 }
 
 .comment-time {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: gray;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: gray;
 }
 
 .reply {
-    color: black;
-    font-size: 12px;
-    font-weight: bold;
+  color: rgb(1, 70, 136);
+  font-size: 13px;
+  //font-weight: bold;
 }
 
 .name {
-    color: gray;
-    font-size: 12px;
+  color: gray;
+  font-size: 13px;
 }
 
 .comment {
-    font-size: 13px;
-    word-wrap: break-word;
-    white-space: normal;
-    overflow-wrap: break-word;
-    display: block;
-    width: 100%;
-    color: black;
+  font-size: 14px;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  display: block;
+  width: 100%;
+  //color: black;
 }
 
 .show-replay {
-    font-size: 12px;
-    font-weight: bold;
-    color: black;
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  padding-top: 10px;
 }
 
 .comment-attribute {
-    margin-right: 10px;
-    color: gray;
+  margin-right: 10px;
+  color: gray;
 }
 
-
 .send-comment-button {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 5px 5px;
-    line-height: 1.5;
-    padding: 6px 7px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px 5px;
+  line-height: 1.5;
+  padding: 6px 7px;
 }
 
 .comment-area {
-    background: rgba(218, 216, 216, 0.319);
-    color: white;
-    border-radius: 5px;
-    padding: 5px;
-    --font-size: 16px;
-    border: 1px solid gray;
+  background: rgba(218, 216, 216, 0.319);
+  color: white;
+  border-radius: 5px;
+  padding: 5px;
+  --font-size: 16px;
+  border: 1px solid gray;
 
-    .adm-text-area-count {
-        font-size: 12px;
-    }
+  .adm-text-area-count {
+    font-size: 12px;
+  }
 
-    width: 95%;
-    /* 调整宽度以确保在居中时不会溢出 */
-    margin: auto;
-    /* 自动左右边距 */
-    margin-top: 5px;
-
+  width: 95%;
+  /* 调整宽度以确保在居中时不会溢出 */
+  margin: auto;
+  /* 自动左右边距 */
+  margin-top: 5px;
 }
 
 .comments-popup {
-    display: flex;
-    align-items: center;
-    /* 垂直居中 */
-    justify-content: center;
-    /* 水平居中 */
-    padding-top: 10px;
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
+  padding-top: 10px;
+  height: 60vh;
 }
 
 .news-info .adm-pull-to-refresh-head-content {
-    color: gray; /* Replace with your desired color */
+  color: gray; /* Replace with your desired color */
+}
+
+.comment-line {
+  margin: 5px 0px;
+}
+
+.comment-send-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 5px;
+  //border-radius: 5px;
+  //height: 50px;
+  //position: fixed; /* Make the container fixed */
+  //bottom: 35px; /* Adjust this value if needed to fit above the navigation bar */
+  /*   left: 0;
+  right: 0; */
+  background-color: rgb(240, 238, 238); /* Adjust background color if needed */
+  //z-index: 1000; /* Ensure it is above other elements */
+}
+
+.comment-chat-textArea {
+  padding: 1px;
+  width: 100%;
+  background-color: white;
+  min-height: 36px;
+  align-content: center;
+
+  .adm-text-area-element {
+    padding-left: 10px;
+    font-size: 18px;
+    align-content: center;
+  }
+}
+
+.comment-send-button {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 20px;
+  line-height: 1; // 调整行高
+  padding: 8px 12px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 2px;
 }

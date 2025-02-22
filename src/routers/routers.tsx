@@ -21,10 +21,10 @@ export default [
     path: '/news/:typeId?',
     component: News,
   },
-  {
-    path: '/newsInfo',
-    component: NewsInfo,
-  },
+  /*   {
+      path: '/newsInfo',
+      component: NewsInfo,
+    }, */
   //登陆路由
   {
     path: '/login',

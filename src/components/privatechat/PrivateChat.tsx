@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatPageRespType } from '@/components/privatechat/api'
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button } from 'antd-mobile'
+import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button, Toast, TextArea } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/components/privatechat/PrivateChat.less'
 import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage'
-
-
 
 const PrivateChat: React.FC = () => {
 
@@ -18,7 +16,6 @@ const PrivateChat: React.FC = () => {
     avatar: any;
     level: any;
   }
-
   const [loginPlayer, setLoginPlayer] = useState<PlayerBaseType>();
   //弹窗状态相关
   const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
@@ -79,20 +76,27 @@ const PrivateChat: React.FC = () => {
     setPrivateChatPopup(target)
   }
 
-
-
   // 发送消息
   const sendMessage = () => {
-    if (!stompClient || !stompClient.connected) { // 🔄 修正 `active` 为 `connected`
+    if (!stompClient || !stompClient.connected) { //  修正 `active` 为 `connected`
+      Toast.show('8')
       console.warn("STOMP 未连接，无法发送消息");
       return;
     }
 
+    Toast.show(input)
     if (!input.trim()) return;
 
     const message = {
+      id: '',
+      status: false,
+      createTime: new Date().toISOString(),
+      createName: '',
+      sendAccount: loginPlayer?.account,
       receiveAccount: privateChatPopup.account,
       content: input,
+      type: 1,
+      isSender: true
     };
 
     stompClient.publish({
@@ -100,6 +104,7 @@ const PrivateChat: React.FC = () => {
       body: JSON.stringify(message),
     });
 
+    setChatMessageList(prevList => [...(prevList ?? []), message]);
     setInput("");
   };
 
@@ -111,10 +116,11 @@ const PrivateChat: React.FC = () => {
     });
 
     client.onConnect = () => {
-      console.log("STOMP 连接成功");
       client.subscribe("/user/queue/private", (message) => {
         const receiveMessage = JSON.parse(message.body);
         console.log("收到消息:", receiveMessage);
+        setChatMessageList(prevList => [...(prevList ?? []), receiveMessage]);
+
       });
     };
 
@@ -158,7 +164,7 @@ const PrivateChat: React.FC = () => {
           <div className="private-messgae-title">
             <Avatar src={avatars[chatInfo.sendAccount === loginPlayer?.account ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
             <div className="private-messgae-content">
-              <span className="private-messgae-name">{chatInfo.sendName}</span>
+              <span className="private-messgae-name">{chatInfo.sendAccount === loginPlayer?.account ? chatInfo.receiveName : chatInfo.sendName}</span>
               <Ellipsis
                 className="private-message-chat"
                 direction='end'
@@ -187,7 +193,8 @@ const PrivateChat: React.FC = () => {
         width: '100%',
         height: '100%',        // 占满视口高度
         display: 'flex',
-        flexDirection: 'column' // 弹性布局，方便上下分区
+        flexDirection: 'column', // 弹性布局，方便上下分区
+
       }}
       position='right'
       closeOnSwipe={true}
@@ -217,7 +224,7 @@ const PrivateChat: React.FC = () => {
       />
 
       <div className="private-send-container">
-        <Input className="private-input-field" placeholder="请输入..." onChange={handleInputChange} />
+        <TextArea className="private-chat-textArea" maxLength={255} rows={1} autoSize={{ minRows: 1, maxRows: 5 }} placeholder="请输入..." onChange={handleInputChange} value={input} />
         <Button className="private-send-button" color="primary" onClick={() => sendMessage()} >
           发送
         </Button>

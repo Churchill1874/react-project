@@ -13,7 +13,7 @@
 .outer-container {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 0px 3px;
   margin: 0;
   //background-color: @theme;
 }
@@ -21,7 +21,7 @@
 .inner-container {
   display: flex;
   flex-direction: column;
-  padding: 1px;
+  padding: 0px 0px;
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 2px;
@@ -55,7 +55,7 @@
 .attributes {
   display: flex;
   justify-content: space-around;
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
   /* 字体颜色可以根据需要调整 */
   margin-top: auto;
@@ -78,7 +78,7 @@
 .attributes span {
   padding: 0px;
   margin-right: 2%;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .time {
@@ -106,7 +106,6 @@
 .popup-scrollable-content {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  /* 添加适当的内边距，避免内容过长时遮挡 */
 }
 
 .news-record-popup {
@@ -118,7 +117,7 @@
 }
 
 .source {
-  color: #1e77ca;
+  color: gray;
   font-size: 12px;
 }
 .news-info-container {
@@ -136,5 +135,94 @@
   .adm-badge-content {
     font-size: 11px;
     font-weight: bold;
+  }
+}
+
+.h-content-container {
+  padding: 0px 5px;
+  display: flex;
+  flex-direction: column; /* 纵向排列 */
+  width: 100%; /* 每行占满整个宽度 */
+}
+
+.h-image-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; /* 让图片垂直居中 */
+  justify-content: center; /* 让图片水平居中 */
+}
+
+.h-news-image {
+  width: 95%; /* 让图片撑满整个容器 */
+  height: auto; /* 高度自适应 */
+}
+
+.h-text-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.h-title {
+  font-size: 15px;
+  text-align: center;
+  padding-top: 1px;
+  padding-bottom: 0px;
+}
+
+.h-time {
+  width: 100%;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+.h-news-info-container,
+.h-news-info-source-container,
+.h-attributes {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.h-attributes span {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.h-attributes-contariner {
+  display: flex;
+  flex-wrap: nowrap; /* 确保所有列在同一行 */
+  justify-content: space-between; /* 列之间保持均匀间隔 */
+  width: 100%;
+}
+
+.h-column {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中（如果需要的话） */
+  padding: 10px;
+  height: 10px; /* 确保有固定高度，否则 align-items 无效 */
+  font-size: 14px;
+  color: gray;
+  span {
+    padding: 0 3px;
+  }
+  .source {
+    font-size: 13px;
+    color: gray;
+  }
+}
+
+.h-news-info-badge {
+  padding: 3px 4px;
+
+  .adm-badge-content {
+    font-size: 12px;
   }
 }

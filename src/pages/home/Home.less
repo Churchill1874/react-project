@@ -4,6 +4,7 @@
 .home {
   min-height: 100vh; /* 确保背景颜色填充整个屏幕 */
   width: 100%;
+  padding-bottom: 30px;
 }
 .top-news {
   margin: 0;
@@ -36,8 +37,8 @@
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 0px 5px;
-  max-height: 140px;
-  min-height: 140px;
+  max-height: 110px;
+  min-height: 110px;
   /* 设置一个最大高度 */
   overflow: auto;
   /* 隐藏滚动条 */
@@ -397,17 +398,6 @@
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
 
-/* 针对桌面设备的样式调整 */
-@media (min-width: 768px) {
-  .main-container {
-    flex-direction: row; /* 改为水平布局 */
-  }
-  .navbar {
-    position: static; /* 取消固定 */
-    width: auto; /* 自动宽度 */
-  }
-}
-
 .chat {
   //color: black;
   font-size: 11px;
@@ -446,6 +436,152 @@
         color: rgb(138, 135, 135);
         font-size: 12px;
       }
+    }
+  }
+}
+
+/* 针对桌面设备的样式调整 */
+@media (min-width: 768px) {
+  .bet-container {
+    .adm-button {
+      width: 90px;
+      height: 50px;
+    }
+    span {
+      font-size: 30px;
+    }
+  }
+  .odds {
+    .odd-blue {
+      font-size: 20px;
+    }
+    .odd-red {
+      font-size: 20px;
+    }
+    .official {
+      font-size: 24px;
+    }
+  }
+
+  .event-detail {
+    .candidate {
+      .adm-image {
+        width: 80px;
+        height: 80px;
+      }
+      font-size: 24px;
+    }
+    .vs {
+      font-size: 24px;
+    }
+  }
+
+  .event-info {
+    .event-title {
+      font-size: 20px;
+    }
+    .event-date {
+      font-size: 20px;
+    }
+    .event-reward {
+      font-size: 20px;
+    }
+  }
+
+  .main-container {
+    flex-direction: row; /* 改为水平布局 */
+  }
+  .navbar {
+    position: static; /* 取消固定 */
+    width: auto; /* 自动宽度 */
+    font-size: 20px;
+  }
+  .news-item {
+    .news-title {
+      font-size: 20px;
+      .hot {
+        font-size: 20px;
+      }
+    }
+  }
+  .banner {
+    height: 400px;
+    max-width: 800px;
+  }
+  .logo {
+    font-size: 30px;
+  }
+  .online {
+    font-size: 20px;
+  }
+  .badge {
+    padding: 10px 12px;
+    .adm-badge-content {
+      font-size: 16px;
+    }
+  }
+  .global-line {
+    font-size: 20px;
+  }
+  .adm-tabs-tab-wrapper {
+    font-size: 20px;
+    .adm-tabs-tab {
+      font-size: 20px;
+    }
+  }
+
+  .event-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 2px;
+    border-top: 0.5px solid @theme;
+    background-color: #165d00;
+    height: 180px;
+  }
+
+  .chat {
+    font-size: 22px;
+    margin: 10px 6px;
+    padding: 2px;
+    text-align: left;
+    height: 300px; // 设置固定高度
+    overflow-y: auto; // 允许垂直滚动
+    border: 1px solid #076af57b;
+
+    .chat-item {
+      display: flex;
+      align-items: flex-start; // 确保头像和内容在一行对齐
+      margin-bottom: 2px; // 每条记录的间距
+
+      .avatar {
+        width: 50px; // 调整头像的宽度
+        height: 50px; // 调整头像的高度
+        margin-right: 10px; // 头像和聊天内容的间距
+      }
+
+      .message-content {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        .time {
+          color: rgb(138, 135, 135);
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .send-container {
+    button {
+      font-size: 20px;
+    }
+    .adm-input {
+      font-size: 20px;
+      height: 32px;
+    }
+    .adm-input-element {
+      font-size: 20px;
     }
   }
 }

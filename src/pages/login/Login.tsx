@@ -99,6 +99,9 @@ const Login: React.FC = () => {
     captchaImageExchange();
   }, []);
 
+  // 新增一个通用格式化函数，去除空格
+  const trimSpace = (value: string) => value.replace(/\s/g, '');
+
   return (
     <>
       <ResultPage
@@ -130,6 +133,8 @@ const Login: React.FC = () => {
                 className="item"
                 label="账号:"
                 name="account"
+                normalize={trimSpace} // 过滤空格
+
                 rules={[
                   { required: true, message: '账号不能为空' },
                   { min: 4, message: '账号最少4位' },
@@ -144,6 +149,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="密码:"
                 name="password"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '密码不能为空' },
                   { min: 8, message: '密码最少8位' },
@@ -158,6 +164,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="验证码:"
                 name="verificationCode"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '验证码不能为空' },
                   { max: 5, message: '验证码最大5位' },
@@ -186,6 +193,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="账号:"
                 name="account"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '账号不能为空' },
                   { min: 4, message: '账号最少4位' },
@@ -200,6 +208,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="昵称:"
                 name="name"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '昵称不能为空' },
                   { max: 20, message: '昵称最大20位' },
@@ -216,6 +225,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="密码:"
                 name="password"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '密码不能为空' },
                   { min: 8, message: '密码最少8位' },
@@ -230,6 +240,7 @@ const Login: React.FC = () => {
                 name="birth"
                 label="生日:"
                 trigger="onConfirm"
+                normalize={trimSpace} // 过滤空格
                 onClick={(_e, datePickerRef: RefObject<DatePickerRef>) => {
                   datePickerRef.current?.open();
                 }}
@@ -240,7 +251,7 @@ const Login: React.FC = () => {
                 </DatePicker>
               </Form.Item>
 
-              <Form.Item className="item" label="性别" name="gender" rules={[{ required: true, message: '请输入性别' }]}>
+              <Form.Item normalize={trimSpace} className="item" label="性别" name="gender" rules={[{ required: true, message: '请输入性别' }]}>
                 <Radio.Group>
                   <Space>
                     <Radio value="1" style={{ '--icon-size': '20px', '--font-size': '18px', '--gap': '10px' }}>
@@ -257,6 +268,7 @@ const Login: React.FC = () => {
                 className="item"
                 label="验证码:"
                 name="verificationCode"
+                normalize={trimSpace} // 过滤空格
                 rules={[
                   { required: true, message: '验证码不能为空' },
                   { max: 5, message: '验证码最大5位' },

@@ -19,10 +19,8 @@ const UserCenter: React.FC = () => {
   }
 
   useEffect(() => {
-    if (!playerInfo) {
-      playerReq();
-    }
-  }, [playerInfo]);
+    playerReq();
+  }, []);
 
   //请求退出
   const logout = async () => {

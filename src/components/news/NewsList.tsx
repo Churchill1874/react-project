@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
 import { DotLoading, InfiniteScroll, PullToRefresh } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
-import useStore from '@/zustand/store'
 
 const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -10,7 +9,7 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
       {hasMore ? (
         <>
           <div className="dot-loading-custom" >
-            <span >Loading</span>
+            <span >加载中</span>
             <DotLoading color='#fff' />
           </div>
         </>
@@ -66,7 +65,7 @@ const NewsList: React.FC<any> = () => {
 
   return (
     <div className="outer-container" >
-      <PullToRefresh onRefresh={() => reqNewsApi(true)}>
+      <PullToRefresh onRefresh={() => reqNewsApi(true)} >
         {newsList?.map((news, index) => (
           <NewsRecord
             key={`${news.id}-${index}`}
@@ -82,11 +81,13 @@ const NewsList: React.FC<any> = () => {
             category={news.category}
             source={news.source}
             data-id={news.id} // 为每个新闻条目添加唯一标识符
+            newsList={newsList}
+            setNewsList={setNewsList}
           />
         ))}
       </PullToRefresh>
 
-      <InfiniteScroll loadMore={() => reqNewsApi(false)} hasMore={newsHasMore}>
+      <InfiniteScroll loadMore={() => reqNewsApi(false)} hasMore={newsHasMore} >
         <NewsScrollContent hasMore={newsHasMore} />
       </InfiniteScroll>
     </div>

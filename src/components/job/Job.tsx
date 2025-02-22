@@ -13,7 +13,7 @@ const NewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
       {hasMore ? (
         <>
           <div className="dot-loading-custom" >
-            <span >Loading</span>
+            <span >加载中</span>
             <DotLoading color='#fff' />
           </div>
         </>

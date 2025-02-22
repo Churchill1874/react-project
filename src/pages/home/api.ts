@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
+
+import { NewsInfoType } from '@/pages/news/api';
 export interface NewsType {
   badCount: any;
   category: any;
@@ -23,7 +25,7 @@ export interface NewsType {
 interface HomeNewsType {
   code: number;
   data: {
-    newsList: NewsType[];
+    newsList: NewsInfoType[];
     topNews: NewsType;
     onlinePlayerCount: number;
   };

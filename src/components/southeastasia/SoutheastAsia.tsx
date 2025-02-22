@@ -150,7 +150,7 @@ const Company: React.FC = () => {
         {hasMore ? (
           <>
             <div className="dot-loading-custom" >
-              <span >Loading</span>
+              <span >加载中</span>
               <DotLoading color='#fff' />
             </div>
           </>
@@ -220,7 +220,7 @@ const Company: React.FC = () => {
                   </div>
                 }
 
-                <Ellipsis direction='end' rows={5} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px" }} />
+                <Ellipsis direction='end' rows={4} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
 
                 {/*                 <div className="text-area">
                   <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} />
@@ -277,7 +277,7 @@ const Company: React.FC = () => {
         onClose={() => { setVisibleCloseRight(false) }}>
 
         <div className="popup-scrollable-content" >
-          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '18px' }}>东南亚新闻</span></div>
+          <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px' }}>东南亚新闻</span></div>
 
           <Card className="southeastasia-custom-card">
             <div className="southeastasia-card-content">
@@ -327,11 +327,13 @@ const Company: React.FC = () => {
                 </span>
 
                 <span className="tracking">
-                  <Input className="southeastAsia-input-comment" value='' onFocus={handleInputFocus} placeholder="请输入您的评论吧～" onClick={inputCommentClick} />
+                  <Divider className='line'> 共 {newsCommentCount} 条评论 </Divider>
                 </span>
+
+
               </div>
 
-              <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={popupInfo.id} newsType={2} />
+              <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={popupInfo.id} infoType={2} />
             </div>
           </Card>
         </div>

@@ -9,6 +9,7 @@ import useStore from '@/zustand/store'
 
 
 const Home = () => {
+
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
@@ -99,14 +100,14 @@ const Home = () => {
         newsList.scrollTop = scrollTop - walk;
       };
 
-      newsList.addEventListener('mousedown', startDragging);
-      newsList.addEventListener('mousemove', onDragging);
-      newsList.addEventListener('mouseup', stopDragging);
-      newsList.addEventListener('mouseleave', stopDragging);
-      newsList.addEventListener('touchstart', startDragging);
-      newsList.addEventListener('touchmove', onDragging);
-      newsList.addEventListener('touchend', stopDragging);
-      newsList.addEventListener('touchcancel', stopDragging);
+      newsList.addEventListener('mousedown', startDragging, { passive: true });
+      newsList.addEventListener('mousemove', onDragging, { passive: true });
+      newsList.addEventListener('mouseup', stopDragging, { passive: true });
+      newsList.addEventListener('mouseleave', stopDragging, { passive: true });
+      newsList.addEventListener('touchstart', startDragging, { passive: true });
+      newsList.addEventListener('touchmove', onDragging, { passive: true });
+      newsList.addEventListener('touchend', stopDragging, { passive: true });
+      newsList.addEventListener('touchcancel', stopDragging, { passive: true });
 
       const intervalId = setInterval(() => {
         if (!isDragging) {
@@ -168,7 +169,7 @@ const Home = () => {
       <header className="header">
         <div className="logo">BIG NEWS</div>
 
-        <div><GlobalOutline fontSize={14} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
+        <div><GlobalOutline className='global-line' fontSize={14} /> <span className="online"> 在线 {onlinePlayerCount} 人 </span></div>
       </header>
 
       {topNewsTitleHtml}
