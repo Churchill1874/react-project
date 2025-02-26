@@ -269,7 +269,7 @@ const Company: React.FC = () => {
 
 
       {/********************新闻点击弹窗详情********************/}
-      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
+      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
         position='right'
         closeOnSwipe={true}
         closeOnMaskClick
@@ -279,7 +279,7 @@ const Company: React.FC = () => {
         <div className="popup-scrollable-content" >
           <div onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px' }}>东南亚新闻</span></div>
 
-          <Card className="southeastasia-custom-card">
+          <Card className="southeastasia-custom-card-container">
             <div className="southeastasia-card-content">
               <div className="southeastasia-news-image-container">
                 {popupInfo.southeastasiaNewsImage && <Image
@@ -337,21 +337,6 @@ const Company: React.FC = () => {
             </div>
           </Card>
         </div>
-
-        <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>
-          <MessageFill fontSize={32} />
-        </FloatingBubble>
-
-        <Popup className='news-comment-popup'
-          visible={showsCommentInput}
-          onMaskClick={() => { setShowCommentInput(false) }}
-          onClose={() => { setShowCommentInput(false) }}
-          bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
-          maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
-        >
-          <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} />
-          <Button className="news-send-comment-button" color="primary" onClick={() => sendTopComment(popupInfo.id)}> 发送评论 </Button>
-        </Popup>
       </Popup>
     </>
   );

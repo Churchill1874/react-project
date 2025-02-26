@@ -75,12 +75,34 @@
   color: gray;
 }
 
+.comment-button-container {
+  text-align: end;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.comment-container {
+  //width: 100%;
+  padding: 0px 5px;
+  //align-items: center;
+  //align-content: center;
+  //align-self: center;
+  //text-align: center;
+  justify-items: center;
+}
+
 .send-comment-button {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
-  margin: 5px 5px;
-  line-height: 1.5;
-  padding: 6px 7px;
+  //line-height: 1.5;
+  letter-spacing: 3px;
+  padding: 8px 10px;
+  margin-left: 10px;
+}
+
+.clean-comment-button {
+  font-size: 16px;
+  padding: 8px 10px;
 }
 
 .comment-area {
@@ -90,26 +112,30 @@
   padding: 5px;
   --font-size: 16px;
   border: 1px solid gray;
-
   .adm-text-area-count {
-    font-size: 12px;
+    font-size: 14px;
   }
+  box-sizing: border-box;
+}
 
-  width: 95%;
-  /* 调整宽度以确保在居中时不会溢出 */
-  margin: auto;
-  /* 自动左右边距 */
-  margin-top: 5px;
+.comment-area-container {
+  width: 100%;
 }
 
 .comments-popup {
+  width: 100%;
+  .adm-text-area {
+    margin-top: 5px;
+    width: 100%;
+  }
+  .adm-popup-body {
+    //padding: 0px 10px;
+    width: 100%;
+  }
   display: flex;
   align-items: center;
   /* 垂直居中 */
   justify-content: center;
-  /* 水平居中 */
-  padding-top: 10px;
-  height: 60vh;
 }
 
 .news-info .adm-pull-to-refresh-head-content {
@@ -143,7 +169,6 @@
   align-content: center;
 
   .adm-text-area-element {
-    padding-left: 10px;
     font-size: 18px;
     align-content: center;
   }

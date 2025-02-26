@@ -3,12 +3,12 @@ import { Toast, Swiper, List, Badge, Input, Button, Avatar, Ellipsis } from 'ant
 import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
-import Jiang from '../../../public/assets/avatars/1.jpg';
 import { newsEnum } from '@/common/news'
 import useStore from '@/zustand/store'
 
 
 const Home = () => {
+  const Jiang = '/assets/avatars/1.jpg'
 
   const chatRef = useRef<HTMLDivElement>(null);
   const newsListRef = useRef<HTMLDivElement>(null);

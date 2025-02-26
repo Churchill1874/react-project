@@ -74,7 +74,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   return (
     <div style={{ touchAction: "pan-y", overflowY: "auto", height: "100%" }}>
 
-      <PullToRefresh onRefresh={() => chatMessagePageRequest()} >
+      <PullToRefresh onRefresh={() => chatMessagePageRequest()}>
 
         <div className="private-chat-popup" style={{ flex: 1, overflowY: 'auto' }}>
           {chatMessageList.length === 0 && <div className="chat-loading"> 加载中<DotLoading color='black' /> </div>}

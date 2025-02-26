@@ -442,6 +442,12 @@
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
+  .list-item {
+    .top,
+    .adm-ellipsis {
+      font-size: 20px;
+    }
+  }
   .bet-container {
     .adm-button {
       width: 90px;
@@ -486,15 +492,6 @@
     .event-reward {
       font-size: 20px;
     }
-  }
-
-  .main-container {
-    flex-direction: row; /* 改为水平布局 */
-  }
-  .navbar {
-    position: static; /* 取消固定 */
-    width: auto; /* 自动宽度 */
-    font-size: 20px;
   }
   .news-item {
     .news-title {

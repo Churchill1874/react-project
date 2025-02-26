@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Badge, Tabs } from 'antd-mobile';
+import { Badge, Tabs, Toast } from 'antd-mobile';
 
 const Navbar = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const [activeKey, setActiveKey] = useState('');
@@ -20,9 +21,12 @@ const Navbar = () => {
   }, [location.pathname, activeKey, navigate]);
 
   const handleTabChange = (key: string) => {
+
     if (activeKey !== key) {
+
       navigate(`/${key}`);
       //console.log(`导航到路径: /${key}`);
+      //Toast.show('key:' + key)
       setActiveKey(key);
     }
   };

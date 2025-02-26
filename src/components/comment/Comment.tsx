@@ -104,6 +104,10 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
     }, 0);
   }
 
+  const cleanComment = () => {
+    console.log('comment:', comment)
+    setComment('');
+  }
 
   //发送顶层评论
   const sendTopComment = async () => {
@@ -261,12 +265,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
 
 
 
-  // 处理 Input 聚焦事件，阻止其获取焦点
-  const handleInputFocus = (event) => {
-    event.preventDefault();
-    event.target.blur();
-  };
-
   return (
     <>
       <Divider className='line'> 下拉更新 </Divider>
@@ -330,15 +328,23 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
       </div>
        */}
 
-      <Popup className='news-comment-popup'
+      <Popup className='comments-popup'
         visible={showsCommentInput}
         onMaskClick={() => { setShowCommentInput(false) }}
         onClose={() => { setShowCommentInput(false) }}
-        bodyStyle={{ height: '40vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
+        bodyStyle={{ height: '60vh', backgroundColor: 'transparent !important', boxShadow: 'none !important' }}
         maskStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5) !important' }}
       >
-        <CustomTextArea className='news-comment-area' autoSize defaultValue={''} showCount maxLength={255} ref={textAreaRef} onChange={inputCommentChange} />
-        <Button className="news-send-comment-button" color="primary" onClick={sendTopComment}> 发送评论 </Button>
+        <div className="comment-container">
+          <div className="comment-area-container">
+            <CustomTextArea className='comment-area' autoSize defaultValue={''} showCount maxLength={200} ref={textAreaRef} onChange={inputCommentChange} value={comment} />
+          </div>
+          <div className="comment-button-container">
+            <Button className="clean-comment-button" color='primary' fill='outline' onClick={cleanComment}>清空</Button>
+            <Button className="send-comment-button" color="primary" onClick={sendTopComment}> 发送 </Button>
+          </div>
+        </div>
+
       </Popup>
 
     </>
