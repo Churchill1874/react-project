@@ -10,7 +10,6 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
 
   // 设置全局请求超时时间为 10 秒（10000 毫秒）
   axios.defaults.timeout = 60000;
-  
 
   //拦截请求
   axios.interceptors.request.use(
@@ -21,7 +20,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
       //tokenId令牌
       const tokenId = localStorage.getItem('tokenId');
       if (tokenId) {
-        config.headers['TOKEN_ID'] = tokenId;
+        config.headers['TOKEN-ID'] = tokenId;
       }
       return config;
     },
@@ -33,7 +32,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
   //拦截响应
   axios.interceptors.response.use(
     response => {
-       if (!response.data || response.data.code === -2) {
+      if (!response.data || response.data.code === -2) {
         navigate('/login');
         Toast.show('请先登录');
         return Promise.reject(new Error('未登录'));
@@ -41,14 +40,14 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
 
       if (response.data.code === -4) {
         navigate('/login');
-        Toast.show(response.data.msg)
+        Toast.show(response.data.msg);
         return Promise.reject(new Error('未登陆'));
       }
 
       if (response.data.code === -1) {
-        Toast.show(response.data.msg)
+        Toast.show(response.data.msg);
         return Promise.reject(new Error('服务异常'));
-      } 
+      }
 
       return response;
     },
@@ -61,7 +60,6 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
     },
   );
   interceptorsRegistered = true; // 标志设置为 true
-
 };
 
 export default setupAxiosInterceptors;

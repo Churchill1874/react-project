@@ -111,7 +111,7 @@ const PrivateChat: React.FC = () => {
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS(`http://localhost:8009/ws?token_id=${localStorage.getItem('tokenId') || ''}`),
+      webSocketFactory: () => new SockJS(`http://localhost:8009/ws?token-id=${localStorage.getItem('tokenId') || ''}`),
       reconnectDelay: 5000, // STOMP 内置重连，不需要手动 activate()
     });
 
