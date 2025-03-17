@@ -22,7 +22,9 @@ body {
 .content {
   flex: 1; /* 使内容区域扩展以填充剩余空间 */
   background-color: inherit; /* 确保背景颜色传递 */
-  //padding-bottom: 150px; /* 确保内容不会被底部导航栏挡住 */
+  padding-bottom: 60px; /* 确保内容不会被底部导航栏挡住 */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; /* 启用平滑滚动 */
 }
 
 .navbar {
@@ -33,6 +35,16 @@ body {
   margin: 0px;
   padding-top: 1px;
   background-color: #fff; /* 根据需要设置背景颜色 */
+  height: 50px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.adm-tabs-tab {
+  padding: 6px 0;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .adm-tabs-tab {
