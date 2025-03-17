@@ -201,7 +201,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
 
         </div>
 
-        <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} infoType={1} />
+        <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} newsType={1} />
       </div>
 
     </>

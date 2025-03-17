@@ -333,7 +333,7 @@ const Company: React.FC = () => {
 
               </div>
 
-              <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={popupInfo.id} infoType={2} />
+              <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={popupInfo.id} newsType={2} />
             </div>
           </Card>
         </div>

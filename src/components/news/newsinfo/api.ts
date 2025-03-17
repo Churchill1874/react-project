@@ -5,7 +5,7 @@ import { CommentType } from '@/components/comment/api';
 
 //请求发送评论参数
 export interface SendNewsCommentReqType {
-  infoType: any;
+  newsType: any;
   newsId: any;
   replyId?: any;
   topId?: any;
