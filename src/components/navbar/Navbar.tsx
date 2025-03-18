@@ -11,28 +11,39 @@ const Navbar = () => {
   useEffect(() => {
     const currentPath = location.pathname === '/' ? '' : location.pathname.split('/')[1];
     if (currentPath === '') {
-      navigate('/home')
+      navigate('/home');
+      return;
     }
 
-
+    // 确保状态更新和路由跳转同步
     if (activeKey !== currentPath) {
-      setActiveKey(currentPath || '');
+      setActiveKey(currentPath);
     }
-  }, [location.pathname, activeKey, navigate]);
+  }, [location.pathname]);
 
   const handleTabChange = (key: string) => {
+    // 添加防抖处理
+    if (activeKey === key) return;
 
-    if (activeKey !== key) {
-
+    requestAnimationFrame(() => {
+      console.log(`Navigating to: /${key}`);
       navigate(`/${key}`);
-      //console.log(`导航到路径: /${key}`);
-      //Toast.show('key:' + key)
       setActiveKey(key);
-    }
+    });
   };
 
   return (
-    <Tabs activeKey={activeKey} onChange={handleTabChange} className="navbar">
+    <Tabs
+      activeKey={activeKey}
+      onChange={handleTabChange}
+      className="navbar"
+      activeLineMode="auto"
+      style={{
+        '--fixed-active-line-width': '40px',
+        '--active-line-height': '2px',
+        '--active-line-border-radius': '1px'
+      }}
+    >
       <Tabs.Tab title="首页" key="home" />
       <Tabs.Tab title="报纸" key="news" />
       <Tabs.Tab title="聊妹" key="chatgirl" />

@@ -8,8 +8,9 @@ export default defineConfig({
     react(),
     WindiCSS(),
     legacy({
-      targets: ['defaults', 'not IE 11'], // 兼容旧浏览器
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'], // 兼容 async/await
+      targets: ['> 0.5%', 'last 2 versions', 'not dead'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime', 'core-js/stable'], // 添加 core-js polyfill
+      modernPolyfills: true, // 启用现代浏览器 polyfill
     }),
   ],
   build: {
