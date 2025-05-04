@@ -2,6 +2,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Badge, Tabs, Toast } from 'antd-mobile';
 
+// 简单的调试信息显示
+const showDebugInfo = (message: string) => {
+  Toast.show({
+    content: message,
+    duration: 2000,
+    position: 'top'
+  });
+};
+
 const Navbar = () => {
 
   const navigate = useNavigate();
@@ -25,11 +34,35 @@ const Navbar = () => {
     // 添加防抖处理
     if (activeKey === key) return;
 
-    requestAnimationFrame(() => {
+    // 添加浏览器兼容性处理
+    const isHonorBrowser = /HUAWEI|Honor/i.test(navigator.userAgent);
+
+    try {
+      //showDebugInfo(`正在跳转到: /${key}`);
       console.log(`Navigating to: /${key}`);
       navigate(`/${key}`);
+
+      // 如果3秒后页面仍未跳转，强制刷新
+      if (isHonorBrowser) {
+        setTimeout(() => {
+          if (location.pathname !== `/${key}`) {
+            showDebugInfo('跳转失败，正在强制刷新');
+            console.log('Fallback navigation: forcing page reload');
+            window.location.href = `/${key}`;
+          }
+        }, 10);
+      }
+
       setActiveKey(key);
-    });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      showDebugInfo(`跳转失败: ${errorMessage}`);
+      console.error('Navigation failed:', error);
+      Toast.show('1')
+      if (isHonorBrowser) {
+        window.location.href = `/${key}`;
+      }
+    }
   };
 
   return (
@@ -41,7 +74,7 @@ const Navbar = () => {
       style={{
         '--fixed-active-line-width': '40px',
         '--active-line-height': '2px',
-        '--active-line-border-radius': '1px'
+        '--active-line-border-radius': '1px',
       }}
     >
       <Tabs.Tab title="首页" key="home" />

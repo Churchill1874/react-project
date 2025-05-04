@@ -26,7 +26,7 @@ const root = createRoot(container);
 
 root.render(
 
-  <Router>
+  <Router future={{ v7_relativeSplatPath: true }}>
     <ScrollToTop />
     <SetupInterceptors />
     <App />
