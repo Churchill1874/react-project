@@ -11,15 +11,16 @@ import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage'
 const PrivateChat: React.FC = () => {
 
   interface PlayerBaseType {
-    account: any;
+    playerId: number | null;
+    //account: any;
     name: any;
     avatar: any;
     level: any;
   }
-  const [loginPlayer, setLoginPlayer] = useState<PlayerBaseType>();
+  const [loginPlayer, setLoginPlayer] = useState<PlayerBaseType>({ playerId: null, name: "", avatar: "", level: "" });
   //弹窗状态相关
   const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
-  const [privateChatPopup, setPrivateChatPopup] = useState<PlayerBaseType>({ account: "", name: "", avatar: "", level: "" })
+  const [privateChatPopup, setPrivateChatPopup] = useState<PlayerBaseType>({ playerId: null, name: "", avatar: "", level: "" })
   const [chatMessageList, setChatMessageList] = useState<PrivateChatType[]>([]);
   const [chatMessagePageNum, setChatMessagePageNum] = useState<number>(1);
 
@@ -38,8 +39,13 @@ const PrivateChat: React.FC = () => {
   // 获取聊天记录外层列表
   const privateChatListRequest = async () => {
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
-    setLoginPlayer({ 'account': privateChatListResp.loginAccount, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
+    setLoginPlayer({ 'playerId': privateChatListResp.loginId, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
     setPrivateChatList(privateChatListResp.list);
+
+
+    console.log('privateChatList:', JSON.stringify(privateChatList))
+
+    console.log('loginPlayer:', JSON.stringify(loginPlayer))
   }
 
 
@@ -47,32 +53,32 @@ const PrivateChat: React.FC = () => {
   const showPrivateChatPopup = (param: PrivateChatListType) => {
     setVisiblePrivateChatCloseRight(true)
 
-    let account;
+    let playerId;
     let name;
     let avatar;
     let level;
 
     //如果当前弹窗记录 正好 发送人账号 是 登录人
     //整理获取聊天对方账号信息
-    if (param.sendAccount === loginPlayer?.account) {
-      account = param.receiveAccount;
+    if (param.sendId === loginPlayer?.playerId) {
+      playerId = param.receiveId;
       name = param.receiveName;
       avatar = param.receiveAvatarPath;
       level = param.receiveLevel;
     } else {
-      account = param.sendAccount;
+      playerId = param.sendId;
       name = param.sendName;
       avatar = param.sendAvatarPath;
       level = param.sendLevel;
     }
 
-    if (privateChatPopup.account !== account) {
+    if (privateChatPopup.playerId !== playerId) {
       //  清空子组件的聊天记录
       setChatMessageList([]);
       setChatMessagePageNum(1);
     }
 
-    const target: PlayerBaseType = { account, name, avatar, level }
+    const target: PlayerBaseType = { playerId, name, avatar, level }
     setPrivateChatPopup(target)
   }
 
@@ -92,8 +98,8 @@ const PrivateChat: React.FC = () => {
       status: false,
       createTime: new Date().toISOString(),
       createName: '',
-      sendAccount: loginPlayer?.account,
-      receiveAccount: privateChatPopup.account,
+      sendId: loginPlayer?.playerId,
+      receiveId: privateChatPopup.playerId,
       content: input,
       type: 1,
       isSender: true
@@ -147,6 +153,8 @@ const PrivateChat: React.FC = () => {
 
   useEffect(() => {
     privateChatListRequest();
+
+
   }, []); // 组件挂载时执行
 
 
@@ -162,9 +170,9 @@ const PrivateChat: React.FC = () => {
         className="private-messgae-card"
         title={
           <div className="private-messgae-title">
-            <Avatar src={avatars[chatInfo.sendAccount === loginPlayer?.account ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
+            <Avatar src={avatars[chatInfo.sendId === loginPlayer?.playerId ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
             <div className="private-messgae-content">
-              <span className="private-messgae-name">{chatInfo.sendAccount === loginPlayer?.account ? chatInfo.receiveName : chatInfo.sendName}</span>
+              <span className="private-messgae-name">{chatInfo.sendId === loginPlayer?.playerId ? chatInfo.receiveName : chatInfo.sendName}</span>
               <Ellipsis
                 className="private-message-chat"
                 direction='end'
@@ -182,7 +190,6 @@ const PrivateChat: React.FC = () => {
               <Badge content={Badge.dot} />
             </div>}
         </div>
-
 
       </Card>
     ))}
@@ -211,10 +218,10 @@ const PrivateChat: React.FC = () => {
       </div>
 
       <ChatMessage
-        accountA={privateChatPopup.account}
+        targetId={privateChatPopup.playerId}
         avatar={privateChatPopup.avatar}
         level={privateChatPopup.level}
-        currentPlayerAccount={loginPlayer?.account}
+        currentPlayerId={loginPlayer?.playerId}
         currentPlayerAvatar={loginPlayer?.avatar}
         chatMessageList={chatMessageList}
         setChatMessageList={setChatMessageList}

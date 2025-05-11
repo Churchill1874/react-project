@@ -24,6 +24,8 @@ import {
 } from '@/pages/message/api'
 import dayjs from 'dayjs'
 import PrivateChat from "@/components/privatechat/PrivateChat";
+import NewsInfo from "@/components/news/newsinfo/NewsInfo";
+
 
 const Message: React.FC = () => {
   // ws相关
@@ -33,6 +35,9 @@ const Message: React.FC = () => {
   const [commentList, setCommentList] = useState<SystemMessagePageType[]>();
   const [commentPageNum, setCommentPageNum] = useState<number>(1);
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
+  const [visibleCloseRight, setVisibleCloseRight] = useState(false);
+
+  const [newsId, setNewsId] = useState<Number>();
 
   // 获取评论数据
   const commentPageRequest = async (isReset: boolean) => {
@@ -76,9 +81,7 @@ const Message: React.FC = () => {
     <>
       <Tabs className="message-tabs" activeLineMode='fixed'>
         <Tabs.Tab title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
-
           <PrivateChat />
-
         </Tabs.Tab>
 
 
@@ -137,17 +140,18 @@ const Message: React.FC = () => {
 
         <Tabs.Tab
           title={'1'
-            ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>评论</Badge>
+            ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>收到的评论</Badge>
             : '评论'
           }
           key='comment-message'
         >
           <PullToRefresh onRefresh={() => commentPageRequest(true)}>
             {commentList && commentList.map((comment, index) => (
+
               <Card className="message-custom-card" key={index}>
                 <div className="card-content">
                   <div className="message-title">
-                    <span className="news-type">#{comment.sourceType === '1' ? '国内' : '东南亚'}</span>{" "}
+                    <span className="news-type">#{comment.sourceType === 1 ? '国内' : '东南亚'}</span>{" "}
                     {comment.title}
                   </div>
                   <div className="message-text-area">
@@ -170,11 +174,38 @@ const Message: React.FC = () => {
                     <div className="message-time">
                       {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm')}
                     </div>
-                    <div className="find">查看详情</div>
+                    <div className="find" onClick={() => { setNewsId(comment.newsId); setVisibleCloseRight(true) }}>查看详情</div>
                   </div>
                 </div>
               </Card>
             ))}
+
+            <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+              position='right'
+              // closeOnSwipe={true} 
+              closeOnMaskClick
+              visible={visibleCloseRight}
+              onClose={() => { setVisibleCloseRight(false) }}>
+
+              <div className="popup-scrollable-content" >
+                <NewsInfo
+                  setVisibleCloseRight={setVisibleCloseRight}
+                  id={newsId}
+                  needCommentPoint={true}
+                  title={""}
+                  content={""}
+                  contentImagePath={""}
+                  photoPath={""}
+                  likesCount={0}
+                  viewCount={0}
+                  commentsCount={0}
+                  createTime={null}
+                  source={""}
+                  reqPageSize={50}
+                />
+              </div>
+            </Popup>
+
           </PullToRefresh>
 
           <InfiniteScroll

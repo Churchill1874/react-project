@@ -83,6 +83,7 @@ const NewsList: React.FC<any> = () => {
             data-id={news.id} // 为每个新闻条目添加唯一标识符
             newsList={newsList}
             setNewsList={setNewsList}
+            needCommentPoint={false}
           />
         ))}
       </PullToRefresh>

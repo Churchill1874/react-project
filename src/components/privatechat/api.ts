@@ -3,8 +3,8 @@ import { serverTarget } from '@/common/api';
 
 export interface PrivateChatType {
   id?: any;
-  sendAccount: any;
-  receiveAccount: any;
+  sendId: any;
+  receiveId: any;
   content: any;
   status: any;
   type: any;
@@ -16,11 +16,11 @@ export interface PrivateChatType {
 export interface PrivateChatListType {
   id: any;
   sendName: any;
-  sendAccount: any;
+  sendId: number;
   sendAvatarPath: any;
   sendLevel: any;
   receiveName: any;
-  receiveAccount: any;
+  receiveId: number;
   receiveAvatarPath: any;
   receiveLevel: any;
   content: any;
@@ -49,7 +49,7 @@ export interface ChatPageRespType {
 
 //一对一 并 包含了登陆人信息的 聊天记录分页
 export interface PrivateChatPageRespType {
-  loginAccount: any;
+  loginId: any;
   loginAvatar: any;
   loginLevel: any;
   loginName: any;
@@ -65,7 +65,7 @@ export interface PlayerPrivateChatPageRespType {
 
 //请求查询一对一私聊参数
 export interface ChatPageReqType {
-  accountA: any;
+  playerAId: any;
   pageNum: any;
   pageSize: any;
 }

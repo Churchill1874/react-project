@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag, Toast } from 'antd-mobile';
 import { FcBusinessman, FcSalesPerformance, FcReading, FcImport, FcHeadset } from 'react-icons/fc';
+import { AiOutlineTag } from "react-icons/ai";
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, HistogramOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
@@ -60,15 +61,19 @@ const UserCenter: React.FC = () => {
                 账号: {playerInfo?.account}
                 <span className="status">
                   {playerInfo?.status ?
-                    (<Tag className="tag" color="success" fill="outline">正常</Tag>)
+                    (<Tag className="status-tag" color="success" fill="outline">正常</Tag>)
                     :
-                    (<Tag className="tag" color="warning" fill="outline">禁用</Tag>)
+                    (<Tag className="status-tag" color="warning" fill="outline">禁用</Tag>)
                   }
                 </span>
 
                 <span className="balance"> 余额: {playerInfo?.balance} U</span>
-
               </span>
+
+              <span className='level'>
+                等级: <span> {playerInfo?.level}级 <span className='levelName'> ( {levelEnum(playerInfo?.level)} )</span>  </span>
+              </span>
+
             </div>
             <div className="right-info">
               <span onClick={editPlayerInfo}>
@@ -96,13 +101,21 @@ const UserCenter: React.FC = () => {
         <div className="personal-info-container">
           <Card className="card-personal-info">
             <div className="card-personal-info-container">
+              {/*
               <span className="personal-info">
-                <span className="left">
-                  <HistogramOutline /> 等级:
-                </span>
-                <span> {playerInfo?.level}级 ( {levelEnum(playerInfo?.level)} ) </span>
-                <RightOutline className="right-icon" />
+
+                                 <span className="evaluate">
+                  <AiOutlineTag /> 标签:
+                  <span className="blue-tag">
+                    美分
+                  </span>
+                  <span className="red-tag">
+                    小粉红
+                  </span>
+                </span> 
+
               </span>
+              */}
               <span className="personal-info">
                 <span className="left">
                   <UserCircleOutline /> 性别:
@@ -144,17 +157,17 @@ const UserCenter: React.FC = () => {
 
         <div className="card-outer-container">
           <Card className="card-inner-container">
-            <div className='fucation'>
+            {/*             <div className='fucation'>
               <div className='card-title'><FcBusinessman className='icon' fontSize={22} /> 代理</div> <RightOutline className="right-icon" />
-            </div>
+            </div> */}
 
             <div className='fucation'>
               <div className='card-title'><FcSalesPerformance className='icon' fontSize={22} /> 钱包 </div> <RightOutline className="right-icon" />
             </div>
-
+            {/* 
             <div className='fucation'>
               <div className='card-title'><FcReading className='icon' fontSize={22} /> 浏览</div> <RightOutline className="right-icon" />
-            </div>
+            </div> */}
 
             <div className='fucation'>
               <div className='card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />

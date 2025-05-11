@@ -7,14 +7,18 @@ import {
 } from '@/components/news/newsinfo/api';
 import { Image, ImageViewer, Swiper, TextArea, Toast } from 'antd-mobile';
 import { HeartOutline, LeftOutline, MessageOutline } from 'antd-mobile-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
 import dayjs from 'dayjs'
 import { NewsInfoType } from '@/pages/news/api'
 
+type NewsInfoProps = NewsInfoType & {
+  needCommentPoint?: boolean;
+  reqPageSize?: number;
+}
 
-
-const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
+const NewsInfo: React.FC<NewsInfoProps> = ({
+  setVisibleCloseRight,
   id,
   title,
   content,
@@ -26,8 +30,11 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
   createTime,
   source,
   newsList,
-  setNewsList
+  setNewsList,
+  needCommentPoint,
+  reqPageSize
 }) => {
+
   /* 
     const textAreaRef = useRef<TextAreaRef>(null);
     const [comment, setComment] = useState('') */
@@ -37,13 +44,15 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
   const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
   const [newsViewCount, setNewsViewCount] = useState(viewCount);
 
+  const [newsStatus, setNewsStatus] = useState<NewsInfoType>();
+  const [newsContent, setNewsContent] = useState('');
 
   const showImage = () => {
     setVisible(prev => !prev);
   }
 
   const getImages = () => {
-    return contentImagePath ? contentImagePath.split(',') : [photoPath];
+    return newsStatus?.contentImagePath ? newsStatus?.contentImagePath.split(',') : [newsStatus?.photoPath];
   };
 
 
@@ -72,6 +81,7 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
 
   //查询新闻详情
   const reqNewsInfoApi = async () => {
+
     const param: NewsInfoReqType = { id: id };
     const response = await Request_NewsInfo(param);
 
@@ -80,7 +90,16 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
       setNewsCommentCount(data.commentsCount);
       setNewsLikesCount(data.likesCount);
       setNewsViewCount(data.viewCount);
+      setNewsStatus(data);
+      setNewsContent(splitTextByMinLength(data.filterContent || '', 200).join('\n\n'));
     }
+
+
+    if (needCommentPoint) {
+
+    }
+
+
   }
 
 
@@ -128,8 +147,8 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
 
   }
 
+
   useEffect(() => {
-    //刷新新闻信息
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
     updateNewsListViewsCount(id)
@@ -138,7 +157,10 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
     const updateList = newsList?.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
-    setNewsList(updateList);
+    if (setNewsList && updateList) {
+      setNewsList(updateList);
+    }
+
   }
 
   function splitTextByMinLength(text: string, minLength: number = 100): string[] {
@@ -161,47 +183,78 @@ const NewsInfo: React.FC<NewsInfoType> = ({ setVisibleCloseRight,
     return result;
   }
 
-
   return (
     <>
+
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
       <div className='news-info'>
-        <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {title}</div>
-        <div><span className='source'>{source}</span> <span className='newsinfo-time'>{dayjs(createTime).format('YYYY-MM-DD HH:mm')}</span></div>
+        <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
+        <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
+        <Swiper loop autoplay allowTouchMove>
+          {
+            newsStatus?.contentImagePath?.trim()
+              ? newsStatus.contentImagePath.split(',').filter(Boolean).map((imagePath, index) => (
+                <Swiper.Item className="swiper-item" key={index}>
+                  <Image
+                    fit="contain"
+                    width={300}
+                    height={200}
+                    src={imagePath}
+                    onClick={showImage}
+                  />
+                </Swiper.Item>
+              ))
+              : newsStatus?.photoPath?.trim()
+                ? [
+                  <Swiper.Item className="swiper-item" key="photoPath">
+                    <Image
+                      fit="contain"
+                      width={300}
+                      height={200}
+                      src={newsStatus.photoPath}
+                      onClick={showImage}
+                    />
+                  </Swiper.Item>
+                ]
+                : [
+                  <Swiper.Item className="swiper-item" key="placeholder">
+                    <div
+                      style={{
+                        width: 300,
+                        height: 200,
+                        backgroundColor: '#f0f0f0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#ccc',
+                      }}
+                    >
+                      正在加载
+                    </div>
+                  </Swiper.Item>
+                ]
+          }
+        </Swiper>
 
-        {contentImagePath &&
-          <Swiper loop autoplay allowTouchMove>
-            {contentImagePath.split(',').map((imagePath, index) => (
-              <Swiper.Item className="swiper-item" key={index} >
-                <Image fit='contain' width={300} height={200} src={imagePath} onClick={showImage} />
-              </Swiper.Item>
-            ))}
-          </Swiper>
-        }
-        {!contentImagePath &&
-          <Swiper loop autoplay allowTouchMove>
-            <Swiper.Item className="swiper-item" key={1} >
-              <Image fit='contain' width={300} height={200} src={photoPath} onClick={showImage} />
-            </Swiper.Item>
-          </Swiper>
-        }
 
         <TextArea
-          defaultValue={splitTextByMinLength(content, 200).join('\n\n')} // 使用两个换行符表示段间距
+          value={newsContent} // 使用两个换行符表示段间距
           readOnly
           rows={8}
           className='newsinfo-content'
         />
 
         <div className="newsinfo-attribute">
-          <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsViewCount + 1}</span>
-          <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsLikesCount}</span>
-          <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsCommentCount} </span>
-
+          <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsViewCount ? newsViewCount + 1 : 0}</span>
+          <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsLikesCount ? newsLikesCount + 1 : 0}</span>
+          <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsCommentCount ? newsCommentCount + 1 : 0} </span>
         </div>
 
-        <Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={id} newsType={1} />
+        {
+          newsStatus && newsStatus.id && (<Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={newsStatus.id} newsType={1} reqPageSize={reqPageSize} />)
+        }
+
       </div>
 
     </>

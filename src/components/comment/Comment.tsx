@@ -55,7 +55,7 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType }) => {
+const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType, reqPageSize }) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -164,7 +164,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
     setLoading(true);
 
     const reqPageNum = isReset ? 1 : pageNum;
-    const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: 10 }
+    const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: reqPageSize }
     const response = await Request_GetCommentPage(param);
 
     if (response.data.list?.length > 0) {

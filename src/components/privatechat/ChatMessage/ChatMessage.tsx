@@ -7,10 +7,10 @@ import dayjs from "dayjs";
 
 // 定义 props 类型
 interface ChatMessageProps {
-  accountA: string;
+  targetId: number | null;
   avatar: string;
   level: number;
-  currentPlayerAccount: string;
+  currentPlayerId: number | null;
   currentPlayerAvatar: string;
   chatMessageList: PrivateChatType[];
   setChatMessageList: React.Dispatch<React.SetStateAction<PrivateChatType[]>>;
@@ -21,10 +21,10 @@ interface ChatMessageProps {
 
 
 const ChatMessage: React.FC<ChatMessageProps> = ({
-  accountA,
+  targetId,
   avatar,
   level,
-  currentPlayerAccount,
+  currentPlayerId,
   currentPlayerAvatar,
   chatMessageList,
   setChatMessageList,
@@ -49,7 +49,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   useEffect(() => {
     chatMessagePageRequest();
-  }, [accountA])
+  }, [targetId])
 
   //滚动到底部聊天最后一句
   useEffect(() => {
@@ -62,7 +62,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   // 获取聊天记录
   const chatMessagePageRequest = async () => {
-    const param: ChatPageReqType = { accountA, pageNum: chatMessagePageNum, pageSize: 50 };
+    const param: ChatPageReqType = { playerAId: targetId, pageNum: chatMessagePageNum, pageSize: 50 };
     const list: PrivateChatType[] = (await Request_PlayerPrivateChatPage(param)).data.records || [];
 
     if (list.length > 0) {

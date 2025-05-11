@@ -98,7 +98,7 @@ const Company: React.FC = () => {
                 </div>
 
                 <Divider className='divider-line' />
-                <div className="line-group">
+                {/*                 <div className="line-group">
                   <div className="line">{company.overtimeCompensation}</div>
                   <Divider className='blue-divider-line' direction="vertical" />
                   <div className="line">{company.holiday}</div>
@@ -118,7 +118,7 @@ const Company: React.FC = () => {
                   <Divider className='blue-divider-line' direction="vertical" />
                   <div className="line">{company.officeEnvironment}</div>
                 </div>
-                <Divider className='divider-line' />
+                <Divider className='divider-line' /> */}
                 <div className="line-group">
                   <span><LocationFill className="area" />{company.city}</span>
                 </div>
