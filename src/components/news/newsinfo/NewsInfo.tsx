@@ -14,7 +14,7 @@ import { NewsInfoType } from '@/pages/news/api'
 
 type NewsInfoProps = NewsInfoType & {
   needCommentPoint?: boolean;
-  reqPageSize?: number;
+  commentPointId?: string;
 }
 
 const NewsInfo: React.FC<NewsInfoProps> = ({
@@ -32,7 +32,7 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
   newsList,
   setNewsList,
   needCommentPoint,
-  reqPageSize
+  commentPointId
 }) => {
 
   /* 
@@ -93,13 +93,6 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
       setNewsStatus(data);
       setNewsContent(splitTextByMinLength(data.filterContent || '', 200).join('\n\n'));
     }
-
-
-    if (needCommentPoint) {
-
-    }
-
-
   }
 
 
@@ -252,7 +245,7 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
         </div>
 
         {
-          newsStatus && newsStatus.id && (<Comment newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={newsStatus.id} newsType={1} reqPageSize={reqPageSize} />)
+          newsStatus && newsStatus.id && (<Comment needCommentPoint={needCommentPoint} commentPointId={commentPointId} newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={newsStatus.id} newsType={1} />)
         }
 
       </div>

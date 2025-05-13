@@ -10,6 +10,7 @@ export interface SendNewsCommentReqType {
   replyId?: any;
   topId?: any;
   content: any;
+  needCommentPoint: any;
 }
 //发送评论响应
 export interface SendNewsCommentResponseType {

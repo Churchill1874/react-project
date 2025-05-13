@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef, useImperativeHandle } from "react";
+import { useState, forwardRef, useRef, useImperativeHandle, useEffect } from "react";
 import { Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea, DotLoading, InfiniteScroll, PullToRefresh, FloatingBubble } from "antd-mobile";
 import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
@@ -55,22 +55,72 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType, reqPageSize }) => {
+const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType, needCommentPoint, commentPointId }) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
   const textAreaRef = useRef<TextAreaRef>(null);
   const [placeholder, setPlaceholder] = useState('请输入评论内容');
-  const [topId, setTopId] = useState<number | null>();//顶层评论id
-  const [replyId, setReplyId] = useState<number | null>();//回复内嵌评论id
+  const [topId, setTopId] = useState<string | null>();//顶层评论id
+  const [replyId, setReplyId] = useState<string | null>();//回复内嵌评论id
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
-  const [likesIdList, setLikesIdList] = useState<number[]>([]);
+  const [likesIdList, setLikesIdList] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showsCommentInput, setShowCommentInput] = useState(false)
+  const [showsCommentInput, setShowCommentInput] = useState(false);
+  const [needCommentPointState, setNeedCommentPointState] = useState<boolean>(needCommentPoint);
+  const commentRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const hasScrolled = useRef(false); // 评论记录滚动 保证只滚动一次
+
+
+  useEffect(() => {
+    //如果需要定位 并且 当前分页不是第一页了已经
+    if (needCommentPointState && pageNum > 1) {
+      //就关闭需要定位状态
+      setNeedCommentPointState(false);
+      setCommentHasMore(false);
+    }
+  }, [pageNum])
+
+  const hasExpanded = useRef(false);
+
+  //如果是定位评论 就展开要查找的定位评论 然后展开 方便后面有滚动dom目标
+  useEffect(() => {
+    if (needCommentPoint && commentPointId && commentsList.length > 0 && !hasExpanded.current) {
+      setCommentsList(prev =>
+        prev.map(comment => {
+          const isMatchTop = String(comment.topComment.id) === String(commentPointId);
+          const isMatchReply = comment.replyCommentList?.some(r => String(r.id) === String(commentPointId));
+          return (isMatchTop || isMatchReply) ? { ...comment, isExpanded: true } : comment;
+        })
+      );
+      hasExpanded.current = true;
+    }
+  }, [needCommentPoint, commentPointId, commentsList]);
+
+  //如果需要对评论足底不过定位 进行滚动到评论位置 
+  useEffect(() => {
+    if (needCommentPoint && commentPointId && !hasScrolled.current) {
+      const target = () => commentRefs.current[String(commentPointId)];
+      const timer = setInterval(() => {
+        const el = target();
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          hasScrolled.current = true;
+          console.log("✅ 滚动成功");
+          clearInterval(timer);
+        }
+      }, 100); // 每 100ms 检查一次
+
+      return () => clearInterval(timer);
+    }
+  }, [commentPointId]);
 
 
 
-  const reqCommentApi = (selectId: number) => {
+
+
+
+  const reqCommentApi = (selectId: string) => {
     setCommentsList((prevComments) => {
       return prevComments.map((comment) => comment.topComment.id === selectId ? { ...comment, isExpanded: true } : comment)
     });
@@ -78,7 +128,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
 
 
   //回复顶层评论
-  const replyTopComment = (topId: number, targetPlayerName: string) => {
+  const replyTopComment = (topId: string, targetPlayerName: string) => {
     setShowCommentInput(true)
     setPlaceholder('回复 ' + targetPlayerName);
     setTopId(topId);
@@ -92,7 +142,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
 
 
   //回复内嵌评论
-  const replyComment = (topId: number, replyId: number, targetPlayerName: string) => {
+  const replyComment = (topId: string, replyId: string, targetPlayerName: string) => {
     setShowCommentInput(true)
     setPlaceholder('回复 ' + targetPlayerName);
     setTopId(topId);
@@ -105,7 +155,6 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
   }
 
   const cleanComment = () => {
-    console.log('comment:', comment)
     setComment('');
   }
 
@@ -118,8 +167,8 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
       })
       return;
     }
-    const param: SendNewsCommentReqType = { newsType: newsType, newsId: newsId, content: comment, topId: topId, replyId: replyId }
-    console.log('param:', param)
+    const param: SendNewsCommentReqType = { newsType: newsType, newsId: newsId, content: comment, topId: topId, replyId: replyId, needCommentPoint: needCommentPointState }
+
     const response = await Request_SendNewsComment(param);
 
     if (response.code === 0) {
@@ -163,13 +212,13 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
     if (loading) return; // 如果正在加载，直接返回，防止重复请求
     setLoading(true);
 
-    const reqPageNum = isReset ? 1 : pageNum;
-    const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: reqPageSize }
-    const response = await Request_GetCommentPage(param);
 
+    const reqPageNum = isReset ? 1 : pageNum;
+    const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: 50 }
+    const response = await Request_GetCommentPage(param);
     if (response.data.list?.length > 0) {
       //如果新取回来的评论数据和上一次的不一样
-      if (JSON.stringify(response.data.list) !== JSON.stringify(commentsList)) {
+      if (response.data.list.length !== commentsList.length) {
         //将新请求回来的评论和之前的评论放在一起保存更新状态
         setCommentsList([...commentsList ?? [], ...response.data.list]);
       }
@@ -198,7 +247,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
   }
 
   //点赞
-  const clickLikes = async (id: number, isTopReply) => {
+  const clickLikes = async (id: string, isTopReply) => {
     if (likesIdList.includes(id)) {
       Toast.show({
         content: '已点赞',
@@ -271,7 +320,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
 
       <PullToRefresh onRefresh={() => reqCommentPageApi(true)}>
         {commentsList?.map((comment, _index) => (
-          <div className="outer-comment" key={comment.topComment.id}>
+          <div className="outer-comment" ref={el => commentRefs.current[String(comment.topComment.id)] = el} key={comment.topComment.id}>
             <div className="left-comment">
               <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} />
             </div>
@@ -287,7 +336,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
 
               {comment.isExpanded && (
                 comment.replyCommentList.map((replay, replayIndex) =>
-                  <div className="outer-comment" key={replayIndex}>
+                  <div className="outer-comment" ref={el => commentRefs.current[String(replay.id)] = el} key={replay.id}>
                     <div className="left-comment">
                       <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '32px' }} />
                     </div>

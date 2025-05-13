@@ -37,12 +37,13 @@ const Message: React.FC = () => {
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false);
 
-  const [newsId, setNewsId] = useState<Number>();
+  const [newsId, setNewsId] = useState<string>();
+  const [commentId, setCommentId] = useState<string>();
 
   // 获取评论数据
   const commentPageRequest = async (isReset: boolean) => {
     const pageNum = isReset ? 1 : commentPageNum;
-    const param: SystemMessagePageReqType = { pageNum: pageNum, pageSize: 5, messageType: 2 };
+    const param: SystemMessagePageReqType = { pageNum: pageNum, pageSize: 20, messageType: 2 };
     const list: SystemMessagePageType[] = (await Request_SystemMessagePage(param)).data.records || [];
     if (list.length > 0) {
       if (isReset) {
@@ -174,7 +175,7 @@ const Message: React.FC = () => {
                     <div className="message-time">
                       {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm')}
                     </div>
-                    <div className="find" onClick={() => { setNewsId(comment.newsId); setVisibleCloseRight(true) }}>查看详情</div>
+                    <div className="find" onClick={() => { setCommentId(comment.commentId); setNewsId(comment.newsId); setVisibleCloseRight(true) }}>查看详情</div>
                   </div>
                 </div>
               </Card>
@@ -192,6 +193,7 @@ const Message: React.FC = () => {
                   setVisibleCloseRight={setVisibleCloseRight}
                   id={newsId}
                   needCommentPoint={true}
+                  commentPointId={commentId}
                   title={""}
                   content={""}
                   contentImagePath={""}
@@ -201,7 +203,6 @@ const Message: React.FC = () => {
                   commentsCount={0}
                   createTime={null}
                   source={""}
-                  reqPageSize={50}
                 />
               </div>
             </Popup>

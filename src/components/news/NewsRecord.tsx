@@ -152,7 +152,6 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
             newsList={newsList}
             setNewsList={setNewsList}
             needCommentPoint={false}
-            reqPageSize={5000}
           />
         </div>
 

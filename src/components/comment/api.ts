@@ -24,7 +24,7 @@ export interface CommentType {
   content: string;
   createName: string;
   createTime: string;
-  id: number;
+  id: string;
   infoType: any;
   level: any;
   likesCount: number;
@@ -65,7 +65,7 @@ export interface IncreaseLikesCountRespType {
 
 //查询新闻评论响应
 export interface IncreaseLikesCountReqType {
-  id: number;
+  id: string;
 }
 
 /**
