@@ -78,7 +78,7 @@ const Navbar = () => {
       }}
     >
       <Tabs.Tab title="首页" key="home" />
-      <Tabs.Tab title="报纸" key="news" />
+      <Tabs.Tab title="新闻" key="news" />
       <Tabs.Tab title="聊妹" key="chatgirl" />
       <Tabs.Tab title="投注" key="bet" />
       <Tabs.Tab title={<Badge content={Badge.dot}>消息</Badge>} key="message" />

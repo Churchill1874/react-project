@@ -8,7 +8,7 @@ import { Request_GetCommentPage, CommentPageType, Request_LikesCount } from "@/c
 import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
 import { highlightReply } from '@/utils/commentUtils'
 import dayjs from 'dayjs'
-
+import OtherPeople from "@/pages/otherpeople/otherpeople";
 
 const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -55,7 +55,8 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId, newsType, needCommentPoint, commentPointId }) => {
+const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
+
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -70,7 +71,12 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
   const [needCommentPointState, setNeedCommentPointState] = useState<boolean>(needCommentPoint);
   const commentRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const hasScrolled = useRef(false); // 评论记录滚动 保证只滚动一次
+  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
+  const [otherPlayerId, setOtherPlayerId] = useState<string | null>()
 
+  useImperativeHandle(ref, () => ({
+    cleanState
+  }))
 
   useEffect(() => {
     //如果需要定位 并且 当前分页不是第一页了已经
@@ -95,7 +101,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
       );
       hasExpanded.current = true;
     }
-  }, [needCommentPoint, commentPointId, commentsList]);
+  }, [needCommentPoint, commentPointId]);
 
   //如果需要对评论足底不过定位 进行滚动到评论位置 
   useEffect(() => {
@@ -115,8 +121,21 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
     }
   }, [commentPointId]);
 
+  useEffect(() => {
+    if (newsId) {
+      cleanState()
+    }
+  }, [newsId]);
 
-
+  const cleanState = () => {
+    setPageNum(1);
+    setCommentsList([]);
+    setCommentHasMore(true);
+    setLoading(false);
+    hasScrolled.current = false;
+    hasExpanded.current = false;
+    //reqCommentPageApi(true);
+  }
 
 
 
@@ -168,6 +187,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
       return;
     }
     const param: SendNewsCommentReqType = { newsType: newsType, newsId: newsId, content: comment, topId: topId, replyId: replyId, needCommentPoint: needCommentPointState }
+    console.log('param:' + JSON.stringify(param))
 
     const response = await Request_SendNewsComment(param);
 
@@ -179,12 +199,18 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
       setComment('');
       setTopId(null);
       setReplyId(null);
-      setNewsCommentCount((prev) => prev + 1);
+      setNewsStatus((prev) => {
+        if (!prev) return prev;
+
+        return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+      });
       setShowCommentInput(false)
 
-      if (newsId && response.data) {
+      if (newsId) {
         //判断是顶层评论
         if (!topId && !replyId) {
+
+          console.log('data:' + response.data)
           const commentPageType: CommentPageType = {
             replyCommentList: [],
             topComment: response.data
@@ -193,6 +219,8 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
         }
 
         if (topId && commentsList) {
+
+          console.log('topId:' + topId + ',commentsList:' + JSON.stringify(commentsList))
           //如果回复楼主
           setCommentsList(
             prevList => prevList.map(
@@ -322,7 +350,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
         {commentsList?.map((comment, _index) => (
           <div className="outer-comment" ref={el => commentRefs.current[String(comment.topComment.id)] = el} key={comment.topComment.id}>
             <div className="left-comment">
-              <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} />
+              <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(comment.topComment.playerId) }} />
             </div>
             <div className="right-comment">
               <span className='name'>{comment.topComment.commentator}</span>
@@ -338,7 +366,7 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
                 comment.replyCommentList.map((replay, replayIndex) =>
                   <div className="outer-comment" ref={el => commentRefs.current[String(replay.id)] = el} key={replay.id}>
                     <div className="left-comment">
-                      <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '32px' }} />
+                      <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '32px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(replay.playerId) }} />
                     </div>
                     <div className="right-comment">
                       <span className='name'>{replay.commentator}</span>
@@ -393,12 +421,18 @@ const Comment: React.FC<any> = ({ newsCommentCount, setNewsCommentCount, newsId,
             <Button className="send-comment-button" color="primary" onClick={sendTopComment}> 发送 </Button>
           </div>
         </div>
-
       </Popup>
 
+      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+        position='right'
+        closeOnMaskClick
+        visible={visibleCloseRight}
+        onClose={() => { setVisibleCloseRight(false) }}>
+        <OtherPeople setVisibleCloseRight={setVisibleCloseRight} otherPlayerId={otherPlayerId} />
+      </Popup>
     </>
   );
-}
+})
 
 
 export default Comment;

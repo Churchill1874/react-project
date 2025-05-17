@@ -29,10 +29,10 @@ export interface CommentType {
   level: any;
   likesCount: number;
   newsId: number;
-  playerId: number;
+  playerId: string;
   readStatus: boolean;
-  replyId: number;
-  targetPlayerId: number;
+  replyId: string;
+  targetPlayerId: string;
   topId: number;
 }
 

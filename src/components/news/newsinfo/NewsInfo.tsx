@@ -7,17 +7,17 @@ import {
 } from '@/components/news/newsinfo/api';
 import { Image, ImageViewer, Swiper, TextArea, Toast } from 'antd-mobile';
 import { HeartOutline, LeftOutline, MessageOutline } from 'antd-mobile-icons';
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
 import dayjs from 'dayjs'
 import { NewsInfoType } from '@/pages/news/api'
 
 type NewsInfoProps = NewsInfoType & {
   needCommentPoint?: boolean;
-  commentPointId?: string;
+  commentPointId?: string | null;
 }
 
-const NewsInfo: React.FC<NewsInfoProps> = ({
+const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   setVisibleCloseRight,
   id,
   title,
@@ -32,7 +32,8 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
   newsList,
   setNewsList,
   needCommentPoint,
-  commentPointId
+  commentPointId,
+  commentRef
 }) => {
 
   /* 
@@ -40,13 +41,8 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
     const [comment, setComment] = useState('') */
   const [visible, setVisible] = useState(false)
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
-  const [newsCommentCount, setNewsCommentCount] = useState(commentsCount);//新闻评论数量
-  const [newsLikesCount, setNewsLikesCount] = useState(likesCount);
-  const [newsViewCount, setNewsViewCount] = useState(viewCount);
 
-  const [newsStatus, setNewsStatus] = useState<NewsInfoType>();
-  const [newsContent, setNewsContent] = useState('');
-
+  const [newsStatus, setNewsStatus] = useState<NewsInfoType | null>();
   const showImage = () => {
     setVisible(prev => !prev);
   }
@@ -82,16 +78,16 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
   //查询新闻详情
   const reqNewsInfoApi = async () => {
 
+
     const param: NewsInfoReqType = { id: id };
     const response = await Request_NewsInfo(param);
 
     const { code, data } = response;
     if (code === 0) {
-      setNewsCommentCount(data.commentsCount);
-      setNewsLikesCount(data.likesCount);
-      setNewsViewCount(data.viewCount);
+      if (data.filterContent) {
+        data.filterContent = splitTextByMinLength(data.filterContent || '', 200).join('\n\n');
+      }
       setNewsStatus(data);
-      setNewsContent(splitTextByMinLength(data.filterContent || '', 200).join('\n\n'));
     }
   }
 
@@ -129,7 +125,10 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
 
 
       if (resp.data.value) {
-        setNewsLikesCount((prev) => prev + 1)
+        setNewsStatus((prev) => {
+          if (!prev) return prev;
+          return { ...prev, likesCount: (prev.likesCount || 0) + 1 }
+        })
       }
     } else {
       Toast.show({
@@ -142,10 +141,19 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
 
 
   useEffect(() => {
+    setNewsStatus(null);
+    // 强制重置TextArea内容
+    const textarea = document.querySelector('.newsinfo-content textarea');
+    if (textarea && 'value' in textarea) {
+      (textarea as HTMLTextAreaElement).value = '';
+      // 触发React的重新渲染
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
     reqNewsInfoApi();
     //获取当前胶囊新闻类型所用的新闻数据状态
     updateNewsListViewsCount(id)
-  }, [])
+  }, [id])
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
@@ -182,7 +190,7 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
       <div className='news-info'>
-        <div className='newsinfo-title' onClick={() => setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
+        <div className='newsinfo-title' onClick={() => { setVisibleCloseRight(false); }} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
         <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
         <Swiper loop autoplay allowTouchMove>
           {
@@ -231,21 +239,33 @@ const NewsInfo: React.FC<NewsInfoProps> = ({
         </Swiper>
 
 
-        <TextArea
-          value={newsContent} // 使用两个换行符表示段间距
-          readOnly
-          rows={8}
-          className='newsinfo-content'
-        />
+        {newsStatus?.filterContent ?
+          <TextArea value={newsStatus?.filterContent} readOnly rows={8} className='newsinfo-content' />
+          :
+          <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
+        }
+
+
 
         <div className="newsinfo-attribute">
-          <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsViewCount ? newsViewCount + 1 : 0}</span>
-          <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsLikesCount ? newsLikesCount + 1 : 0}</span>
-          <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsCommentCount ? newsCommentCount + 1 : 0} </span>
+          <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsStatus?.viewCount ? newsStatus?.viewCount + 1 : 1}</span>
+          <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsStatus?.likesCount || 0}</span>
+          <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsStatus?.commentsCount || 0} </span>
         </div>
 
         {
-          newsStatus && newsStatus.id && (<Comment needCommentPoint={needCommentPoint} commentPointId={commentPointId} newsCommentCount={newsCommentCount} setNewsCommentCount={setNewsCommentCount} newsId={newsStatus.id} newsType={1} />)
+          newsStatus
+          && newsStatus.id
+          && (
+            <Comment
+              needCommentPoint={needCommentPoint}
+              commentPointId={commentPointId}
+              newsCommentCount={newsStatus?.commentsCount}
+              setNewsStatus={setNewsStatus}
+              newsId={id}
+              newsType={1}
+              ref={commentRef}
+            />)
         }
 
       </div>

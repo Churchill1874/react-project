@@ -170,7 +170,7 @@ const Job: React.FC = () => {
                 <div className="card-content" >
                   <div className="line1" onClick={() => { setVisibleCloseRight(false) }} >
                     <span style={{ paddingRight: '5px', color: 'gray', fontSize: '14px' }} ><LeftOutline fontSize={24} /></span>
-                    <span style={{ fontSize: '14px' }}>{popupInfo.companyName} 公司</span>
+                    <span style={{ fontSize: '15px' }}>{popupInfo.companyName} 公司</span>
                   </div>
 
                   {popupInfo.image &&

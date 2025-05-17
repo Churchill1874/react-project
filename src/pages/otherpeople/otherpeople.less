@@ -9,7 +9,15 @@
 }
 
 .status-tag {
-  font-size: 10px;
+  font-size: 11px;
+  margin: 0px 10px;
+  --tag-padding-vertical: 4px; // 上下内边距
+  --tag-padding-horizontal: 8px; // 左右内边距
+  --tag-border-radius: 8px; // 圆角大小
+}
+
+.message {
+  font-size: 14px;
   margin: 0px 10px;
   --tag-padding-vertical: 4px; // 上下内边距
   --tag-padding-horizontal: 8px; // 左右内边距
@@ -30,8 +38,8 @@
   /* 添加阴影 */
 }
 
-.card-personal-info {
-  height: 230px;
+.other-card-personal-info {
+  //height: 100px;
   background-color: #fff;
   flex: 1;
   display: flex;
@@ -79,6 +87,7 @@
   /* 对齐到顶部 */
   width: 100%;
   margin: 0px;
+  margin-left: 5px;
   padding: 0px;
 }
 
@@ -88,25 +97,22 @@
   align-items: center;
 }
 
-.base-info {
+.other-base-info {
   display: flex;
   flex-direction: column;
   margin-top: 1px;
   margin-left: 12px;
 
   .name {
-    font-size: 15px;
+    font-size: 14px;
     //margin-bottom: 10px;
   }
   .balance,
+  .status,
   .account {
-    margin-top: 6px;
-    font-size: 15px;
+    margin-top: 5px;
+    font-size: 14px;
     color: gray;
-  }
-  .status {
-    font-size: 16px;
-    //margin-top: 12px;
   }
 
   /* 每行之间的间距 */
@@ -117,7 +123,7 @@
   }
 
   .level {
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 5px;
     color: gray;
   }
@@ -130,10 +136,10 @@
 .right-info {
   display: flex;
   flex-direction: column;
-  //margin-left: auto;
+  margin-left: auto;
   /* 自动左边距以将其推到最右边 */
   align-items: flex-end;
-  margin-right: 10px;
+
   /* 确保内容对齐到右侧 */
 }
 
@@ -159,19 +165,17 @@
   margin-bottom: 3px;
 }
 
-.personal-info {
+.other-personal-info {
   font-size: 15px;
   display: flex;
   /* 使用 flexbox 布局 */
   align-items: center;
   /* 确保内容垂直居中 */
   width: 100%;
-  margin-bottom: 12px;
-
+  margin-bottom: 15px;
   .right {
     margin-left: 10px;
   }
-
   .right-icon {
     margin-left: auto; /* 将图标推到最右边 */
     align-self: center; /* 垂直居中 */
@@ -190,7 +194,7 @@
   }
 }
 
-.personal-info-space {
+.other-personal-info-space {
   display: flex;
   justify-content: space-between;
   /* 平均分配空间 */
@@ -199,7 +203,7 @@
   padding: 0px;
 }
 
-.personal-info-space span {
+.other-personal-info-space span {
   flex: 1;
   /* 平均分配空间 */
   display: flex;
@@ -214,7 +218,7 @@
   /* 确保文字在 span 内居中 */
 }
 
-.personal-info-space .label {
+.other-personal-info-space .label {
   background-color: rgba(1, 36, 54, 0.515); /* 灰色半透明背景 */
   padding: 1px; /* 添加内边距 */
   border-radius: 5px; /* 圆角 */
@@ -234,16 +238,16 @@
   .adm-text-area-element {
     padding: 5px 8px;
 
-    font-size: 15px;
+    font-size: 14px;
   }
   .adm-text-area-count {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
 .personal-info-desc {
   color: gray;
-  font-size: 15px;
+  font-size: 14px;
   margin-top: 5px;
 }
 
@@ -265,11 +269,9 @@
 }
 
 .card-title {
-  font-size: 15px;
   display: flex;
   align-items: center;
   width: 100%;
-  margin-top: 5px;
 }
 
 .card-inner-container .adm-card {
@@ -282,11 +284,23 @@
 .fucation {
   display: flex;
   justify-content: space-between;
-  //margin: 15px 0px;
-  .right-icon {
-    display: flex;
+  margin: 15px 0px;
+  .icon {
     margin-right: 10px;
-    align-items: center;
-    height: 30px;
+  }
+}
+
+.other-people-info {
+  height: 35px;
+  color: black;
+  background-color: #fff;
+  //border-top: 1px solid @theme;
+
+  .adm-nav-bar-title {
+    font-size: 14px;
+  }
+
+  .adm-nav-bar-back-arrow {
+    font-size: 14px;
   }
 }

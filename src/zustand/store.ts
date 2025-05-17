@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
-import { CompanyPageType } from '@/components/company/api';
 
 // 定义综合状态类型
 interface AppState {

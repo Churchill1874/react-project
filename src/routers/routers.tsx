@@ -4,8 +4,8 @@ import Login from '@/pages/login/Login';
 import Personal from '@/pages/personal/Personal';
 import SetPersonal from '@/pages/setpersonal/SetPersonal'
 import News from '@/pages/news/News'
-import NewsInfo from '@/components/news/newsinfo/NewsInfo'
 import Message from '@/pages/message/Message';
+import OtherPeople from '@/pages/otherpeople/otherpeople';
 
 export default [
   //首页
@@ -45,10 +45,6 @@ export default [
   },
   {
     path: '/chatgirl',
-    component: Message, // 暂时使用Message组件，后续可替换
-  },
-  {
-    path: '/bet',
     component: Message, // 暂时使用Message组件，后续可替换
   }
 ];

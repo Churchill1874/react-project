@@ -14,7 +14,8 @@ const News: React.FC = React.memo(() => {
     news: useRef<HTMLDivElement>(null),
     southeastAsia: useRef<HTMLDivElement>(null),
     job: useRef<HTMLDivElement>(null),
-    company: useRef<HTMLDivElement>(null)
+    company: useRef<HTMLDivElement>(null),
+    second: useRef<HTMLDivElement>(null)
   };
 
   // 切换菜单时，重置滚动位置
@@ -33,6 +34,7 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
           <CapsuleTabs.Tab title="工作" key="job" />
           <CapsuleTabs.Tab title="公司" key="company" />
+          <CapsuleTabs.Tab title="二手" key="second" />
         </CapsuleTabs>
       </div>
 
@@ -48,6 +50,9 @@ const News: React.FC = React.memo(() => {
           <Job />
         </div>
         <div ref={sectionRefs.company} className={`tab-content ${newsActiveTab === 'company' ? 'active' : ''}`}>
+          <Company />
+        </div>
+        <div ref={sectionRefs.second} className={`tab-content ${newsActiveTab === 'second' ? 'active' : ''}`}>
           <Company />
         </div>
       </div>

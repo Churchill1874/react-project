@@ -28,6 +28,7 @@ export interface PlayerInfoType {
   balance?: any;
   updateName?: any;
   updateTime?: any;
+  tg?: any;
 }
 
 //获取用户信息

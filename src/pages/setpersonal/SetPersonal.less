@@ -12,17 +12,18 @@
     height: 35px;
     color: black;
     background-color: #fff;
-    border-top: 1px solid @theme;
-
     .adm-nav-bar-title {
-      font-size: 13px;
+      font-size: 15px;
     }
 
     .adm-nav-bar-back-arrow {
-      font-size: 13px;
+      font-size: 15px;
     }
   }
-
+  .adm-card-body {
+    margin: 0px;
+    padding: 0px;
+  }
   .card {
     margin: 5px 12px;
     background-color: #fff;
@@ -57,7 +58,7 @@
       .change-avatar-button {
         margin: 0px;
         padding: 0px;
-        font-size: 13px;
+        font-size: 14px;
         margin-top: auto;
         margin: 5px 0px;
       }
@@ -78,11 +79,10 @@
     }
 
     input {
-      font-size: 13px;      
+      font-size: 14px;
     }
 
     .adm-list-item-content-prefix {
-      //padding: 10px 0px;
       width: 70px;
     }
 
@@ -91,9 +91,13 @@
       margin: 0 !important;
 
       .adm-form-item-label {
-        font-size: 13px;
+        font-size: 15px;
         padding: 0 8px !important;
         line-height: 1.5 !important;
+      }
+
+      .adm-input-element {
+        font-size: 15px;
       }
 
       .adm-form-item-control {
@@ -104,8 +108,6 @@
         font-size: 12px !important;
       }
     }
-
-
   }
 }
 
@@ -115,7 +117,7 @@
   border-radius: 5px;
   padding: 5px;
   margin-bottom: 0px;
-  --font-size: 13px;
+  --font-size: 15px;
 
   .adm-text-area-count {
     font-size: 13px;
@@ -132,8 +134,8 @@
 .tabs-personal {
   margin: 0px;
   padding: 0px;
-  width: 100%;  
-  .adm-tabs-header{
+  width: 100%;
+  .adm-tabs-header {
     margin: 0px;
     padding: 0px;
     //background-color: #1890ff;
@@ -157,6 +159,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
   margin: 1px; /* 每个头像的外边距 */
 }
-.button{
+.set-personal .adm-form-footer {
   font-size: 14px;
+  margin-top: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.set-personal .button {
+  font-size: 15px;
+  margin-top: 0px !important;
+}
+
+.set-personal .form .adm-form-item {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.set-personal .form .adm-form-item .adm-input {
+  padding: 0px 0px !important;
 }

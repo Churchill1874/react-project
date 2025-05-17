@@ -36,9 +36,10 @@ const Message: React.FC = () => {
   const [commentPageNum, setCommentPageNum] = useState<number>(1);
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false);
-
-  const [newsId, setNewsId] = useState<string>();
   const [commentId, setCommentId] = useState<string>();
+  const [newsId, setNewsId] = useState<string>();
+  const commentRef = useRef<any>(null);
+
 
   // 获取评论数据
   const commentPageRequest = async (isReset: boolean) => {
@@ -175,7 +176,7 @@ const Message: React.FC = () => {
                     <div className="message-time">
                       {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm')}
                     </div>
-                    <div className="find" onClick={() => { setCommentId(comment.commentId); setNewsId(comment.newsId); setVisibleCloseRight(true) }}>查看详情</div>
+                    <div className="find" onClick={() => { setCommentId(comment.commentId); setNewsId(comment.newsId); setVisibleCloseRight(true); console.log('正在点击的newsId是：', comment.newsId) }}>查看详情</div>
                   </div>
                 </div>
               </Card>
@@ -186,7 +187,7 @@ const Message: React.FC = () => {
               // closeOnSwipe={true} 
               closeOnMaskClick
               visible={visibleCloseRight}
-              onClose={() => { setVisibleCloseRight(false) }}>
+              onClose={() => { setVisibleCloseRight(false); commentRef.current?.cleanState?.(); }}>
 
               <div className="popup-scrollable-content" >
                 <NewsInfo
@@ -203,6 +204,7 @@ const Message: React.FC = () => {
                   commentsCount={0}
                   createTime={null}
                   source={""}
+                  commentRef={commentRef}
                 />
               </div>
             </Popup>
