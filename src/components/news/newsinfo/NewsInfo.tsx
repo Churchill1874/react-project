@@ -7,7 +7,7 @@ import {
 } from '@/components/news/newsinfo/api';
 import { Image, ImageViewer, Swiper, TextArea, Toast } from 'antd-mobile';
 import { HeartOutline, LeftOutline, MessageOutline } from 'antd-mobile-icons';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
 import dayjs from 'dayjs'
 import { NewsInfoType } from '@/pages/news/api'
@@ -77,8 +77,6 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   //查询新闻详情
   const reqNewsInfoApi = async () => {
-
-
     const param: NewsInfoReqType = { id: id };
     const response = await Request_NewsInfo(param);
 
@@ -105,7 +103,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
       setLikesIdList((prev) => [...prev, id])
     }
 
-    const param = { id: id }
+    const param = { id: id, infoType: 1 }
     const resp = await Request_IncreaseLikesCount(param);
 
     if (resp.code === 0) {
@@ -260,8 +258,8 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
             <Comment
               needCommentPoint={needCommentPoint}
               commentPointId={commentPointId}
-              newsCommentCount={newsStatus?.commentsCount}
               setNewsStatus={setNewsStatus}
+              setPolitics={null}
               newsId={id}
               newsType={1}
               ref={commentRef}

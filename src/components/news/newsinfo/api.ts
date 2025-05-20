@@ -3,21 +3,6 @@ import { serverTarget } from '@/common/api';
 
 import { CommentType } from '@/components/comment/api';
 
-//请求发送评论参数
-export interface SendNewsCommentReqType {
-  newsType: any;
-  newsId: any;
-  replyId?: any;
-  topId?: any;
-  content: any;
-  needCommentPoint: any;
-}
-//发送评论响应
-export interface SendNewsCommentResponseType {
-  code: number;
-  data: CommentType;
-  msg: string;
-}
 //查询新闻请求参数
 export interface NewsInfoReqType {
   id: number;
@@ -52,7 +37,8 @@ export interface NewsInfoRespType {
 
 //点赞请求类型
 export interface IncreaseLikesCountReqType {
-  id: number;
+  id: string;
+  infoType: number;
 }
 
 //查询新闻响应
@@ -62,12 +48,6 @@ export interface IncreaseLikesCountRespType {
   data: { value: boolean };
 }
 
-//发表新闻评论
-const SendNewsCommentPath = '/player/comment/sendNewsComment';
-export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Promise<SendNewsCommentResponseType> => {
-  return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
-};
-
 //查询新闻详情
 const NewsInfoPath = '/player/news/find';
 export const Request_NewsInfo = async (param: NewsInfoReqType): Promise<NewsInfoRespType> => {
@@ -75,7 +55,7 @@ export const Request_NewsInfo = async (param: NewsInfoReqType): Promise<NewsInfo
 };
 
 //点赞新闻
-const IncreaseLikesCountPath = '/player/news/increaseLikesCount';
+const IncreaseLikesCountPath = '/player/likes/increaseLikesCount';
 export const Request_IncreaseLikesCount = async (param: IncreaseLikesCountReqType): Promise<IncreaseLikesCountRespType> => {
   return (await axios.post(serverTarget + IncreaseLikesCountPath, param)).data;
 };

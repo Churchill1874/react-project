@@ -5,7 +5,7 @@ import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
 import { HeartOutline, MessageFill } from 'antd-mobile-icons';
 import { Request_GetCommentPage, CommentPageType, Request_LikesCount } from "@/components/comment/api";
-import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/news/newsinfo/api'
+import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/comment/api';
 import { highlightReply } from '@/utils/commentUtils'
 import dayjs from 'dayjs'
 import OtherPeople from "@/pages/otherpeople/otherpeople";
@@ -55,8 +55,7 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
-
+const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheastAsiaNews, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -77,6 +76,14 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
   useImperativeHandle(ref, () => ({
     cleanState
   }))
+
+  useEffect(() => {
+    //如果需要定位的评论id 有变动,并且不是空 就证明需要再次启动需要定位的代码执行
+    if (commentPointId) {
+      setNeedCommentPointState(true)
+      hasScrolled.current = false;
+    }
+  }, [commentPointId])
 
   useEffect(() => {
     //如果需要定位 并且 当前分页不是第一页了已经
@@ -101,9 +108,9 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
       );
       hasExpanded.current = true;
     }
-  }, [needCommentPoint, commentPointId]);
+  }, [needCommentPoint, commentPointId, commentsList]);
 
-  //如果需要对评论足底不过定位 进行滚动到评论位置 
+  //如果需要对评论不过定位 进行滚动到评论位置 
   useEffect(() => {
     if (needCommentPoint && commentPointId && !hasScrolled.current) {
       const target = () => commentRefs.current[String(commentPointId)];
@@ -187,8 +194,6 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
       return;
     }
     const param: SendNewsCommentReqType = { newsType: newsType, newsId: newsId, content: comment, topId: topId, replyId: replyId, needCommentPoint: needCommentPointState }
-    console.log('param:' + JSON.stringify(param))
-
     const response = await Request_SendNewsComment(param);
 
     if (response.code === 0) {
@@ -199,18 +204,34 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
       setComment('');
       setTopId(null);
       setReplyId(null);
-      setNewsStatus((prev) => {
-        if (!prev) return prev;
-
-        return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
-      });
       setShowCommentInput(false)
+
+      //如果是国内新闻
+      if (newsType == 1) {
+        setNewsStatus((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        });
+      }
+      //如果是东南亚新闻
+      if (newsType == 2) {
+        setSoutheastAsiaNews((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 }
+        })
+      }
+
+      //如果是国际政治新闻
+      if (newsType == 3) {
+        setPolitics((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        })
+      }
 
       if (newsId) {
         //判断是顶层评论
         if (!topId && !replyId) {
-
-          console.log('data:' + response.data)
           const commentPageType: CommentPageType = {
             replyCommentList: [],
             topComment: response.data
@@ -219,8 +240,6 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
         }
 
         if (topId && commentsList) {
-
-          console.log('topId:' + topId + ',commentsList:' + JSON.stringify(commentsList))
           //如果回复楼主
           setCommentsList(
             prevList => prevList.map(
@@ -239,7 +258,6 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
   const reqCommentPageApi = async (isReset: boolean) => {
     if (loading) return; // 如果正在加载，直接返回，防止重复请求
     setLoading(true);
-
 
     const reqPageNum = isReset ? 1 : pageNum;
     const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: 50 }
@@ -286,7 +304,7 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
       setLikesIdList((prev) => [...prev, id])
     }
 
-    const param = { id: id }
+    const param = { id: id, infoType: newsType }
     const resp = await Request_LikesCount(param);
     const { code, data } = resp;
 
@@ -384,8 +402,6 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
           </div>
         ))}
 
-
-
         <InfiniteScroll loadMore={reqCommentPageApi} hasMore={commentHasMore}>
           <CommentScrollContent hasMore={commentHasMore} />
         </InfiniteScroll>
@@ -395,15 +411,6 @@ const Comment = forwardRef<any, any>(({ newsCommentCount, setNewsStatus, newsId,
       <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>
         <MessageFill fontSize={32} />
       </FloatingBubble>
-
-
-      {/*       <div className="comment-send-container">
-        <TextArea className="comment-chat-textArea" maxLength={255} rows={1} autoSize={{ minRows: 1, maxRows: 5 }} placeholder="请输入..." onChange={inputCommentChange} value={comment} />
-        <Button className="comment-send-button" color="primary" onClick={() => sendTopComment()} >
-          发送
-        </Button>
-      </div>
-       */}
 
       <Popup className='comments-popup'
         visible={showsCommentInput}

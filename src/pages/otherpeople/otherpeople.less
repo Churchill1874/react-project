@@ -75,11 +75,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
 }
 
-.header-text {
-  font-size: 18px;
-  text-align: left;
-}
-
 .avatar-container {
   position: relative;
   display: flex;
@@ -143,17 +138,7 @@
   /* 确保内容对齐到右侧 */
 }
 
-.card-personal-desc {
-  .adm-card-body {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
-  margin: 1px 10px;
-  background-color: #fff;
-  /* 设置背景颜色 */
-}
-.personal-info-container {
+.other-personal-info-container {
   flex: 1; /* 使其占据剩余空间 */
   flex-direction: column;
   /* 确保 Card 组件垂直排列 */
@@ -175,22 +160,6 @@
   margin-bottom: 15px;
   .right {
     margin-left: 10px;
-  }
-  .right-icon {
-    margin-left: auto; /* 将图标推到最右边 */
-    align-self: center; /* 垂直居中 */
-  }
-
-  .evaluate {
-    color: gray;
-    .red-tag {
-      margin-left: 5px;
-      color: red;
-    }
-    .blue-tag {
-      margin-left: 5px;
-      color: blue;
-    }
   }
 }
 
@@ -249,45 +218,6 @@
   color: gray;
   font-size: 14px;
   margin-top: 5px;
-}
-
-.card-outer-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin: 1px 10px; /* 控制外层容器的左右间隙 */
-}
-
-.card-inner-container {
-  display: flex;
-  flex-direction: column;
-  margin: 1px 0; /* 控制上下间隙 */
-  width: 100%;
-  .adm-card-body {
-    padding: 0;
-  }
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.card-inner-container .adm-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.1);
-}
-
-.fucation {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0px;
-  .icon {
-    margin-right: 10px;
-  }
 }
 
 .other-people-info {

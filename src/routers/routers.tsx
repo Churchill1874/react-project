@@ -42,9 +42,5 @@ export default [
   {
     path: '/message',
     component: Message,
-  },
-  {
-    path: '/chatgirl',
-    component: Message, // 暂时使用Message组件，后续可替换
   }
 ];

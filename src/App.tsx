@@ -65,6 +65,12 @@ const App: React.FC = () => {
     if (pathname === '/personal') {
       return '#fff';
     }
+    if (pathname === '/politics') {
+      return '#1890ff';
+    }
+    if (pathname === '/interesting') {
+      return '#1890ff';
+    }
     return '#fff';
   }
 

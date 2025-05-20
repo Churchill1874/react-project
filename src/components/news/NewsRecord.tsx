@@ -137,23 +137,28 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
         onClose={() => { setVisibleCloseRight(false) }}>
 
         <div className="popup-scrollable-content" >
-          <NewsInfo
-            setVisibleCloseRight={setVisibleCloseRight}
-            id={id}
-            title={title}
-            content={content}
-            photoPath={photoPath}
-            likesCount={likesCount}
-            contentImagePath={contentImagePath}
-            commentsCount={commentsCount}
-            viewCount={viewCount}
-            createTime={createTime}
-            source={source}
-            newsList={newsList}
-            setNewsList={setNewsList}
-            needCommentPoint={false}
-            commentPointId={null}
-          />
+          {
+            visibleCloseRight
+            &&
+            <NewsInfo
+              setVisibleCloseRight={setVisibleCloseRight}
+              id={id}
+              title={title}
+              content={content}
+              photoPath={photoPath}
+              likesCount={likesCount}
+              contentImagePath={contentImagePath}
+              commentsCount={commentsCount}
+              viewCount={viewCount}
+              createTime={createTime}
+              source={source}
+              newsList={newsList}
+              setNewsList={setNewsList}
+              needCommentPoint={false}
+              commentPointId={null}
+              commentRef={null}
+            />
+          }
         </div>
 
       </Popup>

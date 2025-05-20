@@ -96,7 +96,7 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
           </span>
         </div>
 
-        <div className="personal-info-container">
+        <div className="other-personal-info-container">
           <Card className="other-card-personal-info">
             <div className="card-personal-info-container">
               <span className="other-personal-info">

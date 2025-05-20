@@ -1,22 +1,6 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
-//请求发送评论参数
-export interface SendNewsCommentReqType {
-  newsType: any;
-  newsId: any;
-  replyId?: any;
-  topId?: any;
-  content: any;
-}
-
-//发送评论响应
-export interface SendNewsCommentResponseType {
-  code: number;
-  data: any;
-  msg: string;
-}
-
 //查询新闻响应
 export interface SoutheastAsiaNewsRespType {
   code: number;
@@ -37,14 +21,14 @@ interface PageResponseType {
 export interface SoutheastAsiaNewsType {
   id: number;
   area: string;
-  commentCount: number;
+  commentsCount: number;
   content: string;
   createName: string;
   createTime: string;
   imagePath: string;
   isHot: boolean;
   isTop: boolean;
-  readCount: number;
+  viewCount: number;
   source: string;
   status: boolean;
   title: string;
@@ -65,14 +49,24 @@ export interface SoutheastAsiaNewsPageReqType {
   status?: boolean;
 }
 
+export interface SoutheastAsiaFindReqType {
+  id: string;
+}
+
+export interface SoutheastAsiaFindRespType {
+  code: number;
+  msg: string;
+  data: SoutheastAsiaNewsType;
+}
+
 //查询东南亚新闻
 const SoutheastAsiaNewsPagePath = '/player/southeastAsia/queryPage';
-export const SoutheastAsiaNewsPageReq = async (param: SoutheastAsiaNewsPageReqType): Promise<SoutheastAsiaNewsRespType> => {
+export const SoutheastAsiaNewsPage_Request = async (param: SoutheastAsiaNewsPageReqType): Promise<SoutheastAsiaNewsRespType> => {
   return (await axios.post(serverTarget + SoutheastAsiaNewsPagePath, param)).data;
 };
 
-//发表新闻评论
-const SendNewsCommentPath = '/player/comment/sendNewsComment';
-export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Promise<SendNewsCommentResponseType> => {
-  return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
+//指定查询政治新闻
+const SoutheastAsiaFindPath = '/player/southeastAsia/find';
+export const SoutheastAsiaFind_Requset = async (param: SoutheastAsiaFindReqType): Promise<SoutheastAsiaFindRespType> => {
+  return (await axios.post(serverTarget + SoutheastAsiaFindPath, param)).data;
 };

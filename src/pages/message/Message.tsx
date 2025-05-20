@@ -88,10 +88,7 @@ const Message: React.FC = () => {
 
 
         <Tabs.Tab
-          title={'1'
-            ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>系统消息</Badge>
-            : '系统消息'
-          }
+          title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>系统消息</Badge> : '系统消息'}
           key='system-message'
         >
           <Card className="message-custom-card">

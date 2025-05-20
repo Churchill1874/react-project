@@ -68,6 +68,22 @@ export interface IncreaseLikesCountReqType {
   id: string;
 }
 
+//请求发送评论参数
+export interface SendNewsCommentReqType {
+  newsType: any;
+  newsId: any;
+  replyId?: any;
+  topId?: any;
+  content: any;
+  needCommentPoint: any;
+}
+//发送评论响应
+export interface SendNewsCommentResponseType {
+  code: number;
+  data: CommentType;
+  msg: string;
+}
+
 /**
  * 获取新闻评论记录
  */
@@ -82,4 +98,10 @@ export const Request_GetCommentPage = async (param: CommentPageReqType): Promise
 const IncreaseLikesCountPath = '/player/comment/increaseLikesCount';
 export const Request_LikesCount = async (param: IncreaseLikesCountReqType): Promise<IncreaseLikesCountRespType> => {
   return (await axios.post(serverTarget + IncreaseLikesCountPath, param)).data;
+};
+
+//发表新闻评论
+const SendNewsCommentPath = '/player/comment/sendNewsComment';
+export const Request_SendNewsComment = async (param: SendNewsCommentReqType): Promise<SendNewsCommentResponseType> => {
+  return (await axios.post(serverTarget + SendNewsCommentPath, param)).data;
 };
