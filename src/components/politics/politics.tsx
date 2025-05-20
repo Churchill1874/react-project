@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, TextArea, TextAreaRef, FloatingBubble, Button, Toast, Input, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
-import Comment from '@/components/comment/Comment';
+import { Card, Divider, Tag, Ellipsis, Image, Popup, Toast, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
 import { MessageOutline, LeftOutline, HeartOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/politics/politics.less'

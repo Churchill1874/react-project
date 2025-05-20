@@ -22,15 +22,9 @@ type PopupInfo = {
   title: any | null;
 }
 
-type CommentAttribute = {
-  needCommentPoint?: boolean;
-  commentPointId?: string | null;
-}
-
-type SoutheastAsiaType = PopupInfo & CommentAttribute;
 
 
-const Company: React.FC<SoutheastAsiaType & { commentRef: any }> = (props) => {
+const SoutheastAsia: React.FC = () => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", viewCount: 0, commentsCount: 0, imagePath: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
 
@@ -185,4 +179,4 @@ const Company: React.FC<SoutheastAsiaType & { commentRef: any }> = (props) => {
 
 
 
-export default Company;
+export default SoutheastAsia;
