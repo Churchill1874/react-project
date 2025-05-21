@@ -21,7 +21,7 @@ const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
           </div>
         </>
       ) : (
-        <span color='gray'>--- 没有更多的评论了 ---</span>
+        <span color='gray' style={{ marginTop: '30px' }}>--- 没有更多的评论了 ---</span>
       )}
     </>
   )
@@ -55,7 +55,7 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheastAsiaNews, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
+const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheastAsiaNews, setSociety, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -229,6 +229,15 @@ const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheast
         })
       }
 
+      //如果是社会新闻
+      if (newsType == 4) {
+        setSociety((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        })
+      }
+
+
       if (newsId) {
         //判断是顶层评论
         if (!topId && !replyId) {
@@ -362,7 +371,7 @@ const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheast
 
   return (
     <>
-      <Divider className='line'> 下拉更新 </Divider>
+      <Divider className='comment-line'> 下拉更新 </Divider>
 
       <PullToRefresh onRefresh={() => reqCommentPageApi(true)}>
         {commentsList?.map((comment, _index) => (

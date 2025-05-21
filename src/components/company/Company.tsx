@@ -82,7 +82,7 @@ const Company: React.FC = () => {
                   <>
                     <Divider className='company-divider-line' />
                     <Swiper loop autoplay allowTouchMove>
-                      {company.image.split(',').map((imagePath, index) => (
+                      {company.image.split('||').map((imagePath, index) => (
                         <Swiper.Item className="swiper-item" key={index} >
                           <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
                         </Swiper.Item>
@@ -146,7 +146,7 @@ const Company: React.FC = () => {
         visible={visibleCloseRight}
         onClose={() => { setVisibleCloseRight(false) }}>
 
-        <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={popupInfo?.image?.split(',')} visible={visible} onClose={() => { setVisible(false) }} />
+        <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={popupInfo?.image?.split('||')} visible={visible} onClose={() => { setVisible(false) }} />
 
         <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={16} />返回 </span></div>
 
@@ -159,7 +159,7 @@ const Company: React.FC = () => {
               <>
                 <Divider className='company-divider-line' />
                 <Swiper loop autoplay allowTouchMove>
-                  {popupInfo?.image.split(',').map((imagePath, index) => (
+                  {popupInfo?.image.split('||').map((imagePath, index) => (
                     <Swiper.Item className="swiper-item" key={index} >
                       <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
                     </Swiper.Item>

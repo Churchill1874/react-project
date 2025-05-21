@@ -24,6 +24,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
   setNewsList,
 }) => {
 
+  const imagePath = photoPath && photoPath !== '1' ? photoPath : '/assets/logo/logo2.png'
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [imageHeights, setImageHeights] = useState<number[]>([]);
   const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -40,9 +41,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
     <>
       <div className="content-container">
         <div className="image-container">
-          {photoPath && photoPath.split(',').map((src, index) => (
-            <Image className='news-image' lazy key={index} src={src} alt={`图片${index + 1}`} onLoad={(event) => handleImageLoad(index, event)} />
-          ))}
+          <Image className='news-image' lazy src={imagePath} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
         </div>
         <div className="text-container">
           <div className="title">
@@ -74,9 +73,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
       <div className='h-time'>{createTime ? dayjs(createTime).format('YYYY-MM-DD HH:mm') : '时间未知'}</div>
 
       <div className="h-image-container">
-        {photoPath?.split(',').filter(Boolean).map((src, index) => (
-          <Image className='h-news-image' lazy key={index} src={src} alt={`图片${index + 1}`} onLoad={(event) => handleImageLoad(index, event)} />
-        ))}
+        <Image className='h-news-image' lazy src={imagePath} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
       </div>
       <div className="h-attributes-contariner">
         <div className="h-column">
@@ -92,12 +89,13 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
 
 
   useEffect(() => {
-    if (!photoPath) {
+    if (!photoPath || photoPath === '1') {
       setIsLongImage(false);
       return;
     }
 
-    const firstImageSrc = photoPath.split(',').filter(Boolean)[0];
+    const firstImageSrc = photoPath.split('||').filter(Boolean)[0];
+
 
     if (!firstImageSrc) {
       setIsLongImage(false);
@@ -145,7 +143,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
               id={id}
               title={title}
               content={content}
-              photoPath={photoPath}
+              photoPath={imagePath}
               likesCount={likesCount}
               contentImagePath={contentImagePath}
               commentsCount={commentsCount}

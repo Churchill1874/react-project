@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Divider, Tag, Image } from 'antd-mobile';
+import { Card, Divider, Tag, Swiper, Image, ImageViewer } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
 import { FcReading } from "react-icons/fc";
 import { LeftOutline, LocationFill } from 'antd-mobile-icons';
@@ -21,6 +21,14 @@ type SoutheastAsiaPropsType = CommentAttributeType & {
 
 const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> = (props) => {
   const [southeastAsia, setSoutheastAsia] = useState<SoutheastAsiaNewsType>();
+  const [visible, setVisible] = useState(false)
+  const showImage = () => {
+    setVisible(prev => !prev);
+  }
+
+  const getImages = () => {
+    return southeastAsia?.imagePath ? southeastAsia?.imagePath.split('||') : [southeastAsia?.imagePath];
+  };
 
   function splitBySentenceLength(text: string, maxChars = 200): string[] {
     const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
@@ -61,21 +69,72 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
     <>
       <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px' }}>东南亚新闻</span></div>
 
+      <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
+
       <Card className="southeastasia-custom-card-container">
         <div className="southeastasia-card-content">
-          <div className="southeastasia-news-image-container">
-            {southeastAsia?.imagePath && <Image
-              className="southeastasia-news-image"
-              src={southeastAsia?.imagePath}
-              alt="Example"
-              fit="contain"
-            />}
-
-          </div>
-
           <div className="southeast-asia-title">
             {southeastAsia?.title}
           </div>
+
+
+          <div className="southeastasia-news-image-container">
+            {/*       单张图片的逻辑    
+         {southeastAsia?.imagePath && <Image
+              className="southeastasia-news-image"
+              src={southeastAsia?.imagePath?.split('||').filter(Boolean)[0] || ''}
+              alt="Example"
+              fit="contain"
+            />} */}
+            <Swiper loop autoplay allowTouchMove>
+              {
+                southeastAsia?.imagePath.trim()
+                  ? southeastAsia.imagePath.split('||').filter(Boolean).map((imagePath, index) => (
+                    <Swiper.Item className="swiper-item" key={index}>
+                      <Image
+                        fit="contain"
+                        width={300}
+                        height={200}
+                        src={imagePath}
+                        onClick={showImage}
+                      />
+                    </Swiper.Item>
+                  ))
+                  : southeastAsia?.imagePath?.trim()
+                    ? [
+                      <Swiper.Item className="swiper-item" key="photoPath">
+                        <Image
+                          fit="contain"
+                          width={300}
+                          height={200}
+                          src={southeastAsia.imagePath}
+                          onClick={showImage}
+                        />
+                      </Swiper.Item>
+                    ]
+                    : [
+                      <Swiper.Item className="swiper-item" key="placeholder">
+                        <div
+                          style={{
+                            width: 300,
+                            height: 200,
+                            backgroundColor: '#f0f0f0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ccc',
+                          }}
+                        >
+                          正在加载
+                        </div>
+                      </Swiper.Item>
+                    ]
+              }
+            </Swiper>
+          </div>
+
+
+
 
           <div className="southeast-asia-text-area">
             {splitBySentenceLength((southeastAsia?.content || '')).map((paragraph, index) => (
@@ -94,7 +153,6 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
             </span>
           </span>
 
-          <Divider className='divider-line' />
 
           <div className="button-info">
             <span className="tracking">

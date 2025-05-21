@@ -22,8 +22,6 @@ type PopupInfo = {
   title: any | null;
 }
 
-
-
 const SoutheastAsia: React.FC = () => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", viewCount: 0, commentsCount: 0, imagePath: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
@@ -31,7 +29,6 @@ const SoutheastAsia: React.FC = () => {
   const [southeastAsiaNewsList, setSoutheastAsiaNewsList] = useState<SoutheastAsiaNewsType[]>([]);
   const [southeastAsiaNewsHasHore, setSoutheastAsiaNewsHasHore] = useState<boolean>(true);
   const [southeastAsiaNewsPage, setSoutheastAsiaNewsPage] = useState<number>(1);
-
 
   const showPopupInfo = (id, area, content, viewCount, commentsCount, imagePath, createTime, isHot, isTop, source, title) => {
     setVisibleCloseRight(true)
@@ -103,7 +100,7 @@ const SoutheastAsia: React.FC = () => {
                   <div className="southeastasia-news-image-container">
                     <Image
                       className="southeastasia-news-image"
-                      src={southeastAsiaNews.imagePath}
+                      src={southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || ''}
                       alt="Example"
                       fit="contain"
                     />
@@ -113,7 +110,6 @@ const SoutheastAsia: React.FC = () => {
                 {southeastAsiaNews.imagePath &&
                   <Divider className='divider-line' />
                 }
-
 
                 <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
 

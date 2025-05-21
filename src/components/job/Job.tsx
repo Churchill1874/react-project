@@ -165,7 +165,7 @@ const Job: React.FC = () => {
         >
           {popupInfo &&
             <>
-              <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body' }} images={popupInfo.image ? popupInfo.image.split(',') : []} visible={visible} onClose={() => { setVisible(false) }} />
+              <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body' }} images={popupInfo.image ? popupInfo.image.split('||') : []} visible={visible} onClose={() => { setVisible(false) }} />
               <Card className="popup-custom-card" >
                 <div className="card-content" >
                   <div className="line1" onClick={() => { setVisibleCloseRight(false) }} >
@@ -175,7 +175,7 @@ const Job: React.FC = () => {
 
                   {popupInfo.image &&
                     <Swiper loop autoplay allowTouchMove>
-                      {popupInfo.image.split(',').map((imagePath, index) => (
+                      {popupInfo.image.split('||').map((imagePath, index) => (
                         <Swiper.Item className="swiper-item" key={index} >
                           <Image className='job-news-image-container' fit='contain' src={imagePath} onClick={showImage} />
                         </Swiper.Item>

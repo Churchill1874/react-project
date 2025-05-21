@@ -48,32 +48,8 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   }
 
   const getImages = () => {
-    return newsStatus?.contentImagePath ? newsStatus?.contentImagePath.split(',') : [newsStatus?.photoPath];
+    return newsStatus?.contentImagePath ? newsStatus?.contentImagePath.split('||') : [newsStatus?.photoPath];
   };
-
-
-  //发送顶层评论
-  /*   const sendTopComment = async () => {
-      if (!comment) {
-        Toast.show({
-          content: '请输入评论内容',
-          duration: 1000
-        })
-        return;
-      }
-      const param: SendNewsCommentReqType = { infoType: 1, newsId: id, content: comment }
-      const response = await Request_SendNewsComment(param);
-  
-      if (response.code === 0) {
-        if (textAreaRef.current) {
-          textAreaRef.current.clear();
-        }
-        Toast.show('发送成功');
-        setComment('');
-        setNewsCommentCount((prev) => prev + 1);
-        //setShowCommentInput(false)
-      }
-    } */
 
   //查询新闻详情
   const reqNewsInfoApi = async () => {
@@ -193,7 +169,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
         <Swiper loop autoplay allowTouchMove>
           {
             newsStatus?.contentImagePath?.trim()
-              ? newsStatus.contentImagePath.split(',').filter(Boolean).map((imagePath, index) => (
+              ? newsStatus.contentImagePath.split('||').filter(Boolean).map((imagePath, index) => (
                 <Swiper.Item className="swiper-item" key={index}>
                   <Image
                     fit="contain"

@@ -25,7 +25,7 @@ export interface SoutheastAsiaNewsType {
   content: string;
   createName: string;
   createTime: string;
-  imagePath: string;
+  imagePath: any | null;
   isHot: boolean;
   isTop: boolean;
   viewCount: number;

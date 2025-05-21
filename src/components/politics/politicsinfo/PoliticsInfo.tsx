@@ -154,7 +154,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
             }
           </div>
 
-          <Divider className='divider-line' />
+          {/*           <Divider className='divider-line' /> */}
 
           <div className="button-info-inner">
             <span className="tracking">
