@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Divider, Tag, Ellipsis, Image, Popup, Toast, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
-import { MessageOutline, LeftOutline, HeartOutline, LocationFill } from 'antd-mobile-icons';
+import { MessageOutline, HeartOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/politics/politics.less'
 import { PoliticsPage_Request, PoliticsPageReqType, PoliticsType } from '@/components/politics/api'
 import dayjs from 'dayjs'
@@ -18,6 +18,7 @@ const Politics: React.FC = () => {
   const [politicsHasHore, setPoliticsHasHore] = useState<boolean>(true);
   const [politicsPage, setPoliticsPage] = useState<number>(1);
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   interface Politics {
     id: any | null;
@@ -85,6 +86,10 @@ const Politics: React.FC = () => {
 
   //获取api东南亚新闻数据
   const politicsPageRequest = async (isReset: boolean) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true)
     const pageNum = isReset ? 1 : politicsPage;
     const param: PoliticsPageReqType = { pageNum: pageNum, pageSize: 20 };
     const list: PoliticsType[] = (await PoliticsPage_Request(param)).data.records || [];
@@ -107,6 +112,7 @@ const Politics: React.FC = () => {
       setPoliticsHasHore(false)
     }
 
+    setLoading(false)
   }
 
   const PoliticsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -140,7 +146,6 @@ const Politics: React.FC = () => {
                     <Ellipsis direction='end' rows={2} content={politics.title} />
                   </div>
                 }
-                <Divider className='divider-line' />
                 {politics.imagePath &&
                   <div className="politics-image-container">
                     <Image
@@ -152,7 +157,7 @@ const Politics: React.FC = () => {
                   </div>
                 }
 
-                <Ellipsis direction='end' rows={2} content={politics.content} style={{ fontSize: "14px", textIndent: "2em" }} />
+                <Ellipsis className="politics-synopsis" direction='end' rows={2} content={politics.content} style={{ fontSize: "14px", textIndent: "2em" }} />
 
                 <div className="politics-meta">
                   <span className="politics-tag">
@@ -182,7 +187,7 @@ const Politics: React.FC = () => {
 
                 <Divider className='divider-line' />
 
-                <div className="button-info">
+                <div className="politics-button-info">
 
                   <span className="tracking">
                     <span className="icon-and-text">

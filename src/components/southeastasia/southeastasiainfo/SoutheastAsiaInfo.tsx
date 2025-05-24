@@ -20,7 +20,7 @@ type SoutheastAsiaPropsType = CommentAttributeType & {
 
 
 const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> = (props) => {
-  const [southeastAsia, setSoutheastAsia] = useState<SoutheastAsiaNewsType>();
+  const [southeastAsia, setSoutheastAsia] = useState<SoutheastAsiaNewsType | null>(null);
   const [visible, setVisible] = useState(false)
   const showImage = () => {
     setVisible(prev => !prev);
@@ -30,27 +30,58 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
     return southeastAsia?.imagePath ? southeastAsia?.imagePath.split('||') : [southeastAsia?.imagePath];
   };
 
-  function splitBySentenceLength(text: string, maxChars = 200): string[] {
-    const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
-    const result: string[] = []; // 确保 result 是 string 数组
-    let currentParagraph: string = '';
-
-    for (let i = 0; i < sentences.length; i++) {
-      currentParagraph += sentences[i] || ''; // 处理分割后的空元素
-
-      // 遇到 `。` 并且当前段落字数超过 `maxChars`，就另起一行
-      if (sentences[i] === '。' && currentParagraph.length >= maxChars) {
+  /*   function splitBySentenceLength(text: string, maxChars = 200): string[] {
+      const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
+      const result: string[] = []; // 确保 result 是 string 数组
+      let currentParagraph: string = '';
+  
+      for (let i = 0; i < sentences.length; i++) {
+        currentParagraph += sentences[i] || ''; // 处理分割后的空元素
+  
+        // 遇到 `。` 并且当前段落字数超过 `maxChars`，就另起一行
+        if (sentences[i] === '。' && currentParagraph.length >= maxChars) {
+          result.push(currentParagraph);
+          currentParagraph = ''; // 清空，准备下一段
+        }
+      }
+  
+      // 处理剩余的文本
+      if (currentParagraph.trim()) {
         result.push(currentParagraph);
-        currentParagraph = ''; // 清空，准备下一段
+      }
+      return result;
+    } */
+
+
+  function splitBySentenceLength(text: string, maxChars = 200): string[] {
+    const sentences = text.split(/(。|！|？)/); // 保留句号、感叹号、问号（包括标点）
+    const result: string[] = [];
+    let currentParagraph = '';
+
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = (sentences[i] || '') + (sentences[i + 1] || '');
+
+      // 判断是否需要换段
+      if ((currentParagraph + sentence).length >= maxChars) {
+        // 如果当前段落最后是引号开头或结尾的不完整形式，合并一下
+        if (/^[”」']$/.test(sentence.trim().charAt(0))) {
+          currentParagraph += sentence; // 不换段，把这句并进去
+        } else {
+          result.push(currentParagraph);
+          currentParagraph = sentence;
+        }
+      } else {
+        currentParagraph += sentence;
       }
     }
 
-    // 处理剩余的文本
     if (currentParagraph.trim()) {
       result.push(currentParagraph);
     }
+
     return result;
   }
+
 
   const southeastAsiaFindRequest = async () => {
     const param: SoutheastAsiaFindReqType = { id: props.id }
@@ -60,9 +91,9 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
 
   useEffect(() => {
     if (props.id) {
+      setSoutheastAsia(null);
       southeastAsiaFindRequest();
     }
-
   }, [props.id]);
 
   return (
@@ -88,8 +119,8 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
             />} */}
             <Swiper loop autoplay allowTouchMove>
               {
-                southeastAsia?.imagePath.trim()
-                  ? southeastAsia.imagePath.split('||').filter(Boolean).map((imagePath, index) => (
+                southeastAsia?.imagePath.trim() ?
+                  southeastAsia.imagePath.split('||').filter(Boolean).map((imagePath, index) => (
                     <Swiper.Item className="swiper-item" key={index}>
                       <Image
                         fit="contain"
@@ -100,8 +131,8 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
                       />
                     </Swiper.Item>
                   ))
-                  : southeastAsia?.imagePath?.trim()
-                    ? [
+                  : southeastAsia?.imagePath?.trim() ?
+                    [
                       <Swiper.Item className="swiper-item" key="photoPath">
                         <Image
                           fit="contain"
@@ -112,7 +143,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
                         />
                       </Swiper.Item>
                     ]
-                    : [
+                    : []/* [
                       <Swiper.Item className="swiper-item" key="placeholder">
                         <div
                           style={{
@@ -128,7 +159,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
                           正在加载
                         </div>
                       </Swiper.Item>
-                    ]
+                    ] */
               }
             </Swiper>
           </div>

@@ -25,10 +25,10 @@ type PopupInfo = {
 const SoutheastAsia: React.FC = () => {
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", viewCount: 0, commentsCount: 0, imagePath: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
-
   const [southeastAsiaNewsList, setSoutheastAsiaNewsList] = useState<SoutheastAsiaNewsType[]>([]);
   const [southeastAsiaNewsHasHore, setSoutheastAsiaNewsHasHore] = useState<boolean>(true);
   const [southeastAsiaNewsPage, setSoutheastAsiaNewsPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const showPopupInfo = (id, area, content, viewCount, commentsCount, imagePath, createTime, isHot, isTop, source, title) => {
     setVisibleCloseRight(true)
@@ -38,10 +38,14 @@ const SoutheastAsia: React.FC = () => {
 
   //获取api东南亚新闻数据
   const southeastAsiaNewsPageRequest = async (isReset: boolean) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true)
+
     const pageNum = isReset ? 1 : southeastAsiaNewsPage;
     const param: SoutheastAsiaNewsPageReqType = { pageNum: pageNum, pageSize: 20 };
     const list: SoutheastAsiaNewsType[] = (await SoutheastAsiaNewsPage_Request(param)).data.records || [];
-
 
     //循环便利
     if (list.length > 0) {
@@ -61,7 +65,7 @@ const SoutheastAsia: React.FC = () => {
     } else {
       setSoutheastAsiaNewsHasHore(false)
     }
-
+    setLoading(false)
   }
 
   const SoutheastAsiaNewsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -88,7 +92,6 @@ const SoutheastAsia: React.FC = () => {
           {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
             <Card className="southeastasia-custom-card" key={index}>
               <div className="southeastasia-card-content">
-
 
                 {southeastAsiaNews.title &&
                   <div className="southeast-asia-title">

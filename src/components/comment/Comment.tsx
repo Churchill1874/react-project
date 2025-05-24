@@ -1,5 +1,9 @@
 import { useState, forwardRef, useRef, useImperativeHandle, useEffect } from "react";
-import { Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea, DotLoading, InfiniteScroll, PullToRefresh, FloatingBubble } from "antd-mobile";
+import {
+  Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea,
+  DotLoading, InfiniteScroll, PullToRefresh, FloatingBubble
+} from "antd-mobile";
+
 import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
@@ -371,7 +375,7 @@ const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheast
 
   return (
     <>
-      <Divider className='comment-line'> 下拉更新 </Divider>
+      <Divider className='comment-line'> 从此处下拉更新 </Divider>
 
       <PullToRefresh onRefresh={() => reqCommentPageApi(true)}>
         {commentsList?.map((comment, _index) => (

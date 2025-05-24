@@ -32,14 +32,21 @@ const NewsList: React.FC<any> = () => {
   const [newsList, setNewsList] = useState<NewsInfoType[]>([])
   const [newsHasMore, setNewsHasMore] = useState<boolean>(true)
   const [newsPage, setNewsPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
 
   // 模拟请求不同类型的新闻数据
   const reqNewsApi = async (isReset: boolean) => {
-    const pageNum = isReset ? 1 : newsPage;//如果是刷新就从第一页开始
+    if (loading) {
+      return;
+    }
+    setLoading(true);
 
+
+    const pageNum = isReset ? 1 : newsPage;//如果是刷新就从第一页开始
     const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 50 };
     const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
+
 
     //对比查询新闻的类型属于哪个类型数据 并且确认有新的数据返回才修改 全局的数据状态
     if (newsListResp.length > 0) {
@@ -60,6 +67,7 @@ const NewsList: React.FC<any> = () => {
       setNewsHasMore(false)
     }
 
+    setLoading(false);
   };
 
 

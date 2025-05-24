@@ -34,27 +34,34 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
   }
 
   function splitBySentenceLength(text: string, maxChars = 200): string[] {
-    const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
-    const result: string[] = []; // 确保 result 是 string 数组
-    let currentParagraph: string = '';
+    const sentences = text.split(/(。|！|？)/); // 保留句号、感叹号、问号（包括标点）
+    const result: string[] = [];
+    let currentParagraph = '';
 
-    for (let i = 0; i < sentences.length; i++) {
-      currentParagraph += sentences[i] || ''; // 处理分割后的空元素
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = (sentences[i] || '') + (sentences[i + 1] || '');
 
-      // 遇到 `。` 并且当前段落字数超过 `maxChars`，就另起一行
-      if (sentences[i] === '。' && currentParagraph.length >= maxChars) {
-        result.push(currentParagraph);
-        currentParagraph = ''; // 清空，准备下一段
+      // 判断是否需要换段
+      if ((currentParagraph + sentence).length >= maxChars) {
+        // 如果当前段落最后是引号开头或结尾的不完整形式，合并一下
+        if (/^[”」']$/.test(sentence.trim().charAt(0))) {
+          currentParagraph += sentence; // 不换段，把这句并进去
+        } else {
+          result.push(currentParagraph);
+          currentParagraph = sentence;
+        }
+      } else {
+        currentParagraph += sentence;
       }
     }
 
-    // 处理剩余的文本
     if (currentParagraph.trim()) {
       result.push(currentParagraph);
     }
 
     return result;
   }
+
 
   //点赞
   const clickLikes = async (id: string) => {
@@ -112,7 +119,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
           <div className="politics-title">
             {politics?.title || ''}
           </div>
-          <div className="politics-image-container">
+          <div className="politics-image-container-inner">
             {politics?.imagePath && <Image
               className="politics-image"
               src={politics.imagePath}
@@ -124,7 +131,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
           <div className="politics-text-area">
 
             {splitBySentenceLength(politics?.content || '').map((paragraph, index) => (
-              <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
+              <p key={index} style={{ marginTop: '1px', marginBottom: '1px', lineHeight: '1.5' }}>
                 {paragraph}
               </p>
             ))}
@@ -156,7 +163,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
 
           {/*           <Divider className='divider-line' /> */}
 
-          <div className="button-info-inner">
+          <div className="politics-button-info-inner">
             <span className="tracking">
               <span className="icon-and-text">
                 <FcReading fontSize={17} />

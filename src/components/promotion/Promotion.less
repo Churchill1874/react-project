@@ -1,0 +1,156 @@
+@theme: #1890ff;
+
+.promotion-custom-card-container {
+  padding: 0px;
+  margin-bottom: 5px;
+}
+
+.promotion-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.promotion-contact {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.card-container {
+  background-color: @theme;
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.promotion-container {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.promotion-left {
+  width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+
+  .promotion-news-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.promotion-news-video-inner {
+  width: 90%;
+  max-width: 90%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.promotion-news-video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.promotion-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-left: 10px;
+  min-height: 100%;
+}
+
+.promotion-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  word-break: break-word;
+  line-height: 1.2;
+  // 👉 新增：
+  span {
+    flex: 1;
+    text-align: left;
+    word-break: break-word;
+  }
+}
+
+.promotion-time {
+  color: gray;
+  text-align: center;
+  margin-left: 3px;
+}
+.promotion-tag {
+  font-size: 14px;
+  margin-right: 8px;
+  .source {
+    color: #1e77ca;
+    font-size: 14px;
+  }
+}
+
+.icon-and-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.city {
+  color: gray;
+  font-weight: bold;
+}
+
+.promotion-button-info-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.promotion-text-area {
+  padding: 1px 0;
+  text-align: start;
+  color: rgb(44, 44, 44);
+  text-indent: 2em;
+  font-size: 15px;
+  letter-spacing: 1.1px;
+}
+
+.promotion-text-area p {
+  margin-bottom: 1px;
+  line-height: 1;
+  text-indent: 2em;
+}
+
+.promotion-create-time-inner {
+  text-align: center;
+  margin-top: 5px;
+  color: gray;
+}
+
+.promotion-divider-line {
+  margin: 1px 5px;
+  border-color: gray;
+}
+
+.promotion-news-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

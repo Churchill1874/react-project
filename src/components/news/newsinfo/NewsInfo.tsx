@@ -59,7 +59,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
     const { code, data } = response;
     if (code === 0) {
       if (data.filterContent) {
-        data.filterContent = splitTextByMinLength(data.filterContent || '', 200).join('\n\n');
+        data.filterContent = splitBySentenceLength(data.filterContent || '', 200).join('\n\n');
       }
       setNewsStatus(data);
     }
@@ -138,21 +138,50 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   }
 
-  function splitTextByMinLength(text: string, minLength: number = 100): string[] {
-    const result: string[] = [];
-    const segments: string[] = text.split(/(?<=。)/); // 按句号分割，保留句号
-
-    let temp = ''; // 临时累积段落
-    segments.forEach((segment) => {
-      temp += segment.trim(); // 累积当前段落
-      if (temp.length >= minLength) {
-        result.push(temp); // 达到最小长度，存入结果
-        temp = ''; // 清空临时累积
+  /*   function splitTextByMinLength(text: string, minLength: number = 100): string[] {
+      const result: string[] = [];
+      const segments: string[] = text.split(/(?<=。)/); // 按句号分割，保留句号
+  
+      let temp = ''; // 临时累积段落
+      segments.forEach((segment) => {
+        temp += segment.trim(); // 累积当前段落
+        if (temp.length >= minLength) {
+          result.push(temp); // 达到最小长度，存入结果
+          temp = ''; // 清空临时累积
+        }
+      });
+  
+      if (temp) {
+        result.push(temp); // 处理最后未存入的段落
       }
-    });
+  
+      return result;
+    } */
 
-    if (temp) {
-      result.push(temp); // 处理最后未存入的段落
+  function splitBySentenceLength(text: string, maxChars = 200): string[] {
+    const sentences = text.split(/(。|！|？)/); // 保留句号、感叹号、问号（包括标点）
+    const result: string[] = [];
+    let currentParagraph = '';
+
+    for (let i = 0; i < sentences.length; i += 2) {
+      const sentence = (sentences[i] || '') + (sentences[i + 1] || '');
+
+      // 判断是否需要换段
+      if ((currentParagraph + sentence).length >= maxChars) {
+        // 如果当前段落最后是引号开头或结尾的不完整形式，合并一下
+        if (/^[”」']$/.test(sentence.trim().charAt(0))) {
+          currentParagraph += sentence; // 不换段，把这句并进去
+        } else {
+          result.push(currentParagraph);
+          currentParagraph = sentence;
+        }
+      } else {
+        currentParagraph += sentence;
+      }
+    }
+
+    if (currentParagraph.trim()) {
+      result.push(currentParagraph);
     }
 
     return result;

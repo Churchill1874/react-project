@@ -5,7 +5,7 @@ import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/society/Society.less'
 import { SocietyPageReqType, SocietyType, SocietyPage_Request } from '@/components/society/api'
-import SocietyInfo from "@/components/society/society/SocietyInfo";
+import SocietyInfo from "@/components/society/societyinfo/SocietyInfo";
 import dayjs from 'dayjs'
 
 type PopupInfo = {
