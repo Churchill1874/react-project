@@ -185,7 +185,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
           </span>
 
 
-          <div className="button-info">
+          <div className="button-info-inner">
             <span className="tracking">
               <span className="city"><LocationFill className="area" />{southeastAsia?.area}</span>
             </span>
