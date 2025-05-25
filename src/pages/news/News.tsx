@@ -8,6 +8,7 @@ import SoutheastAsia from '@/components/southeastasia/SoutheastAsia';
 import Politics from "@/components/politics/politics";
 import Society from "@/components/society/Society";
 import Promotion from '@/components/promotion/Promotion';
+import Topic from '@/components/topic/Topic';
 
 const News: React.FC = React.memo(() => {
   const [newsActiveTab, setNewsActiveTab] = useState<string>('news');
@@ -20,7 +21,8 @@ const News: React.FC = React.memo(() => {
     company: useRef<HTMLDivElement>(null),
     politics: useRef<HTMLDivElement>(null),
     society: useRef<HTMLDivElement>(null),
-    promotion: useRef<HTMLDivElement>(null)
+    promotion: useRef<HTMLDivElement>(null),
+    topic: useRef<HTMLDivElement>(null)
   };
 
   // 切换菜单时，重置滚动位置
@@ -39,6 +41,7 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="政治" key="politics" />
           <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
           <CapsuleTabs.Tab title="社会瓜" key="society" />
+          <CapsuleTabs.Tab title="话题" key="topic" />
           <CapsuleTabs.Tab title="帮推广" key="promotion" />
           <CapsuleTabs.Tab title="工作" key="job" />
           <CapsuleTabs.Tab title="查公司" key="company" />
@@ -61,6 +64,10 @@ const News: React.FC = React.memo(() => {
 
         <div ref={sectionRefs.society} className={`tab-content ${newsActiveTab === 'society' ? 'active' : ''}`}>
           <Society />
+        </div>
+
+        <div ref={sectionRefs.topic} className={`tab-content ${newsActiveTab === 'topic' ? 'active' : ''}`}>
+          <Topic />
         </div>
 
         <div ref={sectionRefs.promotion} className={`tab-content ${newsActiveTab === 'promotion' ? 'active' : ''}`}>

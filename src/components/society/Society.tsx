@@ -91,7 +91,7 @@ const Society: React.FC = () => {
               <div className="society-card-content">
 
                 {society.title &&
-                  <div className="society-asia-title">
+                  <div className="society-title">
                     <Ellipsis direction='end' rows={2} content={society.title} />
                   </div>
                 }

@@ -11,12 +11,12 @@
   padding: 5px;
 }
 
-.society-custom-card-container {
+.topic-custom-card-container {
   padding: 0px;
   margin-bottom: 50px;
 }
 
-.society-custom-card {
+.topic-custom-card {
   padding: 0px;
   margin-bottom: 5px;
   .adm-card-body {
@@ -24,7 +24,7 @@
   }
 }
 
-.society-card-content {
+.topic-card-content {
   display: flex;
   flex-direction: column;
   //padding: 5px 5px;
@@ -34,7 +34,7 @@
   padding: 0px;
 }
 
-.society-news-image-container {
+.topic-news-image-container {
   /* 容器最大高度 */
   display: flex;
   justify-content: center;
@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-.society-news-image {
+.topic-news-image {
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -53,7 +53,7 @@
   max-width: 300px;
 }
 
-.society-news-video {
+.topic-news-video {
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -76,7 +76,7 @@
   color: black;
 }
 
-.society-text-area {
+.topic-text-area {
   padding: 1px 0;
   text-align: start;
   color: rgb(44, 44, 44);
@@ -85,7 +85,7 @@
   //font-weight: bold;
 }
 
-.society-text-area p {
+.topic-text-area p {
   margin-bottom: 1px; /* 段落间距 */
   line-height: 1; /* 行间距 */
   text-indent: 2em; /* 首行缩进 */
@@ -106,9 +106,6 @@
 .tracking {
   display: inline-block; /* 防止文字过长时的换行 */
   text-align: center;
-  .area {
-    margin-right: 3px;
-  }
   color: gray;
 }
 .city {
@@ -121,7 +118,7 @@
   font-weight: bold;
 }
 
-.society-button-info {
+.topic-button-info {
   display: flex; /* 使用 Flexbox 布局 */
   justify-content: space-between; /* 横向平分空间 */
   align-items: center; /* 垂直居中 */
@@ -131,7 +128,7 @@
   margin-bottom: 3px;
 }
 
-.society-button-info-inner {
+.topic-button-info-inner {
   display: flex; /* 使用 Flexbox 布局 */
   justify-content: space-between; /* 横向平分空间 */
   align-items: center; /* 垂直居中 */
@@ -140,7 +137,7 @@
   margin-top: 10px;
 }
 
-.society-time {
+.topic-time {
   text-align: right;
   color: gray;
   padding-top: 1px;
@@ -150,8 +147,10 @@
 }
 
 .icon-and-text {
-  display: inline-flex;
+  flex: 1;
+  justify-content: center;
   align-items: center; /* 垂直居中 */
+  text-align: center;
   gap: 1px; /* 图标和数字之间的间距，可调整 */
 }
 
@@ -168,7 +167,7 @@
   margin-right: 50px;
 }
 
-.society-input-comment {
+.topic-input-comment {
   display: absolute;
   flex: 1;
   outline: none;
@@ -180,16 +179,16 @@
   width: 130px;
 }
 
-.society-input-comment ::placeholder {
+.topic-input-comment ::placeholder {
   font-size: 14px;
 }
 
-.society-input-comment input {
+.topic-input-comment input {
   font-size: 18px; // 修改输入文本的字体大小
   margin-left: 5px;
 }
 
-.society-tag {
+.topic-tag {
   font-size: 14px;
   margin-right: 10px;
   .source {
@@ -198,7 +197,7 @@
   }
 }
 
-.society-title {
+.topic-title {
   //font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   text-align: center;

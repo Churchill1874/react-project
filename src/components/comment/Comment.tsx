@@ -59,7 +59,19 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
 
 
 
-const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheastAsiaNews, setSociety, newsId, newsType, needCommentPoint, commentPointId }, ref) => {
+const Comment = forwardRef<any, any>(({ setNewsStatus,
+  setPolitics,
+  setSoutheastAsiaNews,
+  setSociety,
+  setPromotion,
+  setTopic,
+  newsId,
+  newsType,
+  needCommentPoint,
+  commentPointId },
+  ref
+) => {
+
   const [pageNum, setPageNum] = useState(1);
   const [commentsList, setCommentsList] = useState<CommentPageType[]>([]);//评论记录列表
   const [comment, setComment] = useState('')//评论内容
@@ -240,6 +252,24 @@ const Comment = forwardRef<any, any>(({ setNewsStatus, setPolitics, setSoutheast
           return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
         })
       }
+
+      //如果是推广信息
+      if (newsType == 5) {
+        setPromotion((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        })
+      }
+
+      //如果是话题
+      if (newsType == 6) {
+        setTopic((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        })
+      }
+
+
 
 
       if (newsId) {
