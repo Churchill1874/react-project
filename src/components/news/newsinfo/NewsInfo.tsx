@@ -5,7 +5,7 @@ import {
   Request_IncreaseLikesCount,
   Request_NewsInfo,
 } from '@/components/news/newsinfo/api';
-import { Image, ImageViewer, Swiper, TextArea, Toast } from 'antd-mobile';
+import { Image, ImageViewer, Swiper, TextArea, Toast, Skeleton, DotLoading } from 'antd-mobile';
 import { HeartOutline, LeftOutline, MessageOutline } from 'antd-mobile-icons';
 import { useEffect, useState } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
@@ -20,15 +20,7 @@ type NewsInfoProps = NewsInfoType & {
 const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   setVisibleCloseRight,
   id,
-  title,
-  content,
-  contentImagePath,
-  photoPath,
-  likesCount,
   viewCount,
-  commentsCount,
-  createTime,
-  source,
   newsList,
   setNewsList,
   needCommentPoint,
@@ -190,88 +182,101 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   return (
     <>
 
-      <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
+      {
+        newsStatus
+        && newsStatus.id
+        && (
+          <>
+            <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
-      <div className='news-info'>
-        <div className='newsinfo-title' onClick={() => { setVisibleCloseRight(false); }} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
-        <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
-        <Swiper loop autoplay allowTouchMove>
-          {
-            newsStatus?.contentImagePath?.trim()
-              ? newsStatus.contentImagePath.split('||').filter(Boolean).map((imagePath, index) => (
-                <Swiper.Item className="swiper-item" key={index}>
-                  <Image
-                    fit="contain"
-                    width={300}
-                    height={200}
-                    src={imagePath}
-                    onClick={showImage}
-                  />
-                </Swiper.Item>
-              ))
-              : newsStatus?.photoPath?.trim()
-                ? [
-                  <Swiper.Item className="swiper-item" key="photoPath">
-                    <Image
-                      fit="contain"
-                      width={300}
-                      height={200}
-                      src={newsStatus.photoPath}
-                      onClick={showImage}
-                    />
-                  </Swiper.Item>
-                ]
-                : [
-                  <Swiper.Item className="swiper-item" key="placeholder">
-                    <div
-                      style={{
-                        width: 300,
-                        height: 200,
-                        backgroundColor: '#f0f0f0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#ccc',
-                      }}
-                    >
-                      正在加载
-                    </div>
-                  </Swiper.Item>
-                ]
-          }
-        </Swiper>
-
-
-        {newsStatus?.filterContent ?
-          <TextArea value={newsStatus?.filterContent} readOnly rows={8} className='newsinfo-content' />
-          :
-          <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
-        }
+            <div className='news-info'>
+              <div className='newsinfo-title' onClick={() => { setVisibleCloseRight(false); }} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
+              <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
+              <Swiper loop autoplay allowTouchMove>
+                {
+                  newsStatus?.contentImagePath?.trim()
+                    ? newsStatus.contentImagePath.split('||').filter(Boolean).map((imagePath, index) => (
+                      <Swiper.Item className="swiper-item" key={index}>
+                        <Image
+                          fit="contain"
+                          width={300}
+                          height={200}
+                          src={imagePath}
+                          onClick={showImage}
+                        />
+                      </Swiper.Item>
+                    ))
+                    : newsStatus?.photoPath?.trim()
+                      ? [
+                        <Swiper.Item className="swiper-item" key="photoPath">
+                          <Image
+                            fit="contain"
+                            width={300}
+                            height={200}
+                            src={newsStatus.photoPath}
+                            onClick={showImage}
+                          />
+                        </Swiper.Item>
+                      ]
+                      : [
+                        <Swiper.Item className="swiper-item" key="placeholder">
+                          <div
+                            style={{
+                              width: 300,
+                              height: 200,
+                              backgroundColor: '#f0f0f0',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#ccc',
+                            }}
+                          >
+                            正在加载
+                          </div>
+                        </Swiper.Item>
+                      ]
+                }
+              </Swiper>
 
 
+              {newsStatus?.filterContent ?
+                <TextArea value={newsStatus?.filterContent} readOnly rows={8} className='newsinfo-content' />
+                :
+                <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
+              }
 
-        <div className="newsinfo-attribute">
-          <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsStatus?.viewCount ? newsStatus?.viewCount + 1 : 1}</span>
-          <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsStatus?.likesCount || 0}</span>
-          <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsStatus?.commentsCount || 0} </span>
-        </div>
 
-        {
-          newsStatus
-          && newsStatus.id
-          && (
-            <Comment
-              needCommentPoint={needCommentPoint}
-              commentPointId={commentPointId}
-              setNewsStatus={setNewsStatus}
-              setPolitics={null}
-              newsId={id}
-              newsType={1}
-              ref={commentRef}
-            />)
-        }
 
-      </div>
+              <div className="newsinfo-attribute">
+                <span><FcReading className='attribute-icon' fontSize={16} /> 浏览  {newsStatus?.viewCount ? newsStatus?.viewCount + 1 : 1}</span>
+                <span><FcLike className='attribute-icon' fontSize={16} onClick={clickLikes} /> 赞 {newsStatus?.likesCount || 0}</span>
+                <span><MessageOutline className='attribute-icon' fontSize={17} /> 评论  {newsStatus?.commentsCount || 0} </span>
+              </div>
+
+              <Comment
+                needCommentPoint={needCommentPoint}
+                commentPointId={commentPointId}
+                setNewsStatus={setNewsStatus}
+                newsId={id}
+                newsType={1}
+                ref={commentRef}
+              />
+
+            </div>
+          </>
+        )
+      }
+
+      {
+        !newsStatus &&
+        <>
+          <DotLoading color='primary' />
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={12} animated />
+        </>
+      }
+
+
 
     </>
 

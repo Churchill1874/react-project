@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Card, ImageViewer, Tag, Image } from 'antd-mobile';
+import { Card, ImageViewer, Tag, Image, Skeleton, DotLoading } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
 import { FcReading } from "react-icons/fc";
-import { LeftOutline, LocationFill } from 'antd-mobile-icons';
+import { LeftOutline } from 'antd-mobile-icons';
 import '@/components/topic/Topic.less';
 import { TopicType, TopicFindReqType, TopicFind_Requset } from '@/components/topic/api'
 import dayjs from 'dayjs'
@@ -67,77 +67,98 @@ const TopicInfo: React.FC<TopicPropsType & { commentRef: any }> = (props) => {
   return (
     <>
 
-      <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
+      {topic &&
+        <>
 
-      <div onClick={() => props.setVisibleCloseRight(false)} >
-        <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
-          <LeftOutline fontSize={18} />返回 </span>
-        <span style={{ color: 'black', fontSize: '16px', letterSpacing: '1px' }}>
-          话题
-        </span>
-      </div>
+          <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
-      <Card className="topic-custom-card-container">
-
-        <div className="topic-title">
-          {topic?.title}
-        </div>
-
-        <div className="topic-card-content">
-
-          {topic?.videoCover &&
-            <div className="topic-news-image-container">
-              <video className="topic-news-video" src="/1.mp4" controls poster={topic.videoCover} />
-            </div>
-          }
-          {!topic?.videoCover && topic?.imagePath &&
-            <div className="topic-news-image-container">
-              <Image
-                className="topic-news-image"
-                src={topic.imagePath}
-                alt="Example"
-                fit="contain"
-              />
-            </div>
-          }
-
-          <div className="topic-text-area">
-            {splitBySentenceLength((topic?.content || '')).map((paragraph, index) => (
-              <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
-                {paragraph}
-              </p>
-            ))}
+          <div onClick={() => props.setVisibleCloseRight(false)} >
+            <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
+              <LeftOutline fontSize={18} />返回 </span>
+            <span style={{ color: 'black', fontSize: '16px', letterSpacing: '1px' }}>
+              话题
+            </span>
           </div>
 
-          <span className="topic-time">
-            <span>
-              {topic?.isTop && <Tag className="topic-tag" color='#a05d29'>置顶</Tag>}
-              {topic?.isHot && <Tag className="topic-tag" color='red' fill='outline'>热门</Tag>}
-              {/* {topic?.source && <span className="topic-tag" > 来源: <span className="source"> {topic?.source} </span></span>} */}
+          <Card className="topic-custom-card-container">
 
-              {<span className="topic-tag" > 类型: <span className="source">  {topic?.type} </span></span>}
-              {topic?.createTime && dayjs(topic?.createTime).format('YYYY-MM-DD HH:mm')}
-            </span>
-          </span>
+            <div className="topic-title">
+              {topic?.title}
+            </div>
 
+            <div className="topic-card-content">
 
-          <div className="topic-button-info-inner">
-            <span className="icon-and-text">
-              <FcReading fontSize={17} />
-              <span className="number">{topic?.viewCount}</span>
-            </span>
+              {topic?.videoCover &&
+                <div className="topic-news-image-container">
+                  <video className="topic-news-video" src="/1.mp4" controls poster={topic.videoCover} />
+                </div>
+              }
+              {!topic?.videoCover && topic?.imagePath &&
+                <div className="topic-news-image-container">
+                  <Image
+                    className="topic-news-image"
+                    src={topic.imagePath}
+                    alt="Example"
+                    fit="contain"
+                  />
+                </div>
+              }
 
-            <span className="icon-and-text">
-              <span className="number">
-                共 {topic?.commentsCount} 条评论
+              <div className="topic-text-area">
+                {splitBySentenceLength((topic?.content || '')).map((paragraph, index) => (
+                  <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+
+              <span className="topic-time">
+                <span>
+                  {topic?.isTop && <Tag className="topic-tag" color='#a05d29'>置顶</Tag>}
+                  {topic?.isHot && <Tag className="topic-tag" color='red' fill='outline'>热门</Tag>}
+                  {/* {topic?.source && <span className="topic-tag" > 来源: <span className="source"> {topic?.source} </span></span>} */}
+
+                  {<span className="topic-tag" > 类型: <span className="source">  {topic?.type} </span></span>}
+                  {topic?.createTime && dayjs(topic?.createTime).format('YYYY-MM-DD HH:mm')}
+                </span>
               </span>
-            </span>
-          </div>
-          <Comment needCommentPoint={props.needCommentPoint} commentPointId={props.commentPointId} setTopic={setTopic} newsId={props.id} newsType={5} />
-        </div>
-      </Card>
 
+              <div className="topic-button-info-inner">
+                <span className="icon-and-text">
+                  <FcReading fontSize={17} />
+                  <span className="number">{topic?.viewCount}</span>
+                </span>
+
+                <span className="icon-and-text">
+                  <span className="number">
+                    共 {topic?.commentsCount} 条评论
+                  </span>
+                </span>
+              </div>
+
+              <Comment
+                needCommentPoint={props.needCommentPoint}
+                commentPointId={props.commentPointId}
+                setTopic={setTopic}
+                newsId={props.id}
+                newsType={6}
+                ref={props.commentRef}
+              />
+
+            </div>
+          </Card>
+        </>
+      }
+
+      {
+        !topic &&
+        <>
+          <DotLoading color='primary' />
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={12} animated />
+        </>
+      }
     </>
 
   );

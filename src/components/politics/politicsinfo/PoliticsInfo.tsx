@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { PoliticsType } from "@/components/politics/api";
-import { Image, Card, Divider, Tag, Toast } from 'antd-mobile';
+import { Image, Card, Divider, Tag, Toast, Skeleton, DotLoading } from 'antd-mobile';
 import { FcLike, FcReading } from "react-icons/fc";
 import { LeftOutline, MessageOutline, LocationFill, HeartOutline } from 'antd-mobile-icons';
 import Comment from "@/components/comment/Comment";
@@ -112,84 +112,103 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
 
   return (
     <>
-      <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
+      {politics && <>
+        <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
 
-      <Card className="politics-custom-card-container">
-        <div className="politics-card-content">
-          <div className="politics-title">
-            {politics?.title || ''}
-          </div>
-          <div className="politics-image-container-inner">
-            {politics?.imagePath && <Image
-              className="politics-image"
-              src={politics.imagePath}
-              alt="Example"
-              fit="contain"
-            />}
-          </div>
-          <Divider className='divider-line' />
-          <div className="politics-text-area">
+        <Card className="politics-custom-card-container">
+          <div className="politics-card-content">
+            <div className="politics-title">
+              {politics?.title || ''}
+            </div>
+            <div className="politics-image-container-inner">
+              {politics?.imagePath && <Image
+                className="politics-image"
+                src={politics.imagePath}
+                alt="Example"
+                fit="contain"
+              />}
+            </div>
+            <Divider className='divider-line' />
+            <div className="politics-text-area">
 
-            {splitBySentenceLength(politics?.content || '').map((paragraph, index) => (
-              <p key={index} style={{ marginTop: '1px', marginBottom: '1px', lineHeight: '1.5' }}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
+              {splitBySentenceLength(politics?.content || '').map((paragraph, index) => (
+                <p key={index} style={{ marginTop: '1px', marginBottom: '1px', lineHeight: '1.5' }}>
+                  {paragraph}
+                </p>
+              ))}
+            </div>
 
-          <div className="politics-meta">
-            <span className="politics-tag">
-              {politics?.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
-              {politics?.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
-            </span>
+            <div className="politics-meta">
+              <span className="politics-tag">
+                {politics?.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
+                {politics?.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
+              </span>
 
-            {politics?.source &&
-              <span className="politics-tag" > 来源:
-                <span className="source">
-                  <span className="tracking">
-                    <LocationFill className="area" /> {politics?.country || ''}
+              {politics?.source &&
+                <span className="politics-tag" > 来源:
+                  <span className="source">
+                    <span className="tracking">
+                      <LocationFill className="area" /> {politics?.country || ''}
+                    </span>
+                    <span className="source-inner">
+                      {politics?.source || ''}
+                    </span>
+
                   </span>
-                  <span className="source-inner">
-                    {politics?.source || ''}
+                  <span className="politics-time">
+                    {politics?.createTime && dayjs(politics?.createTime).format('YYYY-MM-DD HH:mm')}
                   </span>
-
                 </span>
-                <span className="politics-time">
-                  {politics?.createTime && dayjs(politics?.createTime).format('YYYY-MM-DD HH:mm')}
+              }
+            </div>
+
+            {/*           <Divider className='divider-line' /> */}
+
+            <div className="politics-button-info-inner">
+              <span className="tracking">
+                <span className="icon-and-text">
+                  <FcReading fontSize={17} />
+                  <span className="number">{politics?.viewCount || 0} </span>
                 </span>
               </span>
+
+              <span className="tracking">
+                <span className="icon-and-text">
+                  <FcLike className='attribute-icon' fontSize={15} onClick={() => { clickLikes(props.id) }} />
+                  <span className="number"> {politics?.likesCount || 0} </span>
+                </span>
+              </span>
+
+              <span className="tracking">
+                <span className="icon-and-text">
+                  <MessageOutline fontSize={17} />
+                  <span className="number"> {politics?.commentsCount || 0} </span>
+                </span>
+              </span>
+            </div>
+
+            {politics &&
+              <Comment
+                setPolitics={setPolitics}
+                newsId={props.id}
+                newsType={3}
+                needCommentPoint={props.needCommentPoint}
+                commentPointId={props.commentPointId}
+                ref={props.commentRef}
+              />
             }
           </div>
+        </Card>
+      </>}
 
-          {/*           <Divider className='divider-line' /> */}
-
-          <div className="politics-button-info-inner">
-            <span className="tracking">
-              <span className="icon-and-text">
-                <FcReading fontSize={17} />
-                <span className="number">{politics?.viewCount || 0} </span>
-              </span>
-            </span>
-
-            <span className="tracking">
-              <span className="icon-and-text">
-                <FcLike className='attribute-icon' fontSize={15} onClick={() => { clickLikes(props.id) }} />
-                <span className="number"> {politics?.likesCount || 0} </span>
-              </span>
-            </span>
-
-            <span className="tracking">
-              <span className="icon-and-text">
-                <MessageOutline fontSize={17} />
-                <span className="number"> {politics?.commentsCount || 0} </span>
-              </span>
-            </span>
-          </div>
-
-          <Comment setPolitics={setPolitics} newsId={props.id} newsType={3} needCommentPoint={props.needCommentPoint} commentPointId={props.commentPointId} />
-        </div>
-      </Card>
-
+      {
+        !politics &&
+        <>
+          <DotLoading color='primary' />
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={12} animated />
+        </>
+      }
     </>
   );
 }

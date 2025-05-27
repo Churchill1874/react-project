@@ -232,8 +232,18 @@ const Politics: React.FC = () => {
           ))}
         </PullToRefresh>
 
-        <InfiniteScroll loadMore={() => politicsPageRequest(false)} hasMore={politicsHasHore}>
-          <PoliticsScrollContent hasMore={politicsHasHore} />
+        <InfiniteScroll loadMore={() => politicsPageRequest(false)} hasMore={politicsHasHore}  >
+          {/* <PoliticsScrollContent hasMore={politicsHasHore} /> */}
+          {loading ? (
+            <>
+              <div className="dot-loading-custom" >
+                <span >加载中</span>
+                <DotLoading color='#fff' />
+              </div>
+            </>
+          ) : (
+            <span color='#fff'>--- 我是有底线的 ---</span>
+          )}
         </InfiniteScroll>
       </div>
 

@@ -1,13 +1,13 @@
 import { useState, forwardRef, useRef, useImperativeHandle, useEffect } from "react";
 import {
   Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea,
-  DotLoading, InfiniteScroll, PullToRefresh, FloatingBubble
+  DotLoading, InfiniteScroll, SpinLoading, Space, FloatingBubble
 } from "antd-mobile";
 
 import '@/components/comment/Comment.less'
 import avatars from '@/common/avatar';
 import { FcLike } from "react-icons/fc";
-import { HeartOutline, MessageFill } from 'antd-mobile-icons';
+import { HeartOutline, MessageFill, RedoOutline } from 'antd-mobile-icons';
 import { Request_GetCommentPage, CommentPageType, Request_LikesCount } from "@/components/comment/api";
 import { Request_SendNewsComment, SendNewsCommentReqType } from '@/components/comment/api';
 import { highlightReply } from '@/utils/commentUtils'
@@ -57,9 +57,8 @@ const CustomTextArea = forwardRef<TextAreaRef, any>((props, ref) => {
   return <TextArea {...props} placeholder='请输入评论内容' ref={innerRef} />;
 });
 
-
-
-const Comment = forwardRef<any, any>(({ setNewsStatus,
+const Comment = forwardRef<any, any>(({
+  setNewsStatus,
   setPolitics,
   setSoutheastAsiaNews,
   setSociety,
@@ -126,7 +125,7 @@ const Comment = forwardRef<any, any>(({ setNewsStatus,
     }
   }, [needCommentPoint, commentPointId, commentsList]);
 
-  //如果需要对评论不过定位 进行滚动到评论位置 
+  //如果需要对评论定位 进行滚动到评论位置 
   useEffect(() => {
     if (needCommentPoint && commentPointId && !hasScrolled.current) {
       const target = () => commentRefs.current[String(commentPointId)];
@@ -305,13 +304,17 @@ const Comment = forwardRef<any, any>(({ setNewsStatus,
     const reqPageNum = isReset ? 1 : pageNum;
     const param = { newsType: newsType, newsId: newsId, pageNum: reqPageNum, pageSize: 50 }
     const response = await Request_GetCommentPage(param);
-    if (response.data.list?.length > 0) {
-      //如果新取回来的评论数据和上一次的不一样
-      if (response.data.list.length !== commentsList.length) {
+    const list = response.data.list ?? [];
+    if (list.length > 0) {
+      if (isReset) {
+        setCommentsList(list);
+        setPageNum(2)
+      } else {
         //将新请求回来的评论和之前的评论放在一起保存更新状态
-        setCommentsList([...commentsList ?? [], ...response.data.list]);
+        setCommentsList(prev => [...prev, ...list]);
+        setPageNum(prev => prev + 1)
       }
-      setPageNum((prev) => prev + 1)
+
     } else {
       setCommentHasMore(false)
     }
@@ -405,51 +408,56 @@ const Comment = forwardRef<any, any>(({ setNewsStatus,
 
   return (
     <>
-      <Divider className='comment-line'> 从此处下拉更新 </Divider>
 
-      <PullToRefresh onRefresh={() => reqCommentPageApi(true)}>
-        {commentsList?.map((comment, _index) => (
-          <div className="outer-comment" ref={el => commentRefs.current[String(comment.topComment.id)] = el} key={comment.topComment.id}>
-            <div className="left-comment">
-              <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(comment.topComment.playerId) }} />
-            </div>
-            <div className="right-comment">
-              <span className='name'>{comment.topComment.commentator}</span>
-              <span className='comment'>{comment.topComment.content}</span>
-              <span className='comment-time'>
-                <div>{dayjs(comment.topComment.createTime).format("YYYY-MM-DD HH:mm")}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
-                <span className="comment-attribute"> <FcLike fontSize={14} onClick={() => clickLikes(comment.topComment.id, true)} /> {comment.topComment.likesCount}</span>
-              </span>
+      <Divider className='comment-line'>
+        {loading ?
+          <SpinLoading style={{ '--size': '24px' }} color='primary' />
+          :
+          <><RedoOutline fontSize={'16px '} color='var(--adm-color-primary)' onClick={() => { reqCommentPageApi(true); setPageNum(1) }} /> 点击刷新评论</>}
 
-              {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开 {comment.replyCommentList.length} 条回复 </span>)}
+      </Divider>
 
-              {comment.isExpanded && (
-                comment.replyCommentList.map((replay, replayIndex) =>
-                  <div className="outer-comment" ref={el => commentRefs.current[String(replay.id)] = el} key={replay.id}>
-                    <div className="left-comment">
-                      <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '32px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(replay.playerId) }} />
-                    </div>
-                    <div className="right-comment">
-                      <span className='name'>{replay.commentator}</span>
-                      <span className='comment' dangerouslySetInnerHTML={{ __html: highlightReply(replay.content) }}></span>
-                      <span className='comment-time'>
-                        <div>{dayjs(replay.createTime).format("YYYY-MM-DD HH:mm")}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
-                        <span className="comment-attribute"><FcLike fontSize={16} onClick={() => clickLikes(replay.id, false)} /> {replay.likesCount} </span>
-                      </span>
-                    </div>
-                  </div>
-                )
-              )}
-              <Divider className='comment-line' />
-            </div>
+      {commentsList?.map((comment, _index) => (
+        <div className="outer-comment" ref={el => commentRefs.current[String(comment.topComment.id)] = el} key={comment.topComment.id}>
+          <div className="left-comment">
+            <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(comment.topComment.playerId) }} />
           </div>
-        ))}
+          <div className="right-comment">
+            <span className='name'>{comment.topComment.commentator}</span>
+            <span className='comment'>{comment.topComment.content}</span>
+            <span className='comment-time'>
+              <div>{dayjs(comment.topComment.createTime).format("YYYY-MM-DD HH:mm")}<span className='reply' onClick={() => replyTopComment(comment.topComment.id, comment.topComment.commentator)} > 回复</span></div>
+              <span className="comment-attribute"> <FcLike fontSize={14} onClick={() => clickLikes(comment.topComment.id, true)} /> {comment.topComment.likesCount}</span>
+            </span>
 
-        <InfiniteScroll loadMore={reqCommentPageApi} hasMore={commentHasMore}>
-          <CommentScrollContent hasMore={commentHasMore} />
-        </InfiniteScroll>
+            {comment.replyCommentList?.length > 0 && !comment.isExpanded && (<span className="show-replay" onClick={() => reqCommentApi(comment.topComment.id)}> 展开 {comment.replyCommentList.length} 条回复 </span>)}
 
-      </PullToRefresh>
+            {comment.isExpanded && (
+              comment.replyCommentList.map((replay, replayIndex) =>
+                <div className="outer-comment" ref={el => commentRefs.current[String(replay.id)] = el} key={replay.id}>
+                  <div className="left-comment">
+                    <Avatar src={avatars[replay.avatarPath]} style={{ '--size': '32px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(replay.playerId) }} />
+                  </div>
+                  <div className="right-comment">
+                    <span className='name'>{replay.commentator}</span>
+                    <span className='comment' dangerouslySetInnerHTML={{ __html: highlightReply(replay.content) }}></span>
+                    <span className='comment-time'>
+                      <div>{dayjs(replay.createTime).format("YYYY-MM-DD HH:mm")}<span className='reply' onClick={() => replyComment(comment.topComment.id, replay.id, replay.commentator)} > 回复</span></div>
+                      <span className="comment-attribute"><FcLike fontSize={16} onClick={() => clickLikes(replay.id, false)} /> {replay.likesCount} </span>
+                    </span>
+                  </div>
+                </div>
+              )
+            )}
+            <Divider className='comment-line' />
+          </div>
+        </div>
+      ))}
+
+      <InfiniteScroll loadMore={reqCommentPageApi} hasMore={commentHasMore}>
+        <CommentScrollContent hasMore={commentHasMore} />
+      </InfiniteScroll>
+
 
       <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>
         <MessageFill fontSize={32} />

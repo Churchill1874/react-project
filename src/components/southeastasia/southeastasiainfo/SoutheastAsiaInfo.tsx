@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Divider, Tag, Swiper, Image, ImageViewer } from 'antd-mobile';
+import { Card, Divider, Tag, Swiper, Image, ImageViewer, Skeleton } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
 import { FcReading } from "react-icons/fc";
 import { LeftOutline, LocationFill } from 'antd-mobile-icons';
@@ -15,7 +15,7 @@ type SoutheastAsiaPropsType = CommentAttributeType & {
   needCommentPoint?: boolean;
   commentPointId?: string | null;
   setVisibleCloseRight?: any;
-  id: string;
+  id: string | undefined;
 }
 
 
@@ -201,7 +201,26 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
               <Divider className='line'> 共 {southeastAsia?.commentsCount} 条评论 </Divider>
             </span>
           </div>
-          <Comment needCommentPoint={props.needCommentPoint} commentPointId={props.commentPointId} setSoutheastAsiaNews={setSoutheastAsia} newsId={props.id} newsType={2} />
+
+          {southeastAsia &&
+            <Comment
+              needCommentPoint={props.needCommentPoint}
+              commentPointId={props.commentPointId}
+              setSoutheastAsiaNews={setSoutheastAsia}
+              newsId={props.id}
+              newsType={2}
+              ref={props.commentRef}
+            />
+          }
+
+          {
+            !southeastAsia &&
+            <>
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={5} animated />
+            </>
+          }
+
         </div>
       </Card>
 

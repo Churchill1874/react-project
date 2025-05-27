@@ -50,7 +50,7 @@ export interface SoutheastAsiaNewsPageReqType {
 }
 
 export interface SoutheastAsiaFindReqType {
-  id: string;
+  id: string | undefined;
 }
 
 export interface SoutheastAsiaFindRespType {

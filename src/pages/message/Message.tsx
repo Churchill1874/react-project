@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   Tabs,
   Badge,
@@ -16,12 +16,17 @@ import avatars from '@/common/avatar';
 import {
   Request_SystemMessagePage,
   SystemMessagePageReqType,
-  SystemMessagePageType,
-  SystemMessagePageResponseType
+  SystemMessagePageType
 } from '@/pages/message/api'
 import dayjs from 'dayjs'
 import PrivateChat from "@/components/privatechat/PrivateChat";
 import NewsInfo from "@/components/news/newsinfo/NewsInfo";
+import SoutheastAsiaInfo from "@/components/southeastasia/southeastasiainfo/SoutheastAsiaInfo";
+import PoliticsInfo from "@/components/politics/politicsinfo/PoliticsInfo";
+import SocietyInfo from "@/components/society/societyinfo/SocietyInfo";
+import TopicInfo from "@/components/topic/topicinfo/TopicInfo";
+import PromotionInfo from "@/components/promotion/promotioninfo/PromotionInfo";
+import { NewsTypeEnum } from '@/common/NewsTypeEnum';
 
 
 const Message: React.FC = () => {
@@ -33,9 +38,11 @@ const Message: React.FC = () => {
   const [commentPageNum, setCommentPageNum] = useState<number>(1);
   const [commentHasMore, setCommentHasMore] = useState<boolean>(true);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false);
+  const [newsType, setNewsType] = useState<number>();
   const [commentId, setCommentId] = useState<string>();
-  const [newsId, setNewsId] = useState<string>();
+  const [newsId, setNewsId] = useState<string>('0');
   const commentRef = useRef<any>(null);
+  const [popupKey, setPopupKey] = useState(0);
 
 
   // 获取评论数据
@@ -147,7 +154,7 @@ const Message: React.FC = () => {
               <Card className="message-custom-card" key={index}>
                 <div className="card-content">
                   <div className="message-title">
-                    <span className="news-type">#{comment.sourceType === 1 ? '国内' : '东南亚'}</span>{" "}
+                    <span className="news-type">#{NewsTypeEnum(comment.infoType)}</span>{" "}
                     {comment.title}
                   </div>
                   <div className="message-text-area">
@@ -170,13 +177,21 @@ const Message: React.FC = () => {
                     <div className="message-time">
                       {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm')}
                     </div>
-                    <div className="find" onClick={() => { setCommentId(comment.commentId); setNewsId(comment.newsId); setVisibleCloseRight(true); console.log('正在点击的newsId是：', comment.newsId) }}>查看详情</div>
+                    <div className="find" onClick={() => {
+                      setCommentId(comment.commentId);
+                      setNewsType(comment.infoType);
+                      setNewsId(comment.newsId);
+                      setVisibleCloseRight(true);
+                      setPopupKey(prev => prev + 1); // ⭐️ 强制 popup 内容刷新
+                      console.log('正在点击的newsId是：', comment.newsId, 'newsType是:', comment.infoType, "popupKey:", popupKey)
+                    }}>查看详情</div>
                   </div>
                 </div>
               </Card>
             ))}
 
             <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+              key={popupKey}
               position='right'
               // closeOnSwipe={true} 
               closeOnMaskClick
@@ -184,22 +199,66 @@ const Message: React.FC = () => {
               onClose={() => { setVisibleCloseRight(false); commentRef.current?.cleanState?.(); }}>
 
               <div className="popup-scrollable-content" >
-                <NewsInfo
-                  setVisibleCloseRight={setVisibleCloseRight}
-                  id={newsId}
-                  needCommentPoint={true}
-                  commentPointId={commentId}
-                  title={""}
-                  content={""}
-                  contentImagePath={""}
-                  photoPath={""}
-                  likesCount={0}
-                  viewCount={0}
-                  commentsCount={0}
-                  createTime={null}
-                  source={""}
-                  commentRef={commentRef}
-                />
+                {
+                  newsType === 1 &&
+                  <NewsInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
+                {
+                  newsType === 2 &&
+                  <SoutheastAsiaInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
+                {
+                  newsType === 3 &&
+                  <PoliticsInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
+                {
+                  newsType === 4 &&
+                  <SocietyInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
+                {
+                  newsType === 5 &&
+                  <PromotionInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
+                {
+                  newsType === 6 &&
+                  <TopicInfo
+                    setVisibleCloseRight={setVisibleCloseRight}
+                    id={newsId}
+                    needCommentPoint={true}
+                    commentPointId={commentId}
+                    commentRef={commentRef}
+                  />
+                }
               </div>
             </Popup>
 

@@ -24,7 +24,7 @@ export interface SystemMessagePageReqType {
   pageSize: any;
   recipientAccount?: any; //收取人账号
   senderAccount?: any; //发送人账号
-  sourceType?: any; //消息来源,可用值:国内新闻:1,东南亚新闻:2
+  infoType?: any; //消息来源,可用值:国内新闻:1,东南亚新闻:2
   startTime?: any;
 }
 
@@ -43,7 +43,7 @@ export interface SystemMessagePageType {
   recipientAccount: any; //收取人账号
   senderAccount: any; //发送人账号
   senderName: any; //评论人名称
-  sourceType: any; //评论来源,可用值:国内新闻:1,东南亚新闻:2
+  infoType: any; //评论来源,可用值:国内新闻:1,东南亚新闻:2
   status: any;
   title: any; //信息类型messageType是评论类型的时候,title是自己发表对新闻的评论信息,现在有人对此评论发表评论.信息类型messageType为系统类型的时候,title是系统消息标题
 }

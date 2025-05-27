@@ -56,7 +56,7 @@ export interface PoliticsPageReqType {
 }
 
 export interface PoliticsFindReqType {
-  id: string;
+  id: string | undefined;
 }
 
 export interface PoliticsFindRespType {
