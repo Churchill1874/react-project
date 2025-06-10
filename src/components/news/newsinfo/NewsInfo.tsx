@@ -28,9 +28,6 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   commentRef
 }) => {
 
-  /* 
-    const textAreaRef = useRef<TextAreaRef>(null);
-    const [comment, setComment] = useState('') */
   const [visible, setVisible] = useState(false)
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
 
@@ -130,25 +127,6 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   }
 
-  /*   function splitTextByMinLength(text: string, minLength: number = 100): string[] {
-      const result: string[] = [];
-      const segments: string[] = text.split(/(?<=。)/); // 按句号分割，保留句号
-  
-      let temp = ''; // 临时累积段落
-      segments.forEach((segment) => {
-        temp += segment.trim(); // 累积当前段落
-        if (temp.length >= minLength) {
-          result.push(temp); // 达到最小长度，存入结果
-          temp = ''; // 清空临时累积
-        }
-      });
-  
-      if (temp) {
-        result.push(temp); // 处理最后未存入的段落
-      }
-  
-      return result;
-    } */
 
   function splitBySentenceLength(text: string, maxChars = 200): string[] {
     const sentences = text.split(/(。|！|？)/); // 保留句号、感叹号、问号（包括标点）
@@ -192,51 +170,27 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
             <div className='news-info'>
               <div className='newsinfo-title' onClick={() => { setVisibleCloseRight(false); }} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
               <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
-              <Swiper loop autoplay allowTouchMove>
-                {
-                  newsStatus?.contentImagePath?.trim()
-                    ? newsStatus.contentImagePath.split('||').filter(Boolean).map((imagePath, index) => (
-                      <Swiper.Item className="swiper-item" key={index}>
-                        <Image
-                          fit="contain"
-                          width={300}
-                          height={200}
-                          src={imagePath}
-                          onClick={showImage}
-                        />
-                      </Swiper.Item>
-                    ))
-                    : newsStatus?.photoPath?.trim()
-                      ? [
-                        <Swiper.Item className="swiper-item" key="photoPath">
+              {
+                newsStatus?.contentImagePath?.trim() &&
+                <Swiper loop autoplay allowTouchMove>
+                  {
+                    newsStatus.contentImagePath
+                      .split('||')
+                      .filter(Boolean)
+                      .map((imagePath, index) => (
+                        <Swiper.Item className="swiper-item" key={index}>
                           <Image
                             fit="contain"
                             width={300}
                             height={200}
-                            src={newsStatus.photoPath}
+                            src={imagePath}
                             onClick={showImage}
                           />
                         </Swiper.Item>
-                      ]
-                      : [
-                        <Swiper.Item className="swiper-item" key="placeholder">
-                          <div
-                            style={{
-                              width: 300,
-                              height: 200,
-                              backgroundColor: '#f0f0f0',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: '#ccc',
-                            }}
-                          >
-                            正在加载
-                          </div>
-                        </Swiper.Item>
-                      ]
-                }
-              </Swiper>
+                      ))
+                  }
+                </Swiper>
+              }
 
 
               {newsStatus?.filterContent ?

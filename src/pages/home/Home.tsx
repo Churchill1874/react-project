@@ -197,12 +197,12 @@ const Home = () => {
         <div className="event-detail">
           <div className="candidates">
             <div className="candidate">
-              <Avatar className="avatar" src="biden_image_url" />
+              <Avatar className="bet-avatar" src="biden_image_url" />
               <span className="percentage blue">45%</span>
             </div>
             <div className="vs">VS</div>
             <div className="candidate">
-              <Avatar className="avatar" src="trump_image_url" />
+              <Avatar className="bet-avatar" src="trump_image_url" />
               <span className="percentage red">55%</span>
             </div>
           </div>

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
-import { CommentType } from '@/components/comment/api';
-
 //查询新闻请求参数
 export interface NewsInfoReqType {
   id: number;

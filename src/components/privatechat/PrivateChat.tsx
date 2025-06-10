@@ -41,11 +41,6 @@ const PrivateChat: React.FC = () => {
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
     setLoginPlayer({ 'playerId': privateChatListResp.loginId, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
     setPrivateChatList(privateChatListResp.list);
-
-
-    console.log('privateChatList:', JSON.stringify(privateChatList))
-
-    console.log('loginPlayer:', JSON.stringify(loginPlayer))
   }
 
 
@@ -188,7 +183,8 @@ const PrivateChat: React.FC = () => {
           {chatInfo.notRead &&
             <div className="right">
               <Badge content={Badge.dot} />
-            </div>}
+            </div>
+          }
         </div>
 
       </Card>

@@ -83,7 +83,7 @@
 
   .news-title {
     //font-weight: bold;
-    font-size: 13px;
+    font-size: 14px;
     margin-top: 0;
     margin-right: 0px;
     /* 去除内边距 */
@@ -121,7 +121,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 20px;
+  height: 26px;
   padding-bottom: 0px;
   margin-bottom: 0px;
   padding-left: 5px;
@@ -130,7 +130,7 @@
 
 .logo {
   font-weight: 1000;
-  font-size: large;
+  font-size: 22px;
   color: var(--adm-color-primary);
   text-shadow: 1px 1px 2px rgba(154, 152, 152, 0.5); /* 添加阴影 */
   flex-shrink: 0; /* 防止缩小 */
@@ -138,7 +138,7 @@
 
 .online {
   color: rgb(70, 69, 69);
-  font-size: 13px;
+  font-size: 16px;
 }
 
 @keyframes marquee {
@@ -249,13 +249,14 @@
 .event-title {
   color: #fff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
 }
 
 .event-date {
   display: flex;
   align-items: center; // 垂直居中
   justify-content: center; // 水平居中（可选）
-  font-size: 12px;
+  font-size: 13px;
   margin-left: 10px;
   color: rgb(197, 193, 193);
 }
@@ -293,7 +294,7 @@
 }
 
 .percentage {
-  font-size: 1em;
+  font-size: 1.1em;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -400,7 +401,7 @@
 
 .chat {
   //color: black;
-  font-size: 11px;
+  font-size: 12px;
 
   margin: 5px 3px;
   padding: 2px;
@@ -423,14 +424,7 @@
     .message-content {
       display: flex;
       flex-direction: column;
-      font-size: 13px;
-
-      /*       div {
-        background-color: #fff; // 背景色
-        padding: 5px 10px; // 内边距
-        border-radius: 5px; // 圆角
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // 阴影
-      } */
+      font-size: 14px;
 
       .time {
         color: rgb(138, 135, 135);
@@ -484,7 +478,7 @@
 
   .event-info {
     .event-title {
-      font-size: 20px;
+      font-size: 22px;
     }
     .event-date {
       font-size: 20px;
@@ -495,9 +489,9 @@
   }
   .news-item {
     .news-title {
-      font-size: 20px;
+      font-size: 22px;
       .hot {
-        font-size: 20px;
+        font-size: 22px;
       }
     }
   }
@@ -506,7 +500,7 @@
     max-width: 800px;
   }
   .logo {
-    font-size: 30px;
+    font-size: 34px;
   }
   .online {
     font-size: 20px;
@@ -538,37 +532,6 @@
     height: 180px;
   }
 
-  .chat {
-    font-size: 22px;
-    margin: 10px 6px;
-    padding: 2px;
-    text-align: left;
-    height: 300px; // 设置固定高度
-    overflow-y: auto; // 允许垂直滚动
-    border: 1px solid #076af57b;
-
-    .chat-item {
-      display: flex;
-      align-items: flex-start; // 确保头像和内容在一行对齐
-      margin-bottom: 2px; // 每条记录的间距
-
-      .avatar {
-        width: 50px; // 调整头像的宽度
-        height: 50px; // 调整头像的高度
-        margin-right: 10px; // 头像和聊天内容的间距
-      }
-
-      .message-content {
-        display: flex;
-        flex-direction: column;
-        font-size: 20px;
-        .time {
-          color: rgb(138, 135, 135);
-          font-size: 18px;
-        }
-      }
-    }
-  }
   .send-container {
     button {
       font-size: 20px;

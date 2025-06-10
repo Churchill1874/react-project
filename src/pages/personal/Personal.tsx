@@ -45,6 +45,9 @@ const UserCenter: React.FC = () => {
     navigate('/setPersonal')
   }
 
+  const toLikes = (playerId) => {
+    navigate(`/likes?id=${playerId}`)
+  }
 
   return (
     <>
@@ -70,7 +73,7 @@ const UserCenter: React.FC = () => {
               </span>
 
               <span className='level'>
-                等级: <span> {playerInfo?.level} 级 <span className='levelName'> ( {levelEnum(playerInfo?.level)} )</span>  </span>
+                等级: <span> {playerInfo?.level} 级 <span className='levelName'>  {levelEnum(playerInfo?.level)} </span>  </span>
               </span>
 
             </div>
@@ -83,17 +86,17 @@ const UserCenter: React.FC = () => {
         </Card>
 
         <div className="personal-info-space">
-          <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div> {playerInfo?.followersCount} </div>
             <div className="label">粉丝</div>
           </span>
-          <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div> {playerInfo?.collectCount} </div>
             <div className="label">关注</div>
           </span>
-          <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
-            <div className="label">被赞</div>
+          <span style={{ color: 'white', fontSize: '16px' }}>
+            <div> {playerInfo?.likesReceivedCount} </div>
+            <div className="label" onClick={() => { toLikes(playerInfo?.id) }} >收赞</div>
           </span>
         </div>
 
@@ -161,17 +164,10 @@ const UserCenter: React.FC = () => {
 
         <div className="card-outer-container">
           <Card className="card-inner-container">
-            {/*             <div className='fucation'>
-              <div className='card-title'><FcBusinessman className='icon' fontSize={22} /> 代理</div> <RightOutline className="right-icon" />
-            </div> */}
 
             <div className='fucation'>
               <div className='card-title'><FcSalesPerformance className='icon' fontSize={22} /> 钱包 {playerInfo?.balance} U </div> <RightOutline className="right-icon" />
             </div>
-            {/* 
-            <div className='fucation'>
-              <div className='card-title'><FcReading className='icon' fontSize={22} /> 浏览</div> <RightOutline className="right-icon" />
-            </div> */}
 
             <div className='fucation'>
               <div className='card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />

@@ -25,8 +25,6 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
   }, [otherPlayerId]);
 
 
-  const navigate = useNavigate();
-
   //返回上一层
   const back = () => {
     //setOtherPlayerId(null);
