@@ -1,33 +1,75 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, TextArea, Tag, NavBar } from 'antd-mobile';
+import { Card, Avatar, TextArea, Tag, NavBar, Toast } from 'antd-mobile';
 import { FlagOutline, MailOutline, UserCircleOutline, TravelOutline, SmileOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/pages/otherpeople/otherpeople.less';
-import { levelEnum } from '@/common/level'
+import { levelEnum } from '@/common/level';
 import { getBirthRange } from '@/common/birth';
 import { PlayerInfoType, } from '@/pages/personal/api';
 import { Request_FindPlayerById } from '@/pages/otherpeople/api';
+import { Req_Add, Req_Delete } from '@/components/relation/api';
 
 const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => {
 
-  console.log(1)
+  const [requesting, setRequesting] = useState<boolean>(false);
   const [otherPeople, setOtherPeople] = useState<PlayerInfoType>();
-
   const playerReq = async () => {
     const playerInfo = (await Request_FindPlayerById({ id: otherPlayerId })).data;
-    console.log(1, JSON.stringify(playerInfo));
     setOtherPeople(playerInfo)
+  }
+
+  //添加关注
+  const addCollectReq = async () => {
+    if (requesting) {
+      return;
+    }
+    setRequesting(true)
+
+    const addCollectResp = (await Req_Add({ targetPlayerId: otherPeople?.id }))
+    if (addCollectResp.code === 0) {
+      Toast.show({
+        icon: 'success',
+        content: '关注成功',
+        duration: 1000,
+      });
+      setOtherPeople(prev => prev ? { ...prev, collected: !prev.collected } : prev)
+    }
+    setRequesting(false)
+  }
+
+  //取消关注
+  const cancelCollectReq = async () => {
+    if (requesting) {
+      return;
+    }
+    setRequesting(true)
+
+    const cancelCollectResp = (await Req_Delete({ targetPlayerId: otherPeople?.id }))
+    if (cancelCollectResp.code === 0) {
+      Toast.show({
+        icon: 'success',
+        content: '已取消',
+        duration: 1000,
+      });
+      setOtherPeople(prev => prev ? { ...prev, collected: !prev.collected } : prev)
+    }
+    setRequesting(false)
+  }
+
+  const reqCollect = () => {
+    if (otherPeople?.collected) {
+      cancelCollectReq();
+    } else {
+      addCollectReq();
+    }
   }
 
   useEffect(() => {
     playerReq();
   }, [otherPlayerId]);
 
-
   //返回上一层
   const back = () => {
-    //setOtherPlayerId(null);
     setVisibleCloseRight?.(false)
   };
 
@@ -73,6 +115,7 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
             </div>
             <div className="right-info">
               <span >
+                <Tag onClick={reqCollect} className="collect" color={otherPeople?.collected ? 'gray' : 'rgba(243, 6, 6, 0.7)'} > {otherPeople?.collected ? '已关注' : '关注'} </Tag>
                 <Tag className="message" color="primary" > 私信 </Tag>
               </span>
             </div>

@@ -7,7 +7,6 @@ import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
 import { levelEnum } from '@/common/level'
-//全局状态管理
 import useStore from '@/zustand/store';
 
 const UserCenter: React.FC = () => {
@@ -45,8 +44,17 @@ const UserCenter: React.FC = () => {
     navigate('/setPersonal')
   }
 
+  //跳到点赞记录
   const toLikes = (playerId) => {
     navigate(`/likes?id=${playerId}`)
+  }
+  //跳到关注好友
+  const toCollect = (playerId) => {
+    navigate(`/collect?playerId=${playerId}&flag=0`)
+  }
+  //跳到粉丝列表
+  const toFollowers = (playerId) => {
+    navigate(`/followers?playerId=${playerId}&flag=1`)
   }
 
   return (
@@ -88,11 +96,11 @@ const UserCenter: React.FC = () => {
         <div className="personal-info-space">
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.followersCount} </div>
-            <div className="label">粉丝</div>
+            <div className="label" onClick={() => { toFollowers(playerInfo?.id) }}>粉丝</div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.collectCount} </div>
-            <div className="label">关注</div>
+            <div className="label" onClick={() => { toCollect(playerInfo?.id) }}>关注</div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.likesReceivedCount} </div>

@@ -6,6 +6,7 @@ import SetPersonal from '@/pages/setpersonal/SetPersonal'
 import News from '@/pages/news/News'
 import Message from '@/pages/message/Message';
 import Likes from '@/components/likes/Likes';
+import Relation from '@/components/relation/Relation';
 
 export default [
   //首页
@@ -46,5 +47,13 @@ export default [
   {
     path: '/likes',
     component: Likes
+  },
+  {
+    path: '/collect',
+    component: Relation
+  },
+  {
+    path: '/followers',
+    component: Relation
   }
 ];

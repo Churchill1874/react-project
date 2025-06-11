@@ -29,9 +29,10 @@ export interface PlayerInfoType {
   updateName?: any;
   updateTime?: any;
   tg?: any;
-  followersCount: any;
-  collectCount: any;
-  likesReceivedCount: any;
+  followersCount?: any;
+  collectCount?: any;
+  likesReceivedCount?: any;
+  collected?: boolean;
 }
 
 //获取用户信息

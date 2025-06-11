@@ -58,9 +58,9 @@ const Likes: React.FC<any> = () => {
     setLoading(false);
   };
 
-
-  useEffect(() => {
-  }, [playerId])
+  /* 
+    useEffect(() => {
+    }, [playerId]) */
 
 
   const LikesScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
