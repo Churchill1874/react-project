@@ -100,3 +100,22 @@ body {
   color: black !important; // ← 替换成你想要的颜色
   font-size: 14px; // 也可以顺便调整字体大小
 }
+@media (min-width: 1024px) {
+  .main-container {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .navbar {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 680px;
+    width: 100%;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); // 可选
+  }
+}

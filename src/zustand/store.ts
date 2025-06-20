@@ -19,6 +19,14 @@ interface AppState {
   /** 在线人数 */
   onlinePlayerCount: number;
   setOnlinePlayerCount: (randomOnlineCount: number) => void;
+
+  /** 私信未读状态 */
+  hasUnreadMessage: boolean;
+  setHasUnreadMessage: (v: boolean) => void;
+
+  /** 收到的私信消息列表 */
+  privateMessageList: any[];
+  appendPrivateMessage: (msg: any) => void;
 }
 
 const useStore = create<AppState>()(
@@ -34,6 +42,16 @@ const useStore = create<AppState>()(
       setOnlinePlayerCount: onlinePlayerCount => set(() => ({ onlinePlayerCount })),
       newsInfoList: null,
       setNewsInfoList: newsInfoList => set(() => ({ newsInfoList })),
+
+      hasUnreadMessage: false,
+      setHasUnreadMessage: v => set({ hasUnreadMessage: v }),
+
+      privateMessageList: [],
+      appendPrivateMessage: msg =>
+        set(state => ({
+          privateMessageList: [...state.privateMessageList, msg],
+          hasUnreadMessage: true,
+        })),
     }),
     {
       name: 'app-storage', // 存储到 localStorage 的键名

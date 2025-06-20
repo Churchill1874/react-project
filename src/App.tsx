@@ -3,7 +3,9 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import routes from './routers/routers';
 import Navbar from '@/components/navbar/Navbar';
 import '@/global.less'; // 确保全局样式已导入
-
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import useStore from '@/zustand/store';
 const InnerApp = () => {
   const location = useLocation();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -37,9 +39,37 @@ const InnerApp = () => {
   );
 };
 
+
 const App: React.FC = () => {
   const location = useLocation();
   const [bgColor, setBgColor] = useState<string>('#fff');
+  const { appendPrivateMessage } = useStore();
+
+  useEffect(() => {
+    const client = new Client({
+      webSocketFactory: () =>
+        new SockJS(`http://localhost:8009/ws?token-id=${localStorage.getItem('tokenId') || ''}`),
+      reconnectDelay: 5000,
+    });
+
+    client.onConnect = () => {
+      client.subscribe('/user/queue/private', (message) => {
+        const receiveMessage = JSON.parse(message.body);
+        appendPrivateMessage(receiveMessage); // ✅ 更新状态
+      });
+    };
+
+    client.onStompError = (error) => {
+      console.error('WebSocket 错误', error);
+    };
+
+    client.activate();
+
+    return () => {
+      client.deactivate(); // ✅ 清理连接
+    };
+  }, [appendPrivateMessage]);
+
 
   //获取不同菜单页面的背景颜色
   const getBgColor = () => {

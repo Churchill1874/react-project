@@ -1,9 +1,29 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import avatars from '@/common/avatar';
 import { PrivateChatType, Request_PlayerPrivateChatPage, ChatPageReqType } from '@/components/privatechat/api'
-import { Avatar, PullToRefresh, DotLoading } from 'antd-mobile'
+import { Avatar, PullToRefresh, DotLoading, Popup } from 'antd-mobile'
 import '@/components/privatechat/ChatMessage/ChatMessage.less'
+
+import '@/components/privatechat/PrivateChat.less'
 import dayjs from "dayjs";
+
+const ChatMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
+  return (
+    <>
+      {hasMore ? (
+        <>
+          <div style={{ fontSize: '15px', color: 'gray', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+            <span >加载中</span>
+            <DotLoading color='gray' />
+          </div>
+        </>
+      ) : (
+
+        <></>
+      )}
+    </>
+  )
+}
 
 // 定义 props 类型
 interface ChatMessageProps {
@@ -19,7 +39,6 @@ interface ChatMessageProps {
   visiblePrivateChatCloseRight;
 }
 
-
 const ChatMessage: React.FC<ChatMessageProps> = ({
   targetId,
   avatar,
@@ -32,6 +51,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   setChatMessagePageNum,
   visiblePrivateChatCloseRight
 }) => {
+
+
+  const [loading, setLoading] = useState(false)
 
   const bottomRef = useRef<HTMLDivElement | null>(null); // 用于滚动到底部
 
@@ -62,6 +84,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   // 获取聊天记录
   const chatMessagePageRequest = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true)
     const param: ChatPageReqType = { playerAId: targetId, pageNum: chatMessagePageNum, pageSize: 50 };
     const list: PrivateChatType[] = (await Request_PlayerPrivateChatPage(param)).data.records || [];
 
@@ -69,6 +95,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       setChatMessagePageNum(prev => prev + 1);
       setChatMessageList(prevList => [...list.reverse(), ...(prevList ?? [])]);
     }
+    setLoading(false)
   };
 
   return (
@@ -77,8 +104,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       <PullToRefresh onRefresh={() => chatMessagePageRequest()}>
 
         <div className="private-chat-popup" style={{ flex: 1, overflowY: 'auto' }}>
-          {chatMessageList.length === 0 && <div className="chat-loading"> 加载中<DotLoading color='black' /> </div>}
-          {chatMessageList.map((chatMessage, index) => {
+          <ChatMessageScrollContent hasMore={loading} />
+          {chatMessageList?.map((chatMessage, index) => {
             return (
               <div key={index}>
 
@@ -118,7 +145,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           <div ref={bottomRef}></div>
         </div>
 
+
       </PullToRefresh>
+
+
     </div>
 
   );

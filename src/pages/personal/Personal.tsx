@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, TextArea, Tag, Toast } from 'antd-mobile';
+import { Card, Avatar, TextArea, Tag, Toast, Modal, CenterPopup } from 'antd-mobile';
 import { FcSalesPerformance, FcImport, FcHeadset } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
 import { levelEnum } from '@/common/level'
+import CustomerContact from '@/components/tools/CustomerContact';
 import useStore from '@/zustand/store';
 
 const UserCenter: React.FC = () => {
@@ -15,6 +16,13 @@ const UserCenter: React.FC = () => {
   const playerReq = async () => {
     const playerInfo = (await Request_GetPlayerInfo()).data;
     setPlayerInfo(playerInfo)
+  }
+
+  const showCustomerContact = () => {
+    Modal.show({
+      content: <CustomerContact text={'@FengXiao170'} />,
+      closeOnMaskClick: true,
+    })
   }
 
   useEffect(() => {
@@ -177,7 +185,7 @@ const UserCenter: React.FC = () => {
               <div className='card-title'><FcSalesPerformance className='icon' fontSize={22} /> 钱包 {playerInfo?.balance} U </div> <RightOutline className="right-icon" />
             </div>
 
-            <div className='fucation'>
+            <div className='fucation' onClick={() => showCustomerContact()}>
               <div className='card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />
             </div>
 
@@ -188,6 +196,7 @@ const UserCenter: React.FC = () => {
         </div>
 
       </div>
+
     </>
   );
 };

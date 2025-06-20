@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatPageRespType } from '@/components/privatechat/api'
-import { Client } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button, Toast, TextArea } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/components/privatechat/PrivateChat.less'
 import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage'
+import OtherPeople from '@/pages/otherpeople/otherpeople'
+import useStore from "@/zustand/store";
 
 const PrivateChat: React.FC = () => {
 
@@ -17,19 +17,18 @@ const PrivateChat: React.FC = () => {
     avatar: any;
     level: any;
   }
-  const [loginPlayer, setLoginPlayer] = useState<PlayerBaseType>({ playerId: null, name: "", avatar: "", level: "" });
+  const { playerInfo, privateMessageList, appendPrivateMessage, setHasUnreadMessage } = useStore();
   //弹窗状态相关
   const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
   const [privateChatPopup, setPrivateChatPopup] = useState<PlayerBaseType>({ playerId: null, name: "", avatar: "", level: "" })
   const [chatMessageList, setChatMessageList] = useState<PrivateChatType[]>([]);
   const [chatMessagePageNum, setChatMessagePageNum] = useState<number>(1);
-
+  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   // 输入框的内容
   const [input, setInput] = useState("");
   // 用于显示接收到的消息
   const [privateChatList, setPrivateChatList] = useState<PrivateChatListType[]>([]);
   //websocket实例
-  const [stompClient, setStompClient] = useState<Client | null>(null);
 
   // 在 Input 上通过 value 绑定状态，并在 onChange 回调里更新状态
   const handleInputChange = (val: string) => {
@@ -39,7 +38,7 @@ const PrivateChat: React.FC = () => {
   // 获取聊天记录外层列表
   const privateChatListRequest = async () => {
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
-    setLoginPlayer({ 'playerId': privateChatListResp.loginId, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
+    //setLoginPlayer({ 'playerId': privateChatListResp.loginId, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
     setPrivateChatList(privateChatListResp.list);
   }
 
@@ -55,7 +54,7 @@ const PrivateChat: React.FC = () => {
 
     //如果当前弹窗记录 正好 发送人账号 是 登录人
     //整理获取聊天对方账号信息
-    if (param.sendId === loginPlayer?.playerId) {
+    if (param.sendId === playerInfo?.id) {
       playerId = param.receiveId;
       name = param.receiveName;
       avatar = param.receiveAvatarPath;
@@ -75,17 +74,11 @@ const PrivateChat: React.FC = () => {
 
     const target: PlayerBaseType = { playerId, name, avatar, level }
     setPrivateChatPopup(target)
+    updatePrivateChatList(param.id)
   }
 
   // 发送消息
   const sendMessage = () => {
-    if (!stompClient || !stompClient.connected) { //  修正 `active` 为 `connected`
-      Toast.show('8')
-      console.warn("STOMP 未连接，无法发送消息");
-      return;
-    }
-
-    Toast.show(input)
     if (!input.trim()) return;
 
     const message = {
@@ -93,68 +86,38 @@ const PrivateChat: React.FC = () => {
       status: false,
       createTime: new Date().toISOString(),
       createName: '',
-      sendId: loginPlayer?.playerId,
+      sendId: playerInfo?.id,
       receiveId: privateChatPopup.playerId,
       content: input,
       type: 1,
       isSender: true
     };
 
-    stompClient.publish({
-      destination: "/app/chat/private",
-      body: JSON.stringify(message),
-    });
-
+    appendPrivateMessage(message);
     setChatMessageList(prevList => [...(prevList ?? []), message]);
     setInput("");
   };
 
 
-  useEffect(() => {
-    const client = new Client({
-      webSocketFactory: () => new SockJS(`http://localhost:8009/ws?token-id=${localStorage.getItem('tokenId') || ''}`),
-      reconnectDelay: 5000, // STOMP 内置重连，不需要手动 activate()
-    });
 
-    client.onConnect = () => {
-      client.subscribe("/user/queue/private", (message) => {
-        const receiveMessage = JSON.parse(message.body);
-        console.log("收到消息:", receiveMessage);
-        setChatMessageList(prevList => [...(prevList ?? []), receiveMessage]);
-
-      });
-    };
-
-    client.onStompError = (error) => {
-      console.error("STOMP 连接失败:", error);
-    };
-
-    client.onDisconnect = () => {
-      console.warn("STOMP 连接已断开");
-    };
-
-    client.activate();
-    setStompClient(client);
-
-    return () => {
-      console.log("组件卸载，关闭 WebSocket 连接");
-      client.deactivate(); // 确保组件卸载时正确关闭 WebSocket
-    };
-  }, []); // 组件挂载时执行，卸载时清理
-
-
-
+  const updatePrivateChatList = (chatId: any) => {
+    setPrivateChatList(
+      prev =>
+        prev.map(
+          chat => {
+            if (chat.id === chatId) {
+              return { ...chat, notRead: false }
+            }
+            return chat
+          }
+        )
+    )
+  }
 
 
   useEffect(() => {
     privateChatListRequest();
-
-
   }, []); // 组件挂载时执行
-
-
-
-
 
   return (<>
 
@@ -165,9 +128,9 @@ const PrivateChat: React.FC = () => {
         className="private-messgae-card"
         title={
           <div className="private-messgae-title">
-            <Avatar src={avatars[chatInfo.sendId === loginPlayer?.playerId ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
+            <Avatar src={avatars[chatInfo.sendId === playerInfo?.id ? chatInfo.receiveAvatarPath : chatInfo.sendAvatarPath]} className="private-messgae-avatar" />
             <div className="private-messgae-content">
-              <span className="private-messgae-name">{chatInfo.sendId === loginPlayer?.playerId ? chatInfo.receiveName : chatInfo.sendName}</span>
+              <span className="private-messgae-name">{chatInfo.sendId === playerInfo?.id ? chatInfo.receiveName : chatInfo.sendName}</span>
               <Ellipsis
                 className="private-message-chat"
                 direction='end'
@@ -207,9 +170,9 @@ const PrivateChat: React.FC = () => {
       key={visiblePrivateChatCloseRight ? "open" : "close"}
     >
 
-      <div className="private-icon-avatar-wrapper" onClick={() => { setVisiblePrivateChatCloseRight(false); }}>
-        <LeftOutline className="icon" />
-        <Avatar className="avatar" src={avatars[privateChatPopup.avatar]} />
+      <div className="private-icon-avatar-wrapper" >
+        <LeftOutline className="icon" onClick={() => { setVisiblePrivateChatCloseRight(false); }} />
+        <Avatar className="avatar" src={avatars[privateChatPopup.avatar]} onClick={() => setVisibleCloseRight(true)} />
         <span className="name"> {privateChatPopup.name} </span>
       </div>
 
@@ -217,8 +180,8 @@ const PrivateChat: React.FC = () => {
         targetId={privateChatPopup.playerId}
         avatar={privateChatPopup.avatar}
         level={privateChatPopup.level}
-        currentPlayerId={loginPlayer?.playerId}
-        currentPlayerAvatar={loginPlayer?.avatar}
+        currentPlayerId={playerInfo?.id}
+        currentPlayerAvatar={playerInfo?.avatarPath}
         chatMessageList={chatMessageList}
         setChatMessageList={setChatMessageList}
         chatMessagePageNum={chatMessagePageNum}
@@ -232,7 +195,18 @@ const PrivateChat: React.FC = () => {
           发送
         </Button>
       </div>
+
+      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+        position='right'
+        closeOnMaskClick
+        visible={visibleCloseRight}
+        onClose={() => { setVisibleCloseRight(false) }}>
+        <OtherPeople setVisibleCloseRight={setVisibleCloseRight} otherPlayerId={privateChatPopup.playerId} />
+      </Popup>
+
     </Popup>
+
+
   </>)
 }
 

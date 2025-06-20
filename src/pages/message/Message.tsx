@@ -86,13 +86,12 @@ const Message: React.FC = () => {
   return (
     <>
       <Tabs className="message-tabs" activeLineMode='fixed'>
-        <Tabs.Tab title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
+        <Tabs.Tab title={'2' ? <Badge content={'~'} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
           <PrivateChat />
         </Tabs.Tab>
 
-
         <Tabs.Tab
-          title={'1' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>系统消息</Badge> : '系统消息'}
+          title={'`' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>系统消息</Badge> : '系统消息'}
           key='system-message'
         >
           <Card className="message-custom-card">
@@ -104,6 +103,9 @@ const Message: React.FC = () => {
                   alt="Example"
                   fit="contain"
                 />
+              </div>
+              <div className="message-text-area">
+                标题
               </div>
               <div className="message-text-area">
                 内容内容内容内容内容内容内容内容内容内容内容内容

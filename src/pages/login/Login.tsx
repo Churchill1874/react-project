@@ -171,7 +171,7 @@ const Login: React.FC = () => {
                 ]}
                 extra={<Image onClick={captchaImageExchange} src={captcha} alt="验证码" width={80} height={40} />}
               >
-                <Input placeholder="请输入" />
+                <Input placeholder="请输入" autoComplete="off" />
               </Form.Item>
             </Form>
           </Tabs.Tab>
@@ -275,7 +275,7 @@ const Login: React.FC = () => {
                 ]}
                 extra={<Image onClick={captchaImageExchange} src={captcha} alt="验证码" width={80} height={40} />}
               >
-                <Input placeholder="请输入" />
+                <Input placeholder="请输入" autoComplete="off" />
               </Form.Item>
             </Form>
           </Tabs.Tab>
