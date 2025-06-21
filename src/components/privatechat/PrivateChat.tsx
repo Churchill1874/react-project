@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { PrivateChatType, Request_PrivateChatList, PrivateChatListType, PrivateChatPageRespType } from '@/components/privatechat/api'
-import { Badge, Card, Avatar, Ellipsis, Popup, Input, Button, Toast, TextArea } from 'antd-mobile'
+import { Badge, Card, Avatar, Ellipsis, Popup, Button, Toast, TextArea } from 'antd-mobile'
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/components/privatechat/PrivateChat.less'
 import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage'
 import OtherPeople from '@/pages/otherpeople/otherpeople'
 import useStore from "@/zustand/store";
+import { getStompClient } from "@/utils/Stomp";
+import dayjs from 'dayjs';
+
 
 const PrivateChat: React.FC = () => {
 
@@ -17,7 +20,8 @@ const PrivateChat: React.FC = () => {
     avatar: any;
     level: any;
   }
-  const { playerInfo, privateMessageList, appendPrivateMessage, setHasUnreadMessage } = useStore();
+  const { playerInfo, setHasUnreadMessage } = useStore();
+
   //弹窗状态相关
   const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false)
   const [privateChatPopup, setPrivateChatPopup] = useState<PlayerBaseType>({ playerId: null, name: "", avatar: "", level: "" })
@@ -38,7 +42,6 @@ const PrivateChat: React.FC = () => {
   // 获取聊天记录外层列表
   const privateChatListRequest = async () => {
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
-    //setLoginPlayer({ 'playerId': privateChatListResp.loginId, 'name': privateChatListResp.loginName, 'level': privateChatListResp.loginLevel, 'avatar': privateChatListResp.loginAvatar })
     setPrivateChatList(privateChatListResp.list);
   }
 
@@ -46,6 +49,7 @@ const PrivateChat: React.FC = () => {
   //打开私信弹窗
   const showPrivateChatPopup = (param: PrivateChatListType) => {
     setVisiblePrivateChatCloseRight(true)
+    setChatMessagePageNum(1)
 
     let playerId;
     let name;
@@ -68,7 +72,6 @@ const PrivateChat: React.FC = () => {
 
     if (privateChatPopup.playerId !== playerId) {
       //  清空子组件的聊天记录
-      setChatMessageList([]);
       setChatMessagePageNum(1);
     }
 
@@ -84,21 +87,49 @@ const PrivateChat: React.FC = () => {
     const message = {
       id: '',
       status: false,
-      createTime: new Date().toISOString(),
+      createTime: dayjs().format('YYYY-MM-DD HH:mm'), // ✅ 格式化为你要的格式
       createName: '',
-      sendId: playerInfo?.id,
+      sendId: null,
       receiveId: privateChatPopup.playerId,
       content: input,
       type: 1,
       isSender: true
     };
 
-    appendPrivateMessage(message);
+    //setHasUnreadMessage(message);
     setChatMessageList(prevList => [...(prevList ?? []), message]);
+
+    //更新聊天列表的最后一条消息内容和时间（UI上的外层卡片）
+    setPrivateChatList(prev => {
+      const updated = prev.map(chat => {
+        const matchId =
+          (chat.sendId === playerInfo?.id && chat.receiveId === privateChatPopup.playerId)
+          ||
+          (chat.receiveId === playerInfo?.id && chat.sendId === privateChatPopup.playerId);
+        if (matchId) {
+          return {
+            ...chat,
+            content: input,
+            createTime: message.createTime
+          };
+        }
+        return chat;
+      });
+
+      // 重新排序，createTime 字符串可以直接比较（因格式是 YYYY-MM-DD HH:mm）
+      return updated.sort((a, b) => (dayjs(b.createTime).isAfter(dayjs(a.createTime)) ? 1 : -1));
+    });
+
+
+    const client = getStompClient();
+    if (client) {
+      client.publish({ destination: '/app/chat/private', body: JSON.stringify(message) });
+    } else {
+      Toast.show({ content: '连接尚未建立', icon: 'fail' });
+    }
+
     setInput("");
   };
-
-
 
   const updatePrivateChatList = (chatId: any) => {
     setPrivateChatList(
@@ -142,7 +173,7 @@ const PrivateChat: React.FC = () => {
         }
       >
         <div className="private-message-time">
-          <div className="left">{chatInfo.createTime}</div>
+          <div className="left">{dayjs(chatInfo.createTime).format('YYYY-MM-DD HH:mm')}</div>
           {chatInfo.notRead &&
             <div className="right">
               <Badge content={Badge.dot} />

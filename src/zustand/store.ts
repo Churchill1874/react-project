@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
+import { Client } from '@stomp/stompjs';
 
 // 定义综合状态类型
 interface AppState {
@@ -24,9 +25,11 @@ interface AppState {
   hasUnreadMessage: boolean;
   setHasUnreadMessage: (v: boolean) => void;
 
-  /** 收到的私信消息列表 */
-  privateMessageList: any[];
-  appendPrivateMessage: (msg: any) => void;
+  stompClient: Client | null;
+  setStompClient: (client: Client) => void;
+
+  tokenId: string;
+  setTokenId: (tokenId: string) => void;
 }
 
 const useStore = create<AppState>()(
@@ -46,16 +49,15 @@ const useStore = create<AppState>()(
       hasUnreadMessage: false,
       setHasUnreadMessage: v => set({ hasUnreadMessage: v }),
 
-      privateMessageList: [],
-      appendPrivateMessage: msg =>
-        set(state => ({
-          privateMessageList: [...state.privateMessageList, msg],
-          hasUnreadMessage: true,
-        })),
+      stompClient: null,
+      setStompClient: (client: Client) => set({ stompClient: client }),
+
+      tokenId: '',
+      setTokenId: tokenId => set({ tokenId: tokenId }),
     }),
     {
       name: 'app-storage', // 存储到 localStorage 的键名
-      partialize: state => ({ playerInfo: state.playerInfo }), // 仅持久化 playerInfo
+      partialize: state => ({ playerInfo: state.playerInfo, tokenId: state.tokenId }), // 仅持久化 playerInfo
     },
   ),
 );

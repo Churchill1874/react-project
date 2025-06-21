@@ -3,7 +3,7 @@ import { serverTarget } from '@/common/api';
 
 export interface LoginType {
   code: number;
-  data: { account: string; level: any; avatarPath: string; loginTime: string; name: string; status: any; tokenId: string };
+  data: { account: string; level: any; avatarPath: string; loginTime: string; name: string; status: any; tokenId: string; id: string };
   msg: string;
 }
 export interface RegisterType {

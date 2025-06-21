@@ -6,6 +6,8 @@ import '@/global.less'; // 确保全局样式已导入
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import useStore from '@/zustand/store';
+import { Toast } from 'antd-mobile'
+
 const InnerApp = () => {
   const location = useLocation();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -43,19 +45,26 @@ const InnerApp = () => {
 const App: React.FC = () => {
   const location = useLocation();
   const [bgColor, setBgColor] = useState<string>('#fff');
-  const { appendPrivateMessage } = useStore();
+  const { setHasUnreadMessage } = useStore();
+  const { setStompClient } = useStore();
+  const tokenId = useStore(state => state.tokenId);
 
   useEffect(() => {
+    Toast.show({ content: tokenId, icon: 'fail' });
+    if (!tokenId) return; // ⚠️ 没有 token 不连接 WebSocket
+
     const client = new Client({
       webSocketFactory: () =>
-        new SockJS(`http://localhost:8009/ws?token-id=${localStorage.getItem('tokenId') || ''}`),
+        new SockJS(`http://localhost:8009/ws?token-id=${tokenId || ''}`),
       reconnectDelay: 5000,
     });
 
+
     client.onConnect = () => {
+      setStompClient(client);
       client.subscribe('/user/queue/private', (message) => {
-        const receiveMessage = JSON.parse(message.body);
-        appendPrivateMessage(receiveMessage); // ✅ 更新状态
+        //const receiveMessage = JSON.parse(message.body);
+        setHasUnreadMessage(true); // ✅ 更新状态
       });
     };
 
@@ -68,7 +77,7 @@ const App: React.FC = () => {
     return () => {
       client.deactivate(); // ✅ 清理连接
     };
-  }, [appendPrivateMessage]);
+  }, [tokenId]);
 
 
   //获取不同菜单页面的背景颜色

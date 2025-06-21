@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Toast } from 'antd-mobile';
 import { NavigateFunction } from 'react-router-dom';
+import useStore from '@/zustand/store';
+
 let interceptorsRegistered = false; // 添加标志
 
 const setupAxiosInterceptors = (navigate: NavigateFunction) => {
@@ -17,8 +19,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
       //请求头设置数据格式
       config.headers['Content-Type'] = 'application/json';
 
-      //tokenId令牌
-      const tokenId = localStorage.getItem('tokenId');
+      let tokenId = useStore.getState().tokenId;
       if (tokenId) {
         config.headers['TOKEN-ID'] = tokenId;
       }

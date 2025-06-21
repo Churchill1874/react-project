@@ -6,6 +6,7 @@ import '@/components/privatechat/ChatMessage/ChatMessage.less'
 
 import '@/components/privatechat/PrivateChat.less'
 import dayjs from "dayjs";
+import useStore from "@/zustand/store";
 
 const ChatMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -32,9 +33,9 @@ interface ChatMessageProps {
   level: number;
   currentPlayerId: number | null;
   currentPlayerAvatar: string;
+  chatMessagePageNum: number;
   chatMessageList: PrivateChatType[];
   setChatMessageList: React.Dispatch<React.SetStateAction<PrivateChatType[]>>;
-  chatMessagePageNum: number;
   setChatMessagePageNum: React.Dispatch<React.SetStateAction<number>>;
   visiblePrivateChatCloseRight;
 }
@@ -44,14 +45,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   avatar,
   level,
   currentPlayerId,
-  currentPlayerAvatar,
   chatMessageList,
   setChatMessageList,
+  currentPlayerAvatar,
   chatMessagePageNum,
   setChatMessagePageNum,
   visiblePrivateChatCloseRight
 }) => {
-
 
   const [loading, setLoading] = useState(false)
 
@@ -71,6 +71,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
 
   useEffect(() => {
     chatMessagePageRequest();
+    setChatMessageList([]);
   }, [targetId])
 
   //滚动到底部聊天最后一句
@@ -94,6 +95,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     if (list.length > 0) {
       setChatMessagePageNum(prev => prev + 1);
       setChatMessageList(prevList => [...list.reverse(), ...(prevList ?? [])]);
+
     }
     setLoading(false)
   };
@@ -106,8 +108,28 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className="private-chat-popup" style={{ flex: 1, overflowY: 'auto' }}>
           <ChatMessageScrollContent hasMore={loading} />
           {chatMessageList?.map((chatMessage, index) => {
+
+            const prevMessage = chatMessageList[index - 1];
+            const showTime =
+              index === 0 ||
+              (prevMessage &&
+                (dayjs(chatMessage.createTime).diff(prevMessage.createTime, 'minute') > 5 ||
+                  !dayjs(chatMessage.createTime).isSame(prevMessage.createTime, 'day')));
+
             return (
               <div key={index}>
+
+                {/* 时间 */}
+                {showTime &&
+                  <div className='private-chat-time'>
+                    {dayjs(chatMessage.createTime).format("YYYY-MM-DD HH:mm")}
+                  </div>
+                }
+                {!showTime &&
+                  <div className='private-chat-time-point'>
+                    {/* {dayjs(chatMessage.createTime).format("YYYY-MM-DD HH:mm")} */}
+                  </div>
+                }
 
                 <div className={`private-chat-message ${chatMessage.isSender ? "right" : "left"}`}>
                   {/* 左侧头像 */}
@@ -126,14 +148,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                   {chatMessage.isSender && (
                     <Avatar src={avatars[currentPlayerAvatar]} className="private-chat-avatar right" />
                   )}
-
-
                 </div>
 
-                {/* 时间 */}
-                <div className={`private-chat-time ${chatMessage.isSender ? "right" : "left"}`}>
-                  {dayjs(chatMessage.createTime).format("YYYY-MM-DD HH:mm")}
-                </div>
+
+
               </div>
 
             );

@@ -23,7 +23,7 @@ interface LoginType {
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const [captcha, setCaptcha] = useState('');
-  const { playerInfo, setPlayerInfo } = useStore();
+  const { setTokenId, setPlayerInfo } = useStore();
 
 
   //请求图片验证啊
@@ -39,9 +39,10 @@ const Login: React.FC = () => {
     const { code, data, msg } = await Request_Login(values);
     if (code === 0) {
       const tokenId = data.tokenId;
-      localStorage.setItem('tokenId', tokenId);
+      //localStorage.setItem('tokenId', tokenId);
+      setTokenId(tokenId);
 
-      setPlayerInfo({ account: data.account, name: data.name, avatarPath: data.avatarPath, level: data.level, status: data.status })
+      setPlayerInfo({ account: data.account, name: data.name, avatarPath: data.avatarPath, level: data.level, status: data.status, id: data.id })
 
       Toast.show({
         icon: 'success',
@@ -71,7 +72,8 @@ const Login: React.FC = () => {
     const { code, data, msg } = await Request_Register(values);
     if (code === 0) {
       const tokenId = data.tokenId;
-      localStorage.setItem('tokenId', tokenId);
+      //localStorage.setItem('tokenId', tokenId);
+      setTokenId(tokenId); // 让 WebSocket 建立连接
 
       Toast.show({
         icon: 'success',
