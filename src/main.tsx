@@ -5,7 +5,7 @@ import '@/global.less';
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
 import setupAxiosInterceptors from './api/setupAxiosInterceptors';
 import ScrollToTop from '@/utils/ScrollToTop';
-
+import { StompProvider } from '@/utils/StompContext'; // ✅ 引入 Context Provider
 
 // 在应用启动时设置Axios拦截器
 const SetupInterceptors = () => {
@@ -25,11 +25,11 @@ if (!container) {
 const root = createRoot(container);
 
 root.render(
-
   <Router future={{ v7_relativeSplatPath: true }}>
-    <ScrollToTop />
-    <SetupInterceptors />
-    <App />
-  </Router>,
-
+    <StompProvider> {/* ✅ 包裹 App */}
+      <ScrollToTop />
+      <SetupInterceptors />
+      <App />
+    </StompProvider>
+  </Router>
 );

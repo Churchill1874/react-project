@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Tabs,
   Badge,
@@ -27,11 +27,20 @@ import SocietyInfo from "@/components/society/societyinfo/SocietyInfo";
 import TopicInfo from "@/components/topic/topicinfo/TopicInfo";
 import PromotionInfo from "@/components/promotion/promotioninfo/PromotionInfo";
 import { NewsTypeEnum } from '@/common/NewsTypeEnum';
+import OtherPeople from "@/pages/otherpeople/otherpeople";
+import useStore from "@/zustand/store";
+import { FcComments, FcMediumPriority, FcVoicePresentation } from "react-icons/fc";
 
 
 const Message: React.FC = () => {
-  // ws相关
-  const [messages, setMessages] = useState<string[]>([]);
+  //点击头像
+  const [otherInfoCloseRight, setOtherInfoCloseRight] = useState(false)
+  const [otherPlayerId, setOtherPlayerId] = useState<string>()
+
+  //系统消息
+  const [systemMessageList, setSystemMessageList] = useState<SystemMessagePageType[]>([]);
+  const [systemMessagePageNum, setSystemMessagePageNum] = useState<number>(1);
+  const [systemMessageHasMore, setSystemMessageHasMore] = useState<boolean>(true);
 
   //评论相关
   const [commentList, setCommentList] = useState<SystemMessagePageType[]>();
@@ -43,6 +52,18 @@ const Message: React.FC = () => {
   const [newsId, setNewsId] = useState<string>('0');
   const commentRef = useRef<any>(null);
   const [popupKey, setPopupKey] = useState(0);
+
+  //菜单key
+  const {
+    messageTabKey,
+    setMessageTabKey,
+    privateMessageUnread,
+    setPrivateMessageUnread,
+    systemMessageUnread,
+    setSystemMessageUnread,
+    commentMessageUnread,
+    setCommentMessageUnread
+  } = useStore();
 
 
   // 获取评论数据
@@ -69,6 +90,35 @@ const Message: React.FC = () => {
     }
   }
 
+  // 获取系统信息数据
+  const systemMessagePageRequest = async (isReset: boolean) => {
+    const pageNum = isReset ? 1 : systemMessagePageNum;
+    const param: SystemMessagePageReqType = { pageNum: pageNum, pageSize: 20, messageType: 1 };
+    const list: SystemMessagePageType[] = (await Request_SystemMessagePage(param)).data.records || [];
+    if (list.length > 0) {
+      if (isReset) {
+        setSystemMessagePageNum(() => 2);
+        setSystemMessageList(list);
+        setSystemMessageHasMore(true);
+      } else {
+        if (JSON.stringify(list) !== JSON.stringify(systemMessageList)) {
+          setSystemMessagePageNum(prev => (prev ?? 1) + 1)
+          setSystemMessageList([...(systemMessageList ?? []), ...list])
+          setSystemMessageHasMore(true)
+        } else {
+          setSystemMessageHasMore(false)
+        }
+      }
+    } else {
+      setSystemMessageHasMore(false)
+    }
+  }
+
+  const changeTabKey = (key: string) => {
+    console.log('key:', key)
+    setMessageTabKey(key)
+  }
+
   const SystemMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     return (
       <>
@@ -83,70 +133,110 @@ const Message: React.FC = () => {
       </>
     )
   }
+
+  useEffect(() => {
+    if (messageTabKey === 'private-message') {
+      setPrivateMessageUnread(false)
+    }
+    if (messageTabKey === 'system-message') {
+      setSystemMessageUnread(false)
+    }
+    if (messageTabKey === 'comment-message') {
+      setCommentMessageUnread(false)
+    }
+  }, [messageTabKey])
+
   return (
     <>
-      <Tabs className="message-tabs" activeLineMode='fixed'>
-        <Tabs.Tab title={'2' ? <Badge content={'~'} style={{ '--right': '-10px', '--top': '8px' }}>私信</Badge> : '私信'} key='private-message'>
+      <Tabs className="message-tabs" activeLineMode='fixed' activeKey={messageTabKey} onChange={(key) => { changeTabKey(key) }}>
+        {/*****************************************私信内容 *****************************************************/}
+        <Tabs.Tab title={
+          <div style={{ display: 'flex', justifyItems: 'center' }}>
+            {privateMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
+            私信
+            <FcComments style={{ marginLeft: '3px' }} fontSize={14} />
+          </div>}
+          key='private-message'>
           <PrivateChat />
         </Tabs.Tab>
 
+
+
+
+        {/*****************************************系统消息内容 *****************************************************/}
         <Tabs.Tab
-          title={'`' ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>系统消息</Badge> : '系统消息'}
+          title={
+            <div style={{ display: 'flex', justifyItems: 'center' }}>
+              {systemMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
+              系统消息
+              <FcMediumPriority style={{ marginLeft: '3px' }} fontSize={14} />
+            </div>
+          }
           key='system-message'
         >
-          <Card className="message-custom-card">
-            <div className="card-content">
-              <div className="message-news-image-container">
-                <Image
-                  className="message-news-image"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s"
-                  alt="Example"
-                  fit="contain"
-                />
+          {systemMessageList && systemMessageList.map((systemMessage, index) => (
+            <Card className="message-custom-card" key={index}>
+              <div className="card-content">
+                {systemMessage.imagePath &&
+                  <div className="message-news-image-container">
+                    <Image
+                      className="message-news-image"
+                      //src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrZq5wFJ_FtNWQQGdRkmXonQOEuMVpWuWm3w&s"
+                      src={systemMessage.imagePath}
+                      alt="Example"
+                      fit="contain"
+                    />
+                  </div>
+                }
+                {systemMessage.title &&
+                  <div className="message-text-title">
+                    {systemMessage.title}
+                  </div>
+                }
+                {systemMessage.content &&
+                  <div className="message-text-area">
+                    {systemMessage.avatar &&
+                      <Avatar onClick={() => { setOtherInfoCloseRight(true); setOtherPlayerId(systemMessage.senderId) }} className="message-avatar" src={avatars[systemMessage.avatar]} />
+                    }
+                    {systemMessage.content}
+                  </div>
+                }
+                <Divider className='message-line' />
+                <div className="message-time">
+                  {systemMessage.createTime}
+                </div>
               </div>
-              <div className="message-text-area">
-                标题
-              </div>
-              <div className="message-text-area">
-                内容内容内容内容内容内容内容内容内容内容内容内容
-              </div>
-              <Divider className='message-line' />
-              <div className="message-time">
-                2025-01-01 10:15
-              </div>
-            </div>
-          </Card>
+            </Card>
+          ))
+          }
 
-          <Card className="message-custom-card">
-            <div className="card-content">
-              <div className="message-text-area">
-                内容内容内容内容内容内容内容内容内容内容内容内容
-              </div>
-              <Divider className='message-line' />
-              <div className="message-time">
-                2025-01-01 10:15
-              </div>
-            </div>
-          </Card>
+          <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+            position='right'
+            closeOnMaskClick
+            visible={otherInfoCloseRight}
+            onClose={() => { setOtherInfoCloseRight(false) }}>
+            <OtherPeople setVisibleCloseRight={setOtherInfoCloseRight} otherPlayerId={otherPlayerId} />
+          </Popup>
 
-          <Card className="message-custom-card">
-            <div className="card-content">
-              <div className="message-text-area">
-                内容内容内容内容内容内容内容内容内容内容内容内容
-              </div>
-              <Divider className='message-line' />
-              <div className="message-time">
-                2025-01-01 10:15
-              </div>
-            </div>
-          </Card>
+          <InfiniteScroll
+            loadMore={() => systemMessagePageRequest(false)}
+            hasMore={systemMessageHasMore}
+          >
+            <SystemMessageScrollContent hasMore={systemMessageHasMore} />
+          </InfiniteScroll>
+
         </Tabs.Tab>
 
 
+
+
+        {/*****************************************评论内 *****************************************************/}
         <Tabs.Tab
-          title={'1'
-            ? <Badge content={1} style={{ '--right': '-10px', '--top': '8px' }}>收到的评论</Badge>
-            : '评论'
+          title={<div style={{ display: 'flex', justifyItems: 'center' }}>
+            {commentMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
+            评论
+            <FcVoicePresentation style={{ marginLeft: '3px' }} fontSize={18} />
+          </div>
           }
           key='comment-message'
         >
@@ -161,7 +251,7 @@ const Message: React.FC = () => {
                   </div>
                   <div className="message-text-area">
                     <span className="message-chat-item">
-                      <Avatar className="avatar" src={avatars[1]} />
+                      <Avatar className="avatar" src={avatars[comment.avatar]} />
                       <span className="message-content">
                         <span>
                           {comment.createName}

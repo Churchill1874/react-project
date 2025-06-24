@@ -1,10 +1,22 @@
 import { Client } from '@stomp/stompjs';
-import useStore from '@/zustand/store';
+import { useContext } from 'react';
+import { StompContext } from '@/utils/StompContext';
 
-export const getStompClient = (): Client | null => {
-  const client = useStore.getState().stompClient as Client;
-  if (client && client.connected) {
-    return client;
+/**
+ * 自定义 Hook：获取 STOMP 客户端状态（client 实例 和 connected 状态）
+ */
+export const useStompClientStatus = (): {
+  client: Client | null;
+  connected: boolean;
+} => {
+  const context = useContext(StompContext);
+
+  if (!context) {
+    throw new Error('useStompClientStatus must be used within a StompProvider');
   }
-  return null;
+
+  return {
+    client: context.client,
+    connected: context.connected,
+  };
 };

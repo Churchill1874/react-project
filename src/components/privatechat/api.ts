@@ -2,25 +2,26 @@ import axios from 'axios';
 import { serverTarget } from '@/common/api';
 
 export interface PrivateChatType {
-  id?: any;
-  sendId: any;
-  receiveId: any;
+  id?: string;
+  sendId: string;
+  receiveId: string;
   content: any;
   status: any;
   type: any;
   createTime: any;
   createName: any;
   isSender?: any;
+  notRead: any;
 }
 
 export interface PrivateChatListType {
-  id: any;
+  id: string;
   sendName: any;
-  sendId: number;
+  sendId: string;
   sendAvatarPath: any;
   sendLevel: any;
   receiveName: any;
-  receiveId: number;
+  receiveId: string;
   receiveAvatarPath: any;
   receiveLevel: any;
   content: any;
@@ -82,4 +83,12 @@ export const Request_PrivateChatList = async (): Promise<PrivateChatRespType> =>
 const PlayerPrivateChatPagePath = '/player/privateChat/playerPrivateChatPage';
 export const Request_PlayerPrivateChatPage = async (param: ChatPageReqType): Promise<PlayerPrivateChatPageRespType> => {
   return (await axios.post(serverTarget + PlayerPrivateChatPagePath, param)).data;
+};
+
+/**
+ * 清除指定人所有的未读状态
+ */
+const CleanUnreadStatusPath = '/player/privateChat/cleanUnreadStatus';
+export const Request_CleanUnreadStatus = async (param: { id: string }): Promise<{ code: string; data: any; msg: string }> => {
+  return (await axios.post(serverTarget + CleanUnreadStatusPath, param)).data;
 };

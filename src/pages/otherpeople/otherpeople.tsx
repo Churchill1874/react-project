@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, Avatar, TextArea, Tag, NavBar, Toast } from 'antd-mobile';
-import { FlagOutline, MailOutline, UserCircleOutline, TravelOutline, SmileOutline } from 'antd-mobile-icons';
+import { Card, Avatar, TextArea, Tag, NavBar, Toast, Popup, Button } from 'antd-mobile';
+import { FlagOutline, MailOutline, UserCircleOutline, TravelOutline, SmileOutline, LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/pages/otherpeople/otherpeople.less';
 import { levelEnum } from '@/common/level';
@@ -8,14 +8,18 @@ import { getBirthRange } from '@/common/birth';
 import { PlayerInfoType, } from '@/pages/personal/api';
 import { Request_FindPlayerById } from '@/pages/otherpeople/api';
 import { Req_Add, Req_Delete } from '@/components/relation/api';
+import ChatMessage from '@/components/privatechat/ChatMessage/ChatMessage';
+import useStore from '@/zustand/store';
 
 const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => {
-
+  const [visiblePrivateChatCloseRight, setVisiblePrivateChatCloseRight] = useState(false);
   const [requesting, setRequesting] = useState<boolean>(false);
   const [otherPeople, setOtherPeople] = useState<PlayerInfoType>();
+  const { playerInfo } = useStore();
+
   const playerReq = async () => {
-    const playerInfo = (await Request_FindPlayerById({ id: otherPlayerId })).data;
-    setOtherPeople(playerInfo)
+    const otherPlayerInfo = (await Request_FindPlayerById({ id: otherPlayerId })).data;
+    setOtherPeople(otherPlayerInfo)
   }
 
   //添加关注
@@ -87,11 +91,11 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
               <Avatar className="personal-avatar" src={avatars[otherPeople?.avatarPath]} />
             </div>
             <div className="other-base-info">
-              {/* <span className="name"> 昵称: {playerInfo?.name} </span> */}
+              {/* <span className="name"> 昵称: {otherPlayerInfo?.name} </span> */}
               <span className="account">
                 账号: {otherPeople?.account}
 
-                {/*                 <span className="balance"> 余额: {playerInfo?.balance} U</span> */}
+                {/*                 <span className="balance"> 余额: {otherPlayerInfo?.balance} U</span> */}
               </span>
 
               <span className='level'>
@@ -100,7 +104,7 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
 
               <span className="status">
                 状态:
-                {/*                 {playerInfo?.status ?
+                {/*                 {otherPlayerInfo?.status ?
                   (<Tag className="status-tag" color="success" fill="outline">正常</Tag>)
                   :
                   (<Tag className="status-tag" color="warning" fill="outline">禁用</Tag>)
@@ -116,7 +120,7 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
             <div className="right-info">
               <span >
                 <Tag onClick={reqCollect} className="collect" color={otherPeople?.collected ? 'gray' : 'rgba(243, 6, 6, 0.7)'} > {otherPeople?.collected ? '已关注' : '关注'} </Tag>
-                <Tag className="message" color="primary" > 私信 </Tag>
+                <Tag onClick={() => setVisiblePrivateChatCloseRight(true)} className="message" color="primary" > 私信 </Tag>
               </span>
             </div>
           </div>
@@ -179,6 +183,31 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
         </div>
 
       </div>
+
+      <Popup
+        bodyStyle={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
+        position='right'
+        closeOnSwipe
+        closeOnMaskClick
+        visible={visiblePrivateChatCloseRight}
+        onClose={() => setVisiblePrivateChatCloseRight(false)}
+        key={visiblePrivateChatCloseRight ? "open" : "close"}
+      >
+        <div className="private-icon-avatar-wrapper">
+          <LeftOutline className="icon" onClick={() => setVisiblePrivateChatCloseRight(false)} />
+          <Avatar className="avatar" src={avatars[otherPeople?.avatarPath]} onClick={() => setVisibleCloseRight(true)} />
+          <span className="name">{otherPeople?.name}</span>
+        </div>
+
+        <ChatMessage
+          targetId={otherPeople?.id}
+          avatar={otherPeople?.avatarPath}
+          level={otherPeople?.level}
+          currentPlayerId={playerInfo?.id}
+          currentPlayerAvatar={playerInfo?.avatarPath}
+          visiblePrivateChatCloseRight={visiblePrivateChatCloseRight}
+        />
+      </Popup>
     </>
   );
 };

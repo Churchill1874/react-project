@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Badge, Tabs, Toast } from 'antd-mobile';
+import useStore from '@/zustand/store';
 
 // 简单的调试信息显示
 const showDebugInfo = (message: string) => {
@@ -24,6 +25,10 @@ const Navbar = () => {
       return;
     }
 
+    if (currentPath === 'message') {
+      useStore.getState().setHasUnreadMessage(false)
+    }
+
     // 确保状态更新和路由跳转同步
     if (activeKey !== currentPath) {
       setActiveKey(currentPath);
@@ -39,7 +44,6 @@ const Navbar = () => {
 
     try {
       //showDebugInfo(`正在跳转到: /${key}`);
-      console.log(`Navigating to: /${key}`);
       navigate(`/${key}`);
 
       // 如果3秒后页面仍未跳转，强制刷新
@@ -47,7 +51,6 @@ const Navbar = () => {
         setTimeout(() => {
           if (location.pathname !== `/${key}`) {
             showDebugInfo('跳转失败，正在强制刷新');
-            console.log('Fallback navigation: forcing page reload');
             window.location.href = `/${key}`;
           }
         }, 10);
@@ -57,7 +60,6 @@ const Navbar = () => {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '未知错误';
       showDebugInfo(`跳转失败: ${errorMessage}`);
-      console.error('Navigation failed:', error);
       Toast.show('1')
       if (isHonorBrowser) {
         window.location.href = `/${key}`;
@@ -81,7 +83,10 @@ const Navbar = () => {
       <Tabs.Tab title="新闻" key="news" />
       <Tabs.Tab title="聊妹" key="chatgirl" />
       <Tabs.Tab title="投注" key="bet" />
-      <Tabs.Tab title={<Badge content={Badge.dot}>消息</Badge>} key="message" />
+      <Tabs.Tab
+        title={useStore.getState().hasUnreadMessage ? <Badge content={Badge.dot}>消息</Badge> : '消息'}
+        key="message"
+      />
       <Tabs.Tab title="个人" key="personal" />
     </Tabs>
   );

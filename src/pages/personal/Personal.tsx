@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, TextArea, Tag, Toast, Modal, CenterPopup } from 'antd-mobile';
+import { Card, Avatar, TextArea, Tag, Toast, Modal } from 'antd-mobile';
 import { FcSalesPerformance, FcImport, FcHeadset } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
@@ -11,6 +11,8 @@ import CustomerContact from '@/components/tools/CustomerContact';
 import useStore from '@/zustand/store';
 
 const UserCenter: React.FC = () => {
+
+  const navigate = useNavigate();
   const { playerInfo, setPlayerInfo } = useStore();
 
   const playerReq = async () => {
@@ -47,7 +49,6 @@ const UserCenter: React.FC = () => {
 
   }
 
-  const navigate = useNavigate();
   const editPlayerInfo = () => {
     navigate('/setPersonal')
   }

@@ -40,8 +40,8 @@ export interface SystemMessagePageType {
   messageType: any; //消息类型,可用值:系统:1,评论:2
   newsId: any;
   popUp: any; //需要弹窗
-  recipientAccount: any; //收取人账号
-  senderAccount: any; //发送人账号
+  recipientId: any; //收取人账号
+  senderId: any; //发送人账号
   senderName: any; //评论人名称
   infoType: any; //评论来源,可用值:国内新闻:1,东南亚新闻:2
   status: any;

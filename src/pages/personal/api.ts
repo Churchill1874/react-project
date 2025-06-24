@@ -16,7 +16,7 @@ export interface PlayerInfoType {
   createTime?: any;
   email?: any;
   gender?: any;
-  id?: any;
+  id: string;
   isBot?: any;
   level: any;
   name: any;

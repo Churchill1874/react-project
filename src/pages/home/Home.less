@@ -401,12 +401,12 @@
 
 .chat {
   //color: black;
-  font-size: 12px;
+  font-size: 13px;
 
   margin: 5px 3px;
   padding: 2px;
   text-align: left;
-  height: 180px; // 设置固定高度
+  height: 160px; // 设置固定高度
   overflow-y: auto; // 允许垂直滚动
   border: 1px solid #076af57b;
 
@@ -428,7 +428,14 @@
 
       .time {
         color: rgb(138, 135, 135);
-        font-size: 12px;
+        font-size: 16px;
+      }
+    }
+    .home-message-content {
+      font-size: 13px;
+      .time {
+        font-size: 16px;
+        color: rgb(167, 166, 166);
       }
     }
   }
@@ -436,12 +443,17 @@
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
-  .home-message-content {
-    font-size: 18px;
-
-    .time {
-      color: rgb(138, 135, 135);
-      font-size: 14px;
+  .chat {
+    text-align: left;
+    height: 240px; // 设置固定高度
+    .home-message-content div {
+      font-size: 20px;
+      span {
+        font-size: 19px;
+      }
+    }
+    .home-message-content span {
+      font-size: 20px;
     }
   }
 
@@ -498,8 +510,13 @@
   }
   .news-item {
     .news-title {
-      font-size: 18px;
+      font-size: 20px;
       .hot {
+        font-size: 18px;
+      }
+    }
+    .news-info {
+      .date {
         font-size: 18px;
       }
     }
