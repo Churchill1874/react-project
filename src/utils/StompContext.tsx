@@ -5,12 +5,14 @@ import React, {
   ReactNode,
   useRef,
 } from 'react';
+import { Toast } from 'antd-mobile'
 import { useLocation } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import useStore from '@/zustand/store';
 import { serverTarget } from '@/common/api';
 import { PrivateChatType } from '@/components/privatechat/api';
+import { ChatRoomType } from '@components/chatroom/api';
 
 export interface StompContextType {
   client: Client | null;
@@ -30,6 +32,8 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
   const pushChatMessageToMap = useStore.getState().pushChatMessageToMap;
   const updatePrivateChatList = useStore.getState().updatePrivateChatList;
   const setHasUnreadMessage = useStore.getState().setHasUnreadMessage;
+  const chatRoom1List = useStore.getState().chatRoom1List;
+  const setChatRoom1List = useStore.getState().setChatRoom1List;
 
 
   //评论未读标记
@@ -42,6 +46,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
   const subscriptionRef = useRef<ReturnType<Client['subscribe']> | null>(null);
   const subscriptionSystemRef = useRef<ReturnType<Client['subscribe']> | null>(null);
   const subscriptionCommentRef = useRef<ReturnType<Client['subscribe']> | null>(null);
+  const subscriptionRoomRef = useRef<ReturnType<Client['subscribe']> | null>(null);
 
   const connectStompClient = (token: string) => {
     if (client && client.connected) return;
@@ -128,6 +133,24 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
         subscriptionCommentRef.current = sub;
       }
 
+      //聊天室
+      if (!subscriptionRoomRef.current) {
+        const sub = stompClient.subscribe('/topic/room/1', (message) => {
+          console.log("聊天室1号收来消息:", message.body)
+          Toast.show({
+            icon: 'success',
+            content: message.body
+          })
+          if (chatRoom1List) {
+            setChatRoom1List(prev => {
+              const data = [...prev, JSON.parse(message.body) as ChatRoomType]
+              return data.length > 200 ? data.slice(-200) : data;
+            })
+          }
+        })
+
+        subscriptionRoomRef.current = sub;
+      }
     };
 
     stompClient.onDisconnect = () => setConnected(false);

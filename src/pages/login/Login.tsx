@@ -1,7 +1,7 @@
 import '@/pages/login/Login.less';
 import { useState, useEffect, RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef } from 'antd-mobile';
+import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef, CenterPopup, SpinLoading } from 'antd-mobile';
 import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
@@ -24,6 +24,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [captcha, setCaptcha] = useState('');
   const { setTokenId, setPlayerInfo } = useStore();
+  const [visible, setVisible] = useState<boolean>(false);
 
 
   //请求图片验证啊
@@ -34,35 +35,50 @@ const Login: React.FC = () => {
     setCaptcha(captchaImage);
   };
 
+  const login = (values: LoginType) => {
+    setVisible(true)
+    loginReq(values);
+  }
+
   //登录
   const loginReq = async (values: LoginType) => {
-    const { code, data, msg } = await Request_Login(values);
-    if (code === 0) {
-      const tokenId = data.tokenId;
-      //localStorage.setItem('tokenId', tokenId);
-      setTokenId(tokenId);
+    const setCommentMessageUnread = useStore.getState().setCommentMessageUnread;
+    const setSystemMessageUnread = useStore.getState().setSystemMessageUnread;
+    const setPrivateMessageUnread = useStore.getState().setPrivateMessageUnread;
 
-      setPlayerInfo({ account: data.account, name: data.name, avatarPath: data.avatarPath, level: data.level, status: data.status, id: data.id })
+    try {
+      const { code, data, msg } = await Request_Login(values);
+      if (code === 0) {
+        const tokenId = data.tokenId;
+        setTokenId(tokenId);
+        setVisible(false)
+        setPlayerInfo({
+          account: data.account,
+          name: data.name,
+          avatarPath: data.avatarPath,
+          level: data.level,
+          status: data.status,
+          id: data.id
+        })
 
-      Toast.show({
-        icon: 'success',
-        content: '登录成功',
-        duration: 2000,
-      });
+        setCommentMessageUnread(data.commentMessageUnread)
+        setSystemMessageUnread(data.systemMessageUnread)
+        setPrivateMessageUnread(data.privateMessageUnread)
 
-      setTimeout(() => {
-        // 跳转到 /home 页面
-        navigate('/');
-      }, 1000); // 2秒后跳转到首页
-    } else {
-      Toast.show({
-        icon: 'fail',
-        content: msg,
-        position: 'top',
-        duration: 2000,
-      });
+        Toast.show({
+          icon: 'success',
+          content: '登录成功',
+          duration: 2000,
+        });
 
-      captchaImageExchange();
+        setTimeout(() => {
+          // 跳转到 /home 页面
+          navigate('/');
+        }, 1000); // 2秒后跳转到首页
+      }
+    } finally {
+      setVisible(false); // 始终关闭 loading
+      captchaImageExchange(); // 刷新验证码
     }
   };
 
@@ -117,11 +133,32 @@ const Login: React.FC = () => {
         }
         icon={<AntOutline fontSize={80} />}
       >
+        <CenterPopup
+          visible={visible}
+          onMaskClick={() => setVisible(false)}
+          bodyStyle={{
+            width: 'auto',
+            minWidth: 60,
+            maxWidth: '60vw',
+            padding: '20px',
+            background: '#fff',
+            borderRadius: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <SpinLoading style={{ '--size': '48px' }} color="primary" />
+          <div style={{ marginTop: 12, fontSize: 18, color: '#999' }}>正在登录中...</div>
+        </CenterPopup>
+
+
         <Tabs activeLineMode="fixed" className="tabs">
           <Tabs.Tab title="登陆" key="login">
             <Form
               className="form"
-              onFinish={loginReq}
+              onFinish={login}
               footer={
                 <Button block color="primary" type="submit" size="middle">
                   提交
@@ -285,6 +322,8 @@ const Login: React.FC = () => {
 
         <Footer className="footer" label={<>www.daxinwen.com (大新闻)</>} />
       </ResultPage>
+
+
     </>
   );
 };

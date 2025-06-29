@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
-import { Toast, Swiper, List, Badge, Input, Button, Avatar, Ellipsis } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Button, Avatar, Ellipsis } from 'antd-mobile';
 import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import { newsEnum } from '@/common/news'
+import ChatRoom from '@/components/chatroom/ChatRoom';
 import useStore from '@/zustand/store'
 
 
 const Home = () => {
-  const Jiang = '/assets/avatars/1.jpg'
 
-  const chatRef = useRef<HTMLDivElement>(null);
+
   const newsListRef = useRef<HTMLDivElement>(null);
   const scrollContentRef = useRef<HTMLDivElement>(null);
   const { newsInfoList, setNewsInfoList, topNewsTitleHtml, setTopNewsTitleHtml, onlinePlayerCount, setOnlinePlayerCount } = useStore();
@@ -134,8 +134,6 @@ const Home = () => {
   };
 
 
-
-
   useEffect(() => {
     newsListReq();
   }, []);
@@ -143,11 +141,6 @@ const Home = () => {
   useEffect(() => {
     if (newsInfoList && newsInfoList?.length > 0) {
       setupScroll();
-    }
-
-    // 聊天对话框直接显示最底部
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [newsInfoList]);
 
@@ -227,79 +220,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      <div className="chat" ref={chatRef}>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：我们是机器人这是假的聊天!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：看上去像真有人在用的东南亚灰色产业圈APP吗!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：这里有言论自由!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：这里可以对政治事件结果下赌注!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：这里可以对足球赛事下赌注!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：用户可以对某个新闻或者足球事件开盘让别人下注!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：还可以在聊妹模块 选择剧情和妹妹照片下单陪你1对1聊天哦!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：我们对行业公司的动态也有追踪可以避坑哦!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-        <div className="chat-item">
-          <Avatar className="avatar" src={Jiang} />
-          <div className="home-message-content">
-            <div>刘老六：国内社会 以及 东南亚灰产圈的新闻也会实时更新哦!</div>
-            <span className="time">2024-09-08 10:05</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="send-container">
-        <Input className="input-field" placeholder="请输入" />
-        <Button className="send-button" color="primary">
-          发送
-        </Button>
-      </div>
+      <ChatRoom roomNumber={1} />
 
     </div>
   );

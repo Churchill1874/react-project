@@ -35,18 +35,18 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
     response => {
       if (!response.data || response.data.code === -2) {
         navigate('/login');
-        Toast.show('请先登录');
-        return Promise.reject(new Error('未登录'));
+        Toast.show({ content: response.data.msg, duration: 2000 });
+        return Promise.reject(new Error('请先登录'));
       }
 
       if (response.data.code === -4) {
         navigate('/login');
-        Toast.show(response.data.msg);
-        return Promise.reject(new Error('未登陆'));
+        Toast.show({ icon: 'fail', content: response.data.msg, duration: 2000 });
+        return Promise.reject(new Error('请先登陆'));
       }
 
       if (response.data.code === -1) {
-        Toast.show(response.data.msg);
+        Toast.show({ icon: 'fail', content: response.data.msg, duration: 2000 });
         return Promise.reject(new Error('服务异常'));
       }
 
@@ -56,6 +56,7 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
       Toast.show({
         icon: 'fail',
         content: error.message,
+        duration: 2000,
       });
       return Promise.reject(error);
     },

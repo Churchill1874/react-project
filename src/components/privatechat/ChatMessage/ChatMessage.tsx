@@ -53,8 +53,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     setInput(val);
   };
 
-
-
   useEffect(() => {
     chatMessagePageRequest();
     setChatMessagePageNum(1);

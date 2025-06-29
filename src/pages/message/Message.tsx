@@ -52,6 +52,8 @@ const Message: React.FC = () => {
   const [newsId, setNewsId] = useState<string>('0');
   const commentRef = useRef<any>(null);
   const [popupKey, setPopupKey] = useState(0);
+  const [loadingSystemMessage, setLoadingSystemMessage] = useState<boolean>(false);
+  const [loadingCommentMessage, setLoadingCommentMessage] = useState<boolean>(false);
 
   //菜单key
   const {
@@ -65,9 +67,12 @@ const Message: React.FC = () => {
     setCommentMessageUnread
   } = useStore();
 
-
   // 获取评论数据
   const commentPageRequest = async (isReset: boolean) => {
+    if (loadingCommentMessage) {
+      return;
+    }
+    setLoadingCommentMessage(true)
     const pageNum = isReset ? 1 : commentPageNum;
     const param: SystemMessagePageReqType = { pageNum: pageNum, pageSize: 20, messageType: 2 };
     const list: SystemMessagePageType[] = (await Request_SystemMessagePage(param)).data.records || [];
@@ -88,10 +93,15 @@ const Message: React.FC = () => {
     } else {
       setCommentHasMore(false)
     }
+    setLoadingCommentMessage(false)
   }
 
   // 获取系统信息数据
   const systemMessagePageRequest = async (isReset: boolean) => {
+    if (loadingSystemMessage) {
+      return;
+    }
+    setLoadingSystemMessage(true);
     const pageNum = isReset ? 1 : systemMessagePageNum;
     const param: SystemMessagePageReqType = { pageNum: pageNum, pageSize: 20, messageType: 1 };
     const list: SystemMessagePageType[] = (await Request_SystemMessagePage(param)).data.records || [];
@@ -112,11 +122,18 @@ const Message: React.FC = () => {
     } else {
       setSystemMessageHasMore(false)
     }
+    setLoadingSystemMessage(false);
   }
 
   const changeTabKey = (key: string) => {
-    console.log('key:', key)
     setMessageTabKey(key)
+
+    if (key === 'system-message') {
+      systemMessagePageRequest(true);
+    }
+    if (key === 'comment-message') {
+      commentPageRequest(true);
+    }
   }
 
   const SystemMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {

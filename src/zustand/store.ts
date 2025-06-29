@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { PlayerInfoType } from '@/pages/personal/api';
 import { NewsInfoType } from '@/pages/news/api';
 import { PrivateChatType, PrivateChatListType } from '@/components/privatechat/api';
+import { ChatRoomType } from '@/components/chatroom/api';
 
 interface AppState {
   playerInfo: PlayerInfoType | null;
@@ -48,6 +49,10 @@ interface AppState {
   setPrivateChatList: (listOrFn: PrivateChatListType[] | ((prev: PrivateChatListType[]) => PrivateChatListType[])) => void;
   updatePrivateChatList: (msg: PrivateChatType) => void;
   markNotReadFalseByReceiveId: (targetId: string) => void;
+
+  //聊天室内容
+  chatRoom1List: ChatRoomType[];
+  setChatRoom1List: (listOrFn: ChatRoomType[] | ((prev: ChatRoomType[]) => ChatRoomType[])) => void;
 }
 
 const useStore = create<AppState>()(
@@ -152,6 +157,12 @@ const useStore = create<AppState>()(
       markNotReadFalseByReceiveId: targetId =>
         set(state => ({
           privateChatList: state.privateChatList.map(item => (item.sendId === targetId ? { ...item, notRead: false } : item)),
+        })),
+
+      chatRoom1List: [],
+      setChatRoom1List: listOrFn =>
+        set(state => ({
+          chatRoom1List: typeof listOrFn === 'function' ? listOrFn(state.chatRoom1List) : listOrFn,
         })),
     }),
     {
