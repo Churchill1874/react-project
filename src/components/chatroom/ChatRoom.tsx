@@ -45,7 +45,17 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
   const [timer, setTimer] = useState<boolean>(true)
   const chatRef = useRef<HTMLDivElement>(null);
 
+  const isDesktop = window.innerWidth >= 768;
 
+  const bubbleStyle: React.CSSProperties = {
+    '--size': isDesktop ? '60px' : '40px',
+    '--initial-position-bottom': isDesktop ? '400px' : '100px',
+    '--initial-position-right': isDesktop ? '900px' : '24px',
+    '--edge-distance': '24px',
+    zIndex: 1000,
+  } as React.CSSProperties;
+
+  const size = isDesktop ? 40 : 30;
   //点击输入框时候 让文本域获取到焦点
   const inputCommentClick = () => {
     setShowCommentInput(true);
@@ -76,6 +86,7 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
 
     setChatRoom1List(list)
     setLoading(false);
+    setTimer(false)
   };
 
   const sendMessage = async () => {
@@ -116,7 +127,9 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
   useEffect(() => {
     if (!chatRoom1List || chatRoom1List.length === 0) {
       chatMessagePageRequest();
+
     }
+
   }, []);
 
   useEffect(() => {
@@ -183,7 +196,7 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
             const showTime =
               index === 0 ||
               (prevMessage &&
-                (dayjs(chat.createTime).diff(prevMessage.createTime, 'minute') > 5 ||
+                (dayjs(chat.createTime).diff(prevMessage.createTime, 'minute') > 60 ||
                   !dayjs(chat.createTime).isSame(prevMessage.createTime, 'day')));
 
             return (
@@ -215,11 +228,6 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
             </>
           )
         }
-
-        <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>
-          <MessageFill fontSize={32} />
-        </FloatingBubble>
-
         <Popup className='comments-popup'
           visible={showsCommentInput}
           onMaskClick={() => { setShowCommentInput(false) }}
@@ -238,6 +246,15 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
           </div>
         </Popup>
       </div>
+
+      <FloatingBubble
+        style={bubbleStyle}
+        axis="xy"
+        onClick={inputCommentClick}
+      >
+        <MessageFill fontSize={size} />
+      </FloatingBubble>
+
 
     </>
   );

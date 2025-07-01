@@ -137,10 +137,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       if (!subscriptionRoomRef.current) {
         const sub = stompClient.subscribe('/topic/room/1', (message) => {
           console.log("聊天室1号收来消息:", message.body)
-          Toast.show({
-            icon: 'success',
-            content: message.body
-          })
+
           if (chatRoom1List) {
             setChatRoom1List(prev => {
               const data = [...prev, JSON.parse(message.body) as ChatRoomType]

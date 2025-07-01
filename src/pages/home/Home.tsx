@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Toast, Swiper, List, Badge, Button, Avatar, Ellipsis } from 'antd-mobile';
+import { Toast, Swiper, List, Badge, Button, Avatar, Ellipsis, Image } from 'antd-mobile';
 import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
@@ -23,7 +23,9 @@ const Home = () => {
           extra={<Badge className="badge" color={newsEnum(news.category).color} content={newsEnum(news.category).name} />}
         >
           <div className="news-item">
-            <div className="news-title">{((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}</div>
+            <div className="news-title">
+              {((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}
+            </div>
             <div className="news-info">
               <span className="date"> {news.createTime.split(' ')[0]} </span>
             </div>
@@ -50,7 +52,7 @@ const Home = () => {
           {topTitle ? (
             <div className="list-item">
               <span className="top">置顶：</span>
-              <Ellipsis direction='end' content={topTitle} expandText='展开' collapseText='收起' />
+              <Ellipsis className='end' direction='end' content={topTitle} expandText='展开' collapseText='收起' />
             </div>
           ) : null}
         </div>
@@ -146,16 +148,12 @@ const Home = () => {
 
 
 
-
-  const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac'];
-
-  const items = colors.map((color, index) => (
-    <Swiper.Item key={index}>
-      <div className="banner" style={{ background: color }} onClick={() => { Toast.show(`你点击了卡片 ${index + 1}`) }}>
-        {index + 1}
-      </div>
-    </Swiper.Item>
-  ));
+  const images = [
+    'https://static01.nyt.com/images/2019/08/27/opinion/27friedmanWeb/merlin_158742387_962f87f4-df06-455f-8e4f-4f71aa097842-master1050.jpg',
+    'https://chinese.aljazeera.net/wp-content/uploads/2023/10/1-1697622972.png?resize=770%2C513&quality=80',
+    'https://s.rfi.fr/media/display/ecc1406a-1386-11ed-b21c-005056bfa79e/w:980/p:16x9/phpRGkbgu.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkHs85bsc_tw9Imd15TTlXdmhpZKlaDG7QwQ&s',
+  ]
 
   return (
     <div className="home">
@@ -167,9 +165,17 @@ const Home = () => {
 
       {topNewsTitleHtml}
 
-      <Swiper loop autoplay allowTouchMove>
-        {items}
+      <Swiper className="news-swiper" loop autoplay allowTouchMove>
+        {images.map((img, index) => (
+          <Swiper.Item key={index}>
+            <div className="news-swiper-item">
+              <Image src={img} width="100%" height="100%" fit="cover" />
+            </div>
+          </Swiper.Item>
+        ))}
       </Swiper>
+
+
 
       <div className="news-list" ref={newsListRef}>
         <div className="scroll-content" ref={scrollContentRef}>

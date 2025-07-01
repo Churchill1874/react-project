@@ -12,6 +12,7 @@ export interface PrivateChatType {
   createName: any;
   isSender?: any;
   notRead: any;
+  sendAvatarPath: any;
 }
 
 export interface PrivateChatListType {

@@ -5,6 +5,7 @@ import Navbar from '@/components/navbar/Navbar';
 import '@/global.less';
 import useStore from '@/zustand/store';
 import { StompContext } from '@/utils/StompContext';
+import { Toast } from 'antd-mobile';
 
 const InnerApp = () => {
   const location = useLocation();
@@ -42,9 +43,12 @@ const App: React.FC = () => {
   const { connectStompClient } = useContext(StompContext)!;
 
   useEffect(() => {
-    if (tokenId) {
+    if (!tokenId) {
+      connectStompClient('1');
+    } else {
       connectStompClient(tokenId);
     }
+
   }, [tokenId]);
 
   const getBgColor = () => {

@@ -5,7 +5,7 @@ import {
   PrivateChatPageRespType,
   Request_CleanUnreadStatus
 } from '@/components/privatechat/api';
-import { Badge, Card, Avatar, Ellipsis, Popup } from 'antd-mobile';
+import { Badge, Card, Avatar, Ellipsis, Popup, DotLoading } from 'antd-mobile';
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/components/privatechat/PrivateChat.less';
@@ -14,6 +14,20 @@ import OtherPeople from '@/pages/otherpeople/otherpeople';
 import useStore from "@/zustand/store";
 import dayjs from 'dayjs';
 
+const PrivateMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
+  return (
+    <>
+      {hasMore ? (
+        <div className="dot-loading-custom">
+          <span>Loading</span>
+          <DotLoading color='#fff' />
+        </div>
+      ) : (
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }} color='#fff'>--- 我是有底线的 ---</div>
+      )}
+    </>
+  )
+}
 
 const PrivateChat: React.FC = () => {
   interface PlayerBaseType {
@@ -44,7 +58,7 @@ const PrivateChat: React.FC = () => {
 
   const privateChatListRequest = async () => {
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
-    setPrivateChatList(privateChatListResp.list);
+    setPrivateChatList(privateChatListResp.list || []);
   };
 
   const cleanUnreadStatus = async (targetId: string) => {
@@ -120,6 +134,11 @@ const PrivateChat: React.FC = () => {
           </div>
         </Card>
       ))}
+
+
+      {!privateChatList &&
+        <PrivateMessageScrollContent />
+      }
 
       <Popup
         bodyStyle={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}

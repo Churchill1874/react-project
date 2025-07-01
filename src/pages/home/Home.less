@@ -24,7 +24,14 @@
       color: rgb(144, 27, 1);
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
       white-space: nowrap;
+      font-weight: bold;
+      font-size: 15px;
       /* 添加阴影 */
+    }
+
+    .end {
+      font-size: 15px;
+      font-weight: bold;
     }
 
     .adm-ellipsis {
@@ -37,8 +44,8 @@
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 0px 5px;
-  max-height: 110px;
-  min-height: 110px;
+  max-height: 100px;
+  min-height: 100px;
   /* 设置一个最大高度 */
   overflow: auto;
   /* 隐藏滚动条 */
@@ -82,7 +89,7 @@
   margin-bottom: -10px;
 
   .news-title {
-    //font-weight: bold;
+    font-weight: bold;
     font-size: 14px;
     margin-top: 0;
     margin-right: 0px;
@@ -114,6 +121,12 @@
       color: #a09d9d;
       margin-left: 0px;
     }
+  }
+
+  .date {
+    font-size: 13px;
+    color: #a09d9d;
+    margin-left: 0px;
   }
 }
 
@@ -187,19 +200,6 @@
   align-items: center;
   font-size: 48px;
   user-select: none;
-}
-
-.send-container {
-  display: flex;
-  align-items: center;
-  padding: 1px 10px;
-  border-radius: 5px;
-  //position: fixed; /* Make the container fixed */
-  //bottom: 35px; /* Adjust this value if needed to fit above the navigation bar */
-  left: 0;
-  right: 0;
-  background-color: white; /* Adjust background color if needed */
-  z-index: 1000; /* Ensure it is above other elements */
 }
 
 .input-field {
@@ -400,19 +400,59 @@
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
 }
 
+.news-swiper {
+  width: 100%;
+  //padding: 20px 0px;
+  display: flex;
+  justify-content: center;
+
+  .adm-swiper-track {
+    display: flex;
+    justify-content: center;
+  }
+
+  .news-swiper-item {
+    width: 75%;
+    height: 170px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .adm-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
+  .news-swiper {
+    .news-swiper-item {
+      width: 480px;
+      height: 300px;
+    }
+  }
   .news-list {
     max-height: 200px;
     min-height: 200px;
   }
 
-  .list-item {
-    .top,
-    .adm-ellipsis {
-      font-size: 18px;
+  .top-news {
+    .list-item {
+      .top,
+      .adm-ellipsis {
+        margin-top: 5px;
+        font-size: 22px;
+      }
+      .end {
+        margin-top: 5px;
+        font-size: 22px;
+      }
     }
   }
+
   .bet-container {
     .adm-button {
       width: 90px;
@@ -506,19 +546,6 @@
     border-top: 0.5px solid @theme;
     background-color: #165d00;
     height: 130px;
-  }
-
-  .send-container {
-    button {
-      font-size: 18px;
-    }
-    .adm-input {
-      font-size: 18px;
-      height: 32px;
-    }
-    .adm-input-element {
-      font-size: 18px;
-    }
   }
 }
 

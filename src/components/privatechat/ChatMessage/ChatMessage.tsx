@@ -48,7 +48,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const { client, connected } = useContext(StompContext)!;
   const [input, setInput] = useState("");
 
-  console.log('target,', targetId)
   const handleInputChange = (val: string) => {
     setInput(val);
   };
@@ -105,7 +104,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       content: input,
       type: 1,
       isSender: true,
-      notRead: true
+      notRead: true,
+      sendAvatarPath: avatar
     };
 
     pushChatMessageToMap(message);

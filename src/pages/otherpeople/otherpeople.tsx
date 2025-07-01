@@ -17,6 +17,8 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
   const [otherPeople, setOtherPeople] = useState<PlayerInfoType>();
   const { playerInfo } = useStore();
 
+  const isMe = otherPlayerId == playerInfo?.id;
+
   const playerReq = async () => {
     const otherPlayerInfo = (await Request_FindPlayerById({ id: otherPlayerId })).data;
     setOtherPeople(otherPlayerInfo)
@@ -117,12 +119,15 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
                 }
               </span>
             </div>
-            <div className="right-info">
-              <span >
-                <Tag onClick={reqCollect} className="collect" color={otherPeople?.collected ? 'gray' : 'rgba(243, 6, 6, 0.7)'} > {otherPeople?.collected ? '已关注' : '关注'} </Tag>
-                <Tag onClick={() => setVisiblePrivateChatCloseRight(true)} className="message" color="primary" > 私信 </Tag>
-              </span>
-            </div>
+            {!isMe &&
+              <div className="right-info">
+                <span >
+                  <Tag onClick={reqCollect} className="collect" color={otherPeople?.collected ? 'gray' : 'rgba(243, 6, 6, 0.7)'} > {otherPeople?.collected ? '已关注' : '关注'} </Tag>
+                  <Tag onClick={() => setVisiblePrivateChatCloseRight(true)} className="message" color="primary" > 私信 </Tag>
+                </span>
+              </div>
+            }
+
           </div>
         </Card>
 

@@ -1,11 +1,12 @@
 .chat {
   //color: black;
   font-size: 13px;
+  position: relative; // 添加这一行
 
   margin: 5px 3px;
   padding: 2px;
   text-align: left;
-  height: 180px; // 设置固定高度
+  height: 160px; // 设置固定高度
   overflow-y: auto; // 允许垂直滚动
   -webkit-overflow-scrolling: touch;
   border: 1px solid #6992b9;
@@ -19,8 +20,8 @@
     margin-bottom: 5px; // 每条记录的间距
 
     .avatar {
-      width: 26px; // 调整头像的宽度
-      height: 26px; // 调整头像的高度
+      width: 22px; // 调整头像的宽度
+      height: 22px; // 调整头像的高度
       margin-right: 5px; // 头像和聊天内容的间距
     }
 
@@ -52,7 +53,12 @@
   .chat {
     text-align: left;
     height: 260px;
-
+    .chat-item {
+      .avatar {
+        width: 36px; // 调整头像的宽度
+        height: 36px; // 调整头像的高度
+      }
+    }
     .home-message-content {
       div {
         font-size: 20px;

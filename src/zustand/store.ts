@@ -115,10 +115,12 @@ const useStore = create<AppState>()(
       updatePrivateChatList: msg =>
         set(state => {
           const playerId = state.playerInfo?.id;
+          console.log(1);
           if (!playerId || !msg.sendId || !msg.receiveId) return {};
+          console.log(2);
           //找到聊天对方id
           const otherId = msg.sendId === playerId ? msg.receiveId : msg.sendId;
-          const foundIndex = state.privateChatList.findIndex(item => (item.sendId === otherId && item.receiveId === playerId) || (item.receiveId === otherId && item.sendId === playerId));
+          const foundIndex = state.privateChatList?.findIndex(item => (item.sendId === otherId && item.receiveId === playerId) || (item.receiveId === otherId && item.sendId === playerId));
 
           let newList = [...state.privateChatList];
 
@@ -136,9 +138,9 @@ const useStore = create<AppState>()(
               sendId: msg.sendId,
               receiveId: msg.receiveId,
               sendName: msg.sendId === playerId ? state.playerInfo?.name : '',
-              receiveName: msg.receiveId === playerId ? state.playerInfo?.name : '',
-              sendAvatarPath: msg.sendId === playerId ? state.playerInfo?.avatarPath : '',
-              receiveAvatarPath: msg.receiveId === playerId ? state.playerInfo?.avatarPath : '',
+              receiveName: msg.receiveId === playerId ? state.playerInfo?.name : msg.createName,
+              sendAvatarPath: msg.sendId === playerId ? state.playerInfo?.avatarPath : msg.sendAvatarPath,
+              receiveAvatarPath: msg.receiveId === playerId ? state.playerInfo?.avatarPath : msg.sendAvatarPath,
               sendLevel: '',
               receiveLevel: '',
               content: msg.content,
@@ -151,6 +153,7 @@ const useStore = create<AppState>()(
 
           newList.sort((a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime());
 
+          console.log(3);
           return { privateChatList: newList };
         }),
 

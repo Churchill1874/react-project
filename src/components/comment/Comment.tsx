@@ -420,7 +420,7 @@ const Comment = forwardRef<any, any>(({
       {commentsList?.map((comment, _index) => (
         <div className="outer-comment" ref={el => commentRefs.current[String(comment.topComment.id)] = el} key={comment.topComment.id}>
           <div className="left-comment">
-            <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '38px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(comment.topComment.playerId) }} />
+            <Avatar src={avatars[comment.topComment.avatarPath]} style={{ '--size': '32px' }} onClick={() => { setVisibleCloseRight(true); setOtherPlayerId(comment.topComment.playerId) }} />
           </div>
           <div className="right-comment">
             <span className='name'>{comment.topComment.commentator}</span>
