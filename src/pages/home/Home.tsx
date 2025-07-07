@@ -24,7 +24,7 @@ const Home = () => {
         >
           <div className="news-item">
             <div className="news-title">
-              {((index + 1) === 1 ? <span className='hot'>头条</span> : <span >{(index + 1) + '.'}</span>)} {news.title}
+              {((index + 1) === 1 ? <span className='hot'>头条</span> : <span > {index}.</span>)} {news.title}
             </div>
             <div className="news-info">
               <span className="date"> {news.createTime.split(' ')[0]} </span>

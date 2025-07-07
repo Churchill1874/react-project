@@ -5,7 +5,6 @@ import Navbar from '@/components/navbar/Navbar';
 import '@/global.less';
 import useStore from '@/zustand/store';
 import { StompContext } from '@/utils/StompContext';
-import { Toast } from 'antd-mobile';
 
 const InnerApp = () => {
   const location = useLocation();
@@ -57,11 +56,12 @@ const App: React.FC = () => {
     if (pathname.startsWith('/news')) return '#1890ff';
     if (pathname === '/newsinfo') return '#fff';
     if (pathname === '/chatgirl') return '#1890ff';
-    if (pathname === '/bet') return '#1890ff';
+    //if (pathname === '/bet') return undefined;
     if (pathname === '/message') return '#1890ff';
     if (pathname === '/personal') return '#fff';
     if (pathname === '/politics') return '#1890ff';
     if (pathname === '/interesting') return '#1890ff';
+
     return '#fff';
   };
 
@@ -70,7 +70,12 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className="main-container" style={{ backgroundColor: bgColor }}>
+    <div className="main-container"
+      style={
+        location.pathname === '/bet' ?
+          { background: 'linear-gradient(to bottom right,  #1890ff, #1890ff' }
+          : { backgroundColor: bgColor }}
+    >
       <InnerApp />
       <Navbar />
     </div>

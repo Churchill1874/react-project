@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag, Toast, Modal } from 'antd-mobile';
 import { FcSalesPerformance, FcImport, FcHeadset } from 'react-icons/fc';
-import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline } from 'antd-mobile-icons';
+import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline, TeamOutline, CheckCircleOutline, HeartOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
@@ -76,8 +76,8 @@ const UserCenter: React.FC = () => {
             </div>
             <div className="base-info">
               <span className="name"> 昵称: {playerInfo?.name} </span>
-              <span className="account">
-                账号: {playerInfo?.account}
+              <div className="account">
+                ID: {playerInfo?.account}
                 <span className="status">
                   {playerInfo?.status ?
                     (<Tag className="status-tag" color="success" fill="outline">正常</Tag>)
@@ -87,10 +87,10 @@ const UserCenter: React.FC = () => {
                 </span>
 
                 {/* <span className="balance"> 余额: {playerInfo?.balance} U</span> */}
-              </span>
+              </div>
 
               <span className='level'>
-                等级: <span> {playerInfo?.level} 级 <span className='levelName'>  {levelEnum(playerInfo?.level)} </span>  </span>
+                <span>lv.{playerInfo?.level}  <span className='levelName'>  {levelEnum(playerInfo?.level)} </span>  </span>
               </span>
 
             </div>
@@ -105,15 +105,15 @@ const UserCenter: React.FC = () => {
         <div className="personal-info-space">
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.followersCount} </div>
-            <div className="label" onClick={() => { toFollowers(playerInfo?.id) }}>粉丝</div>
+            <div className="label" onClick={() => { toFollowers(playerInfo?.id) }}> <TeamOutline fontSize={15} /> 粉丝</div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.collectCount} </div>
-            <div className="label" onClick={() => { toCollect(playerInfo?.id) }}>关注</div>
+            <div className="label" onClick={() => { toCollect(playerInfo?.id) }}> <CheckCircleOutline /> 关注</div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div> {playerInfo?.likesReceivedCount} </div>
-            <div className="label" onClick={() => { toLikes(playerInfo?.id) }} >收赞</div>
+            <div className="label" onClick={() => { toLikes(playerInfo?.id) }} ><HeartOutline /> 收赞</div>
           </span>
         </div>
 

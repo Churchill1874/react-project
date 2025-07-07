@@ -95,13 +95,13 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
             <div className="other-base-info">
               {/* <span className="name"> 昵称: {otherPlayerInfo?.name} </span> */}
               <span className="account">
-                账号: {otherPeople?.account}
+                ID: {otherPeople?.account}
 
                 {/*                 <span className="balance"> 余额: {otherPlayerInfo?.balance} U</span> */}
               </span>
 
               <span className='level'>
-                等级: <span> {otherPeople?.level} 级 <span className='levelName'> ( {levelEnum(otherPeople?.level)} )</span>  </span>
+                <span> lv.{otherPeople?.level}  <span className='levelName'> ( {levelEnum(otherPeople?.level)} )</span>  </span>
               </span>
 
               <span className="status">

@@ -7,6 +7,7 @@ import News from '@/pages/news/News'
 import Message from '@/pages/message/Message';
 import Likes from '@/components/likes/Likes';
 import Relation from '@/components/relation/Relation';
+import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
 
 export default [
   //首页
@@ -55,5 +56,9 @@ export default [
   {
     path: '/followers',
     component: Relation
+  },
+  {
+    path: '/bet',
+    component: PoliticsLottery
   }
 ];
