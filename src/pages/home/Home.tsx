@@ -6,7 +6,7 @@ import '@/pages/home/Home.less'; // 引入Home.less
 import { newsEnum } from '@/common/news'
 import ChatRoom from '@/components/chatroom/ChatRoom';
 import useStore from '@/zustand/store'
-
+import { FcUp } from 'react-icons/fc';
 
 const Home = () => {
 
@@ -176,6 +176,19 @@ const Home = () => {
       </Swiper>
 
 
+      <div
+        style={{
+          fontSize: '15px',
+          marginTop: '10px',
+          marginBottom: '1px',
+          fontWeight: '600',
+          letterSpacing: '2px',
+          marginLeft: '5px',
+          display: 'flex',
+          alignItems: 'center',
+
+          color: '#024889'
+        }}><FcUp fontSize={16} />今日热门 </div>
 
       <div className="news-list" ref={newsListRef}>
         <div className="scroll-content" ref={scrollContentRef}>
