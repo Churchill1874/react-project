@@ -156,6 +156,7 @@ const SoutheastAsia: React.FC = () => {
         <InfiniteScroll loadMore={() => southeastAsiaNewsPageRequest(false)} hasMore={southeastAsiaNewsHasHore}>
           <SoutheastAsiaNewsScrollContent hasMore={southeastAsiaNewsHasHore} />
         </InfiniteScroll>
+
       </div>
 
 

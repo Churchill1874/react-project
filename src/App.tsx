@@ -25,13 +25,11 @@ const InnerApp = () => {
   }, [location.pathname]);
 
   return (
-    <div className='content' ref={contentRef}>
-      <Routes>
-        {routes.map((route, index) => (
-          <Route key={index} path={route.path} element={<route.component />} />
-        ))}
-      </Routes>
-    </div>
+    <Routes>
+      {routes.map((route, index) => (
+        <Route key={index} path={route.path} element={<route.component />} />
+      ))}
+    </Routes>
   );
 };
 
@@ -62,7 +60,8 @@ const App: React.FC = () => {
     if (pathname === '/politics') return '#1890ff';
     if (pathname === '/interesting') return '#1890ff';
     if (pathname === '/politicsevent') return '#1890ff'
-
+    //if (pathname.startsWith('/dealerConfig')) return 'rgb(239, 245, 250)'
+    if (pathname.startsWith('/dealerConfig')) return '#1890ff'
     return '#fff';
   };
 
@@ -73,6 +72,7 @@ const App: React.FC = () => {
   return (
     <div className="main-container" style={{ backgroundColor: bgColor }}>
       <InnerApp />
+      <div style={{ backgroundColor: bgColor, height: '150px' }} />
       <Navbar />
     </div>
   );

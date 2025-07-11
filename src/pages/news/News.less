@@ -7,17 +7,12 @@
 }
 
 .news-content {
-  /*   background-color: @theme;
-  padding: 0px 3px;
-  display: flex;
-  flex-direction: column;
-  margin: 0px;
-  height: 100%; */
-
   margin-top: 35px; // 避免被菜单遮挡
   position: relative;
   width: 100%;
-  height: calc(100vh - 50px);
+  min-height: 100vh;
+  height: auto;
+  overflow-y: visible;
 }
 
 .capsule-tabs-container {
@@ -102,11 +97,11 @@
   display: block;
 }
 .tab-content {
-  position: absolute;
+  //position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  overflow-y: auto; // 让每个菜单的内容可以独立滚动
+  height: auto;
+  overflow-y: visible; // 让每个菜单的内容可以独立滚动
   display: none;
 }

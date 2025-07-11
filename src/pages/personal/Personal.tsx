@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag, Toast, Modal } from 'antd-mobile';
-import { FcSalesPerformance, FcImport, FcHeadset } from 'react-icons/fc';
-import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline, TeamOutline, CheckCircleOutline, HeartOutline } from 'antd-mobile-icons';
+import { FcBriefcase, FcImport, FcHeadset, FcCloseUpMode, FcSelfie, FcLike } from 'react-icons/fc';
+import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
@@ -80,9 +80,9 @@ const UserCenter: React.FC = () => {
                 ID: {playerInfo?.account}
                 <span className="status">
                   {playerInfo?.status ?
-                    (<Tag className="status-tag" color="success" fill="outline">正常</Tag>)
+                    (<Tag className="status-tag" round color="#87d068" >正常</Tag>)
                     :
-                    (<Tag className="status-tag" color="warning" fill="outline">禁用</Tag>)
+                    (<Tag className="status-tag" round color="warning" >禁用</Tag>)
                   }
                 </span>
 
@@ -104,16 +104,25 @@ const UserCenter: React.FC = () => {
 
         <div className="personal-info-space">
           <span style={{ color: 'white', fontSize: '16px' }}>
-            <div> {playerInfo?.followersCount} </div>
-            <div className="label" onClick={() => { toFollowers(playerInfo?.id) }}> <TeamOutline fontSize={15} /> 粉丝</div>
+            <div style={{ fontWeight: 'bold' }}> {playerInfo?.followersCount} </div>
+            <div className="label" onClick={() => { toFollowers(playerInfo?.id) }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ marginRight: '3px' }}><FcCloseUpMode fontSize={16} /> </div>
+              <div> 粉丝</div>
+            </div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
-            <div> {playerInfo?.collectCount} </div>
-            <div className="label" onClick={() => { toCollect(playerInfo?.id) }}> <CheckCircleOutline /> 关注</div>
+            <div style={{ fontWeight: 'bold' }}> {playerInfo?.collectCount} </div>
+            <div className="label" onClick={() => { toCollect(playerInfo?.id) }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ marginRight: '3px' }}><FcSelfie fontSize={17} /> </div>
+              <div>关注</div>
+            </div>
           </span>
           <span style={{ color: 'white', fontSize: '16px' }}>
-            <div> {playerInfo?.likesReceivedCount} </div>
-            <div className="label" onClick={() => { toLikes(playerInfo?.id) }} ><HeartOutline /> 收赞</div>
+            <div style={{ fontWeight: 'bold' }}> {playerInfo?.likesReceivedCount} </div>
+            <div className="label" onClick={() => { toLikes(playerInfo?.id) }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
+              <div style={{ marginRight: '3px' }}><FcLike fontSize={16} /> </div>
+              <div>收赞</div>
+            </div>
           </span>
         </div>
 
@@ -183,15 +192,15 @@ const UserCenter: React.FC = () => {
           <Card className="card-inner-container">
 
             <div className='fucation'>
-              <div className='card-title'><FcSalesPerformance className='icon' fontSize={22} /> 钱包 {playerInfo?.balance} U </div> <RightOutline className="right-icon" />
+              <div className='personal-card-title'><FcBriefcase className='icon' fontSize={22} /> 钱包 {playerInfo?.balance} U </div> <RightOutline className="right-icon" />
             </div>
 
             <div className='fucation' onClick={() => showCustomerContact()}>
-              <div className='card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />
+              <div className='personal-card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />
             </div>
 
             <div className='fucation'>
-              <div className='card-title' onClick={logout}><FcImport className='icon' fontSize={22} /> 退出</div> <RightOutline className="right-icon" />
+              <div className='personal-card-title' onClick={logout}><FcImport className='icon' fontSize={22} /> 退出</div> <RightOutline className="right-icon" />
             </div>
           </Card>
         </div>

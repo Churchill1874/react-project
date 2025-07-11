@@ -1,0 +1,363 @@
+.dealer-header {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #fff;
+  display: flex;
+  border-bottom: 2px solid #a1cef8;
+  align-items: center;
+}
+
+.config-page {
+  padding: 0 10px;
+  min-height: 100vh;
+  margin-top: 10px;
+
+  .adm-card {
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .adm-card-body {
+      padding: 1px;
+    }
+  }
+
+  .title-card {
+    padding-bottom: 10px;
+    background: linear-gradient(135deg, #f5f7f9, #e0eff9);
+    margin-bottom: 15px;
+
+    .adm-card-body {
+      padding: 1px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+
+      .icon {
+        font-size: 18px;
+        color: #1890ff;
+        margin-right: 8px;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        padding: 3px;
+      }
+    }
+
+    .content {
+      letter-spacing: 0.8px;
+      font-size: 14px;
+      color: black;
+      line-height: 1.5;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 5px;
+    }
+  }
+
+  .config-card {
+    background: linear-gradient(135deg, #d2eafd, #c0dff9);
+    padding-bottom: 10px;
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+
+      .icon {
+        font-size: 18px;
+        color: #1890ff;
+        margin-right: 8px;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        padding: 3px;
+      }
+    }
+
+    .config-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .config-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        background-color: #96c9f2;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &:hover {
+          background-color: #96c9f2;
+
+          &.focused {
+            background-color: #7dbcfa;
+          }
+        }
+
+        &.focused {
+          background-color: #96c9f2;
+          border-color: #1890ff;
+          box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+          transform: translateY(-2px);
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #1890ff, #096dd9);
+            border-radius: 10px;
+            z-index: -1;
+            opacity: 0.1;
+          }
+
+          .item-left {
+            .avatar {
+              transform: scale(1.05);
+            }
+
+            .item-info {
+              .name {
+                color: black;
+              }
+
+              .type {
+                color: #fff;
+              }
+            }
+          }
+        }
+
+        .item-left {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+
+            .adm-avatar-string {
+              font-size: 14px;
+            }
+          }
+
+          .item-info {
+            .name {
+              font-size: 16px;
+              font-weight: 500;
+              color: #333;
+              margin-bottom: 4px;
+              transition: color 0.2s ease;
+            }
+
+            .type {
+              font-size: 15px;
+              color: #efeeee;
+              transition: color 0.2s ease;
+            }
+          }
+        }
+
+        .odds-input-wrapper {
+          .odds-input {
+            width: 80px;
+            text-align: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 12px;
+
+            .adm-input {
+              font-size: 18px;
+              font-weight: 600;
+              color: #1890ff;
+              text-align: center;
+              border: none;
+              background: transparent;
+              padding: 4px 8px;
+              border-radius: 4px;
+              transition: all 0.2s ease;
+
+              &:focus {
+                background-color: #ffffff;
+                box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+                outline: none;
+              }
+
+              &::placeholder {
+                color: #d9d9d9;
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .funds-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .current-balance {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background-color: #e6f7ff;
+        border-radius: 8px;
+
+        .label {
+          font-size: 14px;
+          color: #666;
+        }
+
+        .amount {
+          font-size: 18px;
+          font-weight: 600;
+          color: #1890ff;
+        }
+      }
+
+      .min-deposit {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .label {
+          font-size: 14px;
+          color: #666;
+        }
+
+        .input-wrapper {
+          padding: 12px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+
+          .amount {
+            font-size: 16px;
+            color: #333;
+          }
+        }
+      }
+    }
+
+    .time-content {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .time-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .time-label {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .time-icon {
+            font-size: 16px;
+            color: #1890ff;
+          }
+
+          span {
+            font-size: 14px;
+            color: #666;
+          }
+        }
+
+        .time-value {
+          font-size: 16px;
+          color: gray;
+          padding: 12px;
+          background: rgb(240, 239, 239);
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
+  .button-container {
+    margin-top: 24px;
+    padding: 0 16px;
+
+    .open-button {
+      height: 48px;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #e6f2fd 0%, #c6dcf4 100%);
+      border: none;
+      color: #01326d;
+
+      &:active {
+        color: #fff;
+        background: linear-gradient(135deg, #096dd9 0%, #024ca6 100%);
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .config-page {
+    padding: 0 12px;
+
+    .adm-card {
+      .adm-card-body {
+        padding: 5px;
+      }
+    }
+
+    .config-card {
+      .config-item {
+        padding: 5px;
+
+        .item-left {
+          gap: 10px;
+
+          .avatar {
+            width: 50px;
+            height: 50px;
+          }
+
+          .item-info {
+            .name {
+              font-size: 15px;
+            }
+          }
+        }
+
+        .odds-input-wrapper {
+          .odds-input {
+            width: 70px;
+
+            .adm-input {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

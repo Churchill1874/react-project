@@ -9,6 +9,7 @@ import Likes from '@/components/likes/Likes';
 import Relation from '@/components/relation/Relation';
 import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent';
 import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
+import DealearConfig from '@/pages/lottery/politicslottery/politicsevent/dealerconfig/DealerConfig';
 export default [
   //首页
   {
@@ -64,6 +65,10 @@ export default [
   {
     path: '/politicsEvent',
     component: PoliticsEvent
+  },
+  {
+    path: '/dealerConfig/:id',
+    component: DealearConfig
 
   }
 ];

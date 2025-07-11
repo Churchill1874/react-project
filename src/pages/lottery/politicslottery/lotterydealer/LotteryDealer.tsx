@@ -111,8 +111,10 @@ const LotteryDealer: React.FC = () => {
               style={{
                 'fontSize': '14px',
                 '--background-color': 'white',
-                '--border-color': '#4f46e5',
-                '--text-color': '#1890ff',
+                //'--border-color': '#4f46e5',
+                //'--text-color': '#1890ff',
+                '--text-color': 'black',
+                '--border-color': 'gray',
                 boxShadow: '1px 1px 1px rgba(1, 1, 1, 0.5)',
                 fontWeight: '600',
                 letterSpacing: '1px'
@@ -137,8 +139,7 @@ const LotteryDealer: React.FC = () => {
               <Tabs.Tab title="全部" key="all" />
               <Tabs.Tab title="未开奖" key="pending" />
               <Tabs.Tab title="已开奖" key="settled" />
-              <Tabs.Tab title="已开奖1" key="settled1" />
-              <Tabs.Tab title="已开奖2" key="settled2" />
+
             </Tabs>
           </div>
           <div className="refresh-icon" onClick={handleRefresh}>
@@ -246,7 +247,7 @@ const LotteryDealer: React.FC = () => {
                         <div>
                           <div style={{ display: 'flex', alignItems: 'center' }}> <TeamOutline fontSize={15} />参与:{lottery.betCount} </div>
                         </div>
-                        <span><GiftOutline />开奖:{dayjs(lottery.createTime).format("YYYY-MM-DD")}</span>
+                        <span><GiftOutline />开奖:{dayjs(lottery.drawTime).format("YYYY-MM-DD")}</span>
                       </div>
                       <Collapse accordion>
                         <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>
@@ -382,7 +383,7 @@ const LotteryDealer: React.FC = () => {
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center' }}> <TeamOutline fontSize={15} />参与:{lottery.betCount} </div>
                       </div>
-                      <span><GiftOutline />开奖:{dayjs(lottery.createTime).format("YYYY-MM-DD")} </span>
+                      <span><GiftOutline />开奖:{dayjs(lottery.drawTime).format("YYYY-MM-DD")} </span>
                     </div>
                     <Collapse accordion>
                       <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>

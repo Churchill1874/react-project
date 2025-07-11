@@ -81,6 +81,8 @@ const News: React.FC = React.memo(() => {
         <div ref={sectionRefs.company} className={`tab-content ${newsActiveTab === 'company' ? 'active' : ''}`}>
           <Company />
         </div>
+
+
       </div>
     </>
   );

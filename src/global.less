@@ -8,24 +8,20 @@
 }
 html,
 body {
-  height: 100%;
-  margin: 0;
   touch-action: manipulation; /* 禁用缩放 */
+  height: auto;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  overflow-y: auto; // ✅ 页面整体滚动，其他地方都不要滚
+  overscroll-behavior: none; // ✅ 禁止滚动回弹
 }
 
 .main-container {
-  height: 100%; /* 设置高度为视口高度 */
-  display: flex;
+  min-height: 100vh;
+  display: block;
   flex-direction: column;
-}
-
-.content {
-  flex: 1; /* 使内容区域扩展以填充剩余空间 */
-  background-color: inherit; /* 确保背景颜色传递 */
-  padding-bottom: 1px; /* 确保内容不会被底部导航栏挡住 */
-  overflow: auto;
-  -webkit-overflow-scrolling: touch; /* 启用平滑滚动 */
-  height: 100%;
+  //padding-bottom: 200px;
 }
 
 .navbar {

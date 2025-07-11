@@ -24,6 +24,8 @@ export interface LotteryDealerView {
   icon3: any;
   rate3: any;
 
+  drawTime: any;
+
   status: any;
   result: any;
   endTime: any;
