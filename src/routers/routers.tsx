@@ -65,10 +65,5 @@ export default [
   {
     path: '/politicsEvent',
     component: PoliticsEvent
-  },
-  {
-    path: '/dealerConfig/:id',
-    component: DealearConfig
-
   }
 ];

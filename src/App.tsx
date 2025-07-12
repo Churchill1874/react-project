@@ -56,12 +56,10 @@ const App: React.FC = () => {
     if (pathname === '/chatgirl') return '#1890ff';
     if (pathname === '/bet') return '#1890ff';
     if (pathname === '/message') return '#1890ff';
-    if (pathname === '/personal') return '#fff';
+    if (pathname === '/personal') return '#1890ff';
     if (pathname === '/politics') return '#1890ff';
     if (pathname === '/interesting') return '#1890ff';
     if (pathname === '/politicsevent') return '#1890ff'
-    //if (pathname.startsWith('/dealerConfig')) return 'rgb(239, 245, 250)'
-    if (pathname.startsWith('/dealerConfig')) return '#1890ff'
     return '#fff';
   };
 
@@ -72,7 +70,7 @@ const App: React.FC = () => {
   return (
     <div className="main-container" style={{ backgroundColor: bgColor }}>
       <InnerApp />
-      <div style={{ backgroundColor: bgColor, height: '150px' }} />
+      <div style={{ backgroundColor: bgColor, height: '100px' }} />
       <Navbar />
     </div>
   );

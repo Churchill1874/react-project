@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Image, Button, Divider, Skeleton } from 'antd-mobile';
+import { Image, Button, Divider, Skeleton, Popup } from 'antd-mobile';
 import { ClockCircleOutline, CalendarOutline, ExclamationCircleOutline, HandPayCircleOutline } from 'antd-mobile-icons';
 import '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent.less';
 import { PoliticsLotteryType, Request_PoliticsLotteryList } from '@/pages/lottery/politicslottery/politicsevent/api';
 import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom';
+import DealearConfig from '@/pages/lottery/politicslottery/politicsevent/dealerconfig/DealerConfig';
 
 
 const PoliticsEvent: React.FC = () => {
   const [politicsLotteryList, setPoliticsLotteryList] = useState<PoliticsLotteryType[]>([])
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [id, setId] = useState<number>();
+  const [openPopup, setOpenPopup] = useState<boolean>(false)
 
   const Req_PoliticsLotteryList = async () => {
     if (loading) {
@@ -27,7 +28,8 @@ const PoliticsEvent: React.FC = () => {
   }
 
   const openDealerConfig = (id: any) => {
-    navigate(`/dealerConfig/${id}`);
+    setOpenPopup(true)
+    setId(id)
   }
 
   useEffect(() => {
@@ -178,6 +180,14 @@ const PoliticsEvent: React.FC = () => {
           </>
         )
       }
+
+      <Popup className='politics-event-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+        position='right'
+        closeOnMaskClick
+        visible={openPopup}
+        onClose={() => { setOpenPopup(false) }}>
+        <DealearConfig setOpenPopup={setOpenPopup} id={id} />
+      </Popup>
     </>
 
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Avatar, Input } from 'antd-mobile';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   FileOutline,
@@ -8,14 +7,14 @@ import {
   SetOutline,
   ClockCircleOutline,
   CalendarOutline,
-  LeftOutline
+  LeftOutline,
+  TagOutline
 } from 'antd-mobile-icons';
 
 import '@/pages/lottery/politicslottery/politicsevent/dealerconfig/DealerConfig.less';
 
-const DealearConfig: React.FC = () => {
-  const { id } = useParams(); // 获取 URL 参数
-  const navigate = useNavigate();
+const DealearConfig: React.FC<any> = ({ id, setOpenPopup }) => {
+  const [pricePool, setPricePool] = useState<string>('100');
 
   useEffect(() => {
     console.log("id:", id)
@@ -51,19 +50,19 @@ const DealearConfig: React.FC = () => {
   return (
 
     <>
-      <div onClick={() => navigate(-1)} className='dealer-header'>
-        <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span>
+      <div onClick={() => setOpenPopup(false)} className='dealer-header'>
+        <span style={{ paddingRight: '5px', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span>
         <span style={{ color: '#1890ff', fontWeight: 'bold', fontSize: '16px', marginLeft: '10px' }}> 开盘坐庄设置 </span>
-        <span style={{ color: 'gray', fontSize: '14px', marginLeft: '10px' }}> 事件编号: <span style={{ color: 'black' }}>{id}</span> </span>
+
       </div>
       <div className="config-page">
         {/* 盒口标题 */}
         <Card className="title-card">
           <div className="card-header">
-            <FileOutline className="icon" />
+            <TagOutline className="icon" />
             <span className="title">事件</span>
           </div>
-          <div className="content">
+          <div style={{ fontSize: '16px' }} className="content">
             台湾大选
           </div>
 
@@ -85,36 +84,39 @@ const DealearConfig: React.FC = () => {
           </div>
           <div className="config-list">
             {configData.map(item => (
-              <div>
-                <span style={{ fontSize: '18', color: 'red' }}>*</span>
-                <div
-                  key={item.id}
-                  className={`config-item ${focusedItem === item.id ? 'focused' : ''}`}
-                >
 
-                  <div className="item-left">
-                    <Avatar
-                      src={item.avatar}
-                      className="avatar"
-                    />
-                    <div className="item-info">
-                      <div className="name">{item.name}</div>
-                      <div className="type">{item.type}</div>
-                    </div>
+              <div
+                key={item.id}
+                className={`config-item ${focusedItem === item.id ? 'focused' : ''}`}
+              >
+
+                <div className="item-left">
+                  <Avatar
+                    src={item.avatar}
+                    className="avatar"
+                  />
+                  <div className="item-info">
+                    <div className="name">{item.name}</div>
+                    <div className="type">{item.type}</div>
                   </div>
-                  <div className="odds-input-wrapper">
+                </div>
+                <div className="odds-input-wrapper">
+
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: 3 }}>
+                    <span style={{ color: 'red', fontSize: '20px', marginRight: 4 }}>*</span>
                     <Input
                       className="odds-input"
                       value={item.odds.toString()}
                       onChange={(value) => handleOddsChange(item.id, value)}
                       onFocus={() => setFocusedItem(item.id)}
                       onBlur={() => setFocusedItem(null)}
-                      placeholder="输入赔率"
+                      placeholder="请输入赔率"
                     />
                   </div>
                 </div>
 
               </div>
+
 
             ))}
           </div>
@@ -129,9 +131,21 @@ const DealearConfig: React.FC = () => {
               <span className="amount">1,250.00 USDT</span>
             </div>
             <div className="min-deposit">
-              <span className="label">最小担保金额 <span>100 USDT</span></span>
+              <span className="label">最小担保金额 <span style={{ color: '#1890ff', fontWeight: 'bold' }}>100 </span>USDT</span>
               <div className="input-wrapper">
-                <span className="amount">100 USDT</span>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span style={{ color: 'red', marginRight: 4, fontSize: '20px' }}>*</span>
+                  <Input
+                    className="odds-input"
+                    value={pricePool}
+                    //onChange={(value) => handleOddsChange(item.id, value)}
+                    //onFocus={() => setFocusedItem(item.id)}
+                    //onBlur={() => setFocusedItem(null)}
+                    placeholder="请输入赔率"
+                  />
+                  <div style={{ color: 'black', fontWeight: 'bold', marginLeft: '5px', fontSize: '15px' }}> USDT </div>
+
+                </div>
               </div>
             </div>
           </div>
@@ -141,17 +155,27 @@ const DealearConfig: React.FC = () => {
             <div className="time-item">
               <div className="time-label">
                 <ClockCircleOutline className="time-icon" />
-                <span>截止下注时间</span>
+                <span style={{ color: '#333', letterSpacing: '1px' }}>截止下注:</span><div className="time-value">2025-07-24 23:59</div>
               </div>
-              <div className="time-value">2025-07-24 23:59</div>
             </div>
+
             <div className="time-item">
               <div className="time-label">
                 <CalendarOutline className="time-icon" />
-                <span>开奖时间</span>
+                <span style={{ color: '#333', letterSpacing: '1px' }}>开奖时间:</span>
+                <div className="time-value">2025-07-31 20:00</div>
               </div>
-              <div className="time-value">2025-07-31 20:00</div>
             </div>
+
+
+            <div className="time-item">
+              <div className="time-label">
+                <FileOutline className="time-icon" />
+                <span style={{ color: '#333', letterSpacing: '1px' }}>事件编号:</span>
+                <div className="time-value"> {id}2345</div>
+              </div>
+            </div>
+
           </div>
         </Card>
 
@@ -169,6 +193,7 @@ const DealearConfig: React.FC = () => {
           </Button>
         </div>
       </div>
+
     </>
 
   );
