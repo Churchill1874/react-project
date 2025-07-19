@@ -1,0 +1,320 @@
+// 变量定义
+@primary: #4f46e5;
+@secondary: #10b981;
+@gray: #6b7280;
+@bg-light: #f8f9fa;
+@theme: #1890ff;
+
+// 头部样式
+.dealer-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+
+  span {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:first-child {
+      padding-right: 5px;
+    }
+  }
+
+  .header-title {
+    color: @theme;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+}
+
+// 卡片容器
+.bet-cards-container {
+  padding: 0 10px;
+  background-color: @theme;
+
+  .bet-card {
+    padding: 0;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+
+    .adm-card-body {
+      padding: 0;
+    }
+
+    // 卡片头部
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px;
+      border-bottom: 1px solid #f5f5f5;
+
+      .header-left {
+        flex: 1;
+
+        .card-title {
+          font-size: 15px;
+          font-weight: 500;
+          color: #333;
+          line-height: 1.3;
+          margin-bottom: 4px;
+        }
+
+        .card-id {
+          font-size: 13px;
+          color: #666;
+        }
+      }
+
+      .header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+
+        .amount {
+          font-size: 13px;
+          font-weight: 600;
+
+          &.amount-positive {
+            color: #52c41a;
+          }
+
+          &.amount-negative {
+            color: #ff4d4f;
+          }
+
+          &.amount-pending {
+            color: @theme;
+          }
+        }
+
+        .status-tag {
+          font-size: 12px;
+          padding: 3px 6px;
+          border-radius: 4px;
+          border: none;
+
+          &.adm-tag-success {
+            color: #52c41a;
+            background-color: #f6ffed;
+          }
+
+          &.adm-tag-danger {
+            color: #ff4d4f;
+            background-color: #fff2f0;
+          }
+
+          &.adm-tag-primary {
+            color: @theme;
+            background-color: #e6f7ff;
+          }
+        }
+      }
+    }
+
+    // 投注信息区域
+    .bet-info-section {
+      padding: 12px;
+      border-bottom: 1px solid #f5f5f5;
+
+      .bet-labels {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .label {
+          font-size: 14px;
+          color: #666;
+
+          &:nth-child(1) {
+            justify-self: start;
+            text-align: left;
+          }
+
+          &:nth-child(2) {
+            justify-self: center;
+            text-align: center;
+          }
+
+          &:nth-child(3) {
+            justify-self: end;
+            text-align: right;
+          }
+        }
+      }
+
+      .bet-values {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        align-items: center;
+
+        .bet-option {
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+          justify-self: start;
+          text-align: left;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .odds {
+          font-size: 16px;
+          color: @theme;
+          font-weight: 600;
+          justify-self: center;
+          text-align: center;
+        }
+
+        .bet-amount {
+          font-size: 15px;
+          color: #333;
+          font-weight: 500;
+          justify-self: end;
+          text-align: right;
+        }
+      }
+    }
+
+    // 底部用户信息
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+
+      .creator-info {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+
+        .creator-avatar {
+          width: 30px;
+          height: 30px;
+          background-color: #edeaff;
+        }
+
+        .creator-details {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin-left: 3px;
+
+          .creator-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: gray;
+          }
+
+          .creator-level {
+            font-size: 10px;
+            padding: 1px 6px;
+            background-color: rgba(79, 70, 229, 0.1);
+            color: @primary;
+            border-radius: 4px;
+            align-self: flex-start;
+          }
+        }
+      }
+
+      .time-info {
+        text-align: right;
+
+        .timestamp {
+          font-size: 12px;
+          color: #666;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+// 响应式适配
+@media (max-width: 375px) {
+  .dealer-header {
+    padding: 12px;
+  }
+
+  .bet-cards-container {
+    padding: 0 12px;
+
+    .bet-card {
+      .card-header {
+        padding: 10px;
+
+        .header-left {
+          .card-title {
+            font-size: 14px;
+          }
+        }
+
+        .header-right {
+          .amount {
+            font-size: 15px;
+          }
+
+          .status-tag {
+            font-size: 11px;
+            padding: 1px 6px;
+          }
+        }
+      }
+
+      .bet-info-section {
+        padding: 10px;
+
+        .bet-labels {
+          gap: 6px;
+        }
+
+        .bet-values {
+          gap: 6px;
+
+          .bet-option {
+            font-size: 13px;
+          }
+
+          .odds {
+            font-size: 15px;
+          }
+
+          .bet-amount {
+            font-size: 15px;
+          }
+        }
+      }
+
+      .card-footer {
+        padding: 10px;
+
+        .creator-info {
+          .creator-details {
+            .creator-name {
+              font-size: 11px;
+            }
+
+            .creator-level {
+              font-size: 11px;
+            }
+          }
+        }
+
+        .time-info {
+          .timestamp {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}

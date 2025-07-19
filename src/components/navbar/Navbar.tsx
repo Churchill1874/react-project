@@ -81,7 +81,7 @@ const Navbar = () => {
     >
       <Tabs.Tab title="首页" key="home" />
       <Tabs.Tab title="新闻" key="news" />
-      <Tabs.Tab title="聊妹" key="chatgirl" />
+      <Tabs.Tab title="多人游戏" key="game" />
       <Tabs.Tab title="投注" key="bet" />
       <Tabs.Tab
         title={useStore.getState().hasUnreadMessage ? <Badge content={Badge.dot}>消息</Badge> : '消息'}

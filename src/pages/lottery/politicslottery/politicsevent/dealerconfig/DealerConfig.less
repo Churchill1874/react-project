@@ -7,11 +7,17 @@
   align-items: center;
 }
 
+.dealer-tip {
+  color: red;
+  text-align: right;
+  //margin-top: 10px;
+  letter-spacing: 1px;
+}
+
 .config-page {
-  margin-bottom: 100px;
+  margin-bottom: 300px;
   padding: 0 10px;
   min-height: 100vh;
-  margin-top: 5px;
   .adm-card {
     border-radius: 12px;
     margin-bottom: 16px;
@@ -24,6 +30,7 @@
 
   .title-card {
     padding-bottom: 10px;
+    padding-top: 5px;
     background: linear-gradient(135deg, #fff, #fff);
     margin-bottom: 5px;
 
@@ -61,10 +68,21 @@
     }
   }
 
+  .guarantee-deposit {
+    letter-spacing: 0.8px;
+    font-size: 13px;
+    color: gray;
+    line-height: 1.5;
+    background-color: #f0ededb4;
+    border-radius: 12px;
+    padding: 5px 5px;
+  }
+
   .config-card {
     background: linear-gradient(135deg, #fff, #edf2f5);
     padding-bottom: 10px;
-
+    padding-top: 5px;
+    margin-bottom: 5px;
     .card-header {
       display: flex;
       align-items: center;
@@ -94,14 +112,14 @@
         align-items: center;
         justify-content: space-between;
         padding: 5px;
-        background-color: #c8e0f4;
+        background-color: #d8e9f8;
         border-radius: 8px;
         border: 2px solid transparent;
         transition: all 0.3s ease;
         position: relative;
 
         &:hover {
-          background-color: #c8e0f4;
+          background-color: #d8e9f8;
 
           &.focused {
             background-color: #7dbcfa;
@@ -171,7 +189,8 @@
 
             .type {
               font-size: 15px;
-              color: #fff;
+              //color: #fff;
+              color: gray;
               transition: color 0.2s ease;
             }
           }
@@ -240,7 +259,7 @@
       .min-deposit {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 5px;
 
         .label {
           font-size: 14px;
@@ -251,14 +270,14 @@
           display: flex;
           align-items: center;
           padding: 8px;
-          background-color: #c8e0f4;
+          background-color: #d8e9f8;
           border-radius: 8px;
 
           .adm-input-element {
             background-color: #f8f9fa;
             padding: 8px;
             border-radius: 8px;
-            width: 100px;
+            width: 110px;
           }
           .amount {
             font-size: 16px;
@@ -269,10 +288,10 @@
     }
 
     .time-content {
-      margin-top: 10px;
+      margin-top: 5px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 1px;
 
       .time-item {
         display: flex;
@@ -307,7 +326,7 @@
   }
 
   .button-container {
-    margin-top: 24px;
+    margin-top: 10px;
     padding: 0 16px;
 
     .open-button {
@@ -325,6 +344,10 @@
       }
     }
   }
+}
+
+.adm-input-element {
+  font-size: 16px;
 }
 
 @media (max-width: 375px) {
@@ -358,7 +381,7 @@
 
         .odds-input-wrapper {
           .odds-input {
-            width: 70px;
+            width: 80px;
 
             .adm-input {
               font-size: 16px;
@@ -373,5 +396,10 @@
 .politics-event-popup {
   .adm-popup-body-position-right {
     background-color: #1890ff;
+  }
+}
+@media (min-width: 768px) {
+  .adm-popup-body-position-right {
+    max-width: 680px;
   }
 }

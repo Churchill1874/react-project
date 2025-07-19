@@ -1,6 +1,6 @@
 import { useLayoutEffect, useEffect, useRef, useState, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import routes from './routers/routers';
+import routes from '@/routers/routers';
 import Navbar from '@/components/navbar/Navbar';
 import '@/global.less';
 import useStore from '@/zustand/store';
@@ -53,13 +53,14 @@ const App: React.FC = () => {
     if (pathname === '/home') return '#fff';
     if (pathname.startsWith('/news')) return '#1890ff';
     if (pathname === '/newsinfo') return '#fff';
-    if (pathname === '/chatgirl') return '#1890ff';
+    if (pathname === '/game') return '#1890ff';
     if (pathname === '/bet') return '#1890ff';
     if (pathname === '/message') return '#1890ff';
     if (pathname === '/personal') return '#1890ff';
     if (pathname === '/politics') return '#1890ff';
     if (pathname === '/interesting') return '#1890ff';
-    if (pathname === '/politicsevent') return '#1890ff'
+    if (pathname === '/politicsevent') return '#1890ff';
+    if (pathname === '/betOrder') return '#1890ff';
     return '#fff';
   };
 

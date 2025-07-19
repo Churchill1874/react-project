@@ -9,7 +9,7 @@ import Likes from '@/components/likes/Likes';
 import Relation from '@/components/relation/Relation';
 import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent';
 import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
-import DealearConfig from '@/pages/lottery/politicslottery/politicsevent/dealerconfig/DealerConfig';
+import BetOrder from '@/pages/lottery/politicslottery/betorder/BetOrder';
 export default [
   //首页
   {
@@ -48,22 +48,26 @@ export default [
   },
   {
     path: '/likes',
-    component: Likes
+    component: Likes,
   },
   {
     path: '/collect',
-    component: Relation
+    component: Relation,
   },
   {
     path: '/followers',
-    component: Relation
+    component: Relation,
   },
   {
     path: '/bet',
-    component: PoliticsLottery
+    component: PoliticsLottery,
   },
   {
     path: '/politicsEvent',
-    component: PoliticsEvent
+    component: PoliticsEvent,
+  },
+  {
+    path: '/betOrder',
+    component: BetOrder,
   }
 ];

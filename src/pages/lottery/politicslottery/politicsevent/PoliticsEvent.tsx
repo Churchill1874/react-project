@@ -10,7 +10,7 @@ import DealearConfig from '@/pages/lottery/politicslottery/politicsevent/dealerc
 const PoliticsEvent: React.FC = () => {
   const [politicsLotteryList, setPoliticsLotteryList] = useState<PoliticsLotteryType[]>([])
   const [loading, setLoading] = useState<boolean>(false);
-  const [id, setId] = useState<number>();
+  const [politicsLottery, setPoliticsLottery] = useState<PoliticsLotteryType>();
   const [openPopup, setOpenPopup] = useState<boolean>(false)
 
   const Req_PoliticsLotteryList = async () => {
@@ -27,9 +27,9 @@ const PoliticsEvent: React.FC = () => {
     setPoliticsLotteryList(resp.records)
   }
 
-  const openDealerConfig = (id: any) => {
+  const openDealerConfig = (politicsEvent: PoliticsLotteryType) => {
     setOpenPopup(true)
-    setId(id)
+    setPoliticsLottery(politicsEvent)
   }
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const PoliticsEvent: React.FC = () => {
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                      <Button color="primary" block className="card-button" onClick={() => openDealerConfig(politicsLottery.id)}>
+                      <Button color="primary" block className="card-button" onClick={() => openDealerConfig(politicsLottery)}>
                         开设盘口
                       </Button>
 
@@ -158,11 +158,11 @@ const PoliticsEvent: React.FC = () => {
 
 
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                      <Button color="primary" block className="card-button" onClick={() => openDealerConfig(politicsLottery.id)}>
+                      <Button color="primary" block className="card-button" onClick={() => openDealerConfig(politicsLottery)}>
                         开设盘口
                       </Button>
-
                     </div>
+
                   </div>
                 </div>
               );
@@ -181,16 +181,17 @@ const PoliticsEvent: React.FC = () => {
         )
       }
 
-      <Popup className='politics-event-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
-        position='right'
-        closeOnMaskClick
-        visible={openPopup}
-        onClose={() => { setOpenPopup(false) }}>
-        <DealearConfig setOpenPopup={setOpenPopup} id={id} />
-      </Popup>
+      {
+        politicsLottery &&
+        <Popup className='politics-event-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+          position='right'
+          closeOnMaskClick
+          visible={openPopup}
+          onClose={() => { setOpenPopup(false) }}>
+          <DealearConfig setOpenPopup={setOpenPopup} politicsEvent={politicsLottery} />
+        </Popup>
+      }
     </>
-
-
   );
 };
 

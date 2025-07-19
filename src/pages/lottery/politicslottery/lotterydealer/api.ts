@@ -4,7 +4,9 @@ import { serverTarget } from '@/common/api';
 export interface LotteryDealerView {
   id: string;
   title: any;
-  betCount: any;
+  count1: number;
+  count2: number;
+  count3: number;
 
   choose1: any;
   describe1: any;
@@ -41,6 +43,14 @@ export interface LotteryDealerView {
   playerAvatar: any;
 }
 
+export interface LotteryDealerAddReq {
+  id?: string;
+  odds1?: string | '0';
+  odds2?: string | '0';
+  odds3?: string | '0';
+  prizePool?: string | '0';
+}
+
 export interface LotteryDealerPage {
   current: any;
   pages: any;
@@ -56,6 +66,12 @@ export interface LotteryDealerResponse {
   msg: any;
 }
 
+export interface Response {
+  code: any;
+  data: any;
+  msg: any;
+}
+
 export interface LotteryDealerReq {
   pageNum: number;
   pageSize: number;
@@ -63,7 +79,14 @@ export interface LotteryDealerReq {
   status: number | null;
 }
 
+//查询开庄信息
 const LotteryDealerPagePath = '/player/lotteryDealer/queryPage';
 export const Request_LotteryDealerPage = async (param: LotteryDealerReq): Promise<LotteryDealerResponse> => {
   return (await axios.post(serverTarget + LotteryDealerPagePath, param)).data;
+};
+
+//开庄申请
+const LotteryDealerAddPath = '/player/lotteryDealer/add';
+export const Request_LotteryDealerAdd = async (param: LotteryDealerAddReq): Promise<Response> => {
+  return (await axios.post(serverTarget + LotteryDealerAddPath, param)).data;
 };

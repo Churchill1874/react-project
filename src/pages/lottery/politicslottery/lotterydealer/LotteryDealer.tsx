@@ -12,16 +12,18 @@ import {
   PullToRefresh,
   InfiniteScroll,
   Avatar,
-  Popup
+  Popup,
+  Skeleton
 } from 'antd-mobile';
-import { RedoOutline, ClockCircleOutline, BillOutline, ReceiptOutline, CheckShieldOutline, GiftOutline, FileOutline, TeamOutline } from 'antd-mobile-icons';
+import { RedoOutline, BillOutline, ReceiptOutline, CheckShieldOutline } from 'antd-mobile-icons';
 import '@/pages/lottery/politicslottery/lotterydealer/LotteryDealer.less';
 import { LotteryDealerReq, Request_LotteryDealerPage, LotteryDealerView } from '@/pages/lottery/politicslottery/lotterydealer/api'
 import { levelEnum, colorEnum } from '@/common/LotteryEnum'
 import dayjs from 'dayjs'
 import avatars from '@/common/avatar';
 import OtherPeople from '@/pages/otherpeople/otherpeople';
-import { FcCustomerSupport, FcSalesPerformance, FcSurvey } from "react-icons/fc";
+import { FcSurvey, FcFinePrint } from "react-icons/fc";
+import { useNavigate } from 'react-router-dom';
 
 const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -49,6 +51,7 @@ const LotteryDealer: React.FC = () => {
   const [politicsLotteryList, setPoliticsLotteryList] = useState<LotteryDealerView[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lotteryPageNum, setLotteryPageNum] = useState<number>(1);
+  const navigate = useNavigate();
 
   //获取api东南亚新闻数据
   const politicsLotteryPageRequest = async (isReset: boolean) => {
@@ -107,6 +110,7 @@ const LotteryDealer: React.FC = () => {
           <span className="title">热门竞猜 <span className="updated">{dayjs(new Date).format("YYYY-MM-DD ")}</span></span>
           <span style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
             <Button
+              onClick={() => navigate('/betOrder')}
               color='success'
               style={{
                 'fontSize': '14px',
@@ -150,6 +154,14 @@ const LotteryDealer: React.FC = () => {
 
       <div className="lottery-page">
         <PullToRefresh onRefresh={() => politicsLotteryPageRequest(true)} >
+          {(!politicsLotteryList || politicsLotteryList.length === 0) && (
+            <>
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+            </>
+          )}
+
+
           {politicsLotteryList?.map((lottery, index) => {
             return (
               <React.Fragment key={'fragment' + lottery.dealerId}>
@@ -180,15 +192,20 @@ const LotteryDealer: React.FC = () => {
                           </div>
                         </div>
                         <div className="creator-verify">
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '14px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
                         </div>
                       </div>
 
                       <div className="lottery-stats">
                         <div className="deadline">
                           <div className="deadline-text">
-                            <div><ClockCircleOutline fontSize={14} /> 投注截止:</div>
-                            <div>{dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+                              盘口ID: {lottery.dealerId}
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+                              投注数量: {lottery.count1 ?? 0 + lottery.count2 ?? 0} <FcFinePrint size={16} style={{ marginLeft: '5px' }} /> 查看
+                            </div>
+
                           </div>
 
                         </div>
@@ -240,22 +257,14 @@ const LotteryDealer: React.FC = () => {
                         </div>
                       </Radio.Group>
 
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', color: 'gray', margin: '15px 0px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <FileOutline />编号:{lottery.dealerId}
-                        </div>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center' }}> <TeamOutline fontSize={15} />参与:{lottery.betCount} </div>
-                        </div>
-                        <span><GiftOutline />开奖:{dayjs(lottery.drawTime).format("YYYY-MM-DD")}</span>
-                      </div>
                       <Collapse accordion>
                         <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>
-                          <p style={{ fontSize: '0.9rem' }}>{lottery.rule}</p>
-                          <p>创建时间: {dayjs(lottery.createTime).format("YYYY-MM-DD HH:mm")}</p>
+                          <div style={{ fontSize: '0.9rem', marginBottom: '3px' }}>{lottery.rule}</div>
+                          <div style={{ fontSize: '0.8rem' }}>投注截止: {dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")} </div>
+                          <div style={{ fontSize: '0.8rem' }}>开奖时间: {dayjs(lottery.drawTime).format("YYYY-MM-DD HH:mm")}</div>
+                          <div style={{ fontSize: '0.8rem' }}>开盘时间: {dayjs(lottery.createTime).format("YYYY-MM-DD HH:mm")}</div>
                         </Collapse.Panel>
                       </Collapse>
-
 
                       <Button color="primary" block shape="rounded" size="large" className="lottery-button">
                         立即投注
@@ -269,11 +278,11 @@ const LotteryDealer: React.FC = () => {
                   (<Card className="lottery-card" key={'card3' + lottery.dealerId}>
                     <div className="lottery-header">
                       <div className="lottery-title">{lottery.title}</div>
+
                       <Tag style={{ padding: '3px 6px' }} color={colorEnum(lottery.status)} className="lottery-tag">
                         {levelEnum(lottery.status)}
                       </Tag>
                     </div>
-
                     <div className="lottery-creator">
                       <div className="creator-left">
                         <div className="creator-icon" onClick={() => { setOtherPlayerId(lottery.playerId); setOtherInfoCloseRight(true) }}>
@@ -290,15 +299,20 @@ const LotteryDealer: React.FC = () => {
                         </div>
                       </div>
                       <div className="creator-verify">
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '14px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
                       </div>
                     </div>
 
                     <div className="lottery-stats">
                       <div className="deadline">
                         <div className="deadline-text">
-                          <div><ClockCircleOutline /> 投注截止:</div>
-                          <div>{dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+                            盘口ID: {lottery.dealerId}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+                            投注数量: {lottery.count1 ?? 0 + lottery.count2 ?? 0 + lottery.count3 ?? 0} <FcFinePrint size={16} style={{ marginLeft: '5px' }} fontSize={20} /> 查看
+                          </div>
+
                         </div>
                       </div>
                       <div className="fund">
@@ -378,17 +392,12 @@ const LotteryDealer: React.FC = () => {
                       </div>
                     </Radio.Group>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.9rem', color: 'gray', margin: '15px 0px' }}>
-                      <div ><FileOutline />编号:{lottery.dealerId}</div>
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}> <TeamOutline fontSize={15} />参与:{lottery.betCount} </div>
-                      </div>
-                      <span><GiftOutline />开奖:{dayjs(lottery.drawTime).format("YYYY-MM-DD")} </span>
-                    </div>
                     <Collapse accordion>
                       <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>
-                        <p style={{ fontSize: '0.9rem' }}>{lottery.rule}</p>
-                        <p>创建时间:  {dayjs(lottery.createTime).format("YYYY-MM-DD HH:mm")}</p>
+                        <div style={{ fontSize: '0.9rem', marginBottom: '3px' }}>{lottery.rule}</div>
+                        <div style={{ fontSize: '0.8rem' }}>投注截止: {dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")}</div>
+                        <div style={{ fontSize: '0.8rem' }}>开奖时间: {dayjs(lottery.drawTime).format("YYYY-MM-DD HH:mm")}</div>
+                        <div style={{ fontSize: '0.8rem' }}>开盘时间:  {dayjs(lottery.createTime).format("YYYY-MM-DD HH:mm")}</div>
                       </Collapse.Panel>
                     </Collapse>
 
