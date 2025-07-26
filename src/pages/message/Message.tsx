@@ -168,10 +168,9 @@ const Message: React.FC = () => {
       <Tabs className="message-tabs" activeLineMode='fixed' activeKey={messageTabKey} onChange={(key) => { changeTabKey(key) }}>
         {/*****************************************私信内容 *****************************************************/}
         <Tabs.Tab title={
-          <div style={{ display: 'flex', justifyItems: 'center' }}>
+          <div style={{ display: 'flex', justifyItems: 'center', alignItems: 'center' }}>
             {privateMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
-            私信
-            <FcComments style={{ marginLeft: '3px' }} fontSize={14} />
+            私信 <span style={{ fontSize: '12px' }}>💬</span>
           </div>}
           key='private-message'>
           <PrivateChat />
@@ -185,8 +184,7 @@ const Message: React.FC = () => {
           title={
             <div style={{ display: 'flex', justifyItems: 'center' }}>
               {systemMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
-              系统消息
-              <FcMediumPriority style={{ marginLeft: '3px' }} fontSize={14} />
+              系统消息<span style={{ fontSize: '12px' }}>📨</span>
             </div>
           }
           key='system-message'

@@ -60,7 +60,7 @@ const App: React.FC = () => {
     if (pathname === '/politics') return '#1890ff';
     if (pathname === '/interesting') return '#1890ff';
     if (pathname === '/politicsevent') return '#1890ff';
-    if (pathname === '/betOrder') return '#1890ff';
+    if (pathname.startsWith('/betOrder')) return '#1890ff';
     return '#fff';
   };
 
@@ -71,7 +71,7 @@ const App: React.FC = () => {
   return (
     <div className="main-container" style={{ backgroundColor: bgColor }}>
       <InnerApp />
-      <div style={{ backgroundColor: bgColor, height: '100px' }} />
+      {/* <div id='bottom' style={{ backgroundColor: bgColor, height: '100px' }} /> */}
       <Navbar />
     </div>
   );

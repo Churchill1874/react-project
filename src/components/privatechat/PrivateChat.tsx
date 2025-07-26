@@ -5,7 +5,7 @@ import {
   PrivateChatPageRespType,
   Request_CleanUnreadStatus
 } from '@/components/privatechat/api';
-import { Badge, Card, Avatar, Ellipsis, Popup, DotLoading } from 'antd-mobile';
+import { Badge, Card, Avatar, Ellipsis, Popup, DotLoading, Skeleton } from 'antd-mobile';
 import { LeftOutline } from 'antd-mobile-icons';
 import avatars from '@/common/avatar';
 import '@/components/privatechat/PrivateChat.less';
@@ -52,12 +52,17 @@ const PrivateChat: React.FC = () => {
     avatar: "",
     level: ""
   });
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false);
 
 
   const privateChatListRequest = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true)
     const privateChatListResp: PrivateChatPageRespType = (await Request_PrivateChatList()).data;
+    setLoading(false)
     setPrivateChatList(privateChatListResp.list || []);
   };
 
@@ -108,6 +113,13 @@ const PrivateChat: React.FC = () => {
 
   return (
     <>
+      {(!privateChatList || privateChatList.length === 0) && loading
+        &&
+        <>
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={8} animated />
+        </>
+      }
       {privateChatList?.map((chatInfo, index) => (
         <Card
           key={index}

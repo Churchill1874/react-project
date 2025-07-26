@@ -1,0 +1,341 @@
+// 自定义弹窗样式 - 完全可控，无组件库约束
+.custom-modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+
+  // 调整垂直位置 - 中间靠上一点
+  padding-top: 8vh; // 顶部留15%视窗高度
+  padding-bottom: 32vh; // 底部留25%视窗高度
+}
+
+.row-image {
+  width: 55px;
+  height: 52px;
+  //overflow: hidden;
+  border-radius: 12px;
+  //margin-right: 8px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+}
+
+.custom-modal-container {
+  width: 90vw;
+  max-width: 400px;
+  min-width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.custom-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+
+  // 头部
+  .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+
+      .bet-icon {
+        width: 40px;
+        height: 40px;
+        background: #4285f4;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+
+      .bet-details {
+        .bet-label {
+          font-size: 13px;
+          color: #999;
+          margin-bottom: 5px;
+        }
+
+        .bet-title {
+          font-size: 16px;
+          font-weight: 500;
+          color: #333;
+        }
+      }
+    }
+
+    .header-odds {
+      text-align: right;
+      margin-right: 35px;
+
+      .odds-label {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 2px;
+      }
+
+      .odds-value {
+        font-size: 18px;
+        font-weight: 500;
+        color: #4285f4;
+      }
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 20px;
+      color: #999;
+      cursor: pointer;
+      padding: 4px;
+
+      &:hover {
+        color: #666;
+      }
+    }
+  }
+
+  // 金额输入
+  .amount-section {
+    margin-bottom: 5px;
+
+    .amount-input {
+      .adm-input-element {
+        font-size: 18px;
+      }
+      .adm-input {
+        font-size: 18px;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        background: #f8f9fa;
+
+        &::placeholder {
+          color: #bbb;
+        }
+
+        &:focus {
+          border-color: #4285f4;
+          background: #fff;
+        }
+      }
+    }
+  }
+
+  // 预设金额
+  .preset-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .preset-btn {
+      height: 44px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      background: #fff;
+      color: #333;
+      font-size: 14px;
+
+      &:hover,
+      &:active {
+        border-color: #4285f4;
+        color: #4285f4;
+        background: #f0f7ff;
+      }
+    }
+  }
+
+  // 全部金额按钮
+  .max-btn {
+    width: 100%;
+    height: 48px;
+    background: #4285f4;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+
+    &:hover,
+    &:active {
+      background: #3367d6;
+    }
+  }
+
+  // 预计获利
+  .return-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .return-label {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .return-value {
+      font-size: 17px;
+      font-weight: 500;
+      color: #4285f4;
+    }
+  }
+
+  // 操作按钮
+  .action-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .cancel-btn {
+      height: 48px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      background: #fff;
+      color: #666;
+      font-size: 15px;
+
+      &:hover,
+      &:active {
+        background: #f5f5f5;
+      }
+    }
+
+    .confirm-btn {
+      height: 48px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+
+      &.adm-button-disabled {
+        background: #ccc !important;
+        border-color: #ccc !important;
+      }
+    }
+  }
+
+  // 底部提示
+  .bottom-tip {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.4;
+  }
+}
+
+// 响应式适配
+@media (max-width: 375px) {
+  .custom-modal-mask {
+    padding: 15px;
+    padding-top: 10vh; // 小屏幕顶部留10%
+    padding-bottom: 20vh; // 小屏幕底部留20%
+  }
+
+  .custom-modal-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  .custom-modal-content {
+    padding: 16px;
+
+    .modal-header {
+      .header-odds {
+        margin-right: 35px;
+
+        .odds-value {
+          font-size: 17px;
+        }
+      }
+    }
+
+    .preset-section {
+      gap: 10px;
+
+      .preset-btn {
+        height: 40px;
+        font-size: 15px;
+      }
+    }
+
+    .max-btn {
+      height: 44px;
+      font-size: 14px;
+    }
+
+    .action-section {
+      gap: 10px;
+
+      .cancel-btn,
+      .confirm-btn {
+        height: 44px;
+        font-size: 14px;
+      }
+    }
+
+    .return-section {
+      .return-value {
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+// 进入/退出动画
+.custom-modal-mask {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.custom-modal-content {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

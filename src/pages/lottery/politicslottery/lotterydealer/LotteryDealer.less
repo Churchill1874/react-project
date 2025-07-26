@@ -3,10 +3,15 @@
 @gray: #6b7280;
 @bg-light: #f8f9fa;
 @theme: #1890ff;
+
 .lottery-page {
   padding: 0 10px;
   background-color: @theme;
 
+  .option-support {
+    font-size: 13px;
+    color: @gray;
+  }
   .lottery-card {
     padding-top: 5px;
     margin-bottom: 20px;
@@ -61,14 +66,15 @@
 
       .creator-info {
         .creator-name {
+          //color: gray;
           font-size: 14px;
           font-weight: 500;
         }
 
         .creator-level {
-          margin-left: 8px;
-          font-size: 12px;
-          padding: 2px 6px;
+          margin-left: 3px;
+          font-size: 11px;
+          padding: 1px 3px;
           background-color: rgba(79, 70, 229, 0.1);
           color: @primary;
           border-radius: 4px;
@@ -198,7 +204,7 @@
           }
 
           .option-sub {
-            font-size: 12px;
+            font-size: 13px;
             color: @gray;
             margin-top: 2px;
           }
@@ -226,11 +232,6 @@
         font-weight: bold;
         color: @primary;
         margin-bottom: 4px;
-      }
-
-      .option-support {
-        font-size: 13px;
-        color: @gray;
       }
     }
 
@@ -336,7 +337,7 @@
     }
 
     .updated {
-      font-size: 12px;
+      font-size: 15px;
       color: #f9f9f9;
     }
   }

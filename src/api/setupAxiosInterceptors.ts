@@ -45,8 +45,21 @@ const setupAxiosInterceptors = (navigate: NavigateFunction) => {
         return Promise.reject(new Error('请先登陆'));
       }
 
+      if (response.data.code === -6) {
+        Toast.show({
+          icon: 'fail',
+          content: response.data.msg,
+          duration: 1000,
+        });
+        return Promise.reject(new Error('余额不足'));
+      }
+
       if (response.data.code === -1) {
-        Toast.show({ icon: 'fail', content: response.data.msg, duration: 2000 });
+        Toast.show({
+          icon: 'fail',
+          content: response.data.msg,
+          duration: 2000,
+        });
         return Promise.reject(new Error('服务异常'));
       }
 

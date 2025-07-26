@@ -67,7 +67,7 @@ export default [
     component: PoliticsEvent,
   },
   {
-    path: '/betOrder',
+    path: '/betOrder/:dealerId?',
     component: BetOrder,
   }
 ];

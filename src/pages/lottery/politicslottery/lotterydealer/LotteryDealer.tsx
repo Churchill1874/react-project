@@ -13,7 +13,10 @@ import {
   InfiniteScroll,
   Avatar,
   Popup,
-  Skeleton
+  Skeleton,
+  Toast,
+  Space,
+  SpinLoading
 } from 'antd-mobile';
 import { RedoOutline, BillOutline, ReceiptOutline, CheckShieldOutline } from 'antd-mobile-icons';
 import '@/pages/lottery/politicslottery/lotterydealer/LotteryDealer.less';
@@ -24,6 +27,7 @@ import avatars from '@/common/avatar';
 import OtherPeople from '@/pages/otherpeople/otherpeople';
 import { FcSurvey, FcFinePrint } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
+import BetPopup from '@/pages/lottery/politicslottery/betorder/betpopup/BetPopup'
 
 const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
@@ -42,7 +46,15 @@ const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   )
 }
 
+interface BetPopupType {
+  odds: number;
+  choose: string;
+  icon: string;
+  dealerId: string;
+  chooseNumber: number;
+}
 const LotteryDealer: React.FC = () => {
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, BetPopupType>>({});
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState<string>('all');
   const [otherInfoCloseRight, setOtherInfoCloseRight] = useState(false)
@@ -52,6 +64,9 @@ const LotteryDealer: React.FC = () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [lotteryPageNum, setLotteryPageNum] = useState<number>(1);
   const navigate = useNavigate();
+  const [visiable, setVisiable] = useState<boolean>(false);
+  const [betPopup, setBetPopup] = useState<BetPopupType>();
+
 
   //获取api东南亚新闻数据
   const politicsLotteryPageRequest = async (isReset: boolean) => {
@@ -95,19 +110,64 @@ const LotteryDealer: React.FC = () => {
     } else {
       setHasMore(false)
     }
-
     setLoading(false);
   }
 
+
   const handleRefresh = () => {
     console.log('刷新数据');
+    setPoliticsLotteryList([])
+    politicsLotteryPageRequest(true)
   };
+
+  const handleOptionClick = (
+    dealerId: string,
+    optionValue: string,
+    chooseNumber: number,
+    icon: string,
+    choose: string,
+    odds: number
+  ) => {
+    // 设置选中状态
+    setSelected({ ...selected, [dealerId]: optionValue });
+
+    // 存储该卡片的投注信息
+    setSelectedOptions({
+      ...selectedOptions,
+      [dealerId]: {
+        dealerId,
+        chooseNumber,
+        icon,
+        choose,
+        odds
+      }
+    });
+  };
+
+  const openBetPopup = (dealerId: string) => {
+    // 检查该卡片是否有选择
+    if (!selected[dealerId]) {
+      Toast.show({ content: '请先选择投注内容' });
+      return;
+    }
+
+    // 获取该卡片的选择信息
+    const selectedOption = selectedOptions[dealerId];
+    if (!selectedOption) {
+      Toast.show({ content: '请先选择投注内容' });
+      return;
+    }
+
+    // 设置弹窗数据并显示
+    setBetPopup(selectedOption);
+    setVisiable(true)
+  }
 
   return (
     <>
       <div className="filter-header">
         <div className="header-top">
-          <span className="title">热门竞猜 <span className="updated">{dayjs(new Date).format("YYYY-MM-DD ")}</span></span>
+          <span className="title">🔥热门竞猜 <span className="updated">{dayjs(new Date).format("YYYY-MM-DD ")}</span></span>
           <span style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
             <Button
               onClick={() => navigate('/betOrder')}
@@ -147,19 +207,34 @@ const LotteryDealer: React.FC = () => {
             </Tabs>
           </div>
           <div className="refresh-icon" onClick={handleRefresh}>
-            <RedoOutline />
+            {
+              !loading &&
+              <RedoOutline />
+            }
+            {
+              loading &&
+              <>
+                <Space direction='horizontal' wrap block style={{ '--gap': '16px' }}>
+                  <SpinLoading color='currentColor' />
+                </Space>
+              </>
+
+            }
+
           </div>
         </div>
       </div>
 
       <div className="lottery-page">
         <PullToRefresh onRefresh={() => politicsLotteryPageRequest(true)} >
-          {(!politicsLotteryList || politicsLotteryList.length === 0) && (
-            <>
-              <Skeleton.Title animated />
-              <Skeleton.Paragraph lineCount={8} animated />
-            </>
-          )}
+          {(!politicsLotteryList || politicsLotteryList.length === 0) && loading &&
+            (
+              <>
+                <Skeleton.Title animated />
+                <Skeleton.Paragraph lineCount={8} animated />
+              </>
+            )
+          }
 
 
           {politicsLotteryList?.map((lottery, index) => {
@@ -185,14 +260,14 @@ const LotteryDealer: React.FC = () => {
                           </div>
                           <div className="creator-info">
                             <div>
-                              <span className="creator-name">{lottery.playerName}</span>
+                              <span className="creator-name"> {lottery.playerName}</span>
                               <span className="creator-level">LV.{lottery.playerLevel}</span>
                             </div>
                             <div className="creator-id">ID: {lottery.playerAccount}</div>
                           </div>
                         </div>
                         <div className="creator-verify">
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '14px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '12px' }}><CheckShieldOutline fontSize={14} /> 已付奖池</span>
                         </div>
                       </div>
 
@@ -202,12 +277,10 @@ const LotteryDealer: React.FC = () => {
                             <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
                               盘口ID: {lottery.dealerId}
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
-                              投注数量: {lottery.count1 ?? 0 + lottery.count2 ?? 0} <FcFinePrint size={16} style={{ marginLeft: '5px' }} /> 查看
+                            <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }} onClick={() => { navigate(`/betOrder/${lottery.dealerId}`) }}>
+                              投注数量: {lottery.betCount ?? 0} 笔<FcFinePrint size={16} style={{ marginLeft: '5px' }} /> 查看
                             </div>
-
                           </div>
-
                         </div>
 
 
@@ -223,11 +296,15 @@ const LotteryDealer: React.FC = () => {
                         </div>
                       </div>
 
-                      <Radio.Group value={selected['us']} onChange={(val) => setSelected({ ...selected, us: val as string })}>
+                      <Radio.Group value={selected[lottery.dealerId]} onChange={(val) => { setSelected({ ...selected, [lottery.dealerId]: val as string }) }}>
                         <div className="options-wrap horizontal">
-                          <div className={`option-item ${selected['us'] === 'us-1' ? 'selected' : ''}`}>
+                          <div className={`option-item ${selected[lottery.dealerId] === 'option-1' ? 'selected' : ''}`}
+                            onClick={() => handleOptionClick(lottery.dealerId, 'option-1', 1, lottery.icon1, lottery.choose1, lottery.odds1)}
+
+                          >
+
                             <div className="option-top-line">
-                              <Radio value="us-1" className="option-radio" />
+                              <Radio value="option-1" className="option-radio" />
                               <div className="option-titles">
                                 <div className="option-label">{lottery.describe1}</div>
                                 <div className="option-sub">{lottery.choose1}</div>
@@ -236,13 +313,21 @@ const LotteryDealer: React.FC = () => {
                             <div className="option-img">
                               <Image src={lottery.icon1} fit="cover" width="100%" height="100%" />
                             </div>
-                            <div className="option-odds">{lottery.odds1}x</div>
-                            <div className="option-support">下注支持率：{lottery.rate1}%</div>
+                            <div className="option-odds">{lottery.odds1} x</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span className="option-support">总额:{lottery.bet1Amount}U</span>
+                              <span className="option-support">比例:{lottery.rate1}%</span>
+                            </div>
+
+
                           </div>
                           <div className="vs-divider"> VS </div>
-                          <div className={`option-item ${selected['us'] === 'us-2' ? 'selected' : ''}`}>
+                          <div className={`option-item ${selected[lottery.dealerId] === 'option-2' ? 'selected' : ''}`}
+                            onClick={() => handleOptionClick(lottery.dealerId, 'option-2', 2, lottery.icon2, lottery.choose2, lottery.odds2)}
+                          >
+
                             <div className="option-top-line">
-                              <Radio value="us-2" className="option-radio" />
+                              <Radio value="option-2" className="option-radio" />
                               <div className="option-titles">
                                 <div className="option-label">{lottery.describe2}</div>
                                 <div className="option-sub">{lottery.choose2}</div>
@@ -251,14 +336,17 @@ const LotteryDealer: React.FC = () => {
                             <div className="option-img">
                               <Image src={lottery.icon2} fit="cover" width="100%" height='100%' />
                             </div>
-                            <div className="option-odds">{lottery.odds2}x</div>
-                            <div className="option-support">下注支持率：{lottery.rate2}% </div>
+                            <div className="option-odds">{lottery.odds2} x</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span className="option-support">总额:{lottery.bet2Amount}U</span>
+                              <span className="option-support">比例:{lottery.rate2}%</span>
+                            </div>
                           </div>
                         </div>
                       </Radio.Group>
 
                       <Collapse accordion>
-                        <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>
+                        <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='📋点击查看规则'>
                           <div style={{ fontSize: '0.9rem', marginBottom: '3px' }}>{lottery.rule}</div>
                           <div style={{ fontSize: '0.8rem' }}>投注截止: {dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")} </div>
                           <div style={{ fontSize: '0.8rem' }}>开奖时间: {dayjs(lottery.drawTime).format("YYYY-MM-DD HH:mm")}</div>
@@ -266,7 +354,7 @@ const LotteryDealer: React.FC = () => {
                         </Collapse.Panel>
                       </Collapse>
 
-                      <Button color="primary" block shape="rounded" size="large" className="lottery-button">
+                      <Button onClick={() => openBetPopup(lottery.dealerId)} color="primary" block shape="rounded" size="large" className="lottery-button">
                         立即投注
                       </Button>
                     </Card>
@@ -292,14 +380,14 @@ const LotteryDealer: React.FC = () => {
                         </div>
                         <div className="creator-info">
                           <div>
-                            <span className="creator-name">{lottery.playerName}</span>
+                            <span className="creator-name"> {lottery.playerName}</span>
                             <span className="creator-level">LV.{lottery.playerLevel}</span>
                           </div>
                           <div className="creator-id">ID: {lottery.playerAccount}</div>
                         </div>
                       </div>
                       <div className="creator-verify">
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '14px' }}><CheckShieldOutline fontSize={14} /> 已支付奖池</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '12px' }}><CheckShieldOutline fontSize={14} />  已付奖池</span>
                       </div>
                     </div>
 
@@ -309,8 +397,8 @@ const LotteryDealer: React.FC = () => {
                           <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
                             盘口ID: {lottery.dealerId}
                           </div>
-                          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }}>
-                            投注数量: {lottery.count1 ?? 0 + lottery.count2 ?? 0 + lottery.count3 ?? 0} <FcFinePrint size={16} style={{ marginLeft: '5px' }} fontSize={20} /> 查看
+                          <div style={{ display: 'flex', alignItems: 'center', fontSize: '14px' }} onClick={() => { navigate(`/betOrder/${lottery.dealerId}`) }}>
+                            投注数量: {lottery.betCount ?? 0} 笔 <FcFinePrint size={16} style={{ marginLeft: '5px' }} fontSize={20} /> 查看
                           </div>
 
                         </div>
@@ -327,10 +415,21 @@ const LotteryDealer: React.FC = () => {
                       </div>
                     </div>
 
-                    <Radio.Group value={selected['ca']} onChange={(val) => setSelected({ ...selected, ca: val as string })}>
+                    <Radio.Group value={selected[lottery.dealerId]} onChange={(val) => { setSelected({ ...selected, [lottery.dealerId]: val as string }); }}>
                       <div className="options-wrap vertical">
-                        <div className={`option-row ${selected['ca'] === 'ca-1' ? 'selected' : ''}`}>
-                          <Radio value="ca-1" className="option-radio" />
+                        <div className={`option-row ${selected[lottery.dealerId] === 'option-1' ? 'selected' : ''}`}
+
+                          onClick={() => handleOptionClick(
+                            lottery.dealerId,
+                            'option-1',
+                            1,
+                            lottery.icon1,
+                            lottery.choose1,
+                            lottery.odds1
+                          )}
+                        >
+
+                          <Radio value="option-1" className="option-radio" />
                           <div className="row-content">
                             <div className="row-image">
                               <Image src={lottery.icon1} fit="cover" width={56} height={56} />
@@ -338,19 +437,31 @@ const LotteryDealer: React.FC = () => {
                             <div className="row-text">
                               <div className="label-line">
                                 <span className="option-label">{lottery.describe1}</span>
-                                <span className="option-odds">{lottery.odds1}x</span>
+                                <span className="option-odds">{lottery.odds1} x</span>
                               </div>
                               <div className="sub-line">
                                 <span className="option-sub">{lottery.choose1}</span>
-                                <span className="option-support">下注支持率：{lottery.rate1}%</span>
+                                <span className="option-support">总额:{lottery.bet1Amount}U</span>
+                                <span className="option-support">比例:{lottery.rate1}%</span>
                               </div>
                               <ProgressBar percent={lottery.rate1} className="progress-bar" />
                             </div>
                           </div>
                         </div>
 
-                        <div className={`option-row ${selected['ca'] === 'ca-2' ? 'selected' : ''}`}>
-                          <Radio value="ca-2" className="option-radio" />
+                        <div className={`option-row ${selected[lottery.dealerId] === 'option-2' ? 'selected' : ''}`}
+
+                          onClick={() => handleOptionClick(
+                            lottery.dealerId,
+                            'option-2',
+                            2,
+                            lottery.icon2,
+                            lottery.choose2,
+                            lottery.odds2
+                          )}
+                        >
+
+                          <Radio value="option-2" className="option-radio" />
                           <div className="row-content">
                             <div className="row-image">
                               <Image src={lottery.icon2}
@@ -359,19 +470,31 @@ const LotteryDealer: React.FC = () => {
                             <div className="row-text">
                               <div className="label-line">
                                 <span className="option-label">{lottery.describe2}</span>
-                                <span className="option-odds">{lottery.odds2}x</span>
+                                <span className="option-odds">{lottery.odds2} x</span>
                               </div>
                               <div className="sub-line">
                                 <span className="option-sub">{lottery.choose2}</span>
-                                <span className="option-support">下注支持率：{lottery.rate2}%</span>
+                                <span className="option-support">总额:{lottery.bet2Amount}U</span>
+                                <span className="option-support">比例:{lottery.rate2}%</span>
                               </div>
                               <ProgressBar percent={lottery.rate2} className="progress-bar" />
                             </div>
                           </div>
                         </div>
 
-                        <div className={`option-row ${selected['ca'] === 'ca-3' ? 'selected' : ''}`}>
-                          <Radio value="ca-3" className="option-radio" />
+                        <div className={`option-row ${selected[lottery.dealerId] === 'option-3' ? 'selected' : ''}`}
+
+                          onClick={() => handleOptionClick(
+                            lottery.dealerId,
+                            'option-3',
+                            3,
+                            lottery.icon3,
+                            lottery.choose3,
+                            lottery.odds3
+                          )}
+                        >
+
+                          <Radio value="option-3" className="option-radio" />
                           <div className="row-content">
                             <div className="row-image">
                               <Image src={lottery.icon3} fit="cover" width={56} height={56} />
@@ -379,11 +502,12 @@ const LotteryDealer: React.FC = () => {
                             <div className="row-text">
                               <div className="label-line">
                                 <span className="option-label">{lottery.describe3}</span>
-                                <span className="option-odds">{lottery.odds3}x</span>
+                                <span className="option-odds">{lottery.odds3} x</span>
                               </div>
                               <div className="sub-line">
                                 <span className="option-sub">{lottery.choose3}</span>
-                                <span className="option-support">下注支持率：{lottery.rate3}%</span>
+                                <span className="option-support">总额:{lottery.bet3Amount}U</span>
+                                <span className="option-support">比例:{lottery.rate3}%</span>
                               </div>
                               <ProgressBar percent={lottery.rate3} className="progress-bar" />
                             </div>
@@ -393,7 +517,7 @@ const LotteryDealer: React.FC = () => {
                     </Radio.Group>
 
                     <Collapse accordion>
-                      <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='点击查看规则'>
+                      <Collapse.Panel style={{ fontSize: '14px', marginBottom: '5px' }} key={'panel' + lottery.dealerId} title='📋点击查看规则'>
                         <div style={{ fontSize: '0.9rem', marginBottom: '3px' }}>{lottery.rule}</div>
                         <div style={{ fontSize: '0.8rem' }}>投注截止: {dayjs(lottery.endTime).format("YYYY-MM-DD HH:mm")}</div>
                         <div style={{ fontSize: '0.8rem' }}>开奖时间: {dayjs(lottery.drawTime).format("YYYY-MM-DD HH:mm")}</div>
@@ -401,13 +525,12 @@ const LotteryDealer: React.FC = () => {
                       </Collapse.Panel>
                     </Collapse>
 
-                    <Button color="primary" block shape="rounded" size="large" className="lottery-button">
+                    <Button onClick={() => openBetPopup(lottery.dealerId)} color="primary" block shape="rounded" size="large" className="lottery-button">
                       立即投注
                     </Button>
                   </Card>)
                 }
               </React.Fragment>
-
             )
           })
           }
@@ -426,6 +549,18 @@ const LotteryDealer: React.FC = () => {
         onClose={() => { setOtherInfoCloseRight(false) }}>
         <OtherPeople setVisibleCloseRight={setOtherInfoCloseRight} otherPlayerId={otherPlayerId} />
       </Popup>
+
+      {visiable &&
+        <BetPopup
+          visiable={visiable}
+          onClose={() => setVisiable(false)}
+          refresh={() => politicsLotteryPageRequest(true)}
+          dealerId={betPopup?.dealerId}
+          chooseNumber={betPopup?.chooseNumber}
+          icon={betPopup?.icon}
+          title={betPopup?.choose}
+          odds={betPopup?.odds ?? 0}
+        />}
     </>
   );
 };

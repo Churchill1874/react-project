@@ -21,14 +21,14 @@ const PoliticsLottery: React.FC = () => {
   return (
     <>
       <Tabs className="lottery-tabs" activeLineMode='fixed' activeKey={tabKey} onChange={(key) => { changeTabKey(key) }}>
-        <Tabs.Tab title={<div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><FcSalesPerformance fontSize={18} />  投注</div>} key='dealder'>
+        <Tabs.Tab title={<div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><FcSalesPerformance fontSize={16} />  投注</div>} key='dealder'>
           <LotteryDealer />
         </Tabs.Tab>
 
         {/*         <Tabs.Tab title={<div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><FcSurvey fontSize={18} />  注单 </div>} key='betOrder'>
         </Tabs.Tab> */}
 
-        <Tabs.Tab title={<div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><FcCustomerSupport fontSize={18} />  开盘</div>} key='politicsEvent'>
+        <Tabs.Tab title={<div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}><span style={{ fontSize: '13px' }}>👨‍💼</span>{/* <FcCustomerSupport fontSize={18} /> */}开盘</div>} key='politicsEvent'>
           <PoliticsEvent />
         </Tabs.Tab>
         {/* 

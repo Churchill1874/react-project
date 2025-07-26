@@ -192,9 +192,32 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
                 </Swiper>
               }
 
+              {
+                !newsStatus.contentImagePath && (
+                  <Swiper loop autoplay allowTouchMove>
+                    {
+                      newsStatus.photoPath
+                        .split('||')
+                        .filter(Boolean)
+                        .map((imagePath, index) => (
+                          <Swiper.Item className="swiper-item" key={index}>
+                            <Image
+                              fit="contain"
+                              width={300}
+                              height={200}
+                              src={imagePath}
+                              onClick={showImage}
+                            />
+                          </Swiper.Item>
+                        ))
+                    }
+                  </Swiper>
+                )
+              }
+
 
               {newsStatus?.filterContent ?
-                <TextArea value={newsStatus?.filterContent} readOnly rows={8} className='newsinfo-content' />
+                <TextArea value={newsStatus?.filterContent} readOnly rows={10} className='newsinfo-content' />
                 :
                 <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
               }

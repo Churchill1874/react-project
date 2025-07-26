@@ -4,9 +4,10 @@ import { serverTarget } from '@/common/api';
 export interface LotteryDealerView {
   id: string;
   title: any;
-  count1: number;
-  count2: number;
-  count3: number;
+  bet1Amount: string;
+  bet2Amount: string;
+  bet3Amount: string;
+  betCount: number;
 
   choose1: any;
   describe1: any;

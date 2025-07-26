@@ -24,7 +24,11 @@ const Home = () => {
         >
           <div className="news-item">
             <div className="news-title">
-              {((index + 1) === 1 ? <span className='hot'>头条</span> : <span > {index}.</span>)} {news.title}
+              {index === 0 && <><span className='hot'>头条</span> {news.title}</>}
+              {index === 1 && <><span style={{ color: '#FF0000' }}>1</span>  {news.title}</>}
+              {index === 2 && <><span style={{ color: '#f5691fff' }}>2</span>  {news.title}</>}
+              {index === 3 && <><span style={{ color: '#c17c04ff' }}>3</span>  {news.title}</>}
+              {index !== 0 && index !== 1 && index !== 2 && index !== 3 && <><span >{index}</span>  {news.title}</>}
             </div>
             <div className="news-info">
               <span className="date"> {news.createTime.split(' ')[0]} </span>
