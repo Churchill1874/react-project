@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
@@ -73,10 +73,14 @@ const Society: React.FC = () => {
             <div className="dot-loading-custom" >
               <span >加载中</span>
               <DotLoading color='#fff' />
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
             </div>
           </>
         ) : (
-          <span color='#fff'>--- 我是有底线的 ---</span>
+          <div className="infinite-scroll-footer">
+            <span >--- 我是有底线的 ---</span>
+          </div>
         )}
       </>
     )
@@ -84,84 +88,89 @@ const Society: React.FC = () => {
 
   return (
     <>
-      <div className="card-container" >
-        <PullToRefresh onRefresh={() => societyPageRequest(true)}>
-          {societyList?.map((society, index) => (
-            <Card className="society-custom-card" key={index}>
-              <div className="society-card-content">
+      <InfiniteScroll
+        loadMore={() => societyPageRequest(false)}
+        hasMore={societyHasHore}
+        threshold={50}
+      >
+        <div className="card-container" >
+          <PullToRefresh onRefresh={() => societyPageRequest(true)}>
+            {societyList?.map((society, index) => (
+              <Card className="society-custom-card" key={index}>
+                <div className="society-card-content">
 
-                {society.title &&
-                  <div className="society-title">
-                    <Ellipsis direction='end' rows={2} content={society.title} />
-                  </div>
-                }
+                  {society.title &&
+                    <div className="society-title">
+                      <Ellipsis direction='end' rows={2} content={society.title} />
+                    </div>
+                  }
 
-                {society.videoCover &&
-                  <div className="society-news-image-container">
-                    <video className="society-news-video" src="/1.mp4" controls poster={society.videoCover} />
-                  </div>
-                }
-                {!society.videoCover && society.imagePath &&
-                  <div className="society-news-image-container">
-                    <Image
-                      className="society-news-image"
-                      src={society.imagePath}
-                      alt="Example"
-                      fit="contain"
-                    />
-                  </div>
-                }
+                  {society.videoCover &&
+                    <div className="society-news-image-container">
+                      <video className="society-news-video" src="/1.mp4" controls poster={society.videoCover} />
+                    </div>
+                  }
+                  {!society.videoCover && society.imagePath &&
+                    <div className="society-news-image-container">
+                      <Image
+                        className="society-news-image"
+                        src={society.imagePath}
+                        alt="Example"
+                        fit="contain"
+                      />
+                    </div>
+                  }
 
-                {/*                 {(society.imagePath || society.videoCover) &&
+                  {/*                 {(society.imagePath || society.videoCover) &&
                   <Divider className='divider-line' />
                 } */}
 
-                {/* <Ellipsis direction='end' rows={2} content={society.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
+                  {/* <Ellipsis direction='end' rows={2} content={society.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
  */}
-                <span className="society-time">
+                  <span className="society-time">
 
-                  {society.isTop && <Tag className="society-tag" color='#a05d29'>置顶</Tag>}
-                  {society.isHot && <Tag className="society-tag" color='red' fill='outline'>热门</Tag>}
-                  {/* {society.source && <span className="society-tag" >来源: <span className="source"> {society.source} </span></span>} */}
-                  {<span className="society-tag" > 类型: <span className="source">  {society?.videoCover ? '视频' : '图片'} </span></span>}
-                  {society.createTime && dayjs(society.createTime).format('YYYY-MM-DD HH:mm')}
+                    {society.isTop && <Tag className="society-tag" color='#a05d29'>置顶</Tag>}
+                    {society.isHot && <Tag className="society-tag" color='red' fill='outline'>热门</Tag>}
+                    {/* {society.source && <span className="society-tag" >来源: <span className="source"> {society.source} </span></span>} */}
+                    {<span className="society-tag" > 类型: <span className="source">  {society?.videoCover ? '视频' : '图片'} </span></span>}
+                    {society.createTime && dayjs(society.createTime).format('YYYY-MM-DD HH:mm')}
 
-                </span>
-
-                <Divider className='divider-line' />
-
-                <div className="society-button-info">
-                  <span className="tracking"><LocationFill className="area" />{society.area}</span>
-                  <span className="icon-and-text">
-                    <FcReading fontSize={17} />
-                    <span className="number"> {society.viewCount} </span>
                   </span>
 
-                  <span className="tracking">
+                  <Divider className='divider-line' />
+
+                  <div className="society-button-info">
+                    <span className="tracking"><LocationFill className="area" />{society.area}</span>
                     <span className="icon-and-text">
-                      <MessageOutline fontSize={17} />
-                      <span className="message-number"> {society.commentsCount} </span>
-                      <span className="click"
-                        onClick={() => {
-                          showPopupInfo(
-                            society.id, society.area, society.content, society.viewCount,
-                            society.commentsCount, society.imagePath, society.videoPath,
-                            society.createTime, society.isHot, society.isTop, society.source, society.title
-                          )
-                        }}>点击查看</span>
+                      <FcReading fontSize={17} />
+                      <span className="number"> {society.viewCount} </span>
                     </span>
-                  </span>
+
+                    <span className="tracking">
+                      <span className="icon-and-text">
+                        <MessageOutline fontSize={17} />
+                        <span className="message-number"> {society.commentsCount} </span>
+                        <span className="click"
+                          onClick={() => {
+                            showPopupInfo(
+                              society.id, society.area, society.content, society.viewCount,
+                              society.commentsCount, society.imagePath, society.videoPath,
+                              society.createTime, society.isHot, society.isTop, society.source, society.title
+                            )
+                          }}>点击查看</span>
+                      </span>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </PullToRefresh>
+              </Card>
+            ))}
+          </PullToRefresh>
 
-        <InfiniteScroll loadMore={() => societyPageRequest(false)} hasMore={societyHasHore}>
+
           <SocietyScrollContent hasMore={societyHasHore} />
-        </InfiniteScroll>
-      </div>
 
+        </div>
+      </InfiniteScroll>
 
       {/********************新闻点击弹窗详情********************/}
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}

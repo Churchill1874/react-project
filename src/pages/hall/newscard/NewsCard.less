@@ -1,0 +1,234 @@
+// NewsCarousel.less
+.news-carousel-container {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 5px;
+
+  .news-carousel-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-title {
+      font-size: 15px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .fire-icon {
+        // 火焰图标，可以添加动画
+      }
+
+      .live-indicator {
+        background: #ff4757;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 6px;
+      }
+    }
+
+    .more-button {
+      font-size: 12px;
+      opacity: 0.9;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .news-carousel {
+    position: relative;
+    height: 140px;
+    overflow: hidden;
+
+    &.loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .loading-content {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+      }
+    }
+
+    .news-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.5s ease;
+
+      &.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .news-title {
+        font-size: 15px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+        line-height: 1.3;
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #667eea;
+        }
+      }
+
+      .news-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 12px;
+        color: #666;
+      }
+
+      .news-summary {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.4;
+        margin-bottom: 10px;
+      }
+
+      .news-interactions {
+        display: flex;
+        gap: 16px;
+        font-size: 12px;
+        color: #999;
+
+        .interaction-item {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #667eea;
+          }
+        }
+      }
+    }
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 0;
+    background: #f8f9fa;
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.active {
+        background: #667eea;
+        transform: scale(1.3);
+      }
+
+      &:hover {
+        background: #667eea;
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .news-carousel-container {
+    margin: 10px 5px;
+
+    .news-carousel {
+      .news-slide {
+        padding: 12px;
+
+        .news-title {
+          font-size: 14px;
+        }
+
+        .news-interactions {
+          gap: 12px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+// 暗色主题支持
+@media (prefers-color-scheme: dark) {
+  .news-carousel-container {
+    background: #1a1a1a;
+    color: #fff;
+
+    .news-carousel {
+      .news-slide {
+        .news-title {
+          color: #fff;
+
+          &:hover {
+            color: #667eea;
+          }
+        }
+
+        .news-meta {
+          color: #999;
+        }
+
+        .news-summary {
+          color: #ccc;
+        }
+
+        .news-interactions {
+          color: #888;
+
+          .interaction-item:hover {
+            color: #667eea;
+          }
+        }
+      }
+    }
+
+    .carousel-dots {
+      background: #2a2a2a;
+
+      .dot {
+        background: #555;
+
+        &.active,
+        &:hover {
+          background: #667eea;
+        }
+      }
+    }
+  }
+}

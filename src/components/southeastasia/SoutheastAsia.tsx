@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
@@ -34,7 +34,6 @@ const SoutheastAsia: React.FC = () => {
     setVisibleCloseRight(true)
     setPopupInfo({ id, area, content, viewCount, commentsCount, imagePath, createTime, isHot, isTop, source, title })
   }
-
 
   //获取api东南亚新闻数据
   const southeastAsiaNewsPageRequest = async (isReset: boolean) => {
@@ -76,10 +75,15 @@ const SoutheastAsia: React.FC = () => {
             <div className="dot-loading-custom" >
               <span >加载中</span>
               <DotLoading color='#fff' />
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+
             </div>
           </>
         ) : (
-          <span color='#fff'>--- 我是有底线的 ---</span>
+          <div className="infinite-scroll-footer">
+            <span >--- 我是有底线的 ---</span>
+          </div>
         )}
       </>
     )
@@ -87,78 +91,82 @@ const SoutheastAsia: React.FC = () => {
 
   return (
     <>
-      <div className="card-container" >
-        <PullToRefresh onRefresh={() => southeastAsiaNewsPageRequest(true)}>
-          {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
-            <Card className="southeastasia-custom-card" key={index}>
-              <div className="southeastasia-card-content">
+      {/* 将 InfiniteScroll 包裹整个容器 */}
+      <InfiniteScroll
+        loadMore={() => southeastAsiaNewsPageRequest(false)}
+        hasMore={southeastAsiaNewsHasHore}
+        threshold={50}
+      >
+        <div className="card-container" >
+          <PullToRefresh onRefresh={() => southeastAsiaNewsPageRequest(true)}>
+            {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
+              <Card className="southeastasia-custom-card" key={index}>
+                <div className="southeastasia-card-content">
 
-                {southeastAsiaNews.title &&
-                  <div className="southeast-asia-title">
-                    <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
-                  </div>
-                }
+                  {southeastAsiaNews.title &&
+                    <div className="southeast-asia-title">
+                      <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
+                    </div>
+                  }
 
-                {southeastAsiaNews.imagePath &&
-                  <div className="southeastasia-news-image-container">
-                    <Image
-                      className="southeastasia-news-image"
-                      src={southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || ''}
-                      alt="Example"
-                      fit="contain"
-                    />
-                  </div>
-                }
+                  {southeastAsiaNews.imagePath &&
+                    <div className="southeastasia-news-image-container">
+                      <Image
+                        className="southeastasia-news-image"
+                        src={southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || ''}
+                        alt="Example"
+                        fit="contain"
+                      />
+                    </div>
+                  }
 
-                {southeastAsiaNews.imagePath &&
+                  {southeastAsiaNews.imagePath &&
+                    <Divider className='divider-line' />
+                  }
+
+                  <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
+
+                  <span className="southeastasia-time">
+
+                    {southeastAsiaNews.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
+                    {southeastAsiaNews.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
+                    {southeastAsiaNews.source && <span className="southeastasia-tag" >来源: <span className="source"> {southeastAsiaNews.source} </span></span>}
+                    {southeastAsiaNews.createTime && dayjs(southeastAsiaNews.createTime).format('YYYY-MM-DD HH:mm')}
+
+                  </span>
+
                   <Divider className='divider-line' />
-                }
 
-                <Ellipsis direction='end' rows={2} content={southeastAsiaNews.content} style={{ fontSize: "14px", letterSpacing: "1px", textIndent: "2em" }} />
-
-                <span className="southeastasia-time">
-
-                  {southeastAsiaNews.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
-                  {southeastAsiaNews.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
-                  {southeastAsiaNews.source && <span className="southeastasia-tag" >来源: <span className="source"> {southeastAsiaNews.source} </span></span>}
-                  {southeastAsiaNews.createTime && dayjs(southeastAsiaNews.createTime).format('YYYY-MM-DD HH:mm')}
-
-                </span>
-
-                <Divider className='divider-line' />
-
-                <div className="button-info">
-                  <span className="tracking"><LocationFill className="area" />{southeastAsiaNews.area}</span>
-                  <span className="icon-and-text">
-                    <FcReading fontSize={17} />
-                    <span className="number"> {southeastAsiaNews.viewCount} </span>
-                  </span>
-
-                  <span className="tracking">
+                  <div className="button-info">
+                    <span className="tracking"><LocationFill className="area" />{southeastAsiaNews.area}</span>
                     <span className="icon-and-text">
-                      <MessageOutline fontSize={17} />
-                      <span className="message-number"> {southeastAsiaNews.commentsCount} </span>
-                      <span className="click"
-                        onClick={() => {
-                          showPopupInfo(southeastAsiaNews.id, southeastAsiaNews.area, southeastAsiaNews.content,
-                            southeastAsiaNews.viewCount, southeastAsiaNews.commentsCount, southeastAsiaNews.imagePath,
-                            southeastAsiaNews.createTime, southeastAsiaNews.isHot, southeastAsiaNews.isTop,
-                            southeastAsiaNews.source, southeastAsiaNews.title)
-                        }}>点击查看</span>
+                      <FcReading fontSize={17} />
+                      <span className="number"> {southeastAsiaNews.viewCount} </span>
                     </span>
-                  </span>
+
+                    <span className="tracking">
+                      <span className="icon-and-text">
+                        <MessageOutline fontSize={17} />
+                        <span className="message-number"> {southeastAsiaNews.commentsCount} </span>
+                        <span className="click"
+                          onClick={() => {
+                            showPopupInfo(southeastAsiaNews.id, southeastAsiaNews.area, southeastAsiaNews.content,
+                              southeastAsiaNews.viewCount, southeastAsiaNews.commentsCount, southeastAsiaNews.imagePath,
+                              southeastAsiaNews.createTime, southeastAsiaNews.isHot, southeastAsiaNews.isTop,
+                              southeastAsiaNews.source, southeastAsiaNews.title)
+                          }}>点击查看</span>
+                      </span>
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </PullToRefresh>
+              </Card>
+            ))}
+          </PullToRefresh>
 
-        <InfiniteScroll loadMore={() => southeastAsiaNewsPageRequest(false)} hasMore={southeastAsiaNewsHasHore}>
+          {/* 加载状态显示在这里 */}
           <SoutheastAsiaNewsScrollContent hasMore={southeastAsiaNewsHasHore} />
-        </InfiniteScroll>
-
-      </div>
-
+        </div>
+      </InfiniteScroll>
 
       {/********************新闻点击弹窗详情********************/}
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
@@ -171,12 +179,9 @@ const SoutheastAsia: React.FC = () => {
         <div className="popup-scrollable-content" >
           <SoutheastAsiaInfo commentRef={null} id={popupInfo.id} setVisibleCloseRight={setVisibleCloseRight} needCommentPoint={false} commentPointId={null} />
         </div>
-
       </Popup>
     </>
   );
 }
-
-
 
 export default SoutheastAsia;

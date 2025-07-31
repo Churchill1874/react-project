@@ -112,14 +112,6 @@ const ChatRoom: React.FC<{ roomNumber: number }> = ({
     setChat('');
     setShowCommentInput(false)
 
-    /*     const chatInfo = message as ChatRoomType;
-        chatInfo.avatarPath = playerInfo?.avatarPath;
-        chatInfo.name = playerInfo?.name;
-    
-        setChatRoom1List(prev => {
-          return [...prev, chatInfo]
-        }) */
-
   };
 
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, PullToRefresh, Space, Tag, InfiniteScroll, Popup, ImageViewer, DotLoading, Image, Steps, Ellipsis, Swiper } from 'antd-mobile';
+import { Card, Divider, PullToRefresh, Skeleton, Tag, InfiniteScroll, Popup, ImageViewer, DotLoading, Image, Steps, Ellipsis, Swiper } from 'antd-mobile';
 import { LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/company/Company.less'
 import { Request_CompanyPage, CompanyPageType, CompanyPageReqType } from '@/components/company/api'
@@ -33,10 +33,14 @@ const Company: React.FC = () => {
             <div className="dot-loading-custom" >
               <span >加载中</span>
               <DotLoading color='#fff' />
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
             </div>
           </>
         ) : (
-          <span color='#fff'>--- 我是有底线的 ---</span>
+          <div className="infinite-scroll-footer">
+            <span >--- 我是有底线的 ---</span>
+          </div>
         )}
       </>
     )
@@ -71,34 +75,39 @@ const Company: React.FC = () => {
 
   return (
     <>
+      <InfiniteScroll
+        loadMore={() => companyPageRequest(false)}
+        hasMore={companyHasHore}
+        threshold={50}
+      >
 
-      <div className="card-container" >
-        <PullToRefresh onRefresh={() => companyPageRequest(true)}>
-          {companyList?.map((company, index) => (
-            <Card className="company-custom-card" key={index}>
-              <div className="card-content">
-                <div className="company-line1"> {company.name}</div>
-                {company.image &&
-                  <>
-                    <Divider className='company-divider-line' />
-                    <Swiper loop autoplay allowTouchMove>
-                      {company.image.split('||').map((imagePath, index) => (
-                        <Swiper.Item className="swiper-item" key={index} >
-                          <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
-                        </Swiper.Item>
-                      ))}
-                    </Swiper>
-                  </>
+        <div className="card-container" >
+          <PullToRefresh onRefresh={() => companyPageRequest(true)}>
+            {companyList?.map((company, index) => (
+              <Card className="company-custom-card" key={index}>
+                <div className="card-content">
+                  <div className="company-line1"> {company.name}</div>
+                  {company.image &&
+                    <>
+                      <Divider className='company-divider-line' />
+                      <Swiper loop autoplay allowTouchMove>
+                        {company.image.split('||').map((imagePath, index) => (
+                          <Swiper.Item className="swiper-item" key={index} >
+                            <Image className='company-image-container' fit='contain' src={imagePath} onClick={showImage} />
+                          </Swiper.Item>
+                        ))}
+                      </Swiper>
+                    </>
 
-                }
+                  }
 
-                <Divider className='company-divider-line' />
-                <div className="text-area">
-                  <Ellipsis direction='end' rows={3} content={company.description} />
-                </div>
+                  <Divider className='company-divider-line' />
+                  <div className="text-area">
+                    <Ellipsis direction='end' rows={3} content={company.description} />
+                  </div>
 
-                <Divider className='divider-line' />
-                {/*                 <div className="line-group">
+                  <Divider className='divider-line' />
+                  {/*                 <div className="line-group">
                   <div className="line">{company.overtimeCompensation}</div>
                   <Divider className='blue-divider-line' direction="vertical" />
                   <div className="line">{company.holiday}</div>
@@ -119,26 +128,26 @@ const Company: React.FC = () => {
                   <div className="line">{company.officeEnvironment}</div>
                 </div>
                 <Divider className='divider-line' /> */}
-                <div className="line-group">
-                  <span><LocationFill className="area" />{company.city}</span>
+                  <div className="line-group">
+                    <span><LocationFill className="area" />{company.city}</span>
+                  </div>
+                  <Divider className='divider-line' />
+
+                  <span className='company-record-bottom'>
+                    <span className='last-time'>最后一次更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
+                    <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击查看</span> </span>
+                  </span>
+
                 </div>
-                <Divider className='divider-line' />
+              </Card>
+            ))}
+          </PullToRefresh>
 
-                <span className='company-record-bottom'>
-                  <span className='last-time'>最后一次更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
-                  <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击查看</span> </span>
-                </span>
 
-              </div>
-            </Card>
-          ))}
-        </PullToRefresh>
-
-        <InfiniteScroll loadMore={() => companyPageRequest(false)} hasMore={companyHasHore}>
           <CompanyScrollContent hasMore={companyHasHore} />
-        </InfiniteScroll>
-      </div>
 
+        </div>
+      </InfiniteScroll>
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%' }}
         position='right'
         closeOnSwipe={true}

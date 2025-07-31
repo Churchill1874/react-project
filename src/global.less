@@ -8,30 +8,44 @@
 }
 html,
 body {
-  touch-action: manipulation; /* 禁用缩放 */
-  height: auto;
+  touch-action: manipulation;
+  height: 100vh;
+  height: 100dvh; /* 动态视口高度，适配移动端 */
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  overflow-y: auto; // ✅ 页面整体滚动，其他地方都不要滚
-  overscroll-behavior: none; // ✅ 禁止滚动回弹
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  /* 支持安全区域 */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .main-container {
-  min-height: 100vh;
-  display: block;
+  height: 100vh;
+  height: 100dvh; /* 动态视口高度 */
+  display: flex;
   flex-direction: column;
-  padding-bottom: 200px;
+  overflow: hidden;
+}
+
+.content-area {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* 为导航栏和安全区域留出空间 */
+  padding-bottom: calc(45px + env(safe-area-inset-bottom));
 }
 
 .navbar {
+  flex-shrink: 0;
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 999; /* 保证导航栏在其他内容之上 */
-  margin: 0px;
-  padding: 3px 0px;
-  background-color: #fff; /* 根据需要设置背景颜色 */
+  height: calc(40px + env(safe-area-inset-bottom)); /* 包含安全区域 */
+  z-index: 999;
+  margin: 0;
+  padding: 3px 0 env(safe-area-inset-bottom) 0; /* 底部安全区域 */
+  background-color: #fff;
   border-top: 1px solid rgb(233, 230, 230);
 }
 

@@ -1,555 +1,646 @@
-@color: #f3f1f5;
-@theme: #1890ff;
+// Home.less - 适配您的项目结构
 
-.home {
-  min-height: 100vh; /* 确保背景颜色填充整个屏幕 */
+.container {
   width: 100%;
-  padding-bottom: 30px;
-}
-.top-news {
-  margin: 0;
-  margin-bottom: 2px;
-  padding: 0px 5px;
-
-  /* 去掉外边距 */
-  .list-item {
-    line-height: 1.5;
-    font-size: 13px;
-    border-bottom: none;
-    display: flex; /* 添加这一行 */
-    align-items: center; /* 添加这一行 */
-
-    .top {
-      //font-weight: bold; /* 加粗字体 */
-      color: rgb(144, 27, 1);
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-      white-space: nowrap;
-      font-weight: bold;
-      font-size: 15px;
-      /* 添加阴影 */
-    }
-
-    .end {
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .adm-ellipsis {
-      flex: 1;
-    }
-  }
-}
-
-.news-list {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 0px 5px;
-  max-height: 90px;
-  min-height: 90px;
-  /* 设置一个最大高度 */
-  overflow: auto;
-  /* 隐藏滚动条 */
+  background: #f8fafc;
+  // 移除 min-height: 100% 避免高度问题
   position: relative;
-  border-top: 1px solid rgb(244, 242, 242);
+  overflow-y: auto; // 确保可以滚动
+  // 移除原来的 max-width 和 margin，让它适应父容器
+}
 
-  .scroll-content {
+// 头部样式
+.header {
+  //background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  //background: linear-gradient(135deg, #1890ff, #1890ff);
+  background: #fff;
+  color: white;
+  padding: 5px 10px 5px; // 减小padding适应移动端
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  &-content {
     display: flex;
-    flex-direction: column;
-    transition: transform 0.1s linear;
+    justify-content: space-between;
+    align-items: center;
   }
-  .adm-list-item {
-    font-size: 13px;
-    /* 调整字体大小 */
-    line-height: 1;
-    /* 添加下边框 */
-    padding: 0;
-    /* 去除内边距 */
-    margin: 0;
+}
+
+.logo {
+  font-size: 20px; // 稍微减小字体
+  font-weight: bold;
+  //color: white;
+  color: #1890ff;
+}
+
+.online-users {
+  //background: rgba(255, 255, 255, 0.2);
+  //background: rgba(80, 79, 79, 0.249);
+  background: #188fff21;
+  padding: 4px 10px; // 减小padding
+  border-radius: 16px;
+  font-size: 12px; // 减小字体
+  backdrop-filter: blur(10px);
+  //color: rgba(31, 41, 55, 0.54);
+  color: black;
+}
+
+.online-dot {
+  display: inline-block;
+  width: 10px; // 减小尺寸
+  height: 10px;
+  background: #10b981;
+  border-radius: 50%;
+  margin-right: 4px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// 内容区域
+.content {
+  padding: 3px 3px; // 减小padding
+  padding-bottom: 80px; // 为底部导航栏留更多空间
+  overflow-y: auto; // 确保内容可滚动
+  background-color: #1890ff;
+}
+
+// 热门新闻样式
+.section {
+  background: white;
+  //border-radius: 10px; // 稍微减小圆角
+  padding: 3px 10px; // 减小padding
+  margin-bottom: 0px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); // 减小阴影
+
+  &-title {
+    font-size: 13px; // 减小字体
+    font-weight: bold;
+    //color: #1e40af;
+    margin-bottom: 5px;
     margin-top: 5px;
-  }
+    display: flex;
+    align-items: center;
 
-  .adm-list-item-description {
-    margin-top: 0px;
-    /* 调整描述文字与标题的间距 */
-  }
-
-  .hot {
-    //font-weight: bold; /* 加粗字体 */
-    color: rgb(246, 3, 3);
-    font-weight: bolder;
-    font-size: 13px;
-    /* 添加阴影 */
+    &::before {
+      content: '';
+      width: 3px; // 减小宽度
+      height: 16px;
+      //background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      background: linear-gradient(135deg, #8e8d8d, #838384);
+      margin-right: 6px;
+      border-radius: 2px;
+    }
   }
 }
 
 .news-item {
-  margin-top: -10px;
-  /* 去除外边距 */
-  margin-bottom: -10px;
-
-  .news-title {
-    font-size: 14px;
-    margin-top: 0;
-    margin-right: 0px;
-    /* 去除内边距 */
-  }
-
-  .news-info {
-    padding: 0px;
-    /* 去除外边距 */
-    margin: 0;
-    margin-top: 2px;
-    .views {
-      font-size: 11px;
-      margin-left: 60px;
-    }
-
-    .likes {
-      font-size: 11px;
-      margin-left: 60px;
-    }
-
-    .comments {
-      font-size: 11px;
-      margin-left: 60px;
-    }
-
-    .date {
-      font-size: 12px;
-      color: #a09d9d;
-      margin-left: 0px;
-    }
-  }
-
-  .date {
-    font-size: 12px;
-    color: #a09d9d;
-    margin-left: 0px;
-  }
-}
-
-.header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  height: 26px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  padding: 3px 0; // 减小padding
+  //border-bottom: 1px solid #f1f5f9;
+  position: relative;
 
-.logo {
-  font-weight: 1000;
-  font-size: 22px;
-  color: var(--adm-color-primary);
-  text-shadow: 1px 1px 2px rgba(154, 152, 152, 0.5); /* 添加阴影 */
-  flex-shrink: 0; /* 防止缩小 */
-}
-
-.online {
-  color: rgb(70, 69, 69);
-  font-size: 16px;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(100%);
+  &:last-child {
+    border-bottom: none;
   }
-  to {
-    transform: translateX(-100%);
-  }
-}
 
-@keyframes marqueeFastReturn {
-  0%,
-  100% {
-    transform: translateX(100%);
-  }
-  99% {
-    transform: translateX(-100%);
+  &.pinned {
+    //background: linear-gradient(135deg, #fef3c7, #fde68a);
+    //padding: 3px; // 减小padding
+    border-radius: 6px;
+    //margin-bottom: 6px;
+    border: none;
+    // 限制置顶新闻的最大高度
+    max-height: 80px;
+    overflow: hidden;
+
+    &::after {
+      content: '置顶';
+      position: absolute;
+      top: 1px;
+      right: 3px;
+      background: #f59e0b;
+      color: white;
+      font-size: 11px; // 减小字体
+      padding: 3px 5px;
+      border-radius: 15px;
+    }
   }
 }
 
-// 如果 .adm-card-body 是来自一个库的类，可以通过增加以下代码覆盖其样式
-.adm-card-body {
-  padding: 2px 30px; // 移除 padding
-  margin: 0px; // 移除 margin
-}
+.news-number {
+  //background: #3b82f6;
+  //color: white;
 
-.notice-bar {
-  height: 24px;
-  /* 你可以根据需要调整高度 */
-  line-height: 40px;
-  /* 确保文本垂直居中 */
-  font-size: 13px;
-  background-color: #f4f5f7; // 浅灰色背景
-  color: #4b4949; // 黑色文字
-}
+  width: 20px; // 减小尺寸
+  /*height: 20px; */
 
-.banner {
-  width: 75%;
-  margin: 0 auto;
-  /* 使轮播图居中 */
-  height: 150px;
-  color: #ffffff;
+  border-radius: 50%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  font-size: 48px;
-  user-select: none;
-}
-
-.input-field {
-  flex: 1;
-  outline: none;
-  padding: 2px;
-  border: 1px solid @theme;
-  border-radius: 10px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
-}
-
-.input-field ::placeholder {
-  font-size: 14px;
-}
-
-.input-field input {
-  font-size: 18px; // 修改输入文本的字体大小
-  margin-left: 10px;
-}
-
-.send-button {
-  font-size: 14px;
+  font-size: 13px; // 减小字体
   font-weight: bold;
-  margin-left: 20px;
-  line-height: 1; // 调整行高
-  padding: 8px 10px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
+  //margin-right: 10px;
+  flex-shrink: 0;
 }
 
-.event-container {
+.home-news-content {
+  flex: 1;
+}
+
+.news-title {
+  font-size: 13px; // 减小字体
+  font-weight: 400;
+  color: #1f2937;
+  line-height: 2; // 减小行高节省空间
+  //margin-bottom: 3px;
+  // 限制标题行数，避免过长
+  display: flex;
+  align-items: center;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.news-date {
+  font-size: 10px; // 减小字体
+  color: #6b7280;
+}
+
+// 轮播图样式
+.carousel-container {
+  position: relative;
+  height: 160px; // 减小高度
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+
+.carousel-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+
+  &.active {
+    opacity: 1;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.713));
+  color: white;
+  padding: 15px 12px 8px; // 减小padding
+  font-size: 14px; // 减小字体
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 8px; // 调整位置
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px; // 减小间距
+}
+
+.carousel-indicator {
+  width: 6px; // 减小尺寸
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &.active {
+    background: white;
+  }
+}
+
+// 政治博彩样式 - 白色背景版本
+.betting-card {
+  //background: white;
+  //background: #96c7f5c1;
+  background: linear-gradient(135deg, #d9e9f8f7, #b2cfebf9);
+  color: #333;
+  border-radius: 10px;
+  padding: 0px 10px;
+  padding-top: 7px;
+  padding-bottom: 10px;
+
+  margin: 3px 0;
+  min-height: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.betting-header {
+  margin-bottom: 8px;
+}
+
+.betting-title {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  //color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.betting-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.betting-option {
+  flex: 1;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+  flex-shrink: 0;
+
+  // 如果使用 Antd Mobile Avatar 组件
+  &.adm-avatar {
+    width: 45px !important;
+    height: 45px !important;
+  }
+}
+
+.option-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2px 2px;
-  border-top: 0.5px solid @theme;
-  background-color: #165d00;
-  height: 80px;
+  gap: 7px;
 }
 
-.event-info {
+.option-name {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #374151;
+  font-weight: 600;
+}
+
+.option-details {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-bottom: 0px;
+  align-items: center;
+  font-size: 12px;
+  color: gray;
 }
 
-.event-title {
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
+.option-odds {
+  font-size: 14px;
+  font-weight: bold;
+  color: #3b82f6;
+  line-height: 1.2;
+}
+
+.option-bets {
+  font-size: 12px;
+  opacity: 0.8;
+  line-height: 1;
+  color: #6b7280;
+}
+
+.betting-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 10px;
+  background: #f1f5f9;
+  color: #374151;
+  padding: 4px 8px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.betting-time {
+  color: #6b7280;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.betting-pool {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.pool-amount {
+  font-size: 14px;
+  font-weight: bold;
+  color: #f59e0b;
+}
+
+.pool-amount {
+  font-size: 14px;
+  font-weight: bold;
+  color: #f59e0b;
+}
+
+// 响应式调整
+@media (max-width: 320px) {
+  .betting-options {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .betting-option {
+    padding: 6px;
+  }
+}
+// 公司信息样式
+.company-card {
+  background: white;
+  //border-radius: 10px;
+  padding: 10px; // 减小padding
+  margin-bottom: 1px;
+}
+
+.company-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.company-name {
+  font-size: 15px; // 减小字体
+  font-weight: bold;
+  //color: #1e40af;
+}
+
+.company-location {
+  font-size: 11px; // 减小字体
+  color: #6b7280;
+  background: #f1f5f9;
+  padding: 3px 6px; // 减小padding
+  border-radius: 10px;
+}
+
+.company-business {
+  font-size: 13px; // 减小字体
+  color: #4b5563;
+  margin-bottom: 10px;
+}
+
+.company-events {
+  margin-bottom: 10px;
+}
+
+.event {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 6px; // 减小间距
+  padding: 6px; // 减小padding
+  border-radius: 4px;
+
+  &.good {
+    background: #f0fdf4;
+    border-left: 2px solid #10b981; // 减小边框
+  }
+
+  &.bad {
+    background: #fef2f2;
+    border-left: 2px solid #ef4444;
+  }
 }
 
 .event-date {
+  font-size: 12px; // 减小字体
+  color: #6b7280;
+  margin-right: 6px;
+  min-width: 50px; // 减小宽度
+}
+
+.event-text {
+  font-size: 12px; // 减小字体
+  flex: 1;
+}
+
+.other-companies {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 3px;
+
+  &-title {
+    font-size: 12px; // 减小字体
+    color: red;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+}
+
+.company-tags {
   display: flex;
-  align-items: center; // 垂直居中
-  justify-content: center; // 水平居中（可选）
-  font-size: 12px;
-  margin-left: 10px;
-  color: rgb(197, 193, 193);
+  flex-wrap: wrap;
+  gap: 4px; // 减小间距
 }
 
-.event-reward {
-  color: #f8bf05;
-  //font-weight: bold;
-  margin-left: auto;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+.company-tag {
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 12px; // 减小字体
+  padding: 3px 6px; // 减小padding
+  border-radius: 8px;
 }
 
-.event-detail {
+/* 菜单图标样式 */
+.menu-icons {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-}
-
-.candidates {
-  display: flex;
   align-items: center;
-}
-
-.candidate {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.vs {
+  gap: 6px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 14px;
-  color: @theme;
-  margin: 0 10px;
-  font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.percentage {
-  font-size: 1.1em;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.blue {
-  color: @theme;
-}
-
-.red {
-  display: flex;
-  color: rgb(250, 68, 68);
-}
-
-.odds {
-  display: flex;
-  align-items: center;
-}
-
-.odd {
+.menu-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  margin: 0 2px;
+  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  background: #d4e4f3;
+  border-radius: 8px;
+  padding: 8px 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
 }
 
-.odd-blue {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.odd-red {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.menu-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.odd-value-left {
-  color: #fff;
+.menu-icon-image {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  width: 30px;
-  padding: 5px;
-  border: 1px solid @theme;
-  border-radius: 5px;
-  font-size: 1em;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
-}
-
-.odd-value-right {
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  width: 30px;
-  padding: 5px;
-  border: 1px solid red;
-  border-radius: 5px;
-  font-size: 1em;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
-}
-
-.odd-people {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  color: rgb(246, 242, 242);
-}
-
-.odd-money {
-  color: rgb(233, 6, 6);
-  margin-top: 5px;
-}
-
-.official {
-  margin: 0;
-  padding: 0px 10px;
   font-size: 14px;
-  font-weight: bold;
-  color: @theme;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.avatar {
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
+.menu-icon-text {
+  font-size: 12px;
+  color: #374151;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
 }
 
-.bet {
-  font-size: 12px; // 调整字体大小
-  font-weight: bold;
-  padding: 5px 8px; // 调整内边距
-  height: 30px; // 调整高度
-  line-height: 1; // 调整行高
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); // 添加阴影
-}
-.bet-container {
+// 东南亚新闻样式
+.sea-news-item {
   display: flex;
-  justify-content: center; // 水平居中
-  align-items: center; // 垂直居中
+  align-items: flex-start;
+  padding: 5px 0; // 减小padding
+  //border-bottom: 1px solid #f1f5f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
-.adm-list-item-content-extra {
-  padding: 0px;
-}
-.badge {
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); // 添加阴影
-}
-
-.news-swiper {
-  width: 100%;
-  //padding: 20px 0px;
+.sea-news-flag {
+  width: 20px; // 减小尺寸
+  height: 14px;
+  background: #3b82f6;
+  border-radius: 2px;
+  margin-right: 10px;
+  flex-shrink: 0;
   display: flex;
+  align-items: center;
   justify-content: center;
+  font-size: 9px; // 减小字体
+  color: white;
+  font-weight: bold;
+}
 
-  .adm-swiper-track {
-    display: flex;
-    justify-content: center;
+.sea-news-content {
+  flex: 1;
+}
+
+.sea-news-title {
+  font-size: 13px; // 减小字体
+  font-weight: 500;
+  color: #1f2937;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.sea-news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px; // 减小字体
+  color: #6b7280;
+}
+
+.sea-news-date {
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.sea-news-stats {
+  display: flex;
+  gap: 8px; // 减小间距
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 3px; // 减小间距
+  font-size: 12px;
+
+  &::before {
+    content: '';
+    width: 14px; // 减小尺寸
+    height: 14px;
+    background-size: contain;
   }
 
-  .news-swiper-item {
-    width: 75%;
-    height: 170px;
-    border-radius: 12px;
-    overflow: hidden;
+  &.views::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/%3E%3C/svg%3E");
+  }
+
+  &.comments::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/%3E%3C/svg%3E");
+  }
+}
+
+// 响应式调整
+@media (max-width: 320px) {
+  .betting-options {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .betting-option {
+    padding: 6px;
+  }
+
+  .content {
+    padding: 8px; // 进一步减小padding
+  }
+}
+
+// 适配您的项目桌面端样式
+@media (min-width: 768px) {
+  .container {
+    max-width: 680px;
     margin: 0 auto;
   }
-
-  .adm-image {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-  }
-}
-
-/* 针对桌面设备的样式调整 */
-@media (min-width: 768px) {
-  .news-swiper {
-    .news-swiper-item {
-      width: 380px;
-      height: 220px;
-    }
-  }
-  .news-list {
-    max-height: 120px;
-    min-height: 120px;
-  }
-
-  .top-news {
-    .list-item {
-      .top,
-      .adm-ellipsis {
-        margin-top: 5px;
-        font-size: 22px;
-      }
-      .end {
-        margin-top: 5px;
-        font-size: 22px;
-      }
-    }
-  }
-
-  .bet-container {
-    .adm-button {
-      width: 70px;
-      height: 40px;
-    }
-    span {
-      font-size: 18px;
-    }
-  }
-  .odds {
-    .odd-blue {
-      font-size: 18px;
-    }
-    .odd-red {
-      font-size: 18px;
-    }
-    .official {
-      font-size: 18px;
-    }
-  }
-
-  .event-detail {
-    .candidate {
-      .adm-image {
-        width: 50px;
-        height: 50px;
-      }
-      font-size: 16px;
-    }
-    .vs {
-      font-size: 16px;
-    }
-  }
-
-  .event-info {
-    .event-title {
-      font-size: 18px;
-    }
-    .event-date {
-      font-size: 18px;
-    }
-    .event-reward {
-      font-size: 16px;
-    }
-  }
-  .news-item {
-    margin-top: 3px;
-    .news-title {
-      font-size: 16px;
-      .hot {
-        font-size: 16px;
-      }
-    }
-    .news-info {
-      .date {
-        font-size: 14px;
-      }
-    }
-    margin-top: 3px;
-  }
-  .banner {
-    height: 260px;
-    max-width: 480px;
-  }
-  .logo {
-    font-size: 34px;
-  }
-  .online {
-    font-size: 20px;
-  }
-  .badge {
-    padding: 6px 6px;
-    .adm-badge-content {
-      font-size: 14px;
-    }
-  }
-  .global-line {
-    font-size: 20px;
-  }
-  .adm-tabs-tab-wrapper {
-    font-size: 20px;
-    .adm-tabs-tab {
-      font-size: 20px;
-    }
-  }
-
-  .event-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1px 5px;
-    border-top: 0.5px solid @theme;
-    background-color: #165d00;
-    height: 100px;
-  }
-}
-
-.adm-badge-content {
-  font-weight: bold;
-  font-size: 10px;
 }

@@ -6,7 +6,7 @@ import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
 import useStore from '@/zustand/store'
-
+import NewsCard from '@/pages/hall/newscard/NewsCard'
 interface RegisterType {
   account: string;
   name: string;
@@ -133,6 +133,7 @@ const Login: React.FC = () => {
         }
         icon={<AntOutline fontSize={80} />}
       >
+
         <CenterPopup
           visible={visible}
           onMaskClick={() => setVisible(false)}
@@ -154,7 +155,9 @@ const Login: React.FC = () => {
         </CenterPopup>
 
 
+
         <Tabs activeLineMode="fixed" className="tabs">
+
           <Tabs.Tab title="登陆" key="login">
             <Form
               className="form"
@@ -321,6 +324,7 @@ const Login: React.FC = () => {
         </Tabs>
 
         <Footer className="footer" label={<>www.daxinwen.com (大新闻)</>} />
+
       </ResultPage>
 
 

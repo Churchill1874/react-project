@@ -12,25 +12,39 @@ import Topic from '@/components/topic/Topic';
 
 const News: React.FC = React.memo(() => {
   const [newsActiveTab, setNewsActiveTab] = useState<string>('news');
+  const newsContentRef = useRef<HTMLDivElement>(null);
 
-  // 为每个菜单创建独立的滚动容器
-  const sectionRefs = {
-    news: useRef<HTMLDivElement>(null),
-    southeastAsia: useRef<HTMLDivElement>(null),
-    job: useRef<HTMLDivElement>(null),
-    company: useRef<HTMLDivElement>(null),
-    politics: useRef<HTMLDivElement>(null),
-    society: useRef<HTMLDivElement>(null),
-    promotion: useRef<HTMLDivElement>(null),
-    topic: useRef<HTMLDivElement>(null)
-  };
-
-  // 切换菜单时，重置滚动位置
+  // 切换菜单时，重置主容器的滚动位置
   useEffect(() => {
-    if (sectionRefs[newsActiveTab]?.current) {
-      sectionRefs[newsActiveTab].current.scrollTop = 0;
+    console.log('Tab changed to:', newsActiveTab);
+    if (newsContentRef.current) {
+      newsContentRef.current.scrollTop = 0;
     }
   }, [newsActiveTab]);
+
+  // ✅ 条件渲染：只渲染当前激活的组件
+  const renderActiveComponent = () => {
+    switch (newsActiveTab) {
+      case 'news':
+        return <NewsList />;
+      case 'politics':
+        return <Politics />;
+      case 'southeastAsia':
+        return <SoutheastAsia />;
+      case 'society':
+        return <Society />;
+      case 'topic':
+        return <Topic />;
+      case 'promotion':
+        return <Promotion />;
+      case 'job':
+        return <Job />;
+      case 'company':
+        return <Company />;
+      default:
+        return <NewsList />;
+    }
+  };
 
   return (
     <>
@@ -38,7 +52,7 @@ const News: React.FC = React.memo(() => {
       <div className="capsule-tabs-container">
         <CapsuleTabs activeKey={newsActiveTab} onChange={setNewsActiveTab}>
           <CapsuleTabs.Tab title="国内" key="news" />
-          <CapsuleTabs.Tab title="政治" key="politics" />
+          <CapsuleTabs.Tab title="政闻" key="politics" />
           <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
           <CapsuleTabs.Tab title="社会瓜" key="society" />
           <CapsuleTabs.Tab title="话题" key="topic" />
@@ -48,41 +62,9 @@ const News: React.FC = React.memo(() => {
         </CapsuleTabs>
       </div>
 
-      {/* 每个菜单的内容都有独立的滚动容器 */}
-      <div className="news-content">
-        <div ref={sectionRefs.news} className={`tab-content ${newsActiveTab === 'news' ? 'active' : ''}`}>
-          <NewsList />
-        </div>
-
-        <div ref={sectionRefs.politics} className={`tab-content ${newsActiveTab === 'politics' ? 'active' : ''}`}>
-          <Politics />
-        </div>
-
-        <div ref={sectionRefs.southeastAsia} className={`tab-content ${newsActiveTab === 'southeastAsia' ? 'active' : ''}`}>
-          <SoutheastAsia />
-        </div>
-
-        <div ref={sectionRefs.society} className={`tab-content ${newsActiveTab === 'society' ? 'active' : ''}`}>
-          <Society />
-        </div>
-
-        <div ref={sectionRefs.topic} className={`tab-content ${newsActiveTab === 'topic' ? 'active' : ''}`}>
-          <Topic />
-        </div>
-
-        <div ref={sectionRefs.promotion} className={`tab-content ${newsActiveTab === 'promotion' ? 'active' : ''}`}>
-          <Promotion />
-        </div>
-
-        <div ref={sectionRefs.job} className={`tab-content ${newsActiveTab === 'job' ? 'active' : ''}`}>
-          <Job />
-        </div>
-
-        <div ref={sectionRefs.company} className={`tab-content ${newsActiveTab === 'company' ? 'active' : ''}`}>
-          <Company />
-        </div>
-
-
+      {/* ✅ 统一的滚动容器 - 只渲染当前激活的组件 */}
+      <div className="news-content" ref={newsContentRef}>
+        {renderActiveComponent()}
       </div>
     </>
   );

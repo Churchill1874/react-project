@@ -10,99 +10,86 @@
   margin-top: 40px; // 避免被菜单遮挡
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  height: auto;
-  overflow-y: visible;
+  height: calc(100vh - 40px - 35px); // 屏幕高度 - tab栏高度 - 导航栏高度
+  overflow-y: auto; // 让这个容器可以滚动
 }
 
 .capsule-tabs-container {
-  /*   display: flex;
-  justify-content: space-around;
-  background-color: #188fffbd;
-  padding: 1px;
-  position: sticky;
-  top: 1px;
-  z-index: 999; */
-
   position: fixed;
   top: 0;
   width: 100%;
   background-color: #188fff;
   z-index: 999;
-  margin-bottom: 0px; /* 如果有较大的值，比如20px，改小 */
+  margin-bottom: 0px;
 }
 
 .adm-capsule-tabs-header {
   padding: 2px 10px;
   border: none;
-  backdrop-filter: none; /* 确保没有模糊效果 */
+  backdrop-filter: none;
 }
 
 .capsule-tabs-container .adm-capsule-tabs-tab {
-  flex: 1; /* 使每个胶囊平分容器宽度 */
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center; /* 垂直居中 */
+  align-items: center;
   font-size: 14px;
-  max-width: 22px; /* 设置每个胶囊的最大宽度 */
-  line-height: 10px; /* 设置行高，使文本垂直居中 */
-  backdrop-filter: none; /* 确保没有模糊效果 */
+  max-width: 22px;
+  line-height: 10px;
+  backdrop-filter: none;
 }
 
 .capsule-tabs-container .adm-capsule-tabs-tab .adm-capsule-tabs-tab-title {
   flex: 1;
-  text-align: center; /* 使文本居中 */
+  text-align: center;
   display: flex;
-  align-items: center; /* 垂直居中 */
+  align-items: center;
   justify-content: center;
 }
 
-//胶囊激活的颜色样式
 .capsule-tabs-container .adm-capsule-tabs-tab-active {
-  //background-color: #0b0b0bd3; /* 设置选中胶囊的背景颜色 */
   background-color: rgb(3, 76, 136);
-  color: #ffffff; /* 设置选中胶囊内文字的颜色 */
-  //margin: 0 5px; /* 调整胶囊之间的间距 */
-}
-//胶囊颜色
-.capsule-tabs-container .adm-capsule-tabs-tab:hover {
-  background-color: rgb(3, 76, 136); /* 设置胶囊悬停时的背景颜色 */
-  //color: #ffffff; /* 设置胶囊悬停时内文字的颜色 */
-  box-shadow: none; /* Remove any box-shadow that might cause the overlay effect */
-}
-.capsule-tabs-container .adm-capsule-tabs-tab:not(.adm-capsule-tabs-tab-active) {
-  background-color: #5b58585c; /* 设置未选中胶囊的背景颜色 */
-  color: #ffffff; /* 设置未选中胶囊内文字的颜色 */
+  color: #ffffff;
 }
 
-/* 新增样式以去除白色半透明蒙层 */
+.capsule-tabs-container .adm-capsule-tabs-tab:hover {
+  background-color: rgb(3, 76, 136);
+  box-shadow: none;
+}
+
+.capsule-tabs-container .adm-capsule-tabs-tab:not(.adm-capsule-tabs-tab-active) {
+  background-color: #5b58585c;
+  color: #ffffff;
+}
+
 .capsule-tabs-container .adm-capsule-tabs {
-  overflow: hidden; /* 确保没有多余的滚动区域 */
-  box-shadow: none; /* Remove any box-shadow that might cause the overlay effect */
-  background-color: transparent; /* Set the background to transparent */
+  overflow: hidden;
+  box-shadow: none;
+  background-color: transparent;
 }
 
 .capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-wrap {
-  //overflow: hidden; /* 隐藏可能的滚动条 */
-  background-color: transparent; /* Ensure the inner wrap is also transparent */
+  background-color: transparent;
 }
 
 .capsule-tabs-container .adm-capsule-tabs .adm-capsule-tabs-tab-list {
-  //overflow: hidden; /* 隐藏可能的滚动条 */
-  //white-space: nowrap; /* 确保胶囊选项卡在一行显示 */
-  background-color: transparent; /* Ensure the tab list is transparent */
+  background-color: transparent;
   padding: 5px 0px;
 }
 
-.tab-content.active {
-  display: block;
-}
 .tab-content {
-  //position: absolute;
+  width: 100%;
+  height: 100%; // 填满父容器
+  overflow-y: auto; // 每个tab内容可以独立滚动
+  display: none;
+
+  &.active {
+    display: block;
+  }
+
+  // 重要：确保每个tab内容都从顶部开始
+  position: relative;
   top: 0;
   left: 0;
-  width: 100%;
-  height: auto;
-  overflow-y: visible; // 让每个菜单的内容可以独立滚动
-  display: none;
 }

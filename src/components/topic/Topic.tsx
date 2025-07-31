@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
@@ -73,10 +73,14 @@ const Topic: React.FC = () => {
             <div className="dot-loading-custom" >
               <span >加载中</span>
               <DotLoading color='#fff' />
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
             </div>
           </>
         ) : (
-          <span color='#fff'>--- 我是有底线的 ---</span>
+          <div className="infinite-scroll-footer">
+            <span >--- 我是有底线的 ---</span>
+          </div>
         )}
       </>
     )
@@ -84,78 +88,83 @@ const Topic: React.FC = () => {
 
   return (
     <>
-      <div className="card-container" >
-        <PullToRefresh onRefresh={() => topicPageRequest(true)}>
-          {topicList?.map((topic, index) => (
-            <Card className="topic-custom-card"
-              key={index}
-              onClick={() => {
-                showPopupInfo(
-                  topic.id, topic.area, topic.content, topic.viewCount,
-                  topic.commentsCount, topic.imagePath, topic.videoPath,
-                  topic.createTime, topic.isHot, topic.isTop, topic.type, topic.title
-                )
-              }}>
-              <div className="topic-card-content">
+      <InfiniteScroll
+        loadMore={() => topicPageRequest(false)}
+        hasMore={topicHasHore}
+        threshold={50}
+      >
+        <div className="card-container" >
+          <PullToRefresh onRefresh={() => topicPageRequest(true)}>
+            {topicList?.map((topic, index) => (
+              <Card className="topic-custom-card"
+                key={index}
+                onClick={() => {
+                  showPopupInfo(
+                    topic.id, topic.area, topic.content, topic.viewCount,
+                    topic.commentsCount, topic.imagePath, topic.videoPath,
+                    topic.createTime, topic.isHot, topic.isTop, topic.type, topic.title
+                  )
+                }}>
+                <div className="topic-card-content">
 
-                {topic.title &&
-                  <div className="topic-title">
-                    <Ellipsis direction='end' rows={2} content={topic.title} />
-                  </div>
-                }
+                  {topic.title &&
+                    <div className="topic-title">
+                      <Ellipsis direction='end' rows={2} content={topic.title} />
+                    </div>
+                  }
 
-                {topic.videoCover &&
-                  <div className="topic-news-image-container">
-                    <video className="topic-news-video" src="/1.mp4" controls poster={topic.videoCover} />
-                  </div>
-                }
-                {!topic.videoCover && topic.imagePath &&
-                  <div className="topic-news-image-container">
-                    <Image
-                      className="topic-news-image"
-                      src={topic.imagePath}
-                      alt="Example"
-                      fit="contain"
-                    />
-                  </div>
-                }
+                  {topic.videoCover &&
+                    <div className="topic-news-image-container">
+                      <video className="topic-news-video" src="/1.mp4" controls poster={topic.videoCover} />
+                    </div>
+                  }
+                  {!topic.videoCover && topic.imagePath &&
+                    <div className="topic-news-image-container">
+                      <Image
+                        className="topic-news-image"
+                        src={topic.imagePath}
+                        alt="Example"
+                        fit="contain"
+                      />
+                    </div>
+                  }
 
-                <span className="topic-time">
+                  <span className="topic-time">
 
-                  {topic.isTop && <Tag className="topic-tag" color='#a05d29'>置顶</Tag>}
-                  {topic.isHot && <Tag className="topic-tag" color='red' fill='outline'>热门</Tag>}
-                  {/* {topic.source && <span className="topic-tag" >来源: <span className="source"> {topic.source} </span></span>} */}
-                  {<span className="topic-tag" > 类型: <span className="source">  {topic.type} </span></span>}
-                  {topic.createTime && dayjs(topic.createTime).format('YYYY-MM-DD HH:mm')}
+                    {topic.isTop && <Tag className="topic-tag" color='#a05d29'>置顶</Tag>}
+                    {topic.isHot && <Tag className="topic-tag" color='red' fill='outline'>热门</Tag>}
+                    {/* {topic.source && <span className="topic-tag" >来源: <span className="source"> {topic.source} </span></span>} */}
+                    {<span className="topic-tag" > 类型: <span className="source">  {topic.type} </span></span>}
+                    {topic.createTime && dayjs(topic.createTime).format('YYYY-MM-DD HH:mm')}
 
-                </span>
-
-                <Divider className='divider-line' />
-
-                <div className="topic-button-info">
-                  <span className="icon-and-text">
-                    <FcReading fontSize={17} />
-                    <span className="number"> {topic.viewCount} </span>
                   </span>
 
-                  <span className="icon-and-text">
-                    <MessageOutline fontSize={17} />
-                    <span className="message-number"> {topic.commentsCount} </span>
-                  </span>
+                  <Divider className='divider-line' />
+
+                  <div className="topic-button-info">
+                    <span className="icon-and-text">
+                      <FcReading fontSize={17} />
+                      <span className="number"> {topic.viewCount} </span>
+                    </span>
+
+                    <span className="icon-and-text">
+                      <MessageOutline fontSize={17} />
+                      <span className="message-number"> {topic.commentsCount} </span>
+                    </span>
 
 
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </PullToRefresh>
+              </Card>
+            ))}
+          </PullToRefresh>
 
-        <InfiniteScroll loadMore={() => topicPageRequest(false)} hasMore={topicHasHore}>
+
           <TopicScrollContent hasMore={topicHasHore} />
-        </InfiniteScroll>
-      </div>
 
+        </div>
 
+      </InfiniteScroll>
       {/********************新闻点击弹窗详情********************/}
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
         position='right'

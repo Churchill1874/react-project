@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, Toast, PullToRefresh, InfiniteScroll, DotLoading } from 'antd-mobile';
+import { Card, Divider, Tag, Ellipsis, Image, Popup, Toast, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
 import { MessageOutline, HeartOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/politics/politics.less'
@@ -135,118 +135,128 @@ const Politics: React.FC = () => {
 
   return (
     <>
-      <div className="card-container" >
-        <PullToRefresh onRefresh={() => politicsPageRequest(true)}>
-          {politicsList?.map((politics, index) => (
-            <Card className="politics-custom-card" key={index}>
-              <div className="politics-card-content">
+      <InfiniteScroll
+        loadMore={() => politicsPageRequest(false)}
+        hasMore={politicsHasHore}
+        threshold={50}
+      >
+        <div className="card-container" >
+          <PullToRefresh onRefresh={() => politicsPageRequest(true)}>
+            {politicsList?.map((politics, index) => (
+              <Card className="politics-custom-card" key={index}>
+                <div className="politics-card-content">
 
-                {politics.title &&
-                  <div className="politics-title">
-                    <Ellipsis direction='end' rows={2} content={politics.title} />
-                  </div>
-                }
-                {politics.imagePath &&
-                  <div className="politics-image-container">
-                    <Image
-                      className="politics-image"
-                      src={politics.imagePath}
-                      alt="Example"
-                      fit="contain"
-                    />
-                  </div>
-                }
-
-                <Ellipsis className="politics-synopsis" direction='end' rows={2} content={politics.content} style={{ fontSize: "14px", textIndent: "2em" }} />
-
-                <div className="politics-meta">
-                  <span className="politics-tag">
-                    {politics.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
-                    {politics.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
-                  </span>
-
-                  {politics.source &&
-                    <span className="politics-tag" > 来源:
-                      <span className="source">
-                        <span className="tracking">
-                          <LocationFill className="area" /> {politics.country}
-                        </span>
-                        <span className="source-inner">
-                          {politics.source}
-                        </span>
-
-                      </span>
-                      <span className="politics-time">
-                        {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD HH:mm')}
-                      </span>
-
-                    </span>
+                  {politics.title &&
+                    <div className="politics-title">
+                      <Ellipsis direction='end' rows={2} content={politics.title} />
+                    </div>
                   }
+                  {politics.imagePath &&
+                    <div className="politics-image-container">
+                      <Image
+                        className="politics-image"
+                        src={politics.imagePath}
+                        alt="Example"
+                        fit="contain"
+                      />
+                    </div>
+                  }
+
+                  <Ellipsis className="politics-synopsis" direction='end' rows={2} content={politics.content} style={{ fontSize: "14px", textIndent: "2em" }} />
+
+                  <div className="politics-meta">
+                    <span className="politics-tag">
+                      {politics.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
+                      {politics.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
+                    </span>
+
+                    {politics.source &&
+                      <span className="politics-tag" > 来源:
+                        <span className="source">
+                          <span className="tracking">
+                            <LocationFill className="area" /> {politics.country}
+                          </span>
+                          <span className="source-inner">
+                            {politics.source}
+                          </span>
+
+                        </span>
+                        <span className="politics-time">
+                          {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD HH:mm')}
+                        </span>
+
+                      </span>
+                    }
+                  </div>
+
+
+                  <Divider className='divider-line' />
+
+                  <div className="politics-button-info">
+
+                    <span className="tracking">
+                      <span className="icon-and-text">
+                        <FcReading fontSize={17} />
+                        <span className="number"> {politics.viewCount} </span>
+                      </span>
+                    </span>
+
+
+                    <span className="tracking">
+                      <span className="icon-and-text">
+                        <FcLike className='attribute-icon' fontSize={15} onClick={clickLikes} />
+                        <span className="number"> {politics?.likesCount || 0} </span>
+                      </span>
+                    </span>
+
+
+                    <span className="tracking">
+                      <span className="icon-and-text">
+                        <MessageOutline fontSize={17} />
+                        <span className="message-number"> {politics.commentsCount} </span>
+                        <span className="click"
+                          onClick={() => {
+                            showPopupInfo(
+                              politics.id,
+                              politics.imagePath,
+                              politics.viewCount,
+                              politics.likesCount,
+                              politics.commentsCount,
+                              politics.country,
+                              politics.content,
+                              politics.createTime,
+                              politics.newsStatus,
+                              politics.source,
+                              politics.title)
+                          }}>点击查看</span>
+                      </span>
+                    </span>
+                  </div>
                 </div>
+              </Card>
+            ))}
+          </PullToRefresh>
 
 
-                <Divider className='divider-line' />
-
-                <div className="politics-button-info">
-
-                  <span className="tracking">
-                    <span className="icon-and-text">
-                      <FcReading fontSize={17} />
-                      <span className="number"> {politics.viewCount} </span>
-                    </span>
-                  </span>
-
-
-                  <span className="tracking">
-                    <span className="icon-and-text">
-                      <FcLike className='attribute-icon' fontSize={15} onClick={clickLikes} />
-                      <span className="number"> {politics?.likesCount || 0} </span>
-                    </span>
-                  </span>
-
-
-                  <span className="tracking">
-                    <span className="icon-and-text">
-                      <MessageOutline fontSize={17} />
-                      <span className="message-number"> {politics.commentsCount} </span>
-                      <span className="click"
-                        onClick={() => {
-                          showPopupInfo(
-                            politics.id,
-                            politics.imagePath,
-                            politics.viewCount,
-                            politics.likesCount,
-                            politics.commentsCount,
-                            politics.country,
-                            politics.content,
-                            politics.createTime,
-                            politics.newsStatus,
-                            politics.source,
-                            politics.title)
-                        }}>点击查看</span>
-                    </span>
-                  </span>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </PullToRefresh>
-
-        <InfiniteScroll loadMore={() => politicsPageRequest(false)} hasMore={politicsHasHore}  >
           {/* <PoliticsScrollContent hasMore={politicsHasHore} /> */}
           {loading ? (
             <>
               <div className="dot-loading-custom" >
                 <span >加载中</span>
                 <DotLoading color='#fff' />
+
+                <Skeleton.Title animated />
+                <Skeleton.Paragraph lineCount={8} animated />
               </div>
             </>
           ) : (
-            <span color='#fff'>--- 我是有底线的 ---</span>
+            <div className="infinite-scroll-footer">
+              <span >--- 我是有底线的 ---</span>
+            </div>
           )}
-        </InfiniteScroll>
-      </div>
 
+        </div>
+      </InfiniteScroll>
 
       {/********************新闻点击弹窗详情********************/}
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}

@@ -23,6 +23,10 @@ const PoliticsEvent: React.FC = () => {
 
     setLoading(false);
 
+    if (!resp.records || resp.records.length === 0) {
+      return;
+    }
+
     console.log('list:', JSON.stringify(resp.records))
     setPoliticsLotteryList(resp.records)
   }

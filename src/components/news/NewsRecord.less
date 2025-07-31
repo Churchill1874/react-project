@@ -11,14 +11,6 @@
   //min-height: 120px; /* 设置一个合理的最小高度 */
 }
 
-.outer-container {
-  display: flex;
-  flex-direction: column;
-  padding: 0px 3px;
-  margin: 0;
-  //background-color: @theme;
-}
-
 .inner-container {
   display: flex;
   flex-direction: column;
@@ -63,8 +55,8 @@
 }
 
 .image-container {
-  width: 180px; /* 固定宽度 */
-  max-width: 180px;
+  width: 150px; /* 固定宽度 */
+  max-width: 150px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -97,11 +89,6 @@
   height: 100%; /* 高度填满容器 */
   object-fit: cover; /* 填满容器并保持比例 */
   max-height: 100%; /* 确保图片不会超出容器高度 */
-}
-
-//下拉刷新样式
-.outer-container .adm-pull-to-refresh-head-content {
-  color: #fff;
 }
 
 .popup-scrollable-content {

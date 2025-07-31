@@ -2,10 +2,30 @@
 
 .card-container {
   background-color: @theme;
-  height: 100%;
   padding: 3px;
+  min-height: 100%; // 确保填满可用空间
 }
 
+// InfiniteScroll 的底部内容样式
+.infinite-scroll-footer {
+  padding: 10px;
+  text-align: center;
+  background-color: @theme;
+}
+
+.dot-loading-custom {
+  padding: 20px;
+  text-align: center;
+  background-color: @theme;
+
+  span {
+    color: #ffffff;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+}
+
+// 其他样式保持不变...
 .adm-card-body {
   padding: 5px;
 }
@@ -34,11 +54,9 @@
 }
 
 .southeastasia-news-image-container {
-  /* 容器最大高度 */
   display: flex;
   justify-content: center;
   align-items: center;
-  //background-color: rgb(237, 232, 232); /* 默认背景颜色 */
   width: 100%;
 }
 
@@ -46,8 +64,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  object-fit: cover; /* 填满容器并保持比例 */
-  //object-fit: contain;        /* 保持图片的比例，适应容器 */
+  object-fit: cover;
   min-width: 150px;
   max-width: 300px;
 }
@@ -69,15 +86,14 @@
   padding: 1px 0;
   text-align: start;
   color: rgb(44, 44, 44);
-  text-indent: 2em; /* 首行缩进两格 */
+  text-indent: 2em;
   font-size: 15px;
-  //font-weight: bold;
 }
 
 .southeast-asia-text-area p {
-  margin-bottom: 1px; /* 段落间距 */
-  line-height: 1; /* 行间距 */
-  text-indent: 2em; /* 首行缩进 */
+  margin-bottom: 1px;
+  line-height: 1;
+  text-indent: 2em;
 }
 
 .divider-line {
@@ -93,13 +109,14 @@
 }
 
 .tracking {
-  display: inline-block; /* 防止文字过长时的换行 */
+  display: inline-block;
   text-align: center;
   .area {
     margin-right: 3px;
   }
   color: gray;
 }
+
 .city {
   color: gray;
   font-weight: bold;
@@ -111,18 +128,18 @@
 }
 
 .button-info {
-  display: flex; /* 使用 Flexbox 布局 */
-  justify-content: space-between; /* 横向平分空间 */
-  align-items: center; /* 垂直居中 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 10px;
   font-size: 14px;
   margin-top: 1px;
 }
 
 .button-info-inner {
-  display: flex; /* 使用 Flexbox 布局 */
-  justify-content: space-between; /* 横向平分空间 */
-  align-items: center; /* 垂直居中 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 10px;
   font-size: 14px;
   margin-top: 10px;
@@ -138,20 +155,20 @@
 
 .icon-and-text {
   display: inline-flex;
-  align-items: center; /* 垂直居中 */
-  gap: 1px; /* 图标和数字之间的间距，可调整 */
+  align-items: center;
+  gap: 1px;
 }
 
 .number {
   font-size: 14px;
   padding-left: 2px;
-  line-height: 1; /* 确保数字没有额外的行高 */
+  line-height: 1;
 }
 
 .message-number {
   font-size: 14px;
   padding-left: 2px;
-  line-height: 1; /* 确保数字没有额外的行高 */
+  line-height: 1;
   margin-right: 50px;
 }
 
@@ -172,7 +189,7 @@
 }
 
 .southeastAsia-input-comment input {
-  font-size: 18px; // 修改输入文本的字体大小
+  font-size: 18px;
   margin-left: 5px;
 }
 
@@ -184,10 +201,8 @@
 }
 
 .southeast-asia-title {
-  //font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   text-align: center;
-  //margin-top: 1px;
   font-size: 15px;
 }
 

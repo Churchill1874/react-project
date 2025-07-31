@@ -10,6 +10,8 @@ import Relation from '@/components/relation/Relation';
 import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent';
 import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
 import BetOrder from '@/pages/lottery/politicslottery/betorder/BetOrder';
+import Hall from '@/pages/hall/Hall';
+
 export default [
   //首页
   {
@@ -69,5 +71,10 @@ export default [
   {
     path: '/betOrder/:dealerId?',
     component: BetOrder,
+  },
+  {
+    path: '/hall',
+    component: Hall
   }
+
 ];
