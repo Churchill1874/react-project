@@ -6,6 +6,7 @@
   --adm-color-danger: #f5222d;
   --adm-color-info: #13c2c2;
 }
+
 html,
 body {
   touch-action: manipulation;
@@ -13,10 +14,21 @@ body {
   height: 100dvh; /* 动态视口高度，适配移动端 */
   margin: 0;
   padding: 0;
+  /* 移动端防止滚动 */
   overflow: hidden !important;
   overscroll-behavior: none;
   /* 支持安全区域 */
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 桌面端允许滚动 */
+@media (min-width: 768px) {
+  html,
+  body {
+    overflow: auto !important; /* 桌面端恢复滚动 */
+    height: auto; /* 桌面端不限制高度 */
+    padding-bottom: 0; /* 桌面端不需要安全区域 */
+  }
 }
 
 .main-container {
@@ -27,6 +39,15 @@ body {
   overflow: hidden;
 }
 
+/* 桌面端 main-container 调整 */
+@media (min-width: 768px) {
+  .main-container {
+    height: auto; /* 桌面端允许自然高度 */
+    min-height: 100vh; /* 最小高度保持全屏 */
+    overflow: visible; /* 桌面端允许溢出 */
+  }
+}
+
 .content-area {
   flex: 1;
   overflow: hidden;
@@ -34,6 +55,14 @@ body {
   flex-direction: column;
   /* 为导航栏和安全区域留出空间 */
   padding-bottom: calc(45px + env(safe-area-inset-bottom));
+}
+
+/* 桌面端内容区域调整 */
+@media (min-width: 768px) {
+  .content-area {
+    overflow: auto; /* 桌面端允许滚动 */
+    padding-bottom: 60px; /* 桌面端固定底部间距 */
+  }
 }
 
 .navbar {

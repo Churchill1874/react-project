@@ -189,7 +189,9 @@
   /* 🔥 输入区域 - 重新使用固定定位，但考虑导航栏 */
   .chat-input-area {
     position: fixed;
-    bottom: calc(45px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
+    //bottom: calc(45px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
+    bottom: calc(44px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
+
     left: 0;
     right: 0;
     z-index: 100;
@@ -423,19 +425,27 @@
     /* 为iPhone留出更多底部空间 */
     padding-bottom: 120px !important;
   }
-} /* 桌面端适配 */
-@media (min-width: 1024px) {
-  display: flex;
-  justify-content: center;
-  max-width: 680px;
-  width: 680px;
+}
 
+/* 桌面端适配 - 只修改输入框宽度限制 */
+@media (min-width: 1024px) {
   .chat-input-area {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    max-width: 680px;
-    width: 680px;
-    bottom: calc(45px + env(safe-area-inset-bottom));
+    /* 方法2：使用margin居中 */
+    left: 0 !important;
+    right: 0 !important;
+    width: 650px !important;
+    max-width: 650px !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    //bottom: calc(85px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
+    /* 添加边框保持视觉一致性 */
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+    .input-container {
+      max-width: 100% !important;
+      margin: 0 !important;
+    }
   }
 }

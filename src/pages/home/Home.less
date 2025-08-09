@@ -1,21 +1,24 @@
 // Home.less - 适配您的项目结构
 
+// 容器样式 - 确保桌面端正确的布局结构
 .container {
   width: 100%;
   background: #f8fafc;
-  // 移除 min-height: 100% 避免高度问题
   position: relative;
-  overflow-y: auto; // 确保可以滚动
-  // 移除原来的 max-width 和 margin，让它适应父容器
+  overflow-y: auto;
+
+  /* 桌面端样式 */
+  @media (min-width: 768px) {
+    position: relative; /* 确保是positioned element，让fixed header有参考 */
+    overflow: visible; /* 桌面端允许溢出 */
+  }
 }
 
 // 头部样式
 .header {
-  //background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  //background: linear-gradient(135deg, #1890ff, #1890ff);
   background: #fff;
   color: white;
-  padding: 5px 10px 5px; // 减小padding适应移动端
+  padding: 5px 10px 5px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -25,6 +28,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  /* 桌面端样式 */
+  @media (min-width: 768px) {
+    position: fixed !important; /* 桌面端强制使用fixed */
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 680px;
+    z-index: 1000;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
   }
 }
 
@@ -69,19 +86,24 @@
   }
 }
 
-// 内容区域
+// 内容区域 - 为桌面端header留出空间
 .content {
-  padding: 3px 3px; // 减小padding
-  padding-bottom: 80px; // 为底部导航栏留更多空间
-  overflow-y: auto; // 确保内容可滚动
+  padding: 3px 3px;
+  padding-bottom: 50px;
+  overflow-y: auto;
   background-color: #1890ff;
+
+  /* 桌面端为fixed header留出空间 */
+  @media (min-width: 768px) {
+    margin-top: 60px; /* 根据header实际高度调整 */
+  }
 }
 
 // 热门新闻样式
 .section {
   background: white;
   //border-radius: 10px; // 稍微减小圆角
-  padding: 3px 10px; // 减小padding
+  padding: 1px 5px; // 减小padding
   margin-bottom: 0px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); // 减小阴影
 
@@ -182,57 +204,68 @@
   color: #6b7280;
 }
 
-// 轮播图样式
+// 轮播图样式 - 使用16:9宽高比
 .carousel-container {
   position: relative;
-  height: 160px; // 减小高度
+  width: 100%;
+  aspect-ratio: 16 / 8;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 3px;
+}
+
+/* 为不支持aspect-ratio的浏览器提供备选方案 */
+@supports not (aspect-ratio: 16 / 9) {
+  .carousel-container {
+    height: 0;
+    padding-top: 56.25%; /* 16:9比例 */
+  }
 }
 
 .carousel-slide {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-
-  &.active {
-    opacity: 1;
-  }
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
 
   img {
-    width: 100%;
+    width: 90%; /* 图片90%宽度 */
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
+    border-radius: 8px;
   }
 }
 
 .carousel-caption {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
+  left: 5%; /* 对应图片的左边距 */
+  right: 5%; /* 对应图片的右边距 */
+  width: 90%; /* 与图片宽度一致 */
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.713));
   color: white;
-  padding: 15px 12px 8px; // 减小padding
-  font-size: 14px; // 减小字体
+  padding: 15px 12px 8px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 1px;
+  border-radius: 0 0 8px 8px;
+  box-sizing: border-box; /* 确保padding不会增加宽度 */
 }
 
 .carousel-indicators {
   position: absolute;
-  bottom: 8px; // 调整位置
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 4px; // 减小间距
+  gap: 4px;
 }
 
 .carousel-indicator {
-  width: 6px; // 减小尺寸
+  width: 6px;
   height: 6px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
@@ -252,17 +285,17 @@
   color: #333;
   border-radius: 10px;
   padding: 0px 10px;
-  padding-top: 7px;
-  padding-bottom: 10px;
+  padding-top: 3px;
+  padding-bottom: 5px;
 
-  margin: 3px 0;
+  margin: 8px 0;
   min-height: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
 }
 
 .betting-header {
-  margin-bottom: 8px;
+  margin-bottom: 3px;
 }
 
 .betting-title {
@@ -273,13 +306,15 @@
   gap: 4px;
   //color: #fff;
   letter-spacing: 1px;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
 }
 
 .betting-options {
   display: flex;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
+  align-items: center;
+  justify-content: center;
 }
 
 .betting-option {
@@ -287,7 +322,7 @@
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 3px 6px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -496,7 +531,7 @@
   align-items: center;
   gap: 6px;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 14px;
 }
 
@@ -512,7 +547,7 @@
   color: inherit;
   background: #d4e4f3;
   border-radius: 8px;
-  padding: 8px 4px;
+  padding: 4px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   border: 1px solid #f1f5f9;
 }
@@ -528,8 +563,8 @@
 }
 
 .menu-icon-image {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;

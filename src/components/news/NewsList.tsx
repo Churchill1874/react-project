@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import NewsRecord from '@/components/news/NewsRecord';
-import { DotLoading, InfiniteScroll, PullToRefresh, Skeleton } from 'antd-mobile';
+import { InfiniteScroll, PullToRefresh, Skeleton } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 import '@/components/news/NewsList.less'
 
@@ -11,7 +11,6 @@ const NewsList: React.FC<any> = () => {
   const [newsPage, setNewsPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log('NewsList render - loading:', loading, ', hasMore:', newsHasMore, ', page:', newsPage, ', listLength:', newsList.length);
 
   // ✅ 完全模仿Politics组件的API请求逻辑
   const reqNewsApi = async (isReset: boolean) => {

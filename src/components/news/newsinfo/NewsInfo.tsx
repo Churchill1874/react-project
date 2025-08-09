@@ -20,7 +20,6 @@ type NewsInfoProps = NewsInfoType & {
 const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   setVisibleCloseRight,
   id,
-  viewCount,
   newsList,
   setNewsList,
   needCommentPoint,
@@ -120,7 +119,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
-    const updateList = newsList?.map((data, _index) => (data.id === id) ? { ...data, viewCount: viewCount + 1 } : data)
+    const updateList = newsList?.map((data, _index) => (data.id === id) ? { ...data, viewCount: newsStatus?.viewCount + 1 } : data)
     if (setNewsList && updateList) {
       setNewsList(updateList);
     }

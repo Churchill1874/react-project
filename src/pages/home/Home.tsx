@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import '@/pages/home/Home.less';
-import { Divider } from 'antd-mobile'
+import { Divider, Popup } from 'antd-mobile'
 import { Request_HOME, NewsRankType, CompanyRankType, HotLotteryType, SoutheastAsiaNewsRankType, BannerType } from '@/pages/home/api';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom'; // 添加这个导入
+import { Link, useNavigate } from 'react-router-dom'; // 添加这个导入
+import NewsInfo from '@/components/news/newsinfo/NewsInfo';
+
 
 const Home: React.FC = () => {
   // 轮播图状态管理
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
-
   const [onlineCount, setOnlineCount] = useState<number>(0);
   const [bannerList, setBannerList] = useState<BannerType[]>([]);
   const [newsRank, setNewsRank] = useState<NewsRankType>();
@@ -17,8 +18,11 @@ const Home: React.FC = () => {
   const [hotLottery, setHotLottery] = useState<HotLotteryType>();
   const [southeastAsiaNews, setSoutheastAsiaNews] = useState<SoutheastAsiaNewsRankType>();
 
-  console.log("b:" + JSON.stringify(bannerList))
-  //console.log(",l:" + bannerList.length)
+
+  const [newsId, setNewsId] = useState<string>();
+  const [newsVisible, setNewsVisible] = useState(false)
+
+  const navigate = useNavigate();
   // 创建扩展的幻灯片数组（前后各复制一份实现无缝循环）
   const extendedSlides = [
     bannerList[bannerList.length - 1], // 最后一张的副本
@@ -26,7 +30,57 @@ const Home: React.FC = () => {
     bannerList[0] // 第一张的副本
   ];
 
-  console.log(JSON.stringify(extendedSlides))
+  const toTodayNews = (newsId) => {
+    setNewsId(newsId);
+    setNewsVisible(true)
+  }
+
+  const toBanner = (imageType, newsType, newsId) => {
+    //1 首页轮播图
+    if (imageType === 1) {
+      if (newsType === 1) {
+        setNewsId(newsId)
+        setNewsVisible(true)
+        //navigate('/news')
+      }
+      /*       if (newsType === 2) {
+              navigate('/news/southeastAsia')
+            }
+            if (newsType === 3) {
+              navigate('/news/politics')
+            }
+            if (newsType === 4) {
+              navigate('/news/society')
+            }
+            if (newsType === 5) {
+              navigate('/news/promotion')
+            }
+            if (newsType === 6) {
+              navigate('/news/topic')
+            }
+            if (newsType === 7) {
+              navigate('/news/job')
+            }
+            if (newsType === 8) {
+              navigate('/news/company')
+            } */
+    }
+    //2 评论页面广告
+    if (imageType === 2) {
+
+    }
+
+    //3 首页广告
+    if (imageType === 3) {
+
+    }
+
+    //4 消息页面广告
+    if (imageType === 4) {
+
+    }
+
+  }
 
   // 获取首页新闻数据
   const homeReq = async () => {
@@ -115,7 +169,7 @@ const Home: React.FC = () => {
               <div className="menu-icon-image">🎮</div>
               <div className="menu-icon-text">多人游戏</div>
             </Link>
-            <Link to={'/'} className="menu-icon">
+            <Link to={'/news/company'} className="menu-icon">
               <div className="menu-icon-image">🔍</div>
               <div className="menu-icon-text">追查公司</div>
             </Link>
@@ -123,7 +177,7 @@ const Home: React.FC = () => {
               <div className="menu-icon-image">ℹ️</div>
               <div className="menu-icon-text">了解我们</div>
             </Link>
-            <Link to={'/'} className="menu-icon">
+            <Link to={'/news/politics'} className="menu-icon">
               <div className="menu-icon-image">📰</div>
               <div className="menu-icon-text">政治新闻</div>
             </Link>
@@ -131,25 +185,25 @@ const Home: React.FC = () => {
           <Divider style={{ padding: '0px', margin: '0px' }} />
 
           {/* 热门新闻 */}
-          <div className="section-title">🔥 今日热点</div>
+          <div className="section-title">🔥 今日中国热点</div>
 
           {/* <div className="news-item pinned"> */}
-          <div className="news-item">
+          <div className="news-item" onClick={() => toTodayNews(newsRank?.newsTopId)}>
             <div className="news-number">📌</div>
             <div className="news-title">{newsRank?.newsTitleTop}</div>
           </div>
 
-          <div className="news-item">
+          <div className="news-item" onClick={() => toTodayNews(newsRank?.news1Id)}>
             <div className="news-number">1</div>
             <div className="news-title">{newsRank?.newsTitle1}</div>
           </div>
 
-          <div className="news-item">
+          <div className="news-item" onClick={() => toTodayNews(newsRank?.news2Id)}>
             <div className="news-number">2</div>
             <div className="news-title">{newsRank?.newsTitle2}</div>
           </div>
 
-          <div className="news-item">
+          <div className="news-item" onClick={() => toTodayNews(newsRank?.news3Id)}>
             <div className="news-number">3</div>
             <div className="news-title">{newsRank?.newsTitle3}</div>
           </div>
@@ -173,20 +227,14 @@ const Home: React.FC = () => {
                   opacity: 1
                 }}
               >
-
-                {
-                  slide?.imagePath
-                  &&
+                {slide?.imagePath && (
                   <>
-                    <img src={slide.imagePath} alt={`轮播图 ${index + 1}`} />
+                    <img src={slide.imagePath} alt={`轮播图 ${index + 1}`} onClick={() => toBanner(slide.imageType, slide.newsType, slide.newsId)} />
                     {slide.title && (
                       <div className="carousel-caption">{slide.title}</div>
                     )}
                   </>
-
-                }
-
-
+                )}
               </div>
             ))}
 
@@ -200,12 +248,14 @@ const Home: React.FC = () => {
               ))}
             </div>
           </div>
+
+
         </div>
 
         {/* 政治博彩 */}
         <div className="section">
 
-          <div className="betting-card">
+          <div className="betting-card" onClick={() => navigate('/bet')}>
             <div className="betting-header">
               <div className="betting-title">🗳️ {hotLottery?.lotteryTitle}</div>
             </div>
@@ -224,6 +274,19 @@ const Home: React.FC = () => {
                     {/* <div className="option-bets">{hotLottery?.betAmount1} 总下注额</div> */}
                   </div>
                 </div>
+              </div>
+              <div
+                style={{
+                  width: '20px',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                  //color: 'gray',
+
+                }}>
+                vs
               </div>
               <div className="betting-option">
                 <img
@@ -244,7 +307,7 @@ const Home: React.FC = () => {
             <div className="betting-footer">
               <span className="betting-pool">总奖池:
                 <span className="pool-amount">{hotLottery?.prizePool}
-                  <span style={{ color: 'gray', fontSize: '12px', fontWeight: '500', letterSpacing: '0.8px' }}> USDT</span>
+                  <span style={{ color: 'gray', fontSize: '12px', fontWeight: '500' }}> USDT</span>
                 </span>
               </span>
 
@@ -256,7 +319,7 @@ const Home: React.FC = () => {
         <Divider style={{ padding: '0px', margin: '0px' }} />
 
         {/* 公司信息 */}
-        <div className="company-card">
+        <div className="company-card" onClick={() => navigate('/news/company')}>
           <div className="company-header">
             <div className="company-name">🏢追踪公司： {company?.companyName}</div>
             <div className="company-location">{company?.companyAddress}</div>
@@ -301,7 +364,7 @@ const Home: React.FC = () => {
         <div className="section">
           <Divider style={{ padding: '0px', margin: '0px' }} />
           <div className="section-title">🌏 东南亚资讯</div>
-          <div className="sea-news-item">
+          <div className="sea-news-item" onClick={() => navigate('/news/southeastAsia')}>
             <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry1}</div>
             <div className="sea-news-content">
               <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle1}</div>
@@ -343,6 +406,34 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
+
+
+        {newsId &&
+          <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
+            position='right'
+            // closeOnSwipe={true}
+            closeOnMaskClick
+            visible={newsVisible}
+            onClose={() => { setNewsVisible(false) }}>
+
+
+            <div className="popup-scrollable-content" >
+              {
+                newsVisible
+                &&
+                <NewsInfo
+                  setVisibleCloseRight={setNewsVisible}
+                  id={newsId}
+                  needCommentPoint={false}
+                  commentPointId={null}
+                  commentRef={null}
+                />
+              }
+            </div>
+
+          </Popup>
+        }
+
       </div>
     </div>
   );

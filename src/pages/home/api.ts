@@ -39,15 +39,22 @@ export const Request_HOME_NEWS = async (): Promise<HomeNewsType> => {
 };
 
 export interface NewsRankType {
+  newsTopId: any;
   newsTitleTop: any;
+  news1Id: any;
   newsTitle1: any;
+  news2Id: any;
   newsTitle2: any;
+  news3Id: any;
   newsTitle3: any;
 }
 
 export interface BannerType {
   title: any | '';
   imagePath: any | '';
+  imageType: any;
+  newsType: any;
+  newsId: any;
 }
 
 export interface CompanyRankType {

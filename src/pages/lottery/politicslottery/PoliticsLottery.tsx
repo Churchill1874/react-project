@@ -3,7 +3,7 @@ import { Tabs } from 'antd-mobile'
 import LotteryDealer from '@/pages/lottery/politicslottery/lotterydealer/LotteryDealer';
 import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent';
 import '@/pages/lottery/politicslottery/PoliticsLottery.less'
-import { FcCustomerSupport, FcSalesPerformance, FcSurvey } from "react-icons/fc";
+import { FcSalesPerformance } from "react-icons/fc";
 
 const PoliticsLottery: React.FC = () => {
   const [tabKey, setTabKey] = useState<string>('dealder');

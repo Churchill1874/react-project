@@ -56,13 +56,13 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
 
   // 清理所有订阅的函数
   const unsubscribeAll = useCallback(() => {
-    console.log('StompProvider: Unsubscribing all...');
+    //console.log('StompProvider: Unsubscribing all...');
 
     if (subscriptionRef.current) {
       try {
         subscriptionRef.current.unsubscribe();
       } catch (error) {
-        console.error('Error unsubscribing private:', error);
+        //console.error('Error unsubscribing private:', error);
       }
       subscriptionRef.current = null;
     }
@@ -71,7 +71,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       try {
         subscriptionSystemRef.current.unsubscribe();
       } catch (error) {
-        console.error('Error unsubscribing system:', error);
+        //console.error('Error unsubscribing system:', error);
       }
       subscriptionSystemRef.current = null;
     }
@@ -80,7 +80,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       try {
         subscriptionCommentRef.current.unsubscribe();
       } catch (error) {
-        console.error('Error unsubscribing comment:', error);
+        //console.error('Error unsubscribing comment:', error);
       }
       subscriptionCommentRef.current = null;
     }
@@ -89,17 +89,17 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       try {
         subscriptionRoomRef.current.unsubscribe();
       } catch (error) {
-        console.error('Error unsubscribing room:', error);
+        //console.error('Error unsubscribing room:', error);
       }
       subscriptionRoomRef.current = null;
     }
 
-    console.log('StompProvider: All subscriptions cleared');
+    //console.log('StompProvider: All subscriptions cleared');
   }, []);
 
   // 断开连接的函数
   const disconnectStompClient = useCallback(() => {
-    console.log('StompProvider: Disconnecting...');
+    //console.log('StompProvider: Disconnecting...');
 
     // 清理所有订阅
     unsubscribeAll();
@@ -111,7 +111,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           client.deactivate();
         }
       } catch (error) {
-        console.error('Error deactivating client:', error);
+        //console.error('Error deactivating client:', error);
       }
     }
 
@@ -121,27 +121,27 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
     isConnectingRef.current = false;
     currentTokenRef.current = null;
 
-    console.log('StompProvider: Disconnected and cleaned up');
+    //console.log('StompProvider: Disconnected and cleaned up');
   }, [client, unsubscribeAll]);
 
   const connectStompClient = useCallback((token: string) => {
-    console.log('StompProvider: Connecting with token:', token);
+    //console.log('StompProvider: Connecting with token:', token);
 
     // 避免重复连接
     if (isConnectingRef.current) {
-      console.log('StompProvider: Already connecting, skipping');
+      //console.log('StompProvider: Already connecting, skipping');
       return;
     }
 
     // 如果已经用相同token连接，跳过
     if (client && client.connected && currentTokenRef.current === token) {
-      console.log('StompProvider: Already connected with same token, skipping');
+      //console.log('StompProvider: Already connected with same token, skipping');
       return;
     }
 
     // 先断开旧连接
     if (client && (client.connected || client.active)) {
-      console.log('StompProvider: Disconnecting old connection...');
+      //console.log('StompProvider: Disconnecting old connection...');
       disconnectStompClient();
 
       // 给一点时间让旧连接完全断开
@@ -155,14 +155,14 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
 
   const createNewConnection = (token: string) => {
     if (isConnectingRef.current) {
-      console.log('StompProvider: Already connecting, aborting');
+      //console.log('StompProvider: Already connecting, aborting');
       return;
     }
 
     isConnectingRef.current = true;
     currentTokenRef.current = token;
 
-    console.log('StompProvider: Creating new STOMP client...');
+    //console.log('StompProvider: Creating new STOMP client...');
 
     const stompClient = new Client({
       webSocketFactory: () => new SockJS(`${serverTarget}/ws?token-id=${token}`),
@@ -172,7 +172,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
     });
 
     stompClient.onConnect = () => {
-      console.log('StompProvider: Connected successfully');
+      //console.log('StompProvider: Connected successfully');
       setClient(stompClient);
       setConnected(true);
       isConnectingRef.current = false;
@@ -183,12 +183,12 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       // 私信订阅
       try {
         const privateSub = stompClient.subscribe('/user/queue/private', (message) => {
-          console.log("私信来了:", message.body);
+          //console.log("私信来了:", message.body);
           const msg = JSON.parse(message.body) as PrivateChatType;
           pushChatMessageToMap(msg);
           updatePrivateChatList(msg);
 
-          console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
+          //console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
           if (latestPathRef.current !== '/message') {
             setHasUnreadMessage(true);
           }
@@ -199,16 +199,16 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
         });
         subscriptionRef.current = privateSub;
-        console.log('StompProvider: Private subscription created');
+        //console.log('StompProvider: Private subscription created');
       } catch (error) {
-        console.error('Error creating private subscription:', error);
+        //console.error('Error creating private subscription:', error);
       }
 
       // 系统消息订阅
       try {
         const systemSub = stompClient.subscribe('/user/queue/systemMessage', (message) => {
-          console.log("系统消息来了:", message.body);
-          console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
+          //console.log("系统消息来了:", message.body);
+          //console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
 
           if (latestPathRef.current !== '/message') {
             setHasUnreadMessage(true);
@@ -221,16 +221,16 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
         });
         subscriptionSystemRef.current = systemSub;
-        console.log('StompProvider: System subscription created');
+        //console.log('StompProvider: System subscription created');
       } catch (error) {
-        console.error('Error creating system subscription:', error);
+        //console.error('Error creating system subscription:', error);
       }
 
       // 评论消息订阅
       try {
         const commentSub = stompClient.subscribe('/user/queue/commentMessage', (message) => {
-          console.log("评论消息来了:", message.body);
-          console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
+          //console.log("评论消息来了:", message.body);
+          //console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
 
           if (latestPathRef.current !== '/message') {
             setHasUnreadMessage(true);
@@ -238,21 +238,21 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
 
           const messageTabKey = useStore.getState().messageTabKey;
-          console.log('messageTabKey:', messageTabKey)
+          //console.log('messageTabKey:', messageTabKey)
           if (latestPathRef.current === '/message' && messageTabKey !== 'comment-message') {
             setCommentMessageUnread(true)
           }
         });
         subscriptionCommentRef.current = commentSub;
-        console.log('StompProvider: Comment subscription created');
+        //console.log('StompProvider: Comment subscription created');
       } catch (error) {
-        console.error('Error creating comment subscription:', error);
+        //console.error('Error creating comment subscription:', error);
       }
 
       // 聊天室订阅
       try {
         const roomSub = stompClient.subscribe('/topic/room/1', (message) => {
-          console.log("聊天室1号收来消息:", message.body)
+          //console.log("聊天室1号收来消息:", message.body)
 
           if (chatRoom1List) {
             setChatRoom1List(prev => {
@@ -262,33 +262,33 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
         });
         subscriptionRoomRef.current = roomSub;
-        console.log('StompProvider: Room subscription created');
+        //console.log('StompProvider: Room subscription created');
       } catch (error) {
-        console.error('Error creating room subscription:', error);
+        //console.error('Error creating room subscription:', error);
       }
     };
 
     stompClient.onDisconnect = () => {
-      console.log('StompProvider: Disconnected from server');
+      //console.log('StompProvider: Disconnected from server');
       setConnected(false);
       isConnectingRef.current = false;
     };
 
     stompClient.onStompError = (error) => {
-      console.error('STOMP error:', error);
+      //console.error('STOMP error:', error);
       isConnectingRef.current = false;
     };
 
     stompClient.onWebSocketError = (error) => {
-      console.error('WebSocket error:', error);
+      //console.error('WebSocket error:', error);
       isConnectingRef.current = false;
     };
 
     try {
       stompClient.activate();
-      console.log('StompProvider: Client activation initiated');
+      //console.log('StompProvider: Client activation initiated');
     } catch (error) {
-      console.error('Error activating STOMP client:', error);
+      //console.error('Error activating STOMP client:', error);
       isConnectingRef.current = false;
     }
   };
@@ -300,13 +300,13 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
 
   // ✅ 关键修复：只监听 tokenId，不包含函数依赖
   useEffect(() => {
-    console.log('StompProvider: TokenId effect triggered:', tokenId);
+    // console.log('StompProvider: TokenId effect triggered:', tokenId);
 
     const targetToken = tokenId || '1';
 
     // 如果已经连接到相同的token，跳过
     if (client && client.connected && currentTokenRef.current === targetToken) {
-      console.log('StompProvider: Already connected with target token, skipping');
+      //console.log('StompProvider: Already connected with target token, skipping');
       return;
     }
 
@@ -317,7 +317,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
   // 组件卸载时清理
   useEffect(() => {
     return () => {
-      console.log('StompProvider: Provider unmounting, cleaning up...');
+      //console.log('StompProvider: Provider unmounting, cleaning up...');
       disconnectStompClient();
     };
   }, []); // ✅ 空依赖数组

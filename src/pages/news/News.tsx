@@ -9,10 +9,18 @@ import Politics from "@/components/politics/politics";
 import Society from "@/components/society/Society";
 import Promotion from '@/components/promotion/Promotion';
 import Topic from '@/components/topic/Topic';
+import { useParams } from 'react-router-dom';
 
 const News: React.FC = React.memo(() => {
   const [newsActiveTab, setNewsActiveTab] = useState<string>('news');
   const newsContentRef = useRef<HTMLDivElement>(null);
+  const { typeId } = useParams();
+  useEffect(() => {
+    console.log('news:' + typeId)
+    if (typeId) {
+      setNewsActiveTab(typeId);
+    }
+  }, [])
 
   // 切换菜单时，重置主容器的滚动位置
   useEffect(() => {
