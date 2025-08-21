@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '@/pages/hall/newscard/NewsCard.less';
+import '@/pages/groupchat/newscard/NewsCard.less';
 
 interface NewsItem {
   id: number;

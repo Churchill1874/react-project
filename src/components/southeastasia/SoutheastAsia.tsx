@@ -81,7 +81,7 @@ const SoutheastAsia: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="infinite-scroll-footer">
+          <div className="infinite-scroll-footer" style={{ backgroundColor: 'white' }}>
             <span >--- 我是有底线的 ---</span>
           </div>
         )}
@@ -135,7 +135,7 @@ const SoutheastAsia: React.FC = () => {
 
                   </span>
 
-                  <Divider className='divider-line' />
+
 
                   <div className="button-info">
                     <span className="tracking"><LocationFill className="area" />{southeastAsiaNews.area}</span>
@@ -159,7 +159,9 @@ const SoutheastAsia: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <Divider className='divider-line' />
               </Card>
+
             ))}
           </PullToRefresh>
 

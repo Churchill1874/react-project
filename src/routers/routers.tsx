@@ -10,7 +10,8 @@ import Relation from '@/components/relation/Relation';
 import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/PoliticsEvent';
 import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
 import BetOrder from '@/pages/lottery/politicslottery/betorder/BetOrder';
-import Hall from '@/pages/hall/Hall';
+import GroupChat from '@/pages/groupchat/GroupChat';
+import Hall from '@/pages/Hall/Hall';
 
 export default [
   //首页
@@ -73,8 +74,13 @@ export default [
     component: BetOrder,
   },
   {
+    path: '/groupChat',
+    component: GroupChat
+  },
+  {
     path: '/hall',
     component: Hall
+
   }
 
 ];

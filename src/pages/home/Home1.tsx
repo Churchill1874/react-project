@@ -4,7 +4,7 @@ import { GlobalOutline } from 'antd-mobile-icons';
 import { Request_HOME_NEWS } from '@/pages/home/api';
 import '@/pages/home/Home.less'; // 引入Home.less
 import { newsEnum } from '@/common/news'
-import NewsCard from '@/pages/hall/newscard/NewsCard'
+import NewsCard from '@/pages/groupchat/newscard/NewsCard'
 
 import useStore from '@/zustand/store'
 import { FcUp } from 'react-icons/fc';

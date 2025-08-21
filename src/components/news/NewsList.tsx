@@ -46,7 +46,7 @@ const NewsList: React.FC<any> = () => {
   return (
     <>
 
-      <div className="card-container">
+      <div >
         <div>
           <PullToRefresh onRefresh={() => reqNewsApi(true)}>
             {newsList?.map((news, index) => (
@@ -79,7 +79,7 @@ const NewsList: React.FC<any> = () => {
 
 
         {loading ? (
-          <div className="dot-loading-custom">
+          <div >
             {/* <span>加载中</span> */}
             {/* <DotLoading color='#fff' /> */}
             <Skeleton.Title animated />

@@ -169,6 +169,7 @@ const Job: React.FC = () => {
                     <span className='job-info'>查看详情</span>
                   </span>
                 </div>
+                <Divider className='divider-line' />
               </Card>
             ))}
           </PullToRefresh>
@@ -267,6 +268,7 @@ const Job: React.FC = () => {
                   </div>
                   <br />
                   <span className='last-time'>最后一次更新时间: {dayjs(popupInfo.lastTime).format('YYYY-MM-DD HH:mm')}</span>
+
                 </Card>
               </>
             }

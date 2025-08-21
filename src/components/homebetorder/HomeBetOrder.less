@@ -1,0 +1,212 @@
+.record-card {
+  //background: white;
+  //background: #c7e0f95c;
+  margin-top: 0px;
+  //border-radius: 16px;
+  margin-bottom: 0px;
+  overflow: hidden;
+  //box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+
+  /*   &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  } */
+}
+
+.card-header {
+  //border-radius: 12px;
+  padding: 3px 5px;
+  //border-bottom: 1px solid white;
+  position: relative;
+  //padding-bottom: 5px;
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  //padding: 2px 4px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+
+  &.status-0 {
+    //background: #fef3c7;
+    color: gray;
+  }
+
+  &.status-1 {
+    //background: #d1fae5;
+    color: #991b1b;
+  }
+
+  &.status-2 {
+    //background: #fee2e2;
+
+    color: #065f46;
+  }
+}
+
+.user-info-out {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 5px;
+    border: 3px solid #f0f0f0;
+  }
+}
+
+.user-details {
+  h3 {
+    font-size: 16px;
+    color: #1f2937;
+    margin-bottom: 2px;
+  }
+}
+
+.user-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.level-badge {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  color: white;
+  padding: 2px 4px;
+  border-radius: 12px;
+  font-size: 10px;
+}
+
+.event-info {
+  //background: white;
+  padding-top: 1px;
+  padding-bottom: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  border-radius: 12px;
+}
+
+.event-name {
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  //color: #374151;
+  margin-bottom: 8px;
+}
+
+.bet-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bet-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.bet-details {
+  flex: 1;
+}
+
+.bet-text {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 4px;
+}
+
+.odds {
+  font-size: 12px;
+  color: gray;
+  //font-weight: bold;
+}
+
+.amounts {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  gap: 20px;
+}
+
+.amount-item {
+  text-align: center;
+}
+
+.amount-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.amount-value {
+  font-size: 13px;
+  font-weight: bold;
+
+  &.bet-amount {
+    color: #ef4444;
+  }
+
+  &.win-amount {
+    color: #10b981;
+  }
+}
+
+.card-footer {
+  //background: #f9fafb;
+  padding: 3px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #6b7280;
+  //margin-top: 5px;
+}
+
+.market-id {
+  font-family: monospace;
+  //background: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.no-records {
+  text-align: center;
+  color: white;
+  opacity: 0.8;
+  padding: 40px 20px;
+}
+
+.load-more {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  color: #667eea;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 16px;
+
+  &:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+}

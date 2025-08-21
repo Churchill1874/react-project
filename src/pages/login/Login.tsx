@@ -6,7 +6,7 @@ import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
 import useStore from '@/zustand/store'
-import NewsCard from '@/pages/hall/newscard/NewsCard'
+import NewsCard from '@/pages/groupchat/newscard/NewsCard'
 interface RegisterType {
   account: string;
   name: string;

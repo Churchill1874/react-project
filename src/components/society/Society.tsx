@@ -137,7 +137,7 @@ const Society: React.FC = () => {
 
                   </span>
 
-                  <Divider className='divider-line' />
+
 
                   <div className="society-button-info">
                     <span className="tracking"><LocationFill className="area" />{society.area}</span>
@@ -162,6 +162,7 @@ const Society: React.FC = () => {
                     </span>
                   </div>
                 </div>
+                <Divider className='divider-line' />
               </Card>
             ))}
           </PullToRefresh>

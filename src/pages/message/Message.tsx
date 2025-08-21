@@ -250,7 +250,7 @@ const Message: React.FC = () => {
           title={<div style={{ display: 'flex', justifyItems: 'center' }}>
             {commentMessageUnread && <Badge content={Badge.dot} style={{ '--right': '-10px', '--top': '8px' }}></Badge>}
             评论
-            <FcVoicePresentation style={{ marginLeft: '3px' }} fontSize={18} />
+            <FcVoicePresentation fontSize={18} />
           </div>
           }
           key='comment-message'

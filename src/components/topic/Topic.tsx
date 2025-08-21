@@ -139,7 +139,7 @@ const Topic: React.FC = () => {
 
                   </span>
 
-                  <Divider className='divider-line' />
+
 
                   <div className="topic-button-info">
                     <span className="icon-and-text">
@@ -155,6 +155,7 @@ const Topic: React.FC = () => {
 
                   </div>
                 </div>
+                <Divider className='divider-line' />
               </Card>
             ))}
           </PullToRefresh>

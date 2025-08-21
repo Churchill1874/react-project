@@ -90,6 +90,29 @@ export interface HotLotteryType {
   drawTime: any;
 }
 
+export interface BetRecord {
+  id: any;
+  createTime: any;
+  title: any;
+  type: any;
+  dealerId: any;
+  playerId: any;
+  playerName: any;
+  playerLevel: any;
+  playerAvatar: any;
+  chooseNumber: any;
+  choose: any;
+  odds: any;
+  dealerUserId: any;
+  dealerUsername: any;
+  dealerUserLevel: any;
+  dealerAvatar: any;
+  betAmount: any;
+  amount: any;
+  drawTime: any;
+  status: number;
+}
+
 export interface SoutheastAsiaNewsRankType {
   southeastAsiaTitle1: any;
   southeastAsiaView1: any;
@@ -108,6 +131,70 @@ export interface SoutheastAsiaNewsRankType {
   southeastAsiaCount3: any;
   southeastAsiaTime3: any;
   southeastAsiaCountry3: any;
+
+  southeastAsiaTitle4: any;
+  southeastAsiaView4: any;
+  southeastAsiaCount4: any;
+  southeastAsiaTime4: any;
+  southeastAsiaCountry4: any;
+
+  southeastAsiaTitle5: any;
+  southeastAsiaView5: any;
+  southeastAsiaCount5: any;
+  southeastAsiaTime5: any;
+  southeastAsiaCountry5: any;
+}
+
+export interface NewsInfo {
+  title: any;
+  content: any;
+  viewCount: any;
+  likesCount: any;
+  commentsCount: any;
+  newsStatus: any;
+  imagePath: any;
+  country: any;
+  source: any;
+  createTime: any;
+  createName: any;
+  id: any;
+}
+
+export interface PoliticsType {
+  title: any;
+  content: any;
+  viewCount: any;
+  likesCount: any;
+  commentsCount: any;
+  newsStatus: any;
+  imagePath: any;
+  country: any;
+  source: any;
+  createTime: any;
+  createName: any;
+  id: any;
+}
+
+export interface PromotionType {
+  /** 标题1 */
+  title1: string;
+  area1: string;
+  /** 视频链接1 */
+  videoPath1: string;
+  /** 视频封面1 */
+  videoCover1: string;
+  /** 图片路径1 */
+  imagePath1: string;
+
+  /** 标题2 */
+  title2: string;
+  area2: string;
+  /** 视频链接2 */
+  videoPath2: string;
+  /** 视频封面2 */
+  videoCover2: string;
+  /** 图片路径2 */
+  imagePath2: string;
 }
 
 export interface HomeType {
@@ -117,6 +204,9 @@ export interface HomeType {
   company: CompanyRankType;
   hotLottery: HotLotteryType;
   southeastAsiaNewsRank: SoutheastAsiaNewsRankType;
+  betOrderList: BetRecord[];
+  politicsList: PoliticsType[];
+  promotion: PromotionType;
 }
 
 interface Resp {

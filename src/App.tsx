@@ -4,22 +4,22 @@ import routes from '@/routers/routers';
 import Navbar from '@/components/navbar/Navbar';
 import '@/global.less';
 import useStore from '@/zustand/store';
-import { StompContext } from '@/utils/StompContext';
 
 const getBgColor = (pathname: string) => {
   if (pathname === '/home') return '#fff';
-  if (pathname.startsWith('/news')) return '#1890ff';
+  if (pathname.startsWith('/news')) return '#fff';
   if (pathname === '/newsinfo') return '#fff';
   if (pathname === '/game') return '#1890ff';
   if (pathname === '/bet') return '#1890ff';
   if (pathname === '/message') return '#1890ff';
   if (pathname === '/personal') return '#1890ff';
-  if (pathname === '/politics') return '#1890ff';
-  if (pathname === '/interesting') return '#1890ff';
+  if (pathname === '/politics') return '#fff';
+  if (pathname === '/interesting') return '#fff';
   if (pathname === '/politicsevent') return '#1890ff';
   if (pathname.startsWith('/betOrder')) return '#1890ff';
   return '#fff';
 };
+
 
 const InnerApp = () => {
   return (
@@ -47,8 +47,8 @@ const App: React.FC = () => {
   // 只在必要时更新高度，减少不必要的重新计算
   useEffect(() => {
     const updateHeight = () => {
-      // 只有非 /hall 页面才需要重新计算高度
-      if (location.pathname !== '/hall') {
+      // 只有非 /groupchat 页面才需要重新计算高度
+      if (location.pathname !== '/groupChat') {
         const newHeight = window.innerHeight - navbarHeight;
         setContentHeight(newHeight);
       }
@@ -73,8 +73,8 @@ const App: React.FC = () => {
     setBgColor(newBgColor);
 
     // 设置 body 背景色与页面保持一致
-    if (location.pathname !== '/hall') {
-      document.body.style.backgroundColor = newBgColor;
+    if (location.pathname !== '/groupChat') {
+      //document.body.style.backgroundColor = newBgColor;
     } else {
       document.body.style.backgroundColor = '';
     }
@@ -84,7 +84,7 @@ const App: React.FC = () => {
     <div
       className='main-container'
       style={
-        location.pathname === '/hall'
+        location.pathname === '/groupChat'
           ? { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }
           : { backgroundColor: bgColor }
       }

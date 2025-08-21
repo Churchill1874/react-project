@@ -81,12 +81,19 @@ const Company: React.FC = () => {
         threshold={50}
       >
 
-        <div className="card-container" >
+        <div className="card-container" style={{ padding: '10px 10px' }}>
           <PullToRefresh onRefresh={() => companyPageRequest(true)}>
             {companyList?.map((company, index) => (
               <Card className="company-custom-card" key={index}>
                 <div className="card-content">
-                  <div className="company-line1"> {company.name}</div>
+                  <div className="company-line1">
+                    <span style={{ color: '#0f61ae', fontSize: '16px', fontWeight: 'bold' }}> {company.name} </span>
+
+                    <span style={{ color: 'gray', fontSize: '12px' }}><LocationFill className="area" /> {company.city}</span>
+                  </div>
+
+
+                  <Divider className='company-divider-line' style={{ marginTop: '5px' }} />
                   {company.image &&
                     <>
                       <Divider className='company-divider-line' />
@@ -101,12 +108,10 @@ const Company: React.FC = () => {
 
                   }
 
-                  <Divider className='company-divider-line' />
                   <div className="text-area">
                     <Ellipsis direction='end' rows={3} content={company.description} />
                   </div>
-
-                  <Divider className='divider-line' />
+                  <Divider className='company-divider-line' />
                   {/*                 <div className="line-group">
                   <div className="line">{company.overtimeCompensation}</div>
                   <Divider className='blue-divider-line' direction="vertical" />
@@ -128,13 +133,10 @@ const Company: React.FC = () => {
                   <div className="line">{company.officeEnvironment}</div>
                 </div>
                 <Divider className='divider-line' /> */}
-                  <div className="line-group">
-                    <span><LocationFill className="area" />{company.city}</span>
-                  </div>
-                  <Divider className='divider-line' />
+
 
                   <span className='company-record-bottom'>
-                    <span className='last-time'>最后一次更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
+                    <span className='update-last-time'>信息更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
                     <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击查看</span> </span>
                   </span>
 
