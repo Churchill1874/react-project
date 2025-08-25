@@ -23,7 +23,7 @@ const PrivateMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
           <DotLoading color='#fff' />
         </div>
       ) : (
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }} color='#fff'>--- 我是有底线的 ---</div>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: '13px' }} >--- 我是有底线的 ---</div>
       )}
     </>
   )
@@ -148,7 +148,7 @@ const PrivateChat: React.FC = () => {
       ))}
 
 
-      {!privateChatList &&
+      {(!privateChatList || privateChatList.length === 0) &&
         <PrivateMessageScrollContent />
       }
 

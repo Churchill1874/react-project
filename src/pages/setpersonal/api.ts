@@ -16,6 +16,7 @@ export interface PersonalUpdateRequestType {
   selfIntroduction: string;
   tg: string;
   birth: string | null;
+  campType: number;
 }
 
 //获取用户信息

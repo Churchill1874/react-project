@@ -1,5 +1,9 @@
 @theme: #1890ff;
 
+.adm-list {
+  margin-bottom: 5px;
+}
+
 .set-personal {
   background-color: @theme;
   min-height: 100vh;
@@ -7,6 +11,7 @@
   padding: 0px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 
   .edit {
     height: 35px;
@@ -20,12 +25,14 @@
       font-size: 15px;
     }
   }
+
   .adm-card-body {
     margin: 0px;
     padding: 0px;
   }
   .card {
     margin: 5px 12px;
+    margin-top: 0px;
     background-color: #fff;
     box-shadow: 1px 1px 2px rgba(18, 18, 18, 0.2);
 
@@ -66,7 +73,7 @@
   }
 
   .personal-avatar {
-    --size: 60px;
+    --size: 50px;
     margin: 5px 0px;
     position: relative;
   }

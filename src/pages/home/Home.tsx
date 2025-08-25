@@ -277,7 +277,11 @@ const Home: React.FC = () => {
               </div>
 
               <div className="company-business">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{company?.companyDescription}
+
+                <Ellipsis
+                  rows={2}
+                  style={{ fontSize: "15px", textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }}
+                  direction='end' content={company?.companyDescription} />
               </div>
 
               {company?.eventContent1 &&

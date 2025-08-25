@@ -1,6 +1,6 @@
 import { useState, useEffect, RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs, Toast, Radio, Space, DatePicker, DatePickerRef } from 'antd-mobile';
+import { TextArea, NavBar, Form, Button, Input, Card, Avatar, Popup, Tabs, Toast, Radio, Space, DatePicker, DatePickerRef, Picker } from 'antd-mobile';
 import '@/pages/setpersonal/SetPersonal.less';
 import avatars from '@/common/avatar';
 import { Request_UpdatePlayerInfo, PersonalUpdateRequestType } from '@/pages/setpersonal/api';
@@ -15,21 +15,27 @@ const SetPersonal: React.FC = () => {
   const { playerInfo, setPlayerInfo } = useStore();
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false)
-
+  const [campVisible, setCampVisible] = useState(false);
   const navigate = useNavigate();
 
   //从个人信息页面加载用户信息
   const loadPlayerInfo = () => {
     form.setFieldsValue({
-      name: playerInfo?.name,
-      city: playerInfo?.city,
+      name: playerInfo?.name || '',
+      city: playerInfo?.city || '',
       selfIntroduction: playerInfo?.selfIntroduction || '',
-      telegram: playerInfo?.tg,
+      telegram: playerInfo?.tg || '',
       birth: playerInfo?.birth ? new Date(playerInfo.birth) : null,
-      phone: playerInfo?.phone,
-      email: playerInfo?.email
+      phone: playerInfo?.phone || '',
+      email: playerInfo?.email || '',
+      campType: playerInfo?.campType ?? undefined
     });
   }
+  const campColumns = [[
+    { label: '🔴 共产主义阵营', value: 1 },
+    { label: '🔵 资本主义阵营', value: 2 },
+    { label: '无', value: 0 },
+  ]];
 
   //返回上一层
   const back = () => {
@@ -41,7 +47,7 @@ const SetPersonal: React.FC = () => {
 
   //保存更新
   const update = async () => {
-    const { name, selfIntroduction, city, telegram, birth, email, phone } = form.getFieldsValue();
+    const { name, selfIntroduction, city, telegram, birth, email, phone, campType } = form.getFieldsValue();
     const param: PersonalUpdateRequestType = {
       avatarPath: playerInfo?.avatarPath,
       email: email,
@@ -50,18 +56,20 @@ const SetPersonal: React.FC = () => {
       selfIntroduction: selfIntroduction,
       city: city,
       tg: telegram,
-      birth: birth ? dayjs(birth).format('YYYY-MM-DD') : null
+      birth: birth ? dayjs(birth).format('YYYY-MM-DD') : null,
+      campType: campType
     };
     //请求后端更新用户编辑信息
     const { code } = await Request_UpdatePlayerInfo(param);
     if (code === 0 && playerInfo) {
       Toast.show("更新成功")
-      setPlayerInfo({ ...playerInfo, name, avatarPath: playerInfo?.avatarPath, selfIntroduction, city });
+      setPlayerInfo({ ...playerInfo, name, avatarPath: playerInfo?.avatarPath, selfIntroduction, city, campType });
     }
   };
 
   //加载后执行钩子
   useEffect(() => {
+    console.log(1)
     loadPlayerInfo();
   }, []);
 
@@ -143,6 +151,30 @@ const SetPersonal: React.FC = () => {
             ]}
           >
             <Input placeholder="请输入" />
+          </Form.Item>
+
+
+          <Form.Item name="campType" label="阵营:" rules={[{ required: true, message: '请选择支持的阵营' }]}>
+            <div onClick={() => setCampVisible(true)}>
+              <Picker
+                visible={campVisible}
+                columns={campColumns}
+                value={[form.getFieldValue('campType')]}   // ✅ 绑定当前值
+                onClose={() => setCampVisible(false)}
+                onCancel={() => setCampVisible(false)}
+                onConfirm={(val) => {
+                  form.setFieldValue('campType', val[0]) // ✅ 写回表单
+                  setCampVisible(false)
+                }}
+              >
+                {(items) => {
+                  const text = items.every(i => i == null)
+                    ? '请选择支持的阵营'
+                    : items.map(i => i?.label).join('')
+                  return <span style={{ fontSize: 16 }}>{text}</span>
+                }}
+              </Picker>
+            </div>
           </Form.Item>
 
           <Form.Item className="item" label="城市:" name="city" rules={[{ required: false }, { max: 20, message: '城市最大20位' }]} >

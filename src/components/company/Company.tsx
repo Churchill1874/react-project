@@ -134,10 +134,25 @@ const Company: React.FC = () => {
                 </div>
                 <Divider className='divider-line' /> */}
 
+                  {company?.companyEventList && company.companyEventList.length > 0 &&
+                    <Steps direction='vertical' className="custom-vertical-steps">
+                      <Steps.Step className='company-events'
+                        title={company?.companyEventList[0].description}
+                        status='finish'
+                        description={'事件时间: ' + dayjs(company?.companyEventList[0].createTime).format("YYYY-MM-DD")} />
+                      {company?.companyEventList.length > 1 &&
+
+                        <Steps.Step className='company-events'
+                          title={company?.companyEventList[1].description}
+                          status='finish'
+                          description={'事件时间: ' + dayjs(company?.companyEventList[1].createTime).format("YYYY-MM-DD")} />
+                      }
+                    </Steps>
+                  }
 
                   <span className='company-record-bottom'>
                     <span className='update-last-time'>信息更新时间:  {dayjs(company.updateTime).format('YYYY-MM-DD HH:mm')}</span>
-                    <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击查看</span> </span>
+                    <span className="company-info" onClick={() => showPopupInfo(company)}> <span className="company-click">点击详情</span> </span>
                   </span>
 
                 </div>

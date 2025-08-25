@@ -33,6 +33,7 @@ export interface PlayerInfoType {
   collectCount?: any;
   likesReceivedCount?: any;
   collected?: boolean;
+  campType: number;
 }
 
 //获取用户信息

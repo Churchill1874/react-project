@@ -1,7 +1,7 @@
 import '@/pages/login/Login.less';
 import { useState, useEffect, RefObject } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef, CenterPopup, SpinLoading } from 'antd-mobile';
+import { Image, Form, Tabs, ResultPage, Input, Footer, Button, Toast, Radio, Space, DatePicker, DatePickerRef, CenterPopup, SpinLoading, Picker } from 'antd-mobile';
 import { AntOutline } from 'antd-mobile-icons';
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
@@ -12,6 +12,8 @@ interface RegisterType {
   name: string;
   password: string;
   gender: number;
+  campType: number;
+  birth: string;
   verificationCode: string;
 }
 interface LoginType {
@@ -25,7 +27,9 @@ const Login: React.FC = () => {
   const [captcha, setCaptcha] = useState('');
   const { setTokenId, setPlayerInfo } = useStore();
   const [visible, setVisible] = useState<boolean>(false);
-
+  const [campVisible, setCampVisible] = useState(false);
+  const [brithVisible, setBrithVisible] = useState(false);
+  const [form] = Form.useForm();   // 这里生成 form 实例
 
   //请求图片验证啊
   const captchaImageExchange = async () => {
@@ -58,7 +62,8 @@ const Login: React.FC = () => {
           avatarPath: data.avatarPath,
           level: data.level,
           status: data.status,
-          id: data.id
+          id: data.id,
+          campType: data.campType
         })
 
         setCommentMessageUnread(data.commentMessageUnread)
@@ -120,6 +125,13 @@ const Login: React.FC = () => {
   // 新增一个通用格式化函数，去除空格
   const trimSpace = (value: string) => value.replace(/\s/g, '');
 
+  const campColumns = [[
+    { label: '🔴 共产主义阵营', value: 1 },
+    { label: '🔵 资本主义阵营', value: 2 },
+    { label: '无', value: 0 },
+  ]];
+
+
   return (
     <>
       <ResultPage
@@ -160,6 +172,7 @@ const Login: React.FC = () => {
 
           <Tabs.Tab title="登陆" key="login">
             <Form
+              form={form}   // ✅ 这里绑定
               className="form"
               onFinish={login}
               footer={
@@ -220,6 +233,7 @@ const Login: React.FC = () => {
 
           <Tabs.Tab title="注册" key="register">
             <Form
+              form={form}
               className="form"
               onFinish={registerReq}
               footer={
@@ -278,32 +292,58 @@ const Login: React.FC = () => {
                 <Input placeholder="请输入" />
               </Form.Item>
 
-              <Form.Item
-                name="birth"
-                label="生日:"
-                trigger="onConfirm"
-                normalize={trimSpace} // 过滤空格
-                onClick={(_e, datePickerRef: RefObject<DatePickerRef>) => {
-                  datePickerRef.current?.open();
-                }}
-                rules={[{ required: true }]}
-              >
-                <DatePicker min={new Date(1900, 0, 1)} max={new Date()}>
-                  {value => (value ? dayjs(value).format('YYYY-MM-DD') : '请选择日期')}
-                </DatePicker>
+              <Form.Item name="birth" label="生日:" rules={[{ required: true }]}>
+                <div onClick={() => setBrithVisible(true)}>
+                  <DatePicker
+                    visible={brithVisible}
+                    onClose={() => setBrithVisible(false)}
+                    onCancel={() => setBrithVisible(false)}
+                    onConfirm={(val) => {
+                      form.setFieldValue("birth", val);   // ✅ 回填表单
+                      setBrithVisible(false);
+                    }}
+                    min={new Date(1900, 0, 1)}
+                    max={new Date()}
+                  >
+                    {value => (value ? dayjs(value).format("YYYY-MM-DD") : "请选择日期")}
+                  </DatePicker>
+                </div>
               </Form.Item>
 
-              <Form.Item normalize={trimSpace} className="item" label="性别" name="gender" rules={[{ required: true, message: '请输入性别' }]}>
+              <Form.Item className="item" label="性别:" name="gender" rules={[{ required: true, message: '请选择性别' }]}>
                 <Radio.Group>
                   <Space>
-                    <Radio value="1" style={{ '--icon-size': '20px', '--font-size': '18px', '--gap': '10px' }}>
+                    <Radio value={1} style={{ '--icon-size': '20px', '--font-size': '18px', '--gap': '10px' }}>
                       男
                     </Radio>
-                    <Radio value="0" style={{ '--icon-size': '20px', '--font-size': '18px', '--gap': '10px' }}>
+                    <Radio value={0} style={{ '--icon-size': '20px', '--font-size': '18px', '--gap': '10px' }}>
                       女
                     </Radio>
                   </Space>
                 </Radio.Group>
+              </Form.Item>
+
+
+              <Form.Item name="campType" label="阵营:" rules={[{ required: true, message: '请选择支持阵营' }]}>
+                <div onClick={() => setCampVisible(true)}>
+                  <Picker
+                    visible={campVisible}
+                    columns={campColumns}
+                    onClose={() => setCampVisible(false)}
+                    onCancel={() => setCampVisible(false)}
+                    onConfirm={(val) => {
+                      form.setFieldValue('campType', val[0]) // ✅ 写回表单
+                      setCampVisible(false)
+                    }}
+                  >
+                    {(items) => {
+                      const text = items.every(i => i == null)
+                        ? '请选择支持的阵营'
+                        : items.map(i => i?.label).join('')
+                      return <span style={{ fontSize: 16 }}>{text}</span>
+                    }}
+                  </Picker>
+                </div>
               </Form.Item>
 
               <Form.Item

@@ -15,6 +15,7 @@ export interface LoginType {
     privateMessageUnread: boolean;
     systemMessageUnread: boolean;
     commentMessageUnread: boolean;
+    campType: number;
   };
   msg: string;
 }

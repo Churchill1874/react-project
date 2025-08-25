@@ -38,8 +38,8 @@ const Hall: React.FC = () => {
 
         </button>
         <button className="nav-btn forum-btn">
-          <div className='icon'>📋</div>
-          <div>贴吧</div>
+          <div className='icon'>⚔️</div>
+          <div>阵营</div>
 
         </button>
         <button className="nav-btn message-btn">
@@ -154,7 +154,7 @@ const Hall: React.FC = () => {
       {/* 精选新闻 */}
       <div className="featured-news">
         <div className="hall-section-title">
-          ⭐ 吃瓜信息
+          ⭐ 游戏信息
         </div>
         <div className="featured-item">
           <div className="featured-image">

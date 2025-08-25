@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Avatar, TextArea, Tag, Toast, Modal } from 'antd-mobile';
 import { FcBriefcase, FcImport, FcHeadset, FcCloseUpMode, FcSelfie, FcLike } from 'react-icons/fc';
-import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline } from 'antd-mobile-icons';
+import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline, CompassOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
 import avatars from '@/common/avatar';
 import '@/pages/personal/Personal.less';
@@ -17,6 +17,7 @@ const UserCenter: React.FC = () => {
 
   const playerReq = async () => {
     const playerInfo = (await Request_GetPlayerInfo()).data;
+    console.log("play:", playerInfo.campType)
     setPlayerInfo(playerInfo)
   }
 
@@ -146,13 +147,34 @@ const UserCenter: React.FC = () => {
               */}
               <span className="personal-info">
                 <span className="left">
+                  <FlagOutline /> 支持:
+                </span>
+                {playerInfo?.campType === 0 &&
+                  <span className='right'>
+                    无
+                  </span>
+                }
+                {playerInfo?.campType === 1 &&
+                  <span className='right' style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ fontSize: '10px' }}>🔴 </span>  共产主义阵营
+                  </span>
+                }
+                {playerInfo?.campType === 2 &&
+                  <span className='right' style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ fontSize: '10px' }}>🔵 </span>  资本主义阵营
+                  </span>
+                }
+              </span>
+
+              <span className="personal-info">
+                <span className="left">
                   <UserCircleOutline /> 性别:
                 </span>
                 <span className='right'> {playerInfo?.gender === 1 ? '男' : '女'} </span>
               </span>
               <span className="personal-info">
                 <span className="left">
-                  <FlagOutline /> 城市:
+                  <CompassOutline /> 城市:
                 </span>
                 <span className='right'> {playerInfo?.city} </span>
               </span>
