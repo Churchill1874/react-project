@@ -128,7 +128,8 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
                 fit="contain"
               />}
             </div>
-            <Divider className='divider-line' />
+
+            <Divider className='politics-divider-line' />
             <div className="politics-text-area">
 
               {splitBySentenceLength(politics?.content || '').map((paragraph, index) => (

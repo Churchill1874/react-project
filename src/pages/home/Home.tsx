@@ -220,7 +220,44 @@ const Home: React.FC = () => {
               {/* 轮播图 - 无缝滑动效果 */}
               <div className="section-title" style={{ background: 'none' }}>📸 焦点图片</div>
 
-              <div className="carousel-container">
+
+              {(promotion && promotion.title1) &&
+                (
+                  <>
+                    {/* 新闻展示区 */}
+                    <div className="home-news-grid">
+                      <div className="home-grid">
+                        {/**推广1 */}
+                        <div className="home-hall-news-item">
+                          <div className="home-hall-news-image">
+
+                            <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
+                              src={promotion.videoCover1 || promotion.imagePath1}
+                              onClick={() => navigate('/news/promotion')}
+                            />
+                          </div>
+                        </div>
+
+                        {/**推广2 */}
+                        {promotion?.title2 &&
+                          <div className="home-hall-news-item">
+                            <div className="home-hall-news-image">
+                              <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
+                                src={promotion.videoCover2 || promotion.imagePath2}
+                                onClick={() => navigate('/news/promotion')}
+                              />
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </>
+
+                )
+              }
+
+
+              {/*               <div className="carousel-container">
                 {extendedSlides.length > 0 && extendedSlides?.map((slide, index) => (
 
                   <div
@@ -255,7 +292,7 @@ const Home: React.FC = () => {
                     />
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* 政治博彩 */}
@@ -264,7 +301,7 @@ const Home: React.FC = () => {
 
             {/* 公司信息 */}
             <div className="company-card" onClick={() => navigate('/news/company')}>
-              <div className="v2-section-title" style={{ marginTop: '5px', padding: '2px 5px' }}>
+              <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
 
                 <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️ 追踪公司 ➡︎</span>
 
@@ -386,52 +423,6 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {(promotion && promotion.title1) &&
-              (
-                <>
-                  <div className="v2-section-title" style={{ margin: '5px', marginTop: '10px', padding: '2px 5px', fontWeight: '600' }}>
-                    📣 帮推广
-                  </div>
-                  {/* 新闻展示区 */}
-                  <div className="home-news-grid">
-                    <div className="home-grid">
-                      {/**推广1 */}
-                      <div className="home-hall-news-item">
-                        <div className="home-hall-news-image">
-
-                          <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
-                            src={promotion.videoCover1 || promotion.imagePath1}
-                            onClick={() => navigate('/news/promotion')}
-                          />
-                        </div>
-                        <div className="home-hall-news-content">
-                          <div className="home-hall-news-title"><span style={{ color: 'gray' }}>{promotion.area1}: </span>{promotion.title1}</div>
-                        </div>
-                      </div>
-
-                      {/**推广2 */}
-                      {promotion?.title2 &&
-                        <div className="home-hall-news-item">
-                          <div className="home-hall-news-image">
-                            <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
-                              src={promotion.videoCover2 || promotion.imagePath2}
-                              onClick={() => navigate('/news/promotion')}
-                            />
-                          </div>
-                          <div className="home-hall-news-content">
-                            <div className="home-hall-news-title"><span style={{ color: 'gray' }}>{promotion.area2}: </span>{promotion.title2}</div>
-                          </div>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </>
-
-              )
-
-
-
-            }
 
 
             {(betRecords && betRecords.length > 0) &&

@@ -26,26 +26,26 @@ const Hall: React.FC = () => {
       <div className="quick-nav">
         <button className="nav-btn chat-btn" onClick={() => { navigate("/groupChat") }}>
           <div className='icon'>
-            💬
+            👬
           </div>
           <div>
             聊天大厅
           </div>
         </button>
-        <button className="nav-btn game-btn">
-          <div className='icon'>🎮</div>
-          <div>游戏中心</div>
 
+        <button className="nav-btn game-btn" onClick={() => { navigate("/tiebaList") }}>
+          <div className='icon'>🏷️</div>
+          <div>贴吧</div>
         </button>
+
         <button className="nav-btn forum-btn">
           <div className='icon'>⚔️</div>
-          <div>阵营</div>
-
+          <div>阵营新闻</div>
         </button>
+
         <button className="nav-btn message-btn">
           <div className='icon'> 📝</div>
-          <div>留言板</div>
-
+          <div>一些规则</div>
         </button>
       </div>
 
@@ -120,7 +120,7 @@ const Hall: React.FC = () => {
 
 
       {/* 阵营统计 */}
-      <div className="camp-stats">
+      {/*  <div className="camp-stats">
         <div className="home-section-title" >
           ⚔️ 阵营统计
         </div>
@@ -129,26 +129,23 @@ const Hall: React.FC = () => {
             <div className="camp-icon">🔵</div>
             <div className="camp-name">蓝营</div>
             <div className="camp-count">1248 位</div>
-            <div className="camp-label">用户</div>
           </div>
 
           <div className="camp-card red-camp">
             <div className="camp-icon">🔴</div>
             <div className="camp-name">红营</div>
             <div className="camp-count">892 位</div>
-            <div className="camp-label">用户</div>
           </div>
 
           <div className="camp-card purple-camp">
             <div className="camp-icon">🟣</div>
             <div className="camp-name">紫营</div>
             <div className="camp-count">635 位</div>
-            <div className="camp-label">用户</div>
           </div>
         </div>
       </div>
 
-
+ */}
 
 
       {/* 精选新闻 */}

@@ -220,7 +220,7 @@ const Politics: React.FC = () => {
                   </div>
                 </Card >
 
-                <Divider className="divider-line" style={{ marginTop: '0px', borderColor: 'gray' }} />
+                <Divider className="politics-divider-line" />
               </>
 
 
