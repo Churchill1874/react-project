@@ -16,6 +16,10 @@
   }
 }
 
+.container {
+  background-color: white;
+}
+
 // 容器样式 - 确保桌面端正确的布局结构
 .container {
   padding-bottom: 10px;
@@ -238,7 +242,7 @@
 }
 .news-title {
   font-size: 14px; // 减小字体
-  font-weight: 400;
+  //font-weight: 500;
   line-height: 1.2; // 减小行高节省空间
   // 限制标题行数，避免过长
   display: flex;
@@ -247,7 +251,13 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 5px;
+  margin-top: 3px;
+  letter-spacing: 0.7px;
+  //font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.home-event-name {
+  font-family: 500px;
 }
 
 .news-date {
@@ -482,9 +492,8 @@
 // 公司信息样式
 .company-card {
   background: white;
-  //border-radius: 10px;
-  //margin-top: 5px;
-  padding: 0px 5px; // 减小padding
+  margin-top: 12px;
+  //padding: 0px 5px; // 减小padding
   padding-top: 1px;
   padding-bottom: 3px;
 }
@@ -497,16 +506,13 @@
   margin-bottom: 5px;
 }
 
-.company-name {
+.home-company-name {
   font-size: 15px; // 减小字体
   font-weight: bold;
-  color: #1e388e;
+  color: #052cc8;
   display: flex;
   align-items: center;
-  //background-color: #ffffffa0;
-  //padding: 2px 10px;
   border-radius: 12px;
-  //font-family: 'Courier New', Courier, monospace;
 }
 
 .company-location {
@@ -523,6 +529,8 @@
   color: #333334;
   margin-bottom: 5px;
   letter-spacing: 1px;
+  //font-weight: 500;
+  //font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .company-events {
@@ -652,8 +660,6 @@
   display: flex;
   align-items: flex-start;
   padding: 5px 5px; // 减小padding
-  //border-bottom: 1px solid #f1f5f9;
-
   &:last-child {
     border-bottom: none;
   }
@@ -729,81 +735,6 @@
   }
 }
 
-.home-news-grid {
-  padding: 0px 5px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  .home-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; // 2列
-    grid-template-rows: 1fr; // 1行 ✅ 关键修改
-    gap: 5px;
-    width: 100%;
-  }
-}
-
-.home-hall-section-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  color: #2c3e50;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.home-hall-news-item {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  width: 100%;
-  height: auto;
-
-  /*  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  } */
-
-  .home-hall-news-image {
-    width: 100%;
-    height: 100px; /* 默认小屏高度 */
-    background: linear-gradient(45deg, #f093fb, #f5576c);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    overflow: hidden;
-    height: 150px; /* +50px */
-
-    /* 图片容器样式 */
-    .adm-image {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover; /* 保持宽高比，避免拉伸 */
-    }
-  }
-
-  .home-hall-news-content {
-    padding: 5px;
-  }
-
-  .home-hall-news-title {
-    font-size: 15px;
-    //font-weight: 600;
-    //color: #2c3e50;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-
 // 响应式调整
 @media (max-width: 320px) {
   .betting-options {
@@ -835,25 +766,135 @@
   margin-top: 10px;
 }
 
-@media (min-width: 769px) and (max-width: 1023px) {
-  .home-news-grid .home-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr; // ✅ 1行
+// 曝光台新闻网格样式 - 固定宽高版本（高度 = 宽度 * 90%）
+.home-news-grid {
+  padding: 0px 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  .home-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 600px; // 限制最大宽度
+  }
+}
+
+.home-news-item {
+  background: white;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: auto;
+  border-radius: 10px;
+  width: 100%;
+
+  .home-news-image {
+    width: 100%;
+    aspect-ratio: 10 / 8; // 宽度:高度 = 10:9，即高度是宽度的90%
+    background: linear-gradient(45deg, #f093fb, #f5576c);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    overflow: hidden;
+
+    .adm-image {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
   }
 
-  .home-grid {
-    height: 250px; /* 再+30px */
-    .home-hall-news-image {
-      height: 200px; /* 再+30px */
+  .home-news-title {
+    font-size: 15px;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+}
+
+// 为不支持 aspect-ratio 的浏览器提供备选方案
+@supports not (aspect-ratio: 10 / 8) {
+  .home-news-image {
+    position: relative;
+    height: 0;
+    padding-bottom: 90%; // 高度 = 宽度 * 90%
+
+    .adm-image {
+      position: absolute !important;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
     }
   }
 }
 
-@media (min-width: 1024px) {
-  .home-grid {
-    height: 250px; /* 再+30px */
-    .home-hall-news-image {
-      height: 200px; /* 再+30px */
+// 响应式样式保持不变，因为现在高度会自动根据宽度的90%计算
+// 平板端样式
+@media (min-width: 768px) and (max-width: 1199px) {
+  .home-news-grid .home-grid {
+    gap: 15px;
+  }
+
+  .home-news-item {
+    .home-news-title {
+      font-size: 15px;
+    }
+  }
+}
+
+// 桌面端样式
+@media (min-width: 1200px) {
+  .home-news-grid .home-grid {
+    max-width: 600px;
+    gap: 10px;
+  }
+
+  .home-news-item {
+    padding: 0px 10px;
+
+    .home-news-title {
+      //line-height: 0.5;
+      font-size: 16px;
+    }
+  }
+}
+
+// 手机端样式
+@media (max-width: 767px) {
+  .home-news-grid .home-grid {
+    gap: 10px;
+  }
+
+  .home-news-item {
+    //padding: 0px 10px;
+
+    .home-news-title {
+      font-size: 15px;
+    }
+  }
+}
+
+// 小屏手机
+@media (max-width: 320px) {
+  .home-news-grid .home-grid {
+    max-width: 300px;
+    gap: 6px;
+  }
+
+  .home-news-item {
+    .home-news-title {
+      font-size: 12px;
     }
   }
 }

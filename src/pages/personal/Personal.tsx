@@ -147,7 +147,7 @@ const UserCenter: React.FC = () => {
               */}
               <span className="personal-info">
                 <span className="left">
-                  <FlagOutline /> 支持:
+                  <FlagOutline /> 立场:
                 </span>
                 {playerInfo?.campType === 0 &&
                   <span className='right'>

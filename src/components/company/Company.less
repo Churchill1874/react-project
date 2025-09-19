@@ -1,7 +1,12 @@
 @theme: #1890ff;
 
+.content-area {
+  background-color: #188fff14;
+}
+
 .card-container {
-  background-color: #fff;
+  background-color: #188fff04;
+
   height: 100%;
   padding: 3px;
   padding-bottom: 5px;
@@ -11,15 +16,41 @@
   padding: 5px;
 }
 
+.company-info-popup {
+  padding: 0 10px;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-left: 8px;
+}
+.company-badge {
+  background-color: #e8f4fd78;
+  color: #4a90e2;
+  padding: 0px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  border: 1px solid #d1e7dd;
+  margin-left: 10px;
+}
+
 .company-custom-card {
   padding: 5px 0px;
   margin-bottom: 15px;
-  background-color: #f6f3f339;
-  border: 2px solid #1d43666c;
-  box-shadow: 5px 5px 5px rgba(79, 78, 78, 0.1);
+  border-radius: 12px;
+  //background-color: #d5e6f04d;
+  //box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.05) !important;
+  //border: 1px solid #f0f0f0;
   .adm-ellipsis {
-    font-size: 16px;
+    font-size: 15px;
   }
+}
+
+.company-custom-card.adm-card {
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.09) !important;
+  overflow: visible !important;
 }
 
 .adm-divider adm-divider-horizontal adm-divider-center {
@@ -27,8 +58,10 @@
 }
 
 .company-line1 {
+  color: #0f61ae;
   padding: 0 0;
-
+  font-size: 20px;
+  font-weight: 600;
   text-align: center;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
@@ -52,12 +85,29 @@
   color: rgb(44, 44, 44);
   text-indent: 2em; /* 首行缩进两格 */
   margin: 5px;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 1px;
 }
 
 .company-divider-line {
   margin: 1px 1px;
+}
+
+.custom-vertical-steps-info {
+  .adm-step {
+    .adm-step-content {
+      .adm-step-title {
+        font-size: 13px !important;
+        color: rgb(128, 1, 1);
+      }
+      .adm-step-description {
+        padding-top: 0px !important;
+      }
+
+      font-size: 13px !important;
+      padding-bottom: 20px !important;
+    }
+  }
 }
 
 .blue-divider-line {
@@ -66,7 +116,7 @@
 }
 
 .update-last-time {
-  color: #1890ff;
+  color: gray;
   font-size: 13px;
 }
 
@@ -80,7 +130,7 @@
 }
 
 .company-click {
-  color: #1890ff;
+  color: gray;
   //font-weight: bold;
   font-size: 13px;
 }

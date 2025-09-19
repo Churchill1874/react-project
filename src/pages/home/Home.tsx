@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '@/pages/home/Home.less';
 import {
-  Divider, Popup, Skeleton, Ellipsis, Steps, TextArea, Card, Image, Tag
+  Divider, Popup, Skeleton, Ellipsis, Steps, TextArea, Card, Image, Tag,
+  Swiper
 } from 'antd-mobile'
 import { Request_HOME, NewsRankType, CompanyRankType, PoliticsType, SoutheastAsiaNewsRankType, BannerType, BetRecord, PromotionType } from '@/pages/home/api';
 import dayjs from 'dayjs';
@@ -37,36 +38,6 @@ const Home: React.FC = () => {
     bannerList[0] // 第一张的副本
   ];
 
-  const toTodayNews = (newsId) => {
-    setNewsId(newsId);
-    setNewsVisible(true)
-  }
-
-  const toBanner = (imageType, newsType, newsId) => {
-    //1 首页轮播图
-    if (imageType === 1) {
-      if (newsType === 1) {
-        setNewsId(newsId)
-        setNewsVisible(true)
-        //navigate('/news')
-      }
-    }
-    //2 评论页面广告
-    if (imageType === 2) {
-
-    }
-
-    //3 首页广告
-    if (imageType === 3) {
-
-    }
-
-    //4 消息页面广告
-    if (imageType === 4) {
-
-    }
-
-  }
 
   // 获取首页新闻数据
   const homeReq = async () => {
@@ -120,18 +91,7 @@ const Home: React.FC = () => {
     }
   }, [currentSlide, isTransitioning, extendedSlides.length]);
 
-  // 手动切换到指定幻灯片
-  const goToSlide = (index: number) => {
-    setIsTransitioning(true);
-    setCurrentSlide(index + 1); // +1 因为扩展数组的偏移
-  };
 
-  // 获取当前真实的幻灯片索引（用于指示器）
-  const getRealIndex = () => {
-    if (currentSlide === 0) return bannerList.length - 1;
-    if (currentSlide === extendedSlides.length - 1) return 0;
-    return currentSlide - 1;
-  };
 
   return (
     <div className="container">
@@ -184,171 +144,123 @@ const Home: React.FC = () => {
                 </Link>
               </div>
 
-              {/* 热门新闻 */}
-              <div className="section-title" style={{ marginTop: '5px', marginBottom: '2px', background: 'none' }}>🔥 今日国内热点</div>
+              {/* 曝光台 */}
+              <div className="v2-section-title" style={{ marginTop: '10px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
+              <div className="home-news-grid">
+                <div className="home-grid">
+                  <div className="home-news-item">
+                    <div className="home-news-content">
+                      <div className="home-news-title">科技前沿：AI技术新突破引发行业关注</div>
+                    </div>
+                    <div className="home-news-image">
+                      <Image fit='fill'  // 大屏120px，小屏100px
+                        src='https://img0.baidu.com/it/u=432699738,3690338511&fm=253&fmt=auto&app=138&f=JPEG?w=826&h=467'
+                        onClick={() => { }} />
+                    </div>
 
-              <div className="news-item" onClick={() => toTodayNews(newsRank?.newsTopId)}>
+                  </div>
+                  <div className="home-news-item">
+                    <div className="home-news-content">
+                      <div className="home-news-title">国际要闻：全球气候峰会达成重要共识</div>
+                    </div>
+                    <div className="home-news-image">
+                      <Image fit='fill' // 大屏120px，小屏100px
+                        src='https://img2.baidu.com/it/u=1262186181,542144633&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=546'
+                        onClick={() => { }} />
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              {/*               <div className="news-item" onClick={() => toTodayNews(newsRank?.newsTopId)}>
                 <div className="news-title">
-                  <span style={{ marginRight: '6px', fontSize: '12px' }}>📌</span>
+                  <span style={{ marginLeft: '7px', marginRight: '7px', color: 'gray' }}>1</span>
                   <Ellipsis direction='end' content={newsRank?.newsTitleTop} />
                 </div>
               </div>
 
               <div className="news-item" onClick={() => toTodayNews(newsRank?.news1Id)}>
                 <div className="news-title">
-                  <span style={{ marginLeft: '7px', marginRight: '7px' }}>1</span>
+                  <span style={{ marginLeft: '7px', marginRight: '7px', color: 'gray' }}>2</span>
                   <Ellipsis direction='end' content={newsRank?.newsTitle1} />
                 </div>
               </div>
 
               <div className="news-item" onClick={() => toTodayNews(newsRank?.news2Id)}>
                 <div className="news-title">
-                  <span style={{ marginLeft: '7px', marginRight: '7px' }}>2</span>
+                  <span style={{ marginLeft: '7px', marginRight: '7px', color: 'gray' }}>3</span>
                   <Ellipsis direction='end' content={newsRank?.newsTitle2} />
                 </div>
               </div>
-
-              <div className="news-item" onClick={() => toTodayNews(newsRank?.news3Id)}>
+ */}
+              {/*               <div className="news-item" onClick={() => toTodayNews(newsRank?.news3Id)}>
 
                 <div className="news-title">
-                  <span style={{ marginLeft: '7px', marginRight: '6px' }}>3</span>
+                  <span style={{ marginLeft: '7px', marginRight: '7px', color: 'gray' }}>4</span>
                   <Ellipsis direction='end' content={newsRank?.newsTitle3} />
                 </div>
-              </div>
-
-
-              {/* 轮播图 - 无缝滑动效果 */}
-              <div className="section-title" style={{ background: 'none' }}>📸 焦点图片</div>
-
-
-              {(promotion && promotion.title1) &&
-                (
-                  <>
-                    {/* 新闻展示区 */}
-                    <div className="home-news-grid">
-                      <div className="home-grid">
-                        {/**推广1 */}
-                        <div className="home-hall-news-item">
-                          <div className="home-hall-news-image">
-
-                            <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
-                              src={promotion.videoCover1 || promotion.imagePath1}
-                              onClick={() => navigate('/news/promotion')}
-                            />
-                          </div>
-                        </div>
-
-                        {/**推广2 */}
-                        {promotion?.title2 &&
-                          <div className="home-hall-news-item">
-                            <div className="home-hall-news-image">
-                              <Image fit='fill' width="100%" height={window.innerWidth > 768 ? 120 : 100}  // 大屏120px，小屏100px
-                                src={promotion.videoCover2 || promotion.imagePath2}
-                                onClick={() => navigate('/news/promotion')}
-                              />
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </>
-
-                )
-              }
-
-
-              {/*               <div className="carousel-container">
-                {extendedSlides.length > 0 && extendedSlides?.map((slide, index) => (
-
-                  <div
-                    key={`slide-${index}`}
-                    className="carousel-slide"
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      transform: `translateX(${(index - currentSlide) * 100}%)`,
-                      transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
-                      opacity: 1
-                    }}
-                  >
-                    {slide?.imagePath && (
-                      <>
-                        <img src={slide.imagePath} alt={`轮播图 ${index + 1}`} onClick={() => toBanner(slide.imageType, slide.newsType, slide.newsId)} />
-                        {slide.title && (
-                          <div className="carousel-caption">{slide.title}</div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                ))}
-
-                <div className="carousel-indicators">
-                  {bannerList.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`carousel-indicator ${index === getRealIndex() ? 'active' : ''}`}
-                      onClick={() => goToSlide(index)}
-                    />
-                  ))}
-                </div>
               </div> */}
-            </div>
 
-            {/* 政治博彩 */}
-
+              {/* 政治博彩 */}
 
 
-            {/* 公司信息 */}
-            <div className="company-card" onClick={() => navigate('/news/company')}>
-              <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
 
-                <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️ 追踪公司 ➡︎</span>
+              {/* 公司信息 */}
+              <div className="company-card" onClick={() => navigate('/news/company')}>
+                <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
 
-                <span className="company-name">
-                  {company?.companyName}
-                </span>
-                <span className="company-location">
-                  {company?.companyAddress}
-                </span>
-              </div>
+                  <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️ 追踪公司 ➡︎</span>
 
-              <div className="company-business">
-
-                <Ellipsis
-                  rows={2}
-                  style={{ fontSize: "15px", textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }}
-                  direction='end' content={company?.companyDescription} />
-              </div>
-
-              {company?.eventContent1 &&
-                <Steps direction='vertical' className="custom-vertical-steps">
-                  <Steps.Step className='company-events'
-                    title={company?.eventContent1}
-                    status='finish'
-                    description={'事件时间: ' + dayjs(company?.eventTime1).format("YYYY-MM-DD")} />
-                  {company?.eventContent2 &&
-
-                    <Steps.Step className='company-events'
-                      title={company?.eventContent2}
-                      status='finish'
-                      description={'事件时间: ' + dayjs(company?.eventTime2).format("YYYY-MM-DD")} />
-                  }
-                </Steps>
-
-              }
-
-              {company?.companyNameList &&
-                <div className="other-companies">
-                  <div className="other-companies-title">我们还在追踪以下公司：
-                    {company.companyNameList.map((c, index) => {
-                      return (
-                        <span key={index} className="company-tag">{c}</span>
-                      );
-                    })}
-                  </div>
+                  <span className="home-company-name">
+                    {company?.companyName}
+                  </span>
+                  <span className="company-location">
+                    {company?.companyAddress}
+                  </span>
                 </div>
-              }
+
+                <div className="company-business">
+
+                  <Ellipsis
+                    rows={2}
+                    style={{ fontSize: "15px", textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }}
+                    direction='end' content={company?.companyDescription} />
+                </div>
+
+                {company?.eventContent1 &&
+                  <Steps direction='vertical' className="custom-vertical-steps">
+                    <Steps.Step className='company-events'
+                      title={company?.eventContent1}
+                      status='finish'
+                      description={'事件时间: ' + dayjs(company?.eventTime1).format("YYYY-MM-DD")} />
+                    {company?.eventContent2 &&
+
+                      <Steps.Step className='company-events'
+                        title={company?.eventContent2}
+                        status='finish'
+                        description={'事件时间: ' + dayjs(company?.eventTime2).format("YYYY-MM-DD")} />
+                    }
+                  </Steps>
+
+                }
+
+                {company?.companyNameList &&
+                  <div className="other-companies">
+                    <div className="other-companies-title">我们还在追踪以下公司：
+                      {company.companyNameList.map((c, index) => {
+                        return (
+                          <span key={index} className="company-tag">{c}</span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                }
+              </div>
+
+
+
             </div>
 
             {/* 东南亚新闻 */}
@@ -437,7 +349,7 @@ const Home: React.FC = () => {
               <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
                 position='right'
                 // closeOnSwipe={true}
-                closeOnMaskClick
+                closeOnMaskClicknews-grid
                 visible={newsVisible}
                 onClose={() => { setNewsVisible(false) }}>
 

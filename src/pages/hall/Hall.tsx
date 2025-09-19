@@ -88,8 +88,8 @@ const Hall: React.FC = () => {
       </div>
 
       {/* 新闻展示区 */}
-      <div className="news-grid">
-        <div className="hall-section-title">
+      <div className="hall-news-grid">
+        <div className="section-title">
           📰 社会事件
         </div>
         <div className="grid">
@@ -149,7 +149,7 @@ const Hall: React.FC = () => {
 
 
       {/* 精选新闻 */}
-      <div className="featured-news">
+      {/*       <div className="featured-news">
         <div className="hall-section-title">
           ⭐ 游戏信息
         </div>
@@ -161,13 +161,35 @@ const Hall: React.FC = () => {
           </div>
           <div className="featured-content">
             <div className="featured-title">重磅！科技巨头联合发布AI伦理新标准，将重塑行业格局</div>
-            {/* <div className="featured-summary">多家科技公司共同制定人工智能发展伦理准则，涉及数据隐私、算法透明度等关键领域，预计将对整个AI产业产生深远影响...</div> */}
           </div>
         </div>
       </div>
+ */}
 
 
 
+      {/* 轮播图 - 无缝滑动效果 */}
+      {/*       <div className="section-title" style={{ background: 'none' }}>📸 焦点图片</div>
+      {
+        extendedSlides &&
+        <Swiper loop autoplay allowTouchMove>
+          {
+            extendedSlides.map((slide, index) => (
+              <Swiper.Item className="swiper-item" key={index}>
+                <Image
+                  fit="contain"
+                  width="80%"
+                  height="180px"
+                  //height={180}
+                  src={slide.imagePath}
+                //onClick={showImage}
+                />
+              </Swiper.Item>
+            ))
+          }
+        </Swiper>
+      }
+ */}
 
       {/* 排行榜 */}
       <div className="hall-ranking">

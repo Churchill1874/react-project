@@ -1,0 +1,313 @@
+/* 详情页样式 */
+.detail-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* 页面头部 */
+.detail-header {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  padding: 5px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .header-title {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+  }
+
+  .case-level-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .level-badge {
+      background: rgba(255, 255, 255, 0.9);
+      color: #dc2626;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .danger-text {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+  }
+}
+
+/* 详情内容 */
+.detail-content {
+  padding: 5px 5px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.detail-card {
+  background: white;
+  border-radius: 16px;
+  padding: 5px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 20px;
+
+  .case-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #dc2626;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .case-description {
+    font-size: 16px;
+    color: #374151;
+    line-height: 1.5;
+    text-indent: 2em;
+  }
+}
+
+/* 案件信息 - 重新设计为元信息样式 */
+.case-meta {
+  margin: 10px 0 10px 0;
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 5px 0;
+    border-bottom: 1px solid #f1f5f9;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .meta-icon {
+      font-size: 16px;
+      margin-right: 12px;
+      min-width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .meta-text {
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+  }
+}
+
+/* 涉案人员标题 */
+.suspects-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:before {
+    content: '👥';
+    font-size: 20px;
+  }
+}
+
+/* 涉案人员网格 - 详情页专用 - 弹性布局 */
+.suspects-detail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 90%;
+  margin: 0 auto 24px;
+
+  /* 1个人员：占45%宽度，靠左 */
+  &.single {
+    width: 100%;
+    margin: 0 0 24px 0;
+
+    .suspect-detail-card {
+      width: 45%;
+      flex-shrink: 0;
+    }
+  }
+
+  /* 2个人员：各占一半减去间距 */
+  &.double {
+    .suspect-detail-card {
+      width: calc(50% - 6px);
+      flex-shrink: 0;
+    }
+  }
+
+  /* 3个人员：前两个占一半，第三个单独一行占45% */
+  &.triple {
+    .suspect-detail-card {
+      width: calc(50% - 6px);
+      flex-shrink: 0;
+
+      &:nth-child(3) {
+        width: 45%;
+      }
+    }
+  }
+
+  /* 6个人员：每个占一半减去间距 */
+  &.six {
+    .suspect-detail-card {
+      width: calc(50% - 6px);
+      flex-shrink: 0;
+    }
+  }
+}
+
+.suspect-detail-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  aspect-ratio: 1;
+  position: relative;
+  height: 240px;
+
+  .suspect-detail-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .suspect-detail-info {
+    padding: 3px;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #f9fafb;
+
+    .suspect-detail-name {
+      font-size: 16px;
+      font-weight: bold;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .suspect-detail-meta {
+      font-size: 14px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+
+      .suspect-role {
+        color: #dc2626;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+/* 底部信息 */
+.detail-footer {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 150px;
+
+  .footer-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 12px;
+
+    &:before {
+      content: '📊 ';
+      margin-right: 4px;
+    }
+  }
+
+  .warning-notice {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    color: #92400e;
+    text-align: center;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .detail-content {
+    padding: 5px;
+  }
+
+  .detail-card {
+    padding: 5px;
+
+    .case-title {
+      font-size: 18px;
+    }
+
+    .case-description {
+      font-size: 15px;
+    }
+  }
+
+  .suspects-detail-grid {
+    gap: 8px;
+    width: 95%;
+  }
+
+  .suspect-detail-card .suspect-detail-info {
+    padding: 1px 5px;
+
+    .suspect-detail-name {
+      font-size: 14px;
+    }
+
+    .suspect-detail-meta {
+      font-size: 12px;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .suspects-detail-grid {
+    width: 100%;
+
+    &.single {
+      grid-template-columns: 50% 1fr;
+    }
+  }
+}

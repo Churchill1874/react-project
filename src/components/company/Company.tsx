@@ -87,13 +87,12 @@ const Company: React.FC = () => {
               <Card className="company-custom-card" key={index}>
                 <div className="card-content">
                   <div className="company-line1">
-                    <span style={{ color: '#0f61ae', fontSize: '16px', fontWeight: 'bold' }}> {company.name} </span>
+                    <span className="company-name">
+                      {company.name}
+                      <span className="company-badge"><LocationFill className="area" /> {company.city}</span>
+                    </span>
 
-                    <span style={{ color: 'gray', fontSize: '12px' }}><LocationFill className="area" /> {company.city}</span>
                   </div>
-
-
-                  <Divider className='company-divider-line' style={{ marginTop: '5px' }} />
                   {company.image &&
                     <>
                       <Divider className='company-divider-line' />
@@ -174,11 +173,18 @@ const Company: React.FC = () => {
 
         <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={popupInfo?.image?.split('||')} visible={visible} onClose={() => { setVisible(false) }} />
 
-        <div onClick={() => setVisibleCloseRight(false)}><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={16} />返回 </span></div>
+        <div style={{ padding: '10px 10px' }} onClick={() => setVisibleCloseRight(false)}>
+          <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
+            <LeftOutline fontSize={16} />返回 </span>
+        </div>
 
         <div className="company-info-popup">
           <Card className="company-custom-card">
-            <div className="company-line1">{popupInfo?.name}</div>
+            <div className="company-line1">
+              <span className="company-name">
+                {popupInfo?.name}
+              </span>
+            </div>
 
 
             {popupInfo?.image &&
@@ -229,7 +235,7 @@ const Company: React.FC = () => {
             <span className='last-time'>最后一次更新时间:  {dayjs(popupInfo?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
           </Card>
 
-          <Steps direction='vertical' >
+          <Steps direction='vertical' className="custom-vertical-steps-info">
             {popupInfo?.companyEventList && popupInfo.companyEventList.length > 0 &&
               popupInfo?.companyEventList?.map((event, index) => {
                 return (

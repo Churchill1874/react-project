@@ -181,9 +181,9 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    padding: 2px 6px;
+    //padding: 2px 6px;
     border-radius: 12px;
-    font-size: 11px;
+    font-size: 16px;
     font-weight: 600;
     color: white;
 
@@ -217,10 +217,11 @@
 
       .post-title {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 500;
         color: #1a1a1a;
         margin-bottom: 5px;
         line-height: 1.4;
+        letter-spacing: 1px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -237,7 +238,16 @@
     .post-image {
       width: 50%;
       max-width: 130px;
-      height: 80px;
+      height: auto;
+      border-radius: 8px;
+      object-fit: fill;
+      border: 1px solid #e8f4fd;
+      flex-shrink: 0;
+    }
+    .l-post-image {
+      width: 50%;
+      max-width: 130px;
+      height: 180px;
       border-radius: 8px;
       object-fit: cover;
       border: 1px solid #e8f4fd;
