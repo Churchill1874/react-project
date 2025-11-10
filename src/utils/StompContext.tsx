@@ -229,7 +229,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       // 评论消息订阅
       try {
         const commentSub = stompClient.subscribe('/user/queue/commentMessage', (message) => {
-          //console.log("评论消息来了:", message.body);
+          console.log("评论消息来了:", message.body);
           //console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
 
           if (latestPathRef.current !== '/message') {

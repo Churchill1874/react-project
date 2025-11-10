@@ -13,8 +13,9 @@
     padding-top: 10px;
   }
 }
+
 .adm-result-page-bg {
-  height: 1680px;
+  height: 1850px;
 }
 
 .adm-result-page {
@@ -24,9 +25,15 @@
 .adm-picker-view-column-item-label {
   font-size: 20px;
 }
+
 .tabs {
   margin-top: 15%;
   --fixed-active-line-width: 50%;
+
+  .adm-tabs-tab-active{
+    font-weight: bold;
+    color: rgb(3, 76, 148);
+  }
   .adm-tabs-tab {
     //color: white;
     font-size: 16px;
@@ -35,29 +42,58 @@
 
 .form {
   .adm-list-item-content-prefix {
-    width: 70px; /* 调整这个值以控制左侧空白区域的宽度 */
+    width: 70px;
+    /* 调整这个值以控制左侧空白区域的宽度 */
   }
+
   .adm-list-item-title {
-    font-size: 14px; /* 设置标题字体大小 */
+    font-size: 14px;
+    /* 设置标题字体大小 */
   }
+
   .adm-list-item-content {
-    font-size: 15px; /* 设置内容字体大小 */
+    font-size: 15px;
+    /* 设置内容字体大小 */
   }
 }
 
 .footer {
   margin-top: 0px;
-  background-color: transparent; /* 去掉背景色 */
-  border: none; /* 去掉边框，如果有的话 */
+  background-color: transparent;
+  /* 去掉背景色 */
+  border: none;
+  /* 去掉边框，如果有的话 */
 
   .adm-footer {
-    background-color: transparent; /* 去掉背景色 */
-    border: none; /* 去掉边框 */
-    box-shadow: none; /* 去掉阴影 */
+    background-color: transparent;
+    /* 去掉背景色 */
+    border: none;
+    /* 去掉边框 */
+    box-shadow: none;
+    /* 去掉阴影 */
   }
 
   .adm-footer-content {
-    background-color: transparent; /* 确保内容背景色也去掉 */
-    border: none; /* 去掉边框 */
+    background-color: transparent;
+    /* 确保内容背景色也去掉 */
+    border: none;
+    /* 去掉边框 */
   }
 }
+
+
+/* 针对 PC / 桌面端（屏幕宽度 ≥ 768px） */
+@media screen and (min-width: 768px) {
+
+  .adm-result-page-title{
+    color: @theme;
+    font-weight: bold;
+  }
+
+  .antd-mobile-icon{
+    color: #1890ff;
+  }
+}
+
+
+

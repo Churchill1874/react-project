@@ -169,9 +169,9 @@ const GroupChat: React.FC = ({ }) => {
           </div>
         </div>
 
-        <div onClick={() => navigate(-1)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
+{/*         <div onClick={() => navigate(-1)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
           退出 <RightOutline fontSize={18} />  </span>
-        </div>
+        </div> */}
 
       </header>
 

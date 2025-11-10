@@ -11,7 +11,7 @@ import PoliticsEvent from '@/pages/lottery/politicslottery/politicsevent/Politic
 import PoliticsLottery from '@/pages/lottery/politicslottery/PoliticsLottery';
 import BetOrder from '@/pages/lottery/politicslottery/betorder/BetOrder';
 import GroupChat from '@/pages/groupchat/GroupChat';
-import Hall from '@/pages/Hall/Hall';
+import Hall from '@/pages/hall/Hall';
 import TiebaList from '@/pages/tieba/TiebaList';
 import TiebaDetail from '@/pages/tieba/tiebadetail/TiebaDetail';
 export default [

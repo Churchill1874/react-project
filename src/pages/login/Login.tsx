@@ -170,7 +170,7 @@ const Login: React.FC = () => {
 
         <Tabs activeLineMode="fixed" className="tabs">
 
-          <Tabs.Tab title="登陆" key="login">
+          <Tabs.Tab style={{letterSpacing:'5px'}} title="登陆" key="login">
             <Form
               form={form}   // ✅ 这里绑定
               className="form"
@@ -231,7 +231,7 @@ const Login: React.FC = () => {
             </Form>
           </Tabs.Tab>
 
-          <Tabs.Tab title="注册" key="register">
+          <Tabs.Tab style={{letterSpacing:'5px'}}  title="注册" key="register">
             <Form
               form={form}
               className="form"

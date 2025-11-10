@@ -65,9 +65,9 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="曝光" key="exposure" />
           <CapsuleTabs.Tab title="查公司" key="company" />
           <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
+          <CapsuleTabs.Tab title="社会瓜" key="society" />
           <CapsuleTabs.Tab title="政闻" key="politics" />
           <CapsuleTabs.Tab title="国内" key="news" />
-          <CapsuleTabs.Tab title="社会瓜" key="society" />
           <CapsuleTabs.Tab title="话题" key="topic" />
           {/* <CapsuleTabs.Tab title="帮推广" key="promotion" />
           <CapsuleTabs.Tab title="工作" key="job" /> */}
