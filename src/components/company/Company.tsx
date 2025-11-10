@@ -175,8 +175,11 @@ const Company: React.FC = () => {
 
         <div style={{ padding: '10px 10px' }} onClick={() => setVisibleCloseRight(false)}>
           <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
-            <LeftOutline fontSize={16} />返回 </span>
+            <LeftOutline fontSize={16} style={{  color: '#0254a5'}}/> <span style={{  color: '#0254a5'}}>返回</span> </span>
         </div>
+        
+        <Divider style={{margin:0,padding:0, marginBottom:5}} />
+
 
         <div className="company-info-popup">
           <Card className="company-custom-card">
