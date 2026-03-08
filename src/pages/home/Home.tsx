@@ -122,12 +122,16 @@ const Home: React.FC = () => {
             <div className="section" style={{ marginTop: '0px' }}>
               {/* 菜单图标 */}
               <div className="menu-icons">
-                <Link to={'/bet'} className="menu-icon">
+                {/*                 <Link to={'/bet'} className="menu-icon">
                   <div className="menu-icon-image">🗳️</div>
                   <div className="menu-icon-text">政治盘口</div>
+                </Link> */}
+                <Link to={'/news/news'} className="menu-icon">
+                  <div className="menu-icon-image">🌏️</div>
+                  <div className="menu-icon-text">国内新闻</div>
                 </Link>
                 <Link to={'/news/southeastAsia'} className="menu-icon">
-                  <div className="menu-icon-image">🎰</div>
+                  <div className="menu-icon-image">🏝️</div>
                   <div className="menu-icon-text">东南亚</div>
                 </Link>
                 <Link to={'/news/company'} className="menu-icon">
@@ -147,27 +151,27 @@ const Home: React.FC = () => {
               {/* 曝光台 */}
               <div className="v2-section-title" style={{ marginTop: '10px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
               <div className="home-news-grid">
-                <div className="home-grid" onClick={()=>navigate('/news/exposure')}>
-                    <div className="home-news-item">
-                      <div className="home-news-content">
-                        <div className="home-news-title">科技前沿：AI技术新突破引发行业关注</div>
-                      </div>
-                      <div className="home-news-image">
-                        <Image fit='fill'  // 大屏120px，小屏100px
-                          src='https://img0.baidu.com/it/u=432699738,3690338511&fm=253&fmt=auto&app=138&f=JPEG?w=826&h=467'
-                          onClick={() => { }} />
-                      </div>
+                <div className="home-grid" onClick={() => navigate('/news/exposure')}>
+                  <div className="home-news-item">
+                    <div className="home-news-content">
+                      <div className="home-news-title">科技前沿：AI技术新突破引发行业关注</div>
                     </div>
-                    <div className="home-news-item">
-                      <div className="home-news-content">
-                        <div className="home-news-title">国际要闻：全球气候峰会达成重要共识</div>
-                      </div>
-                      <div className="home-news-image">
-                        <Image fit='fill' // 大屏120px，小屏100px
-                          src='https://img2.baidu.com/it/u=1262186181,542144633&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=546'
-                          onClick={() => { }} />
-                      </div>
+                    <div className="home-news-image">
+                      <Image fit='fill'  // 大屏120px，小屏100px
+                        src='https://img0.baidu.com/it/u=432699738,3690338511&fm=253&fmt=auto&app=138&f=JPEG?w=826&h=467'
+                        onClick={() => { }} />
                     </div>
+                  </div>
+                  <div className="home-news-item">
+                    <div className="home-news-content">
+                      <div className="home-news-title">国际要闻：全球气候峰会达成重要共识</div>
+                    </div>
+                    <div className="home-news-image">
+                      <Image fit='fill' // 大屏120px，小屏100px
+                        src='https://img2.baidu.com/it/u=1262186181,542144633&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=546'
+                        onClick={() => { }} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -208,7 +212,7 @@ const Home: React.FC = () => {
               <div className="company-card" onClick={() => navigate('/news/company')}>
                 <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
 
-                  <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️ 追踪公司 ➡︎</span>
+                  <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️‍♂️ 追踪公司 ➡︎</span>
 
                   <span className="home-company-name">
                     {company?.companyName}
@@ -332,15 +336,14 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-
-
+            {/* 
             {(betRecords && betRecords.length > 0) &&
               <div className='section' onClick={() => navigate('/bet')}>
                 <div className="v2-section-title" style={{ padding: '2px 5px', fontWeight: '600' }}>🎯 最新下注记录</div>
                 <HomeBetOrder betOrderList={betRecords} />
               </div>
 
-            }
+            } */}
 
             {newsId &&
               <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
