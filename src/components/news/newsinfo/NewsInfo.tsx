@@ -29,7 +29,6 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   const [visible, setVisible] = useState(false)
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
-
   const [newsStatus, setNewsStatus] = useState<NewsInfoType | null>();
   const showImage = () => {
     setVisible(prev => !prev);
@@ -219,7 +218,9 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
                 <TextArea value={newsStatus?.filterContent} readOnly rows={10} className='newsinfo-content' />
                 :
                 <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
-              }
+              } 
+
+
 
 
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
-
+import { getImgUrl } from "@/utils/commentUtils"; 
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/southeastasia/SoutheastAsia.less'
@@ -113,7 +113,7 @@ const SoutheastAsia: React.FC = () => {
                     <div className="southeastasia-news-image-container">
                       <Image
                         className="southeastasia-news-image"
-                        src={southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || ''}
+                        src={getImgUrl(southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || '')}
                         alt="Example"
                         fit="contain"
                       />

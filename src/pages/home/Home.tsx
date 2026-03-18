@@ -222,13 +222,12 @@ const Home: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="company-business">
-
+                {/*                 <div className="company-business">
                   <Ellipsis
                     rows={2}
                     style={{ fontSize: "15px", textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }}
                     direction='end' content={company?.companyDescription} />
-                </div>
+                </div> */}
 
                 {company?.eventContent1 &&
                   <Steps direction='vertical' className="custom-vertical-steps">
@@ -308,7 +307,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="sea-news-item">
+{/*             <div className="sea-news-item">
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry4}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle4}</div>
@@ -320,9 +319,9 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="sea-news-item">
+{/*             <div className="sea-news-item">
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry5}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle5}</div>
@@ -335,7 +334,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-
+ */}
             {/* 
             {(betRecords && betRecords.length > 0) &&
               <div className='section' onClick={() => navigate('/bet')}>

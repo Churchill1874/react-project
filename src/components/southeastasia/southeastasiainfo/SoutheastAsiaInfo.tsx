@@ -6,6 +6,7 @@ import { LeftOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/southeastasia/SoutheastAsia.less'
 import { SoutheastAsiaNewsType, SoutheastAsiaFindReqType, SoutheastAsiaFind_Requset } from '@/components/southeastasia/api'
 import dayjs from 'dayjs'
+import { getImgUrl } from "@/utils/commentUtils";
 
 type CommentAttributeType = {
   needCommentPoint?: boolean;
@@ -27,9 +28,10 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
   }
 
   const getImages = () => {
-    return southeastAsia?.imagePath ? southeastAsia?.imagePath.split('||') : [southeastAsia?.imagePath];
+    return southeastAsia?.imagePath
+      ? southeastAsia.imagePath.split('||').map(item => getImgUrl(item))
+      : [];
   };
-
   /*   function splitBySentenceLength(text: string, maxChars = 200): string[] {
       const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
       const result: string[] = []; // 确保 result 是 string 数组
@@ -126,7 +128,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
                         fit="contain"
                         width={300}
                         height={200}
-                        src={imagePath}
+                        src={getImgUrl(imagePath)}
                         onClick={showImage}
                       />
                     </Swiper.Item>
@@ -167,12 +169,19 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
 
 
 
-          <div className="southeast-asia-text-area">
+{/*           <div className="southeast-asia-text-area">
             {splitBySentenceLength((southeastAsia?.content || '')).map((paragraph, index) => (
               <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                 {paragraph}
               </p>
             ))}
+          </div>
+ */}
+          <div
+            className="southeast-asia-text-area"
+            style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
+          >
+            {southeastAsia?.content}
           </div>
 
           <span className="southeastasia-time">

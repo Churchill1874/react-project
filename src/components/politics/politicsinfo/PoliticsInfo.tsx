@@ -130,13 +130,20 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
             </div>
 
             <Divider className='politics-divider-line' />
-            <div className="politics-text-area">
+            {/*             <div className="politics-text-area">
 
               {splitBySentenceLength(politics?.content || '').map((paragraph, index) => (
                 <p key={index} style={{ marginTop: '1px', marginBottom: '1px', lineHeight: '1.5' }}>
                   {paragraph}
                 </p>
               ))}
+            </div> */}
+
+            <div
+              className="southeast-asia-text-area"
+              style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
+            >
+              {politics?.content}
             </div>
 
             <div className="politics-meta">

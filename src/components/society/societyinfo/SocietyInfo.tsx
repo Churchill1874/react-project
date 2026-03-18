@@ -3,10 +3,9 @@ import { Card, Divider, Tag, Image, Skeleton, DotLoading } from 'antd-mobile';
 import Comment from '@/components/comment/Comment';
 import { FcReading } from "react-icons/fc";
 import { LeftOutline, LocationFill } from 'antd-mobile-icons';
-import '@/components/society/Society.less';
 import { SocietyType, SocietyFindReqType, SocietyFind_Requset } from '@/components/society/api'
 import dayjs from 'dayjs'
-
+import '@/components/society/societyinfo/SocietyInfo.less'
 type CommentAttributeType = {
   needCommentPoint?: boolean;
   commentPointId?: string | null;
@@ -100,14 +99,22 @@ const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) =>
                   />
                 </div>
               }
-
+{/* 
               <div className="society-asia-text-area">
                 {splitBySentenceLength((society?.content || '')).map((paragraph, index) => (
                   <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                     {paragraph}
                   </p>
                 ))}
-              </div>
+              </div> */}
+
+                         <div
+              className="society-asia-text-area"
+              style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
+            >
+              {society?.content}
+            </div>
+
 
               <span className="society-time">
                 <span>
