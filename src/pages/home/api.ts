@@ -197,6 +197,11 @@ export interface PromotionType {
   imagePath2: string;
 }
 
+export interface ExposureType{
+  title: string;
+  image1: string;
+}
+
 export interface HomeType {
   onlineCount: number;
   newsRank: NewsRankType;
@@ -207,6 +212,7 @@ export interface HomeType {
   betOrderList: BetRecord[];
   politicsList: PoliticsType[];
   promotion: PromotionType;
+  exposureList: ExposureType[];
 }
 
 interface Resp {

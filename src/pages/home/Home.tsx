@@ -4,13 +4,24 @@ import {
   Divider, Popup, Skeleton, Ellipsis, Steps, TextArea, Card, Image, Tag,
   Swiper
 } from 'antd-mobile'
-import { Request_HOME, NewsRankType, CompanyRankType, PoliticsType, SoutheastAsiaNewsRankType, BannerType, BetRecord, PromotionType } from '@/pages/home/api';
+import {
+  ExposureType,
+  Request_HOME,
+  NewsRankType,
+  CompanyRankType,
+  PoliticsType,
+  SoutheastAsiaNewsRankType,
+  BannerType,
+  BetRecord,
+  PromotionType,
+} from '@/pages/home/api';
 import dayjs from 'dayjs';
 import { Link, useNavigate } from 'react-router-dom'; // 添加这个导入
 import NewsInfo from '@/components/news/newsinfo/NewsInfo';
 import HomeBetOrder from '@/components/homebetorder/HomeBetOrder';
 import { FcReading } from "react-icons/fc";
 import { LocationFill } from 'antd-mobile-icons';
+import { getImgUrl } from '@/utils/commentUtils';
 
 const Home: React.FC = () => {
   // 轮播图状态管理
@@ -29,6 +40,7 @@ const Home: React.FC = () => {
 
   const [newsId, setNewsId] = useState<string>();
   const [newsVisible, setNewsVisible] = useState(false)
+  const [exposureList, setExposureList] = useState<ExposureType[]>([]);
 
   const navigate = useNavigate();
   // 创建扩展的幻灯片数组（前后各复制一份实现无缝循环）
@@ -52,6 +64,7 @@ const Home: React.FC = () => {
     setHomeAdvertise(data.bannerList.find(item => item.imageType === 3)?.imagePath || null)
     setBannerList(data.bannerList.filter(item => item.imageType === 1))
     setPromotion(data.promotion);
+    setExposureList(data.exposureList);
   };
 
   useEffect(() => {
@@ -152,26 +165,21 @@ const Home: React.FC = () => {
               <div className="v2-section-title" style={{ marginTop: '10px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
               <div className="home-news-grid">
                 <div className="home-grid" onClick={() => navigate('/news/exposure')}>
-                  <div className="home-news-item">
-                    <div className="home-news-content">
-                      <div className="home-news-title">科技前沿：AI技术新突破引发行业关注</div>
-                    </div>
-                    <div className="home-news-image">
-                      <Image fit='fill'  // 大屏120px，小屏100px
-                        src='https://img0.baidu.com/it/u=432699738,3690338511&fm=253&fmt=auto&app=138&f=JPEG?w=826&h=467'
-                        onClick={() => { }} />
-                    </div>
-                  </div>
-                  <div className="home-news-item">
-                    <div className="home-news-content">
-                      <div className="home-news-title">国际要闻：全球气候峰会达成重要共识</div>
-                    </div>
-                    <div className="home-news-image">
-                      <Image fit='fill' // 大屏120px，小屏100px
-                        src='https://img2.baidu.com/it/u=1262186181,542144633&fm=253&fmt=auto&app=120&f=JPEG?w=1080&h=546'
-                        onClick={() => { }} />
-                    </div>
-                  </div>
+
+                  {exposureList && exposureList.map((exposure, index) => (
+                    <>
+                      <div className="home-news-item" key={index}>
+                        <div className="home-news-content">
+                          <Ellipsis className="home-news-title" style={{fontSize:'15px', fontWeight:'600'}} content={exposure.title} direction='end' rows={1} />
+                        </div>
+                        <div className="home-news-image">
+                          <Image fit='cover'//fit='contain'  // 大屏120px，小屏100px
+                            src={getImgUrl(exposure.image1)}
+                            onClick={() => { }} />
+                        </div>
+                      </div>
+                    </>
+                  ))}
                 </div>
               </div>
 
@@ -212,7 +220,7 @@ const Home: React.FC = () => {
               <div className="company-card" onClick={() => navigate('/news/company')}>
                 <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
 
-                  <span style={{ marginRight: '10px', letterSpacing: '1px', fontWeight: '600' }}>🕵️‍♂️ 追踪公司 ➡︎</span>
+                  <span style={{ marginRight: '10px', fontWeight: '600' }}>🕵️‍♂️ 追踪公司 ➡︎</span>
 
                   <span className="home-company-name">
                     {company?.companyName}
@@ -264,7 +272,7 @@ const Home: React.FC = () => {
             </div>
 
             {/* 东南亚新闻 */}
-            <div className="v2-section-title" style={{ margin: '5px', padding: '2px 5px', fontWeight: '600' }}>🌏 东南亚资讯</div>
+            <div className="v2-section-title" style={{ margin: '0px 5px', padding: '2px 5px', fontWeight: '600' }}>🌏 东南亚资讯</div>
             <div className="sea-news-item" onClick={() => navigate('/news/southeastAsia')}>
               <div className="sea-news-flag"   >{southeastAsiaNews?.southeastAsiaCountry1}</div>
               <div className="sea-news-content">
@@ -307,7 +315,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-{/*             <div className="sea-news-item">
+            {/*             <div className="sea-news-item">
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry4}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle4}</div>
@@ -321,7 +329,7 @@ const Home: React.FC = () => {
               </div>
             </div> */}
 
-{/*             <div className="sea-news-item">
+            {/*             <div className="sea-news-item">
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry5}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle5}</div>
@@ -385,7 +393,7 @@ const Home: React.FC = () => {
                       <div className="home-politics-card-content">
 
                         {politics.title &&
-                          <div className="politics-title" style={{ fontSize: '16px', fontWeight: '600', fontFamily: 'inherit', letterSpacing: '1px' }}>
+                          <div className="politics-title" style={{ fontSize: '15px', fontWeight: '600', fontFamily: 'inherit', letterSpacing: '1px' }}>
                             <Ellipsis direction='end' rows={2} content={politics.title} />
                           </div>
                         }

@@ -154,12 +154,12 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
 
               {politics?.source &&
                 <span className="politics-tag" > 来源:
-                  <span className="source">
+                  <span className="source" >
                     <span className="tracking">
                       <LocationFill className="area" /> {politics?.country || ''}
                     </span>
-                    <span className="source-inner">
-                      {politics?.source || ''}
+                    <span className="source-inner" style={{margin:'0px 5px'}}>
+                      { politics?.source || ''}
                     </span>
 
                   </span>

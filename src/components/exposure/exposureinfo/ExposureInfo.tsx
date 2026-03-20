@@ -115,7 +115,8 @@ const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) =
                 {images.map((img, index) => (
                   <div className="suspect-detail-card" key={index}>
                     <Image
-                      src={img}
+                      fit='contain'
+                      src={getImgUrl(img)}
                       className="suspect-detail-photo"
                       onClick={() => {
                         setCurrentIndex(index);

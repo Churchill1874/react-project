@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '@/components/exposure/Exposure.less';
 import ExposureInfo from '@/components/exposure/exposureinfo/ExposureInfo';
-import { PullToRefresh, Skeleton, InfiniteScroll, Popup, DotLoading} from 'antd-mobile';
+import { PullToRefresh, Skeleton, InfiniteScroll, Popup, DotLoading, Image } from 'antd-mobile';
 import { Request_ExposurePage, ExposurePageReqType, ExposureType } from '@/components/exposure/api'
 import { getImgUrl } from '@/utils/commentUtils';
 
@@ -11,7 +11,7 @@ const ExposureList: React.FC = () => {
   const [exposurePage, setExposurePage] = useState<number>(1);
   const [visibleCloseRight, setVisibleCloseRight] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false);
-  const [id, setId] = useState<string|null>(null);
+  const [id, setId] = useState<string | null>(null);
 
   //获取api东南亚新闻数据
   const exposurePageRequest = async (isReset: boolean) => {
@@ -70,9 +70,9 @@ const ExposureList: React.FC = () => {
     )
   }
 
-  const click = (id:string)=>{
-     setVisibleCloseRight(true)
-     setId(id)
+  const click = (id: string) => {
+    setVisibleCloseRight(true)
+    setId(id)
   }
 
   return (
@@ -108,7 +108,8 @@ const ExposureList: React.FC = () => {
                       <div className='suspects-grid'>
                         {images.map((img, index) => (
                           <div className="suspect-card" key={index}>
-                            <img
+                            <Image
+                              fit='contain'
                               src={getImgUrl(img)}
                               className="suspect-photo"
                             />
@@ -162,7 +163,7 @@ const ExposureList: React.FC = () => {
         visible={visibleCloseRight}
         onClose={() => { setVisibleCloseRight(false) }}
       >
-        <ExposureInfo onClose={() => { setVisibleCloseRight(false) }} id={id} setId = {()=>setId}/>
+        <ExposureInfo onClose={() => { setVisibleCloseRight(false) }} id={id} setId={() => setId} />
 
       </Popup>
 
