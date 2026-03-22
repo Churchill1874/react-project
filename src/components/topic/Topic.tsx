@@ -7,6 +7,7 @@ import '@/components/topic/Topic.less'
 import { TopicPageReqType, TopicType, TopicPage_Request } from '@/components/topic/api'
 import TopicInfo from "@/components/topic/topicinfo/TopicInfo";
 import dayjs from 'dayjs'
+import { getImgUrl } from "@/utils/commentUtils";
 
 type PopupInfo = {
   id: any | null;
@@ -115,14 +116,14 @@ const Topic: React.FC = () => {
 
                   {topic.videoCover &&
                     <div className="topic-news-image-container">
-                      <video className="topic-news-video" src="/1.mp4" controls poster={topic.videoCover} />
+                      <video className="topic-news-video" src="/1.mp4" controls poster={getImgUrl(topic.videoCover)} />
                     </div>
                   }
                   {!topic.videoCover && topic.imagePath &&
                     <div className="topic-news-image-container">
                       <Image
                         className="topic-news-image"
-                        src={topic.imagePath}
+                        src={getImgUrl(topic.imagePath)}
                         alt="Example"
                         fit="contain"
                       />

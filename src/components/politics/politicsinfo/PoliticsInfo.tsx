@@ -76,7 +76,6 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
     }
 
     const param = { id: id, infoType: 3 }
-    console.log('Request param:', param);
     JSON.stringify(param); // 这一步如果报错，说明有问题
     const resp = await Request_IncreaseLikesCount(param);
 

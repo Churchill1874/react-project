@@ -7,6 +7,7 @@ import '@/components/society/Society.less'
 import { SocietyPageReqType, SocietyType, SocietyPage_Request } from '@/components/society/api'
 import SocietyInfo from "@/components/society/societyinfo/SocietyInfo";
 import dayjs from 'dayjs'
+import { getImgUrl } from "@/utils/commentUtils";
 
 type PopupInfo = {
   id: any | null;
@@ -107,14 +108,14 @@ const Society: React.FC = () => {
 
                   {society.videoCover &&
                     <div className="society-news-image-container">
-                      <video className="society-news-video" src="/1.mp4" controls poster={society.videoCover} />
+                      <video className="society-news-video" src="/1.mp4" controls poster={getImgUrl(society.videoCover)} />
                     </div>
                   }
                   {!society.videoCover && society.imagePath &&
                     <div className="society-news-image-container">
                       <Image
                         className="society-news-image"
-                        src={society.imagePath}
+                        src={getImgUrl(society.imagePath)}
                         alt="Example"
                         fit="contain"
                       />
