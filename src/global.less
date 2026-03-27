@@ -25,9 +25,16 @@ body {
 @media (min-width: 768px) {
   html,
   body {
-    overflow: auto !important; /* 桌面端恢复滚动 */
-    height: auto; /* 桌面端不限制高度 */
-    padding-bottom: 0; /* 桌面端不需要安全区域 */
+    overflow: auto !important;
+    height: auto;
+  }
+
+  .main-container {
+    overflow: visible !important;
+  }
+
+  .content-area {
+    overflow: visible !important;
   }
 }
 

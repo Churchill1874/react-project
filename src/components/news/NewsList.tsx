@@ -33,7 +33,8 @@ const NewsList: React.FC<any> = () => {
         setNewsHasMore(true);
       } else {
         setNewsPage(prev => (prev + 1));
-        setNewsList([...newsList, ...newsListResp]);
+        //setNewsList([...newsList, ...newsListResp]);
+        setNewsList(prev => [...prev, ...newsListResp]);
         //setNewsHasMore(true);
       }
     } else {
@@ -49,9 +50,9 @@ const NewsList: React.FC<any> = () => {
       <div >
         <div>
           <PullToRefresh onRefresh={() => reqNewsApi(true)}>
-            {newsList?.map((news, index) => (
+            {newsList?.map((news, _index) => (
               <NewsRecord
-                key={index} // ✅ 和Politics一样使用index作为key
+                key={news.id} // ✅ 和Politics一样使用index作为key
                 id={news.id}
                 title={news.title}
                 content={news.filterContent}

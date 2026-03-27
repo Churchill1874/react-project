@@ -9,6 +9,7 @@ import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
 import { PoliticsFind_Requset, PoliticsFindReqType } from '@/components/politics/api';
 
 import dayjs from 'dayjs'
+import { getImgUrl } from "@/utils/commentUtils";
 
 type PoliticsProps = {
   needCommentPoint?: boolean;
@@ -122,7 +123,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
             <div className="politics-image-container-inner">
               {politics?.imagePath && <Image
                 className="politics-image"
-                src={politics.imagePath}
+                src={getImgUrl(politics.imagePath)}
                 alt="Example"
                 fit="contain"
               />}

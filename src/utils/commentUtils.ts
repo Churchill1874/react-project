@@ -16,6 +16,10 @@ export function highlightReply(inputString) {
   export function getImgUrl(url?: string) {
     if (!url) return '';
 
+    if ('/assets/logo/logo2.png' === url){
+      return url;
+    }
+
     if (url.startsWith('http')) {
       return url;
     }

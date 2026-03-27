@@ -33,7 +33,7 @@ export interface NewsInfoType {
   url?: any | null;
   viewCount?: any | null;
   newsTab?: any;
-  newsList?: NewsInfoType[];
+  newsList?: NewsInfoType[] | null |undefined;
   setNewsList?: React.Dispatch<React.SetStateAction<NewsInfoType[]>>;
   setVisibleCloseRight?: any;
 }

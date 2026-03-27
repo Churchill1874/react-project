@@ -53,6 +53,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
   const subscriptionSystemRef = useRef<ReturnType<Client['subscribe']> | null>(null);
   const subscriptionCommentRef = useRef<ReturnType<Client['subscribe']> | null>(null);
   const subscriptionRoomRef = useRef<ReturnType<Client['subscribe']> | null>(null);
+  const subscriptionSystemTopicRef = useRef<any>(null);
 
   // 清理所有订阅的函数
   const unsubscribeAll = useCallback(() => {
@@ -74,6 +75,13 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
         //console.error('Error unsubscribing system:', error);
       }
       subscriptionSystemRef.current = null;
+    }
+
+    if (subscriptionSystemTopicRef.current) {
+      try {
+        subscriptionSystemTopicRef.current.unsubscribe();
+      } catch (error) { }
+      subscriptionSystemTopicRef.current = null;
     }
 
     if (subscriptionCommentRef.current) {
@@ -199,7 +207,6 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
         });
         subscriptionRef.current = privateSub;
-        //console.log('StompProvider: Private subscription created');
       } catch (error) {
         //console.error('Error creating private subscription:', error);
       }
@@ -221,10 +228,33 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
           }
         });
         subscriptionSystemRef.current = systemSub;
-        //console.log('StompProvider: System subscription created');
       } catch (error) {
         //console.error('Error creating system subscription:', error);
       }
+
+      // ✅ 群发（新增）
+      const systemTopicSub = stompClient.subscribe('/topic/systemMessage', (message) => {
+        console.log("系统群发来了:", message.body);
+
+        const msg = JSON.parse(message.body);
+
+        // 👉 红点
+        if (latestPathRef.current !== '/message') {
+          setHasUnreadMessage(true);
+          setSystemMessageUnread(true)
+        }
+
+        const messageTabKey = useStore.getState().messageTabKey;
+        if (latestPathRef.current === '/message' && messageTabKey !== 'system-message') {
+          setSystemMessageUnread(true)
+        }
+        // 👉 插入列表（建议加）
+        // setSystemMessageList(prev => [msg, ...(prev || [])]);
+      });
+
+
+      // ✅ 放这里（外面！）
+      subscriptionSystemTopicRef.current = systemTopicSub;
 
       // 评论消息订阅
       try {

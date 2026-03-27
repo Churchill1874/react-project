@@ -105,17 +105,29 @@ const ExposureList: React.FC = () => {
 
                     {/* 图片 */}
                     {images.length > 0 && (
-                      <div className='suspects-grid'>
-                        {images.map((img, index) => (
-                          <div className="suspect-card" key={index}>
-                            <Image
-                              fit='contain'
-                              src={getImgUrl(img)}
-                              className="suspect-photo"
-                            />
-                          </div>
-                        ))}
-                      </div>
+                      images.length === 1 ? (
+                        // ✅ 单图：完全不用 grid
+                        <div className="single-image">
+                          <Image
+                            fit="contain"
+                            src={getImgUrl(images[0])}
+                            className="single-photo"
+                          />
+                        </div>
+                      ) : (
+                        // ✅ 多图：正常 grid
+                        <div className="suspects-grid">
+                          {images.map((img, index) => (
+                            <div className="suspect-card" key={index}>
+                              <Image
+                                fit="cover"
+                                src={getImgUrl(img)}
+                                className="suspect-photo"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )
                     )}
 
                   </div>

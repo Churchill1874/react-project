@@ -170,7 +170,7 @@ const Home: React.FC = () => {
                     <>
                       <div className="home-news-item" key={index}>
                         <div className="home-news-content">
-                          <Ellipsis className="home-news-title" style={{fontSize:'15px', fontWeight:'600'}} content={exposure.title} direction='end' rows={1} />
+                          <Ellipsis className="home-news-title" style={{fontSize:'15px', fontWeight:'500'}} content={exposure.title} direction='end' rows={1} />
                         </div>
                         <div className="home-news-image">
                           <Image fit='cover'//fit='contain'  // 大屏120px，小屏100px
@@ -352,7 +352,7 @@ const Home: React.FC = () => {
 
             } */}
 
-            {newsId &&
+{/*             {newsId &&
               <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
                 position='right'
                 // closeOnSwipe={true}
@@ -375,7 +375,7 @@ const Home: React.FC = () => {
                 </div>
 
               </Popup>
-            }
+            } */}
           </>
         }
 
@@ -401,7 +401,7 @@ const Home: React.FC = () => {
                           <div className="politics-image-container" style={{ marginTop: '5px' }}>
                             <Image
                               className="politics-image"
-                              src={politics.imagePath}
+                              src={getImgUrl(politics.imagePath)}
                               alt="Example"
                               fit="contain"
                             />

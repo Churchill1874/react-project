@@ -138,13 +138,13 @@ const Company: React.FC = () => {
                       <Steps.Step className='company-events'
                         title={company?.companyEventList[0].description}
                         status='finish'
-                        description={'事件时间: ' + dayjs(company?.companyEventList[0].createTime).format("YYYY-MM-DD")} />
+                        description={'事件时间: ' + company?.companyEventList[0].eventDate} />
                       {company?.companyEventList.length > 1 &&
 
                         <Steps.Step className='company-events'
                           title={company?.companyEventList[1].description}
                           status='finish'
-                          description={'事件时间: ' + dayjs(company?.companyEventList[1].createTime).format("YYYY-MM-DD")} />
+                          description={'事件时间: ' + company?.companyEventList[1].eventDate} />
                       }
                     </Steps>
                   }
@@ -245,7 +245,7 @@ const Company: React.FC = () => {
                   <Step
                     title={event.description}
                     status='finish'
-                    description={event.createTime}
+                    description={event.eventDate}
                     key={index}
                   />
                 )

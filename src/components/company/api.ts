@@ -49,6 +49,7 @@ export interface CompanyEvent{
     createTime: any;
     description: any;
     image: any;
+    eventDate: any;
 }
 
 const CompanyPagePath = '/player/company/queryPage';

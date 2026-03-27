@@ -11,8 +11,11 @@ import { useEffect, useState } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
 import dayjs from 'dayjs'
 import { NewsInfoType } from '@/pages/news/api'
+import { getImgUrl } from '@/utils/commentUtils';
 
 type NewsInfoProps = NewsInfoType & {
+  newsList?: NewsInfoType[];
+  setNewsList?: React.Dispatch<React.SetStateAction<NewsInfoType[]>>;
   needCommentPoint?: boolean;
   commentPointId?: string | null;
 }
@@ -21,7 +24,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   setVisibleCloseRight,
   id,
   newsList,
-  setNewsList,
+  setNewsList = () => { },  // ✅ 加这个
   needCommentPoint,
   commentPointId,
   commentRef
@@ -29,7 +32,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   const [visible, setVisible] = useState(false)
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
-  const [newsStatus, setNewsStatus] = useState<NewsInfoType | null>();
+  const [newsStatus, setNewsStatus] = useState<NewsInfoType | null | undefined>();
   const showImage = () => {
     setVisible(prev => !prev);
   }
@@ -118,12 +121,15 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
 
   //获取当前胶囊新闻类型所用的新闻数据状态
   const updateNewsListViewsCount = (id: number) => {
-    const updateList = newsList?.map((data, _index) => (data.id === id) ? { ...data, viewCount: newsStatus?.viewCount + 1 } : data)
-    if (setNewsList && updateList) {
-      setNewsList(updateList);
-    }
+    setNewsList(prev =>
+      prev.map(item =>
+        item.id === id
+          ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+          : item
+      )
+    );
+  };
 
-  }
 
 
   function splitBySentenceLength(text: string, maxChars = 200): string[] {
@@ -181,7 +187,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
                             fit="contain"
                             width={300}
                             height={200}
-                            src={imagePath}
+                            src={getImgUrl(imagePath)}
                             onClick={showImage}
                           />
                         </Swiper.Item>
@@ -203,7 +209,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
                               fit="contain"
                               width={300}
                               height={200}
-                              src={imagePath}
+                              src={getImgUrl(imagePath)}
                               onClick={showImage}
                             />
                           </Swiper.Item>
@@ -218,7 +224,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
                 <TextArea value={newsStatus?.filterContent} readOnly rows={10} className='newsinfo-content' />
                 :
                 <TextArea value={""} readOnly rows={8} className='newsinfo-content' />
-              } 
+              }
 
 
 

@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import PoliticsInfo from '@/components/politics/politicsinfo/PoliticsInfo'
 
 import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
+import { getImgUrl } from "@/utils/commentUtils";
 
 
 
@@ -171,7 +172,7 @@ const Politics: React.FC = () => {
                       <div className="politics-image-container">
                         <Image
                           className="politics-image"
-                          src={politics.imagePath}
+                          src={getImgUrl(politics.imagePath)}
                           alt="Example"
                           fit="contain"
                         />

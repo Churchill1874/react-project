@@ -7,9 +7,15 @@ import NewsInfo from '@/components/news/newsinfo/NewsInfo';
 import { newsEnum } from '@/common/news'
 import dayjs from 'dayjs'
 import { NewsInfoType } from '@/pages/news/api'
+import { getImgUrl } from '@/utils/commentUtils';
+
+type Props = NewsInfoType & {
+  newsList: NewsInfoType[];
+  setNewsList: React.Dispatch<React.SetStateAction<NewsInfoType[]>>;
+};
 
 
-const NewsRecord: React.FC<NewsInfoType> = ({ id,
+const NewsRecord: React.FC<Props> = ({ id,
   title,
   content,
   photoPath,
@@ -41,7 +47,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
     <>
       <div className="content-container">
         <div className="image-container">
-          <Image className='news-image' lazy src={imagePath} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
+          <Image className='news-image' lazy src={getImgUrl(imagePath)} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
         </div>
         <div className="text-container">
           <div className="title">
@@ -73,7 +79,7 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
       <div className='h-time'>{createTime ? dayjs(createTime).format('YYYY-MM-DD HH:mm') : '时间未知'}</div>
 
       <div className="h-image-container">
-        <Image className='h-news-image' lazy src={imagePath} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
+        <Image className='h-news-image' lazy src={getImgUrl(imagePath)} alt={`图片${id}`} onLoad={(event) => handleImageLoad(id, event)} />
       </div>
       <div className="h-attributes-contariner">
         <div className="h-column">
@@ -112,13 +118,19 @@ const NewsRecord: React.FC<NewsInfoType> = ({ id,
       // 只有当值 **真的改变** 时，才 `setState`
       setIsLongImage((prev) => (prev === null ? height >= 1.5 * width : prev));
     };
+
+/*     img.onerror = () => {
+      setIsLongImage(false);
+    }; */
   }, [photoPath]);
 
 
   //如果没有加载完就先不渲染 知道useEffect执行完了 变化了状态
-  if (isLongImage === null) {
-    return null;
-  }
+    if (isLongImage === null) {
+      return null;
+    } 
+
+
 
 
   return (
