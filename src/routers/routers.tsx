@@ -14,6 +14,7 @@ import GroupChat from '@/pages/groupchat/GroupChat';
 import Hall from '@/pages/hall/Hall';
 import TiebaList from '@/pages/tieba/TiebaList';
 import TiebaDetail from '@/pages/tieba/tiebadetail/TiebaDetail';
+import SoutheastAsiaDetail from '@/pages/southeastasiadetail';
 export default [
   //首页
   {
@@ -89,6 +90,11 @@ export default [
   {
     path: '/tiebaDetail',
     component: TiebaDetail
+  },
+  // SEO: 东南亚新闻独立详情页，可被搜索引擎收录
+  {
+    path: '/southeastAsia/:id',
+    component: SoutheastAsiaDetail
   }
 
 ];

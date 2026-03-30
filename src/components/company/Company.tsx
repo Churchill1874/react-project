@@ -202,13 +202,13 @@ const Company: React.FC = () => {
                 </Swiper>
               </>
             }
-            <Divider className='company-divider-line' />
+            {/* <Divider className='company-divider-line' /> */}
 
             <div className="text-area">
               {popupInfo?.description}
             </div>
 
-            <Divider className='company-divider-line' />
+            <Divider className='company-divider-line' style={{marginTop: 10}} />
             <div className="line-group">
               <div className="line">{popupInfo?.overtimeCompensation}</div>
               <Divider className='blue-divider-line' direction="vertical" />
@@ -231,11 +231,12 @@ const Company: React.FC = () => {
             </div>
             <Divider className='divider-line' />
             <div className="line-group">
-              <span><LocationFill className="area" />{popupInfo?.city}</span>
+              
+              <span style={{marginTop:10}}><LocationFill className="area" />{popupInfo?.city}</span>
+              <span style={{marginTop:10}} className='last-time'>最后一次更新时间:  {dayjs(popupInfo?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
             </div>
-            <Divider className='divider-line' />
 
-            <span className='last-time'>最后一次更新时间:  {dayjs(popupInfo?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
+            
           </Card>
 
           <Steps direction='vertical' className="custom-vertical-steps-info">
