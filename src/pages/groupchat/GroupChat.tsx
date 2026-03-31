@@ -23,7 +23,7 @@ const GroupChat: React.FC = ({ }) => {
   const roomNum = roomNumber ? parseInt(roomNumber, 10) : 1;
 
   const [messageInput, setMessageInput] = useState('');
-  const { chatRoom1List, setChatRoom1List, playerInfo } = useStore();
+  const { chatRoom1List, setChatRoom1List, playerInfo, onlineCount } = useStore();
   const [loading, setLoading] = useState(false);
 
   const chatRef = useRef<HTMLDivElement>(null);
@@ -152,7 +152,6 @@ const GroupChat: React.FC = ({ }) => {
 
   // 组件内部配置
   const groupName = "聊天大厅";
-  const onlineCount = 3847;
 
 
   return (
@@ -211,7 +210,7 @@ const GroupChat: React.FC = ({ }) => {
                     </div>
                     <div className="message-bubble">
                       <div className="message-header">
-                        <span className="username">{message.name} lv.{message.level}</span>
+                        <span className="username">{message.name} {/* lv.{message.level} */}</span>
                         {/* <span className="message-time">lv.{message.level}</span> */}
                       </div>
                       <div className="message-text">{message.content}</div>

@@ -22,6 +22,7 @@ import HomeBetOrder from '@/components/homebetorder/HomeBetOrder';
 import { FcReading } from "react-icons/fc";
 import { LocationFill } from 'antd-mobile-icons';
 import { getImgUrl } from '@/utils/commentUtils';
+import useStore from '@/zustand/store';
 
 const Home: React.FC = () => {
   // 轮播图状态管理
@@ -43,6 +44,7 @@ const Home: React.FC = () => {
   const [exposureList, setExposureList] = useState<ExposureType[]>([]);
 
   const navigate = useNavigate();
+  const { setOnlineCount: setGlobalOnlineCount } = useStore();
   // 创建扩展的幻灯片数组（前后各复制一份实现无缝循环）
   const extendedSlides = [
     bannerList[bannerList.length - 1], // 最后一张的副本
@@ -55,6 +57,7 @@ const Home: React.FC = () => {
   const homeReq = async () => {
     const data = (await Request_HOME()).data;
     setOnlineCount(data.onlineCount)
+    setGlobalOnlineCount(data.onlineCount); // 同时更新全局状态
     setNewsRank(data.newsRank)
     setCompany(data.company)
     //setHotLottery(data.hotLottery)
@@ -139,21 +142,21 @@ const Home: React.FC = () => {
                   <div className="menu-icon-image">🗳️</div>
                   <div className="menu-icon-text">政治盘口</div>
                 </Link> */}
-                <Link to={'/news/news'} className="menu-icon">
-                  <div className="menu-icon-image">🌏️</div>
-                  <div className="menu-icon-text">国内新闻</div>
+                <Link to={'/news/company'} className="menu-icon">
+                  <div className="menu-icon-image">🔍</div>
+                  <div className="menu-icon-text">追查公司</div>
                 </Link>
                 <Link to={'/news/southeastAsia'} className="menu-icon">
                   <div className="menu-icon-image">🏝️</div>
                   <div className="menu-icon-text">东南亚</div>
                 </Link>
-                <Link to={'/news/company'} className="menu-icon">
-                  <div className="menu-icon-image">🔍</div>
-                  <div className="menu-icon-text">追查公司</div>
-                </Link>
                 <Link to={'/news/politics'} className="menu-icon">
                   <div className="menu-icon-image">📰</div>
                   <div className="menu-icon-text">政治新闻</div>
+                </Link>
+                <Link to={'/news/news'} className="menu-icon">
+                  <div className="menu-icon-image">🌏️</div>
+                  <div className="menu-icon-text">国内新闻</div>
                 </Link>
                 <Link to={'/'} className="menu-icon">
                   <div className="menu-icon-image">ℹ️</div>
@@ -162,7 +165,7 @@ const Home: React.FC = () => {
               </div>
 
               {/* 曝光台 */}
-              <div className="v2-section-title" style={{ marginTop: '10px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
+              <div className="v2-section-title" style={{ marginTop: '5px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
               <div className="home-news-grid">
                 <div className="home-grid" onClick={() => navigate('/news/exposure')}>
 
@@ -170,7 +173,7 @@ const Home: React.FC = () => {
                     <>
                       <div className="home-news-item" key={index}>
                         <div className="home-news-content">
-                          <Ellipsis className="home-news-title" style={{fontSize:'15px', fontWeight:'500'}} content={exposure.title} direction='end' rows={1} />
+                          <Ellipsis className="home-news-title" style={{ fontSize: '15px', fontWeight: '500' }} content={exposure.title} direction='end' rows={1} />
                         </div>
                         <div className="home-news-image">
                           <Image fit='cover'//fit='contain'  // 大屏120px，小屏100px
@@ -352,7 +355,7 @@ const Home: React.FC = () => {
 
             } */}
 
-{/*             {newsId &&
+            {/*             {newsId &&
               <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
                 position='right'
                 // closeOnSwipe={true}
@@ -393,7 +396,7 @@ const Home: React.FC = () => {
                       <div className="home-politics-card-content">
 
                         {politics.title &&
-                          <div className="politics-title" style={{ fontSize: '15px', fontWeight: '600', fontFamily: 'inherit', letterSpacing: '1px' }}>
+                          <div className="politics-title" style={{ fontSize: '15px', fontWeight: '600', fontFamily: 'inherit', letterSpacing: '0.1px' }}>
                             <Ellipsis direction='end' rows={2} content={politics.title} />
                           </div>
                         }
@@ -455,7 +458,7 @@ const Home: React.FC = () => {
 
                     </Card>
 
-                    <Divider style={{ padding: '0px', margin: '0px' }} />
+                    <Divider style={{ padding: '0px', margin: '0px', borderColor:'#f1ecec' }} />
                   </>
                 ))
               }

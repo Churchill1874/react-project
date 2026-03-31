@@ -58,7 +58,7 @@ const SoutheastAsiaDetail: React.FC = () => {
         <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }}>
           <LeftOutline fontSize={18} />返回
         </span>
-        <span style={{ color: 'black', fontSize: '16px' }}>东南亚新闻</span>
+        <span style={{ color: 'black', fontSize: '16px', fontWeight: 'bold' }}>东南亚新闻</span>
       </div>
 
       {/* 加载中骨架屏 */}
@@ -110,7 +110,7 @@ const SoutheastAsiaDetail: React.FC = () => {
               {/* 正文内容 */}
               <div
                 className="southeast-asia-text-area"
-                style={{ whiteSpace: 'pre-wrap', lineHeight: '1', padding: '8px 0' }}
+                style={{ whiteSpace: 'pre-wrap', lineHeight: '1', padding: '8px 0', letterSpacing: "1px" }}
               >
                 {southeastAsia.content}
               </div>

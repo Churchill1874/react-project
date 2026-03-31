@@ -53,11 +53,18 @@ interface AppState {
   //聊天室内容
   chatRoom1List: ChatRoomType[];
   setChatRoom1List: (listOrFn: ChatRoomType[] | ((prev: ChatRoomType[]) => ChatRoomType[])) => void;
+
+  //在线人数
+  onlineCount: number;
+  setOnlineCount: (onlineCount: number) => void;
 }
 
 const useStore = create<AppState>()(
   persist(
     set => ({
+      onlineCount: 0,
+      setOnlineCount: onlineCount => set(() => ({ onlineCount })),
+      
       playerInfo: null,
       setPlayerInfo: playerInfo => set(() => ({ playerInfo })),
 

@@ -30,11 +30,28 @@ body {
   }
 
   .main-container {
+    height: auto; /* 桌面端允许自然高度 */
+    min-height: 100vh;
     overflow: visible !important;
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .content-area {
-    overflow: visible !important;
+    overflow: auto !important;
+    padding-bottom: 60px; /* 桌面端固定底部间距 */
+  }
+
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 680px);
+    max-width: 680px;
+    z-index: 999;
   }
 }
 
@@ -44,15 +61,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-/* 桌面端 main-container 调整 */
-@media (min-width: 768px) {
-  .main-container {
-    height: auto; /* 桌面端允许自然高度 */
-    min-height: 100vh; /* 最小高度保持全屏 */
-    overflow: visible; /* 桌面端允许溢出 */
-  }
 }
 
 .content-area {
@@ -137,7 +145,10 @@ body {
   .navbar {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 680px);
+    max-width: 680px;
   }
   .capsule-tabs-container {
     max-width: 680px;

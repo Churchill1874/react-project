@@ -7,7 +7,9 @@
   margin-top: 5px;
 }
 .chat-room {
-  width: 100%;
+  width: min(100%, 680px);
+  max-width: 680px; /* 与整体容器一致 */
+  margin: 0 auto; /* 居中 */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -192,23 +194,26 @@
     //bottom: calc(45px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
     bottom: calc(44px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
 
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(100%, 680px);
+    max-width: 680px;
     z-index: 100;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
-    padding: 10px 16px;
+    padding: 5px 0px;
     border-top: 1px solid rgba(102, 126, 234, 0.1);
     /* 🔥 关键：确保输入区域可见 */
     max-width: 100%;
     .input-container {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
       max-width: 680px; /* 适配桌面端 */
-      margin: 0 auto;
 
       .emoji-btn {
+        margin-left: 10px;
         width: 40px;
         height: 40px;
         border: none;
@@ -268,6 +273,7 @@
         flex-shrink: 0;
         height: 40px;
         min-width: 60px;
+        margin-right: 10px;
 
         &:hover {
           transform: translateY(-1px);
@@ -302,7 +308,7 @@
     }
 
     .chat-input-area {
-      padding: 8px 12px;
+      padding: 5px 12px;
       /* 🔥 移动端额外调整 */
       bottom: calc(45px + env(safe-area-inset-bottom) + 5px);
 
@@ -312,14 +318,14 @@
         .emoji-btn {
           width: 36px;
           height: 36px;
-          font-size: 18px;
+          font-size: 20px;
         }
 
         .message-input {
           font-size: 16px;
           padding: 8px 10px;
-          min-height: 36px;
-          max-height: 36px;
+          min-height: 42px;
+          max-height: 42px;
         }
 
         .send-btn {
@@ -430,13 +436,13 @@
 /* 桌面端适配 - 只修改输入框宽度限制 */
 @media (min-width: 1024px) {
   .chat-input-area {
-    /* 方法2：使用margin居中 */
-    left: 0 !important;
-    right: 0 !important;
-    width: 650px !important;
-    max-width: 650px !important;
+    /* 与主容器一致，避免右偏 */
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    max-width: 680px !important;
     margin: 0 auto !important;
-    transform: none !important;
     //bottom: calc(85px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
     /* 添加边框保持视觉一致性 */
     border-left: 1px solid #eee;

@@ -81,7 +81,7 @@ const Company: React.FC = () => {
         threshold={50}
       >
 
-        <div className="card-container" style={{ padding: '10px 10px' }}>
+        <div className="card-container" style={{ padding: '0px 10px' }}>
           <PullToRefresh onRefresh={() => companyPageRequest(true)}>
             {companyList?.map((company, index) => (
               <Card className="company-custom-card" key={index}>
