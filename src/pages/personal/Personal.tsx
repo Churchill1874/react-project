@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Avatar, TextArea, Tag, Toast, Modal } from 'antd-mobile';
+import { Card, Avatar, TextArea, Tag, Toast, Modal, ImageViewer } from 'antd-mobile';
 import { FcBriefcase, FcImport, FcHeadset, FcCloseUpMode, FcSelfie, FcLike } from 'react-icons/fc';
 import { EditSOutline, RightOutline, FlagOutline, SmileOutline, PhoneFill, MailOutline, TravelOutline, UserCircleOutline, CompassOutline } from 'antd-mobile-icons';
 import { Request_GetPlayerInfo, Request_Logout } from '@/pages/personal/api'
@@ -11,7 +11,7 @@ import CustomerContact from '@/components/tools/CustomerContact';
 import useStore from '@/zustand/store';
 
 const UserCenter: React.FC = () => {
-
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const { playerInfo, setPlayerInfo } = useStore();
 
@@ -73,7 +73,17 @@ const UserCenter: React.FC = () => {
         <Card className="card">
           <div className="avatar-container">
             <div className="avatar-with-text">
-              <Avatar className="personal-avatar" src={avatars[playerInfo?.avatarPath]} />
+              <Avatar className="personal-avatar"
+                onClick={() => setVisible(true)}
+                src={avatars[playerInfo?.avatarPath]}
+              />
+
+              <ImageViewer
+                image={avatars[playerInfo?.avatarPath]}
+                visible={visible}
+                onClose={() => setVisible(false)}
+              />
+
             </div>
             <div className="base-info">
               <span className="name"> 昵称: {playerInfo?.name} </span>
@@ -90,9 +100,9 @@ const UserCenter: React.FC = () => {
                 {/* <span className="balance"> 余额: {playerInfo?.balance} U</span> */}
               </div>
 
-              <span className='level'>
+              {/*               <span className='level'>
                 <span>lv.{playerInfo?.level}  <span className='levelName'>  {levelEnum(playerInfo?.level)} </span>  </span>
-              </span>
+              </span> */}
 
             </div>
             <div className="right-info">
@@ -145,7 +155,7 @@ const UserCenter: React.FC = () => {
 
               </span>
               */}
-              <span className="personal-info">
+              {/*             <span className="personal-info">
                 <span className="left">
                   <FlagOutline /> 立场:
                 </span>
@@ -153,7 +163,7 @@ const UserCenter: React.FC = () => {
                   <span className='right'>
                     无
                   </span>
-                }
+                } 
                 {playerInfo?.campType === 1 &&
                   <span className='right' style={{ display: 'flex', alignItems: 'center' }}>
                     <span style={{ fontSize: '10px' }}>🔴 </span>  共产主义阵营
@@ -165,7 +175,7 @@ const UserCenter: React.FC = () => {
                   </span>
                 }
               </span>
-
+*/}
               <span className="personal-info">
                 <span className="left">
                   <UserCircleOutline /> 性别:

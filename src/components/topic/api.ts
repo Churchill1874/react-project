@@ -61,13 +61,11 @@ export interface TopicFindRespType {
   data: TopicType;
 }
 
-//分页社会新闻
 const TopicPagePath = '/player/topic/queryPage';
 export const TopicPage_Request = async (param: TopicPageReqType): Promise<TopicRespType> => {
   return (await axios.post(serverTarget + TopicPagePath, param)).data;
 };
 
-//指定查询社会新闻
 const TopicFindPath = '/player/topic/find';
 export const TopicFind_Requset = async (param: TopicFindReqType): Promise<TopicFindRespType> => {
   return (await axios.post(serverTarget + TopicFindPath, param)).data;

@@ -92,7 +92,7 @@ const TopicInfo: React.FC<TopicPropsType & { commentRef: any }> = (props) => {
 
               {topic?.videoCover &&
                 <div className="topic-news-image-container">
-                  <video className="topic-news-video" src="/1.mp4" controls poster={getImgUrl(topic.videoCover)} />
+                  <video className="topic-news-video" src={topic.videoPath} controls poster={getImgUrl(topic.videoCover)} />
                 </div>
               }
               {!topic?.videoCover && topic?.imagePath &&

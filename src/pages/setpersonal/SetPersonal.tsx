@@ -86,7 +86,7 @@ const SetPersonal: React.FC = () => {
   const avatarGallery = (
     <div className="avatar-list">
       <Tabs activeLineMode="fixed" className="tabs-personal">
-        <Tabs.Tab title="经典头像" key="classic">
+        <Tabs.Tab title="系统头像" key="classic" style={{fontSize:'28px'}}>
           <div className="avatar-gallery">
             {
               Object.keys(avatars).map((index) => (
@@ -96,9 +96,7 @@ const SetPersonal: React.FC = () => {
           </div>
         </Tabs.Tab>
 
-        <Tabs.Tab title="名人头像" key="youtube">
 
-        </Tabs.Tab>
       </Tabs>
 
     </div>
@@ -154,7 +152,7 @@ const SetPersonal: React.FC = () => {
           </Form.Item>
 
 
-          <Form.Item name="campType" label="阵营:" rules={[{ required: true, message: '请选择支持的阵营' }]}>
+{/*           <Form.Item name="campType" label="阵营:" rules={[{ required: true, message: '请选择支持的阵营' }]}>
             <div onClick={() => setCampVisible(true)}>
               <Picker
                 visible={campVisible}
@@ -175,7 +173,7 @@ const SetPersonal: React.FC = () => {
                 }}
               </Picker>
             </div>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item className="item" label="城市:" name="city" rules={[{ required: false }, { max: 20, message: '城市最大20位' }]} >
             <Input placeholder="请输入" />

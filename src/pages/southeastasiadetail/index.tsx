@@ -52,7 +52,7 @@ const SoutheastAsiaDetail: React.FC = () => {
     <div style={{ minHeight: '100%', paddingBottom: '60px', padding: '0px 5px', boxSizing: 'border-box' }}>
       {/* 顶部返回栏 */}
       <div
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/news/southeastAsia')}
         style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
       >
         <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }}>
@@ -110,7 +110,7 @@ const SoutheastAsiaDetail: React.FC = () => {
               {/* 正文内容 */}
               <div
                 className="southeast-asia-text-area"
-                style={{ whiteSpace: 'pre-wrap', lineHeight: '1', padding: '8px 0', letterSpacing: "1px" }}
+                style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5', padding: '8px 0', letterSpacing: "1px" }}
               >
                 {southeastAsia.content}
               </div>

@@ -15,6 +15,11 @@ import Hall from '@/pages/hall/Hall';
 import TiebaList from '@/pages/tieba/TiebaList';
 import TiebaDetail from '@/pages/tieba/tiebadetail/TiebaDetail';
 import SoutheastAsiaDetail from '@/pages/southeastasiadetail';
+import ExposureDetail from '@/pages/exposuredetail';
+import CompanyDetail from '@/pages/companydetail';
+import SocietyDetail from '@/pages/societydetail';
+import PoliticsDetail from '@/pages/politicsdetail';
+
 export default [
   //首页
   {
@@ -95,6 +100,22 @@ export default [
   {
     path: '/southeastAsia/:id',
     component: SoutheastAsiaDetail
+  },
+  {
+    path: '/exposure/:id',
+    component: ExposureDetail
+  },
+  {
+    path: '/company/:id',
+    component: CompanyDetail
+  },
+  {
+    path: '/society/:id',
+    component: SocietyDetail
+  },
+  {
+    path: '/politics/:id',
+    component: PoliticsDetail
   }
 
 ];

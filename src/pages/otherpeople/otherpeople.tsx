@@ -99,10 +99,10 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
 
                 {/*                 <span className="balance"> 余额: {otherPlayerInfo?.balance} U</span> */}
               </span>
-
+{/* 
               <span className='level'>
                 <span> lv.{otherPeople?.level}  <span className='levelName'> ( {levelEnum(otherPeople?.level)} )</span>  </span>
-              </span>
+              </span> */}
 
               <span className="status">
                 状态:
@@ -133,15 +133,15 @@ const OtherPeople: React.FC<any> = ({ setVisibleCloseRight, otherPlayerId }) => 
 
         <div className="other-personal-info-space">
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
+            <div> {otherPeople?.followersCount} </div>
             <div className="label">粉丝</div>
           </span>
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
+            <div> {otherPeople?.collectCount} </div>
             <div className="label">关注</div>
           </span>
           <span style={{ color: 'white', fontSize: '15px' }}>
-            <div> 0 </div>
+            <div> {otherPeople?.likesReceivedCount} </div>
             <div className="label">被赞</div>
           </span>
         </div>

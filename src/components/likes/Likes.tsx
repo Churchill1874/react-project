@@ -95,7 +95,7 @@ const Likes: React.FC<any> = () => {
               <div className="content">
                 <div>
                   <span className="username">{likes.playerName}</span>
-                  <span className="tag tag-red">{likes.level} 级 {levelEnum(likes.level)}</span>
+                  {/* <span className="tag tag-red">{likes.level} 级 {levelEnum(likes.level)}</span> */}
                 </div>
                 <div className="meta"> {likes.createTime} 点赞了 你的评论</div>
                 <div className="liked"><span>{likes.content}</span></div>

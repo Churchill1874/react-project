@@ -73,7 +73,7 @@ const Topic: React.FC = () => {
           <>
             <div className="dot-loading-custom" >
               <span >加载中</span>
-              <DotLoading color='#fff' />
+              <DotLoading color='black' />
               <Skeleton.Title animated />
               <Skeleton.Paragraph lineCount={8} animated />
             </div>
@@ -116,7 +116,7 @@ const Topic: React.FC = () => {
 
                   {topic.videoCover &&
                     <div className="topic-news-image-container">
-                      <video className="topic-news-video" src="/1.mp4" controls poster={getImgUrl(topic.videoCover)} />
+                      <video className="topic-news-video" src={topic.videoPath} controls poster={getImgUrl(topic.videoCover)} />
                     </div>
                   }
                   {!topic.videoCover && topic.imagePath &&

@@ -61,13 +61,11 @@ export interface PromotionFindRespType {
   data: PromotionType;
 }
 
-//分页社会新闻
 const PromotionPagePath = '/player/promotion/queryPage';
 export const PromotionPage_Request = async (param: PromotionPageReqType): Promise<PromotionRespType> => {
   return (await axios.post(serverTarget + PromotionPagePath, param)).data;
 };
 
-//指定查询社会新闻
 const PromotionFindPath = '/player/promotion/find';
 export const PromotionFind_Requset = async (param: PromotionFindReqType): Promise<PromotionFindRespType> => {
   return (await axios.post(serverTarget + PromotionFindPath, param)).data;

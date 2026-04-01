@@ -22,7 +22,7 @@ const getBgColor = (pathname: string) => {
 
 
 // 详情页路由列表 - 这些页面需要自身滚动，不受 content-area overflow:hidden 限制
-const DETAIL_PATHS = ['/southeastAsia/'];
+const DETAIL_PATHS = ['/southeastAsia/', '/exposure/', '/company/', '/society/'];
 
 const isDetailPage = (pathname: string) =>
   DETAIL_PATHS.some(p => pathname.startsWith(p));

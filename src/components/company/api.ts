@@ -6,9 +6,19 @@ export interface CompanyPageReqType{
     pageSize: any;
 }
 
+export interface CompanyDetailReqType{
+    id: string | null;
+}
+
 export interface CompanyResponseType{
     code: any;
     data: CompanyPageResponseType;
+    msg: any;
+}
+
+export interface CompanyDetailResponseType{
+    code: any;
+    data: CompanyPageType;
     msg: any;
 }
 
@@ -20,6 +30,7 @@ export interface CompanyPageResponseType{
     size: any;
     total: any;
 }
+
 
 export interface CompanyPageType{
     id: any;
@@ -55,4 +66,9 @@ export interface CompanyEvent{
 const CompanyPagePath = '/player/company/queryPage';
 export const Request_CompanyPage = async (param: CompanyPageReqType): Promise<CompanyResponseType> =>{
     return (await axios.post(serverTarget + CompanyPagePath, param)).data
+}
+
+const CompanyFindPath = '/player/company/findById';
+export const Request_CompanyFind = async (param: CompanyDetailReqType): Promise<CompanyDetailResponseType> =>{
+    return (await axios.post(serverTarget + CompanyFindPath, param)).data
 }

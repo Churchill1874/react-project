@@ -1,45 +1,38 @@
-import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, Toast, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Card, Divider, Tag, Ellipsis, Image, Toast, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
 import { MessageOutline, HeartOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/politics/politics.less'
 import { PoliticsPage_Request, PoliticsPageReqType, PoliticsType } from '@/components/politics/api'
 import dayjs from 'dayjs'
-import PoliticsInfo from '@/components/politics/politicsinfo/PoliticsInfo'
 
 import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
 import { getImgUrl } from "@/utils/commentUtils";
+import useStore from '@/zustand/store';
 
 
 
 const Politics: React.FC = () => {
-  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
-  const [popupInfo, setPopupInfo] = useState<Politics>({ id: null, imagePath: '', viewCount: 0, likesCount: 0, commentsCount: 0, country: "", content: "", createTime: '', newsStatus: '', source: "", title: "" });
-  const [politicsList, setPoliticsList] = useState<PoliticsType[]>([]);
-  const [politicsHasHore, setPoliticsHasHore] = useState<boolean>(true);
-  const [politicsPage, setPoliticsPage] = useState<number>(1);
+  const navigate = useNavigate();
+  const { getNewsListCache, setNewsListCache, setNewsScrollPosition, getNewsScrollPosition, getLastReadItemId, setLastReadItemId } = useStore();
+  const [politicsList, setPoliticsList] = useState<PoliticsType[]>(() => {
+    // 从 zustand 缓存恢复数据
+    const cache = getNewsListCache('politics');
+    return cache ? cache.data : [];
+  });
+  const [politicsHasHore, setPoliticsHasHore] = useState<boolean>(() => {
+    // 从 zustand 缓存恢复加载状态
+    const cache = getNewsListCache('politics');
+    return cache ? cache.hasMore : true;
+  });
+  const [politicsPage, setPoliticsPage] = useState<number>(() => {
+    // 从 zustand 缓存恢复页码
+    const cache = getNewsListCache('politics');
+    return cache ? cache.page : 1;
+  });
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  interface Politics {
-    id: any | null;
-    imagePath: any | null; //图片路径
-    viewCount: any | null; // 读取次数
-    likesCount: any | null;
-    commentsCount: any | null; //评论数量
-    country: any | null; //地区
-    content: any | null; //新闻内容
-    createTime: any | null;
-    newsStatus: any | null;//新闻状态
-    source: any | null;
-    title: any | null;
-  }
-
-
-  const showPopupInfo = (id, imagePath, viewCount, likesCount, commentsCount, country, content, createTime, newsStatus, source, title) => {
-    setVisibleCloseRight(true)
-    setPopupInfo({ id, imagePath, viewCount, likesCount, commentsCount, country, content, createTime, newsStatus, source, title })
-  }
 
 
   //点赞
@@ -71,12 +64,7 @@ const Politics: React.FC = () => {
         })
         return;
       }
-      if (resp.data.value) {
-        setPopupInfo((prev) => {
-          if (!prev) return prev;
-          return { ...prev, likesCount: (prev.likesCount || 0) + 1 }
-        })
-      }
+      // 不再更新 popup，直接导航时重新获取
     } else {
       Toast.show({
         content: '网络异常,请稍后重试',
@@ -85,7 +73,7 @@ const Politics: React.FC = () => {
     }
   }
 
-  //获取api东南亚新闻数据
+  //获取api政闻新闻数据
   const politicsPageRequest = async (isReset: boolean) => {
     if (loading) {
       return;
@@ -100,20 +88,112 @@ const Politics: React.FC = () => {
         setPoliticsPage(() => 2);
         setPoliticsList(list);
         setPoliticsHasHore(true);
+        
+        // 缓存数据到 zustand
+        setNewsListCache('politics', list, 2, true);
       } else {
         if (JSON.stringify(list) !== JSON.stringify(politicsList)) {
-          setPoliticsPage(prev => (prev + 1))
-          setPoliticsList([...politicsList, ...list])
-          setPoliticsHasHore(true)
+          const newPage = pageNum + 1;
+          const newList = [...politicsList, ...list];
+          setPoliticsPage(newPage);
+          setPoliticsList(newList);
+          setPoliticsHasHore(true);
+          
+          // 缓存数据到 zustand
+          setNewsListCache('politics', newList, newPage, true);
         } else {
-          setPoliticsHasHore(false)
+          setPoliticsHasHore(false);
+          // 更新缓存的hasMore状态
+          const cache = getNewsListCache('politics');
+          if (cache) {
+            setNewsListCache('politics', cache.data, cache.page, false);
+          }
         }
       }
     } else {
-      setPoliticsHasHore(false)
+      setPoliticsHasHore(false);
+      // 更新缓存的hasMore状态
+      const cache = getNewsListCache('politics');
+      if (cache) {
+        setNewsListCache('politics', cache.data, cache.page, false);
+      }
     }
 
     setLoading(false)
+  }
+
+  // 组件挂载时，如果没有缓存数据就加载第一页
+  useEffect(() => {
+    if (politicsList.length === 0) {
+      politicsPageRequest(true);
+    }
+  }, []);
+
+  // 组件数据加载或列表变化后，从上次阅读 id 恢复位置
+  useEffect(() => {
+    const lastId = getLastReadItemId('politics');
+    const container = document.querySelector('.news-content') as HTMLElement | null;
+
+    if (container) {
+      // 如果滚动位置已缓存并且在接近底部，直接恢复到底部，避免跳到条目上方不准的情况。
+      const savedPosition = getNewsScrollPosition('politics');
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      if (savedPosition > 0 && maxScroll - savedPosition <= 400) {
+        container.scrollTop = maxScroll;
+        setLastReadItemId('politics', null);
+        return;
+      }
+    }
+
+    if (!lastId) return;
+
+    const scrollToItem = () => {
+      const el = document.querySelector(`.politics-item[data-id="${lastId}"]`) as HTMLElement | null;
+      const container = document.querySelector('.news-content') as HTMLElement | null;
+      if (el && container) {
+        const target = Math.max(0, el.offsetTop - 20);
+        container.scrollTop = target;
+        setLastReadItemId('politics', null);
+        return true;
+      }
+      return false;
+    };
+
+    if (!scrollToItem()) {
+      // 如果第一次未渲染到，就再尝试几次
+      let retries = 0;
+      const interval = window.setInterval(() => {
+        if (scrollToItem() || retries > 5) {
+          window.clearInterval(interval);
+        }
+        retries += 1;
+      }, 50);
+
+      return () => window.clearInterval(interval);
+    }
+  }, [politicsList, getNewsListCache, getLastReadItemId, getNewsScrollPosition, setLastReadItemId]);
+
+  const click = (id: string) => {
+    // 点击前立即记录当前位置，避免 return 时回得偏差
+    const container = document.querySelector('.news-content') as HTMLElement | null;
+    if (container) {
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      const scrollTop = container.scrollTop;
+      const isNearBottom = maxScroll - scrollTop <= 400; // 较宽的临界值，避免末尾条目回位不准
+      const value = isNearBottom ? maxScroll : scrollTop;
+      setNewsScrollPosition('politics', value);
+
+      if (isNearBottom) {
+        // 末尾深位时直接恢复到底部，不再定位具体 element
+        setLastReadItemId('politics', null);
+      } else {
+        setLastReadItemId('politics', id);
+      }
+    } else {
+      setLastReadItemId('politics', id);
+    }
+
+    navigate('/politics/' + id, { replace: true });
   }
 
   const PoliticsScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -123,7 +203,7 @@ const Politics: React.FC = () => {
           <>
             <div className="dot-loading-custom" >
               <span >加载中</span>
-              <DotLoading color='#fff' />
+              <DotLoading color='black' />
             </div>
           </>
         ) : (
@@ -145,21 +225,8 @@ const Politics: React.FC = () => {
           <PullToRefresh onRefresh={() => politicsPageRequest(true)}>
             {politicsList?.map((politics, index) => (
               <>
-                <Card className="politics-custom-card" key={index} style={{ marginTop: '0px' }}
-                  onClick={() => {
-                    showPopupInfo(
-                      politics.id,
-                      politics.imagePath,
-                      politics.viewCount,
-                      politics.likesCount,
-                      politics.commentsCount,
-                      politics.country,
-                      politics.content,
-                      politics.createTime,
-                      politics.newsStatus,
-                      politics.source,
-                      politics.title)
-                  }}
+                <Card className="politics-custom-card politics-item" key={index} data-id={politics.id} style={{ marginTop: '0px' }}
+                  onClick={() => click(String(politics.id))}
                 >
                   <div className="politics-card-content">
 
@@ -234,7 +301,7 @@ const Politics: React.FC = () => {
             <>
               <div className="dot-loading-custom" >
                 <span >加载中</span>
-                <DotLoading color='#fff' />
+                <DotLoading color='black' />
 
                 <Skeleton.Title animated />
                 <Skeleton.Paragraph lineCount={8} animated />
@@ -248,20 +315,6 @@ const Politics: React.FC = () => {
 
         </div>
       </InfiniteScroll >
-
-      {/********************新闻点击弹窗详情********************/}
-      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }
-      }
-        position='right'
-        closeOnSwipe={true}
-        closeOnMaskClick
-        visible={visibleCloseRight}
-        onClose={() => { setVisibleCloseRight(false) }}>
-
-        <div className="popup-scrollable-content" >
-          <PoliticsInfo commentRef={null} id={popupInfo.id} setVisibleCloseRight={setVisibleCloseRight} needCommentPoint={false} commentPointId={null} />
-        </div >
-      </Popup >
     </>
   );
 }

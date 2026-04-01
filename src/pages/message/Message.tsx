@@ -142,7 +142,7 @@ const Message: React.FC = () => {
         {hasMore ? (
           <div className="dot-loading-custom">
             <span>Loading</span>
-            <DotLoading color='#fff' />
+            <DotLoading color='black' />
           </div>
         ) : (
           <span color='#fff'>--- 我是有底线的 ---</span>

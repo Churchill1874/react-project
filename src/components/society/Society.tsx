@@ -1,41 +1,84 @@
-import { useState } from "react";
-import { Card, Divider, Tag, Ellipsis, Image, Popup, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Card, Divider, Tag, Ellipsis, Image, PullToRefresh, InfiniteScroll, DotLoading, Skeleton } from 'antd-mobile';
 
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/society/Society.less'
 import { SocietyPageReqType, SocietyType, SocietyPage_Request } from '@/components/society/api'
-import SocietyInfo from "@/components/society/societyinfo/SocietyInfo";
 import dayjs from 'dayjs'
 import { getImgUrl } from "@/utils/commentUtils";
-
-type PopupInfo = {
-  id: any | null;
-  imagePath: any | null; //图片路径
-  videoPath: any | null;
-  viewCount: any | null; // 读取次数
-  commentsCount: any | null; //评论数量
-  area: any | null; //地区
-  content: any | null; //新闻内容
-  createTime: any | null;
-  isHot: any | null;//热门
-  isTop: any | null;//置顶
-  source: any | null;
-  title: any | null;
-}
+import useStore from '@/zustand/store';
 
 const Society: React.FC = () => {
-  const [visibleCloseRight, setVisibleCloseRight] = useState(false)
-  const [popupInfo, setPopupInfo] = useState<PopupInfo>({ id: null, area: "", content: "", viewCount: 0, commentsCount: 0, imagePath: '', videoPath: '', createTime: '', isHot: false, isTop: false, source: "", title: "" });
+  const navigate = useNavigate();
+  const { getNewsListCache, setNewsListCache, setNewsScrollPosition, getNewsScrollPosition, getLastReadItemId, setLastReadItemId } = useStore();
+  const [societyList, setSocietyList] = useState<SocietyType[]>(() => {
+    // 从 zustand 缓存恢复数据
+    const cache = getNewsListCache('society');
+    return cache ? cache.data : [];
+  });
+  const [societyHasHore, setSocietyHasHore] = useState<boolean>(() => {
+    // 从 zustand 缓存恢复加载状态
+    const cache = getNewsListCache('society');
+    return cache ? cache.hasMore : true;
+  });
+  const [societyPage, setSocietyPage] = useState<number>(() => {
+    // 从 zustand 缓存恢复页码
+    const cache = getNewsListCache('society');
+    return cache ? cache.page : 1;
+  });
 
-  const [societyList, setSocietyList] = useState<SocietyType[]>([]);
-  const [societyHasHore, setSocietyHasHore] = useState<boolean>(true);
-  const [societyPage, setSocietyPage] = useState<number>(1);
+  // 组件挂载时，如果没有缓存数据就加载第一页
+  useEffect(() => {
+    if (societyList.length === 0) {
+      societyPageRequest(true);
+    }
+  }, []);
 
-  const showPopupInfo = (id, area, content, viewCount, commentsCount, imagePath, videoPath, createTime, isHot, isTop, source, title) => {
-    setVisibleCloseRight(true)
-    setPopupInfo({ id, area, content, viewCount, commentsCount, imagePath, videoPath, createTime, isHot, isTop, source, title })
-  }
+  // 组件数据加载或列表变化后，从上次阅读 id 恢复位置
+  useEffect(() => {
+    const lastId = getLastReadItemId('society');
+    const container = document.querySelector('.news-content') as HTMLElement | null;
+
+    if (container) {
+      // 如果滚动位置已缓存并且在接近底部，直接恢复到底部，避免跳到条目上方不准的情况。
+      const savedPosition = getNewsScrollPosition('society');
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      if (savedPosition > 0 && maxScroll - savedPosition <= 400) {
+        container.scrollTop = maxScroll;
+        setLastReadItemId('society', null);
+        return;
+      }
+    }
+
+    if (!lastId) return;
+
+    const scrollToItem = () => {
+      const el = document.querySelector(`.society-item[data-id="${lastId}"]`) as HTMLElement | null;
+      const container = document.querySelector('.news-content') as HTMLElement | null;
+      if (el && container) {
+        const target = Math.max(0, el.offsetTop - 20);
+        container.scrollTop = target;
+        setLastReadItemId('society', null);
+        return true;
+      }
+      return false;
+    };
+
+    if (!scrollToItem()) {
+      // 如果第一次未渲染到，就再尝试几次
+      let retries = 0;
+      const interval = window.setInterval(() => {
+        if (scrollToItem() || retries > 5) {
+          window.clearInterval(interval);
+        }
+        retries += 1;
+      }, 50);
+
+      return () => window.clearInterval(interval);
+    }
+  }, [societyList, getNewsListCache, getLastReadItemId, getNewsScrollPosition, setLastReadItemId]);
 
 
   //获取api东南亚新闻数据
@@ -51,17 +94,35 @@ const Society: React.FC = () => {
         setSocietyPage(() => 2);
         setSocietyList(list);
         setSocietyHasHore(true);
+        
+        // 缓存数据到 zustand
+        setNewsListCache('society', list, 2, true);
       } else {
-        if (JSON.stringify(list) !== JSON.stringify(societyList)) {
-          setSocietyPage(prev => (prev + 1))
-          setSocietyList([...societyList, ...list])
-          setSocietyHasHore(true)
+        if (JSON.stringify(list) !== JSON.stringify(societyList.slice(-list.length))) {
+          const newPage = pageNum + 1;
+          const newList = [...societyList, ...list];
+          setSocietyPage(newPage);
+          setSocietyList(newList);
+          setSocietyHasHore(true);
+          
+          // 缓存数据到 zustand
+          setNewsListCache('society', newList, newPage, true);
         } else {
-          setSocietyHasHore(false)
+          setSocietyHasHore(false);
+          // 更新缓存的hasMore状态
+          const cache = getNewsListCache('society');
+          if (cache) {
+            setNewsListCache('society', cache.data, cache.page, false);
+          }
         }
       }
     } else {
-      setSocietyHasHore(false)
+      setSocietyHasHore(false);
+      // 更新缓存的hasMore状态
+      const cache = getNewsListCache('society');
+      if (cache) {
+        setNewsListCache('society', cache.data, cache.page, false);
+      }
     }
 
   }
@@ -73,7 +134,7 @@ const Society: React.FC = () => {
           <>
             <div className="dot-loading-custom" >
               <span >加载中</span>
-              <DotLoading color='#fff' />
+              <DotLoading color='black' />
               <Skeleton.Title animated />
               <Skeleton.Paragraph lineCount={8} animated />
             </div>
@@ -87,6 +148,29 @@ const Society: React.FC = () => {
     )
   }
 
+  const click = (id: string) => {
+    // 点击前立即记录当前位置，避免 return 时回得偏差
+    const container = document.querySelector('.news-content') as HTMLElement | null;
+    if (container) {
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      const scrollTop = container.scrollTop;
+      const isNearBottom = maxScroll - scrollTop <= 400; // 较宽的临界值，避免末尾条目回位不准
+      const value = isNearBottom ? maxScroll : scrollTop;
+      setNewsScrollPosition('society', value);
+
+      if (isNearBottom) {
+        // 末尾深位时直接恢复到底部，不再定位具体 element
+        setLastReadItemId('society', null);
+      } else {
+        setLastReadItemId('society', id);
+      }
+    } else {
+      setLastReadItemId('society', id);
+    }
+
+    navigate('/society/' + id, { replace: true });
+  }
+
   return (
     <>
       <InfiniteScroll
@@ -97,7 +181,7 @@ const Society: React.FC = () => {
         <div className="card-container" >
           <PullToRefresh onRefresh={() => societyPageRequest(true)}>
             {societyList?.map((society, index) => (
-              <Card className="society-custom-card" key={index}>
+              <Card className="society-custom-card" key={index} data-id={society.id}>
                 <div className="society-card-content">
 
                   {society.title &&
@@ -108,7 +192,7 @@ const Society: React.FC = () => {
 
                   {society.videoCover &&
                     <div className="society-news-image-container">
-                      <video className="society-news-video" src="/1.mp4" controls poster={getImgUrl(society.videoCover)} />
+                      <video className="society-news-video" src={getImgUrl(society.videoPath)} controls poster={getImgUrl(society.videoCover)} />
                     </div>
                   }
                   {!society.videoCover && society.imagePath &&
@@ -152,13 +236,7 @@ const Society: React.FC = () => {
                         <MessageOutline fontSize={17} />
                         <span className="message-number"> {society.commentsCount} </span>
                         <span className="click"
-                          onClick={() => {
-                            showPopupInfo(
-                              society.id, society.area, society.content, society.viewCount,
-                              society.commentsCount, society.imagePath, society.videoPath,
-                              society.createTime, society.isHot, society.isTop, society.source, society.title
-                            )
-                          }}>点击查看</span>
+                          onClick={() => click(String(society.id))}>点击查看</span>
                       </span>
                     </span>
                   </div>
@@ -173,24 +251,8 @@ const Society: React.FC = () => {
 
         </div>
       </InfiniteScroll>
-
-      {/********************新闻点击弹窗详情********************/}
-      <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
-        position='right'
-        closeOnSwipe={true}
-        closeOnMaskClick
-        visible={visibleCloseRight}
-        onClose={() => { setVisibleCloseRight(false) }}>
-
-        <div className="popup-scrollable-content" >
-          <SocietyInfo commentRef={null} id={popupInfo.id} setVisibleCloseRight={setVisibleCloseRight} needCommentPoint={false} commentPointId={null} />
-        </div>
-
-      </Popup>
     </>
   );
 }
-
-
 
 export default Society;

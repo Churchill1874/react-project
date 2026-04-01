@@ -16,6 +16,7 @@ type PoliticsProps = {
   commentPointId?: string | null;
   setVisibleCloseRight?: any;
   id: string;
+  showHeader?: boolean;
 }
 
 const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
@@ -113,7 +114,9 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
   return (
     <>
       {politics && <>
-        <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
+        {props.showHeader !== false && (
+          <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
+        )}
 
         <Card className="politics-custom-card-container">
           <div className="politics-card-content">
@@ -140,7 +143,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
             </div> */}
 
             <div
-              className="southeast-asia-text-area"
+              className="politics-text-area"
               style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
             >
               {politics?.content}

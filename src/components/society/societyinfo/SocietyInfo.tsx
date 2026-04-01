@@ -6,6 +6,7 @@ import { LeftOutline, LocationFill } from 'antd-mobile-icons';
 import { SocietyType, SocietyFindReqType, SocietyFind_Requset } from '@/components/society/api'
 import dayjs from 'dayjs'
 import '@/components/society/societyinfo/SocietyInfo.less'
+import { getImgUrl } from "@/utils/commentUtils";
 type CommentAttributeType = {
   needCommentPoint?: boolean;
   commentPointId?: string | null;
@@ -15,6 +16,7 @@ type SocietyPropsType = CommentAttributeType & {
   commentPointId?: string | null;
   setVisibleCloseRight?: any;
   id: string;
+  showHeader?: boolean; // 新增：控制是否显示返回按钮和标题
 }
 
 
@@ -60,47 +62,41 @@ const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) =>
     <>
       {society &&
         <>
-          <div onClick={() => props.setVisibleCloseRight(false)} >
-            <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
-              <LeftOutline fontSize={18} />返回 </span>
-            <span style={{ color: 'black', fontSize: '16px', letterSpacing: '1px' }}>
-              社会新闻
-            </span>
-          </div>
+          {props.showHeader !== false && (
+            <div onClick={() => props.setVisibleCloseRight(false)} >
+              <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >
+                <LeftOutline fontSize={18} />返回 </span>
+              <span style={{ color: 'black', fontWeight: 'bold', fontSize: '16px', letterSpacing: '1px' }}>
+                社会新闻
+              </span>
+            </div>
+          )}
 
           <Card className="society-custom-card-container">
 
-            <div className="society-asia-title">
+            <div className="society-title">
               {society?.title}
             </div>
 
             <div className="society-card-content">
-              {/*           <div className="society-news-image-container">
-            {society?.imagePath && <Image
-              className="society-news-image"
-              src={society?.imagePath}
-              alt="Example"
-              fit="contain"
-            />}
-          </div> */}
 
               {society?.videoCover &&
                 <div className="society-news-image-container">
-                  <video className="society-news-video" src="/1.mp4" controls poster={society.videoCover} />
+                  <video className="society-news-video" src={getImgUrl(society.videoPath)} controls poster={getImgUrl(society.videoCover)} />
                 </div>
               }
               {!society?.videoCover && society?.imagePath &&
                 <div className="society-news-image-container">
                   <Image
                     className="society-news-image"
-                    src={society.imagePath}
+                    src={getImgUrl(society.imagePath)}
                     alt="Example"
                     fit="contain"
                   />
                 </div>
               }
-{/* 
-              <div className="society-asia-text-area">
+              {/* 
+              <div className="society-text-area">
                 {splitBySentenceLength((society?.content || '')).map((paragraph, index) => (
                   <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                     {paragraph}
@@ -108,12 +104,12 @@ const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) =>
                 ))}
               </div> */}
 
-                         <div
-              className="society-asia-text-area"
-              style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
-            >
-              {society?.content}
-            </div>
+              <div
+                className="society-text-area"
+                style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}
+              >
+                {society?.content}
+              </div>
 
 
               <span className="society-time">

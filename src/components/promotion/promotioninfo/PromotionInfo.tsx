@@ -97,7 +97,7 @@ const PromotionInfo: React.FC<PromotionPropsType & { commentRef: any }> = (props
             <div className="promotion-card-content">
               {promotion?.videoCover &&
                 <div className="promotion-news-image-container">
-                  <video className="promotion-news-video-inner" src="/1.mp4" controls poster={promotion.videoCover} />
+                  <video className="promotion-news-video-inner" src={promotion.videoPath} controls poster={promotion.videoCover} />
                 </div>
               }
 

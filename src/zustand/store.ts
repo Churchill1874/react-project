@@ -57,13 +57,64 @@ interface AppState {
   //在线人数
   onlineCount: number;
   setOnlineCount: (onlineCount: number) => void;
+
+  //新闻页面滚动位置
+  newsScrollPositions: { [key: string]: number };
+  setNewsScrollPosition: (tabKey: string, position: number) => void;
+  getNewsScrollPosition: (tabKey: string) => number;
+
+  //新闻列表数据缓存
+  newsListCache: { [key: string]: { data: any[], page: number, hasMore: boolean } };
+  setNewsListCache: (tabKey: string, data: any[], page: number, hasMore: boolean) => void;
+  getNewsListCache: (tabKey: string) => { data: any[], page: number, hasMore: boolean } | null;
+  clearNewsListCache: (tabKey?: string) => void;
+
+  // 最近阅读条目（定位用）
+  lastReadItemId: { [key: string]: string | null };
+  setLastReadItemId: (tabKey: string, id: string | null) => void;
+  getLastReadItemId: (tabKey: string) => string | null;
 }
 
 const useStore = create<AppState>()(
   persist(
-    set => ({
+    (set, get) => ({
       onlineCount: 0,
       setOnlineCount: onlineCount => set(() => ({ onlineCount })),
+
+      newsScrollPositions: {},
+      setNewsScrollPosition: (tabKey, position) => set(state => ({
+        newsScrollPositions: { ...state.newsScrollPositions, [tabKey]: position }
+      })),
+      getNewsScrollPosition: tabKey => {
+        const state = get();
+        return state.newsScrollPositions[tabKey] || 0;
+      },
+
+      newsListCache: {},
+      setNewsListCache: (tabKey, data, page, hasMore) => set(state => ({
+        newsListCache: { ...state.newsListCache, [tabKey]: { data, page, hasMore } }
+      })),
+      getNewsListCache: tabKey => {
+        const state = get();
+        return state.newsListCache[tabKey] || null;
+      },
+      clearNewsListCache: tabKey => set(state => {
+        if (tabKey) {
+          const newCache = { ...state.newsListCache };
+          delete newCache[tabKey];
+          return { newsListCache: newCache };
+        }
+        return { newsListCache: {} };
+      }),
+
+      lastReadItemId: {},
+      setLastReadItemId: (tabKey, id) => set(state => ({
+        lastReadItemId: { ...state.lastReadItemId, [tabKey]: id }
+      })),
+      getLastReadItemId: tabKey => {
+        const state = get();
+        return state.lastReadItemId[tabKey] || null;
+      },
       
       playerInfo: null,
       setPlayerInfo: playerInfo => set(() => ({ playerInfo })),

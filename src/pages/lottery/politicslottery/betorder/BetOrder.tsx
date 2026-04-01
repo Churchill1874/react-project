@@ -14,7 +14,7 @@ const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
         <>
           <div className="dot-loading-custom" >
             <span >加载中</span>
-            <DotLoading color='#fff' />
+            <DotLoading color='black' />
           </div>
         </>
       ) : (
