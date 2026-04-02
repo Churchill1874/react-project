@@ -21,7 +21,7 @@ const Society: React.FC = () => {
   const [societyHasHore, setSocietyHasHore] = useState<boolean>(() => {
     // 从 zustand 缓存恢复加载状态
     const cache = getNewsListCache('society');
-    return cache ? cache.hasMore : true;
+    return cache ? cache.hasMore : false;
   });
   const [societyPage, setSocietyPage] = useState<number>(() => {
     // 从 zustand 缓存恢复页码

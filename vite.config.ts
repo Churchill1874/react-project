@@ -6,7 +6,7 @@ import legacy from '@vitejs/plugin-legacy';
 export default defineConfig({
   plugins: [
     react(),
-    WindiCSS(),
+    WindiCSS({ preflight: false }),
     legacy({
       targets: ['> 0.5%', 'last 2 versions', 'not dead'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime', 'core-js/stable'], // 添加 core-js polyfill

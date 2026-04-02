@@ -10,16 +10,27 @@ import Society from "@/components/society/Society";
 import Promotion from '@/components/promotion/Promotion';
 import Topic from '@/components/topic/Topic';
 import Exposure from "@/components/exposure/Exposure";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import useStore from '@/zustand/store';
 
+// 这些 tab 由子组件自己负责恢复滚动位置，News.tsx 不干预
+const SELF_MANAGED_SCROLL_TABS = ['southeastAsia'];
+
 const News: React.FC = React.memo(() => {
+  const { typeId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [newsActiveTab, setNewsActiveTab] = useState<string>(() => {
-    return localStorage.getItem('newsActiveTab') || 'exposure';
+    if (typeId) return typeId;
+    if (location.pathname.startsWith('/news/')) {
+      const parts = location.pathname.split('/').filter(Boolean);
+      return parts[1] || 'news';
+    }
+    return 'news';
   });
   const [isScrollReady, setIsScrollReady] = useState(false);
   const newsContentRef = useRef<HTMLDivElement>(null);
-  const { typeId } = useParams();
   const { setNewsScrollPosition, getNewsScrollPosition } = useStore();
 
   // 组件卸载时清理定时器
@@ -33,10 +44,27 @@ const News: React.FC = React.memo(() => {
 
   // URL 有参数时，同步到 tab
   useEffect(() => {
+    if (location.pathname.startsWith('/newsInfo')) {
+      return;
+    }
+
     if (typeId) {
       setNewsActiveTab(typeId);
+      localStorage.setItem('newsActiveTab', typeId);
+      if (window.location.pathname !== `/news/${typeId}`) {
+        navigate(`/news/${typeId}`, { replace: true });
+      }
+      return;
     }
-  }, [typeId]);
+
+    if (location.pathname === '/news') {
+      setNewsActiveTab('news');
+      localStorage.setItem('newsActiveTab', 'news');
+      if (window.location.pathname !== '/news/news') {
+        navigate('/news/news', { replace: true });
+      }
+    }
+  }, [typeId, navigate, location.pathname]);
 
   // 保存滚动位置，当 tab 改变时
   const handleTabChange = (key: string) => {
@@ -45,34 +73,40 @@ const News: React.FC = React.memo(() => {
     }
     setIsScrollReady(false);
     setNewsActiveTab(key);
+    localStorage.setItem('newsActiveTab', key);
+    navigate('/news/' + key, { replace: true });
   };
 
-  // 通过newsActiveTab恢复滚动位置，并避免闪烁（先隐藏内容，再统一恢复）
+  // 恢复滚动位置（自管理的 tab 跳过，由子组件自己处理）
   useLayoutEffect(() => {
     if (!newsContentRef.current) {
+      setIsScrollReady(true);
       return;
     }
 
-    // 先立刻应用缓存位置（如果有）
-    const savedPosition = getNewsScrollPosition(newsActiveTab);
-    if (savedPosition > 0) {
-      newsContentRef.current.scrollTop = savedPosition;
+    // 东南亚等自管理 tab，直接显示，不操作 scrollTop
+    if (SELF_MANAGED_SCROLL_TABS.includes(newsActiveTab)) {
+      setIsScrollReady(true);
+      return;
     }
 
-    // 显示容器
-    const visibleTimer = window.setTimeout(() => {
+    setIsScrollReady(false);
+
+    const savedPosition = getNewsScrollPosition(newsActiveTab);
+
+    const raf = requestAnimationFrame(() => {
+      if (newsContentRef.current && savedPosition > 0) {
+        newsContentRef.current.scrollTop = savedPosition;
+      }
       setIsScrollReady(true);
-    }, 20);
+    });
 
-    return () => {
-      window.clearTimeout(visibleTimer);
-    };
-  }, [newsActiveTab, getNewsScrollPosition]);
+    return () => cancelAnimationFrame(raf);
+  }, [newsActiveTab]);
 
-  // URL 参数改变时切换tab
+  // URL 参数改变时切换 tab
   useEffect(() => {
     if (typeId) {
-      setIsScrollReady(false);
       setNewsActiveTab(typeId);
     }
   }, [typeId]);
@@ -84,7 +118,7 @@ const News: React.FC = React.memo(() => {
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
-    
+
     scrollTimeoutRef.current = window.setTimeout(() => {
       if (newsContentRef.current) {
         const container = newsContentRef.current;
@@ -93,10 +127,9 @@ const News: React.FC = React.memo(() => {
         const value = (maxScroll - scrollTop <= 200 ? maxScroll : scrollTop);
         setNewsScrollPosition(newsActiveTab, value);
       }
-    }, 100); // 100ms防抖
+    }, 100);
   };
 
-  // ✅ 条件渲染：只渲染当前激活的组件
   const renderActiveComponent = () => {
     switch (newsActiveTab) {
       case 'news':
@@ -124,7 +157,6 @@ const News: React.FC = React.memo(() => {
 
   return (
     <>
-      {/* 固定顶部的菜单 */}
       <div className="capsule-tabs-container">
         <CapsuleTabs activeKey={newsActiveTab} onChange={handleTabChange}>
           <CapsuleTabs.Tab title="曝光" key="exposure" />
@@ -134,14 +166,11 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="政闻" key="politics" />
           <CapsuleTabs.Tab title="国内" key="news" />
           <CapsuleTabs.Tab title="话题" key="topic" />
-          {/* <CapsuleTabs.Tab title="帮推广" key="promotion" />
-          <CapsuleTabs.Tab title="工作" key="job" /> */}
         </CapsuleTabs>
       </div>
 
-      {/* ✅ 统一的滚动容器 - 只渲染当前激活的组件 */}
-      <div 
-        className="news-content" 
+      <div
+        className="news-content"
         ref={newsContentRef}
         onScroll={handleScroll}
         style={{

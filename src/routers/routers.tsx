@@ -19,6 +19,7 @@ import ExposureDetail from '@/pages/exposuredetail';
 import CompanyDetail from '@/pages/companydetail';
 import SocietyDetail from '@/pages/societydetail';
 import PoliticsDetail from '@/pages/politicsdetail';
+import NewsInfoDetail from '@/pages/newsinfo';
 
 export default [
   //首页
@@ -116,6 +117,10 @@ export default [
   {
     path: '/politics/:id',
     component: PoliticsDetail
+  },
+  {
+    path: '/newsInfo/:id',
+    component: NewsInfoDetail
   }
 
 ];

@@ -1,4 +1,5 @@
 @theme: #1890ff;
+
 :root {
   --adm-color-primary: #1890ff;
   --adm-color-success: #52c41a;
@@ -11,9 +12,12 @@ html,
 body {
   touch-action: manipulation;
   height: 100vh;
-  height: 100dvh; /* 动态视口高度，适配移动端 */
+  height: 100dvh;
+  /* 动态视口高度，适配移动端 */
   margin: 0;
   padding: 0;
+  color: #000;
+
   /* 移动端防止滚动 */
   overflow: hidden !important;
   overscroll-behavior: none;
@@ -23,6 +27,7 @@ body {
 
 /* 桌面端允许滚动 */
 @media (min-width: 768px) {
+
   html,
   body {
     overflow: auto !important;
@@ -30,7 +35,8 @@ body {
   }
 
   .main-container {
-    height: auto; /* 桌面端允许自然高度 */
+    height: auto;
+    /* 桌面端允许自然高度 */
     min-height: 100vh;
     overflow: visible !important;
     max-width: 680px;
@@ -41,7 +47,8 @@ body {
 
   .content-area {
     overflow: auto !important;
-    padding-bottom: 60px; /* 桌面端固定底部间距 */
+    padding-bottom: 60px;
+    /* 桌面端固定底部间距 */
   }
 
   .navbar {
@@ -57,7 +64,8 @@ body {
 
 .main-container {
   height: 100vh;
-  height: 100dvh; /* 动态视口高度 */
+  height: 100dvh;
+  /* 动态视口高度 */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -76,8 +84,10 @@ body {
 /* 桌面端内容区域调整 */
 @media (min-width: 768px) {
   .content-area {
-    overflow: auto; /* 桌面端允许滚动 */
-    padding-bottom: 60px; /* 桌面端固定底部间距 */
+    overflow: auto;
+    /* 桌面端允许滚动 */
+    padding-bottom: 60px;
+    /* 桌面端固定底部间距 */
   }
 }
 
@@ -86,10 +96,12 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: calc(40px + env(safe-area-inset-bottom)); /* 包含安全区域 */
+  height: calc(40px + env(safe-area-inset-bottom));
+  /* 包含安全区域 */
   z-index: 999;
   margin: 0;
-  padding: 3px 0 env(safe-area-inset-bottom) 0; /* 底部安全区域 */
+  padding: 3px 0 env(safe-area-inset-bottom) 0;
+  /* 底部安全区域 */
   background-color: #fff;
   border-top: 1px solid rgb(233, 230, 230);
 }
@@ -108,15 +120,18 @@ body {
 }
 
 .adm-dot-loading-dot {
-  color: #ffffff; /* 设置你想要的颜色 */
+  color: #ffffff;
+  /* 设置你想要的颜色 */
 }
 
 .dot-loading-custom {
   span {
-    color: black; /* 设置Loading文字的颜色 */
+    color: black;
+    /* 设置Loading文字的颜色 */
     font-size: 16px;
   }
 }
+
 .adm-infinite-scroll {
   padding: 0px;
   margin: 0px;
@@ -126,11 +141,14 @@ body {
 }
 
 .adm-scroll-mask-right {
-  width: 10px !important; /* 缩小渐变宽度（原来是约 30px） */
+  width: 10px !important;
+  /* 缩小渐变宽度（原来是约 30px） */
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
 }
+
 .adm-scroll-mask-left {
-  width: 10px !important; /* 缩小渐变宽度（原来是约 30px） */
+  width: 10px !important;
+  /* 缩小渐变宽度（原来是约 30px） */
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
 }
 
@@ -142,6 +160,7 @@ body {
     display: flex;
     flex-direction: column;
   }
+
   .navbar {
     position: fixed;
     bottom: 0;
@@ -150,6 +169,7 @@ body {
     width: min(100%, 680px);
     max-width: 680px;
   }
+
   .capsule-tabs-container {
     max-width: 680px;
     width: 100%;
@@ -159,10 +179,12 @@ body {
 .adm-pull-to-refresh {
   touch-action: pan-y !important;
 }
+
 .adm-pull-to-refresh-head-content {
   color: black !important; // ← 替换成你想要的颜色
   font-size: 14px; // 也可以顺便调整字体大小
 }
+
 @media (min-width: 1024px) {
   .main-container {
     width: 100%;

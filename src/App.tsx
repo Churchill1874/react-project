@@ -1,6 +1,8 @@
 import { useLayoutEffect, useEffect, useRef, useState, useContext } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import routes from '@/routers/routers';
+import News from '@/pages/news/News';
+import NewsInfoDetail from '@/pages/newsinfo';
 import Navbar from '@/components/navbar/Navbar';
 import '@/global.less';
 import useStore from '@/zustand/store';
@@ -25,7 +27,7 @@ const getBgColor = (pathname: string) => {
 const DETAIL_PATHS = ['/southeastAsia/', '/exposure/', '/company/', '/society/'];
 
 const isDetailPage = (pathname: string) =>
-  DETAIL_PATHS.some(p => pathname.startsWith(p));
+  DETAIL_PATHS.concat(['/newsInfo/']).some(p => pathname.startsWith(p));
 
 const InnerApp = () => {
   return (
@@ -39,6 +41,8 @@ const InnerApp = () => {
 
 const App: React.FC = () => {
   const location = useLocation();
+  const isNewsInfo = location.pathname.startsWith('/newsInfo/');
+
   const [bgColor, setBgColor] = useState<string>('#fff');
   const { tokenId } = useStore();
 
@@ -96,7 +100,17 @@ const App: React.FC = () => {
       }
     >
       <div className="content-area" style={isDetailPage(location.pathname) ? { overflowY: 'auto' } : {}}>
-        <InnerApp />
+        {isNewsInfo ? (
+          <>
+            {/* 保持 News 组件挂载，避免回退重绘重载图片（隐藏但不销毁） */}
+            <div style={{ position: 'fixed', inset: 0, visibility: 'hidden', zIndex: 0 }}>
+              <News />
+            </div>
+            <NewsInfoDetail />
+          </>
+        ) : (
+          <InnerApp />
+        )}
       </div>
 
       <Navbar />

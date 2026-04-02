@@ -55,17 +55,15 @@
 }
 
 .image-container {
-  width: 150px; /* 固定宽度 */
-  max-width: 150px;
+  width: 120px; /* 固定宽度 */
+  height: 120px; /* 固定高度 */
+  max-width: 120px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-}
-
-.image-container img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
 .attributes span {
@@ -85,10 +83,9 @@
 }
 
 .news-image {
-  width: 180px; /* 固定图片宽度 */
-  height: 100%; /* 高度填满容器 */
-  object-fit: cover; /* 填满容器并保持比例 */
-  max-height: 100%; /* 确保图片不会超出容器高度 */
+  width: 100%; /* 填满容器宽度 */
+  height: 100%; /* 填满容器高度 */
+  object-fit: cover; /* 截图展示，不改变原图比例但完全填满 */
 }
 
 .popup-scrollable-content {
@@ -108,6 +105,7 @@
   color: gray;
   font-size: 12px;
 }
+
 .news-info-container {
   margin-top: 5px;
   text-align: left;
@@ -117,6 +115,7 @@
   padding-right: 3px;
   text-align: right;
 }
+
 .news-info-badge {
   padding: 2px 2px;
 
@@ -126,91 +125,3 @@
   }
 }
 
-.h-content-container {
-  padding: 0px 5px;
-  display: flex;
-  flex-direction: column; /* 纵向排列 */
-  width: 100%; /* 每行占满整个宽度 */
-}
-
-.h-image-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center; /* 让图片垂直居中 */
-  justify-content: center; /* 让图片水平居中 */
-}
-
-.h-news-image {
-  width: 95%; /* 让图片撑满整个容器 */
-  height: auto; /* 高度自适应 */
-}
-
-.h-text-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.h-title {
-  font-size: 15px;
-  text-align: center;
-  padding-top: 1px;
-  padding-bottom: 0px;
-}
-
-.h-time {
-  width: 100%;
-  font-size: 14px;
-  color: #888;
-  text-align: center;
-}
-
-.h-news-info-container,
-.h-news-info-source-container,
-.h-attributes {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.h-attributes span {
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  font-size: 13px;
-}
-
-.h-attributes-contariner {
-  display: flex;
-  flex-wrap: nowrap; /* 确保所有列在同一行 */
-  justify-content: space-between; /* 列之间保持均匀间隔 */
-  width: 100%;
-}
-
-.h-column {
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中（如果需要的话） */
-  padding: 10px;
-  height: 10px; /* 确保有固定高度，否则 align-items 无效 */
-  font-size: 14px;
-  color: gray;
-  span {
-    padding: 0 3px;
-  }
-  .source {
-    font-size: 13px;
-    color: gray;
-  }
-}
-
-.h-news-info-badge {
-  padding: 3px 4px;
-
-  .adm-badge-content {
-    font-size: 12px;
-  }
-}

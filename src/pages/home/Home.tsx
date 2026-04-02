@@ -430,7 +430,7 @@ const Home: React.FC = () => {
 
 
                           {politics.source &&
-                            <div className="politics-tag" style={{ display: 'flex', alignItems: 'center', marginTop: '0' }} > 新闻来源:
+                            <div className="politics-tag" style={{ display: 'flex', alignItems: 'center', marginTop: '0' }} > 来源:
                               <div >
                                 <LocationFill className="area" />
                                 {politics.country}

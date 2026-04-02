@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import Comment from '@/components/comment/Comment';
 import '@/components/news/newsinfo/NewsInfo.less';
 import {
@@ -18,10 +19,13 @@ type NewsInfoProps = NewsInfoType & {
   setNewsList?: React.Dispatch<React.SetStateAction<NewsInfoType[]>>;
   needCommentPoint?: boolean;
   commentPointId?: string | null;
+  setVisibleCloseRight?: (visible: boolean) => void;
+  showHeader?: boolean;
 }
 
 const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   setVisibleCloseRight,
+  showHeader = true,
   id,
   newsList,
   setNewsList = () => { },  // ✅ 加这个
@@ -29,7 +33,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
   commentPointId,
   commentRef
 }) => {
-
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false)
   const [likesIdList, setLikesIdList] = useState<number[]>([]);
   const [newsStatus, setNewsStatus] = useState<NewsInfoType | null | undefined>();
@@ -172,8 +176,25 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
             <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
             <div className='news-info'>
-              <div className='newsinfo-title' onClick={() => { setVisibleCloseRight(false); }} ><span style={{ paddingRight: '5px', color: 'gray' }} ><LeftOutline fontSize={20} />返回</span> {newsStatus?.title || ''}</div>
-              <div><span className='source'>{newsStatus?.source || ''}</span> <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span></div>
+              {showHeader && (
+                <div className='newsinfo-title' onClick={() => {
+                  if (setVisibleCloseRight) {
+                    setVisibleCloseRight(false);
+                  } else {
+                    navigate('/news/news');
+                  }
+                }}>
+                  <span style={{ paddingRight: '5px', color: 'gray' }}><LeftOutline fontSize={20} />返回</span>{newsStatus?.title || ''}
+                </div>
+              )}
+              {!showHeader && (
+                <div className='newsinfo-title'>{newsStatus?.title || ''}</div>
+              )}
+              <div style={{marginTop:'3px', marginBottom:'10px'}}>
+                <span className='source'>
+                {newsStatus?.source || ''}</span> 
+              <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span>
+              </div>
               {
                 newsStatus?.contentImagePath?.trim() &&
                 <Swiper loop autoplay allowTouchMove>

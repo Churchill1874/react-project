@@ -24,7 +24,7 @@ const Politics: React.FC = () => {
   const [politicsHasHore, setPoliticsHasHore] = useState<boolean>(() => {
     // 从 zustand 缓存恢复加载状态
     const cache = getNewsListCache('politics');
-    return cache ? cache.hasMore : true;
+    return cache ? cache.hasMore : false;
   });
   const [politicsPage, setPoliticsPage] = useState<number>(() => {
     // 从 zustand 缓存恢复页码

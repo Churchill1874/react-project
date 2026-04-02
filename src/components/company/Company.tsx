@@ -19,7 +19,7 @@ const Company: React.FC = () => {
   const [companyHasHore, setCompanyHasHore] = useState<boolean>(() => {
     // 从 zustand 缓存恢复加载状态
     const cache = getNewsListCache('company');
-    return cache ? cache.hasMore : true;
+    return cache ? cache.hasMore : false;
   });
   const [companyPage, setCompanyPage] = useState<number>(() => {
     // 从 zustand 缓存恢复页码
@@ -27,6 +27,12 @@ const Company: React.FC = () => {
     return cache ? cache.page : 1;
   });
 
+
+  // 首次加载骨架图控制：无缓存时显示骨架图
+  const [initialLoading, setInitialLoading] = useState<boolean>(() => {
+    const cache = getNewsListCache('company');
+    return !cache || cache.data.length === 0;
+  });
   // 组件挂载时，如果没有缓存数据就加载第一页
   useEffect(() => {
     if (companyList.length === 0) {
@@ -132,6 +138,7 @@ const Company: React.FC = () => {
     if (list.length > 0) {
       if (isReset) {
         setCompanyPage(() => 2);
+        setInitialLoading(false);
         setCompanyList(list);
         setCompanyHasHore(true);
         
@@ -260,6 +267,14 @@ const Company: React.FC = () => {
       </InfiniteScroll>
     </>
   );
+      {/* 首次加载骨架图 */}
+      {initialLoading && (
+        <>
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={8} animated />
+        </>
+      )}
+
 }
 
 export default Company;
