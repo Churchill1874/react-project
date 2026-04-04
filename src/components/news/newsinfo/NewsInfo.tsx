@@ -11,6 +11,7 @@ import { HeartOutline, LeftOutline, MessageOutline } from 'antd-mobile-icons';
 import { useEffect, useState } from 'react';
 import { FcLike, FcReading } from "react-icons/fc";
 import dayjs from 'dayjs'
+import useStore from '@/zustand/store';
 import { NewsInfoType } from '@/pages/news/api'
 import { getImgUrl } from '@/utils/commentUtils';
 
@@ -97,6 +98,15 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
           if (!prev) return prev;
           return { ...prev, likesCount: (prev.likesCount || 0) + 1 }
         })
+        // 同步更新列表缓存
+        const { getNewsListCache, setNewsListCache } = useStore.getState();
+        const cache = getNewsListCache('news');
+        if (cache) {
+          const newData = cache.data.map((item: any) =>
+            String(item.id) === String(id) ? { ...item, likesCount: (item.likesCount || 0) + 1 } : item
+          );
+          setNewsListCache('news', newData, cache.page, cache.hasMore);
+        }
       }
     } else {
       Toast.show({

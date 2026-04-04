@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { PoliticsType } from "@/components/politics/api";
 import { Image, Card, Divider, Tag, Toast, Skeleton, DotLoading } from 'antd-mobile';
@@ -9,6 +8,7 @@ import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
 import { PoliticsFind_Requset, PoliticsFindReqType } from '@/components/politics/api';
 
 import dayjs from 'dayjs'
+import useStore from '@/zustand/store';
 import { getImgUrl } from "@/utils/commentUtils";
 
 type PoliticsProps = {
@@ -102,6 +102,15 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
           if (!prev) return prev;
           return { ...prev, likesCount: (prev.likesCount || 0) + 1 }
         })
+        // 同步更新列表缓存
+        const { getNewsListCache, setNewsListCache } = useStore.getState();
+        const cache = getNewsListCache('politics');
+        if (cache) {
+          const newData = cache.data.map((item: any) =>
+            String(item.id) === String(id) ? { ...item, likesCount: (item.likesCount || 0) + 1 } : item
+          );
+          setNewsListCache('politics', newData, cache.page, cache.hasMore);
+        }
       }
     } else {
       Toast.show({

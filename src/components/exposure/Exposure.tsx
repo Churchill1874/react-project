@@ -111,8 +111,8 @@ const ExposureList: React.FC = () => {
       <>
         {hasMore ? (
           <div className="dot-loading-custom" style={{ width: '100%', padding: '0 5px', boxSizing: 'border-box' }}>
-            <span>加载中</span>
-            <DotLoading color='black' />
+            
+            
             <Skeleton.Title animated />
             <Skeleton.Paragraph lineCount={8} animated />
           </div>

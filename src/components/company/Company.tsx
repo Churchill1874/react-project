@@ -33,6 +33,7 @@ const Company: React.FC = () => {
     const cache = getNewsListCache('company');
     return !cache || cache.data.length === 0;
   });
+
   // 组件挂载时，如果没有缓存数据就加载第一页
   useEffect(() => {
     if (companyList.length === 0) {
@@ -90,10 +91,7 @@ const Company: React.FC = () => {
         {hasMore ? (
           <>
             <div className="dot-loading-custom" >
-              <span >加载中</span>
               <DotLoading color='black' />
-              <Skeleton.Title animated />
-              <Skeleton.Paragraph lineCount={8} animated />
             </div>
           </>
         ) : (
@@ -141,7 +139,7 @@ const Company: React.FC = () => {
         setInitialLoading(false);
         setCompanyList(list);
         setCompanyHasHore(true);
-        
+
         // 缓存数据到 zustand
         setNewsListCache('company', list, 2, true);
       } else {
@@ -151,7 +149,7 @@ const Company: React.FC = () => {
           setCompanyPage(newPage);
           setCompanyList(newList);
           setCompanyHasHore(true);
-          
+
           // 缓存数据到 zustand
           setNewsListCache('company', newList, newPage, true);
         } else {
@@ -171,6 +169,9 @@ const Company: React.FC = () => {
         setNewsListCache('company', cache.data, cache.page, false);
       }
     }
+
+    setInitialLoading(false); // ← 首次加载结束
+
 
   }
 
@@ -260,20 +261,23 @@ const Company: React.FC = () => {
             ))}
           </PullToRefresh>
 
+          {!initialLoading &&
+            <CompanyScrollContent hasMore={companyHasHore} />
+          }
 
-          <CompanyScrollContent hasMore={companyHasHore} />
-
+          {/* 首次加载骨架图 */}
+          {initialLoading && (
+            <div className="dot-loading-custom">
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+            </div>
+          )}
         </div>
+
       </InfiniteScroll>
     </>
   );
-      {/* 首次加载骨架图 */}
-      {initialLoading && (
-        <>
-          <Skeleton.Title animated />
-          <Skeleton.Paragraph lineCount={8} animated />
-        </>
-      )}
+
 
 }
 

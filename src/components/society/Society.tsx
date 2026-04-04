@@ -29,6 +29,12 @@ const Society: React.FC = () => {
     return cache ? cache.page : 1;
   });
 
+  // 首次加载骨架图控制：无缓存时显示骨架图
+  const [initialLoading, setInitialLoading] = useState<boolean>(() => {
+    const cache = getNewsListCache('company');
+    return !cache || cache.data.length === 0;
+  });
+
   // 组件挂载时，如果没有缓存数据就加载第一页
   useEffect(() => {
     if (societyList.length === 0) {
@@ -94,7 +100,7 @@ const Society: React.FC = () => {
         setSocietyPage(() => 2);
         setSocietyList(list);
         setSocietyHasHore(true);
-        
+
         // 缓存数据到 zustand
         setNewsListCache('society', list, 2, true);
       } else {
@@ -104,7 +110,7 @@ const Society: React.FC = () => {
           setSocietyPage(newPage);
           setSocietyList(newList);
           setSocietyHasHore(true);
-          
+
           // 缓存数据到 zustand
           setNewsListCache('society', newList, newPage, true);
         } else {
@@ -125,6 +131,8 @@ const Society: React.FC = () => {
       }
     }
 
+    setInitialLoading(false); // ← 首次加载结束
+
   }
 
   const SocietyScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
@@ -133,8 +141,6 @@ const Society: React.FC = () => {
         {hasMore ? (
           <>
             <div className="dot-loading-custom" >
-              <span >加载中</span>
-              <DotLoading color='black' />
               <Skeleton.Title animated />
               <Skeleton.Paragraph lineCount={8} animated />
             </div>
@@ -247,8 +253,17 @@ const Society: React.FC = () => {
           </PullToRefresh>
 
 
-          <SocietyScrollContent hasMore={societyHasHore} />
+          {!initialLoading &&
+            <SocietyScrollContent hasMore={societyHasHore} />
+          }
 
+          {/* 首次加载骨架图 */}
+          {initialLoading && (
+            <div className="dot-loading-custom">
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+            </div>
+          )}
         </div>
       </InfiniteScroll>
     </>

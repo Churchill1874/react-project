@@ -27,6 +27,13 @@ const SoutheastAsia: React.FC = () => {
     const cache = getNewsListCache('southeastAsia');
     return cache ? cache.page : 1;
   });
+
+  const [initialLoading, setInitialLoading] = useState<boolean>(() => {
+    const cache = getNewsListCache('southeastAsia');
+    return !cache || cache.data.length === 0; // 无缓存才显示骨架
+  });
+
+
   const loadingRef = useRef(false);
 
   // 挂载时处理两件事：
@@ -97,6 +104,7 @@ const SoutheastAsia: React.FC = () => {
       }
     }
 
+    setInitialLoading(false); // ← 首次加载结束
     loadingRef.current = false;
   };
 
@@ -112,8 +120,6 @@ const SoutheastAsia: React.FC = () => {
           <div className="dot-loading-custom">
             <span>加载中</span>
             <DotLoading color='black' />
-            <Skeleton.Title animated />
-            <Skeleton.Paragraph lineCount={8} animated />
           </div>
         ) : (
           <div className="infinite-scroll-footer">
@@ -204,7 +210,19 @@ const SoutheastAsia: React.FC = () => {
             ))}
           </PullToRefresh>
 
-          <SoutheastAsiaNewsScrollContent hasMore={southeastAsiaNewsHasMore} />
+
+          {/* 首次加载骨架图 */}
+          {initialLoading && (
+            <div className="dot-loading-custom">
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+            </div>
+          )}
+
+          {!initialLoading && (
+            <SoutheastAsiaNewsScrollContent hasMore={southeastAsiaNewsHasMore} />
+          )}
+
         </div>
       </InfiniteScroll>
     </>

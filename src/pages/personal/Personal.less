@@ -2,7 +2,8 @@
 
 .personal {
   background-color: @theme;
-  min-height: 100vh; /* 确保背景颜色填充整个屏幕 */
+  min-height: 100vh;
+  /* 确保背景颜色填充整个屏幕 */
   width: 100%;
   padding: 1px 0px;
   flex-direction: column;
@@ -23,6 +24,7 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+
   padding: 1px 5px;
 
   margin: 5px 10px;
@@ -46,6 +48,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding-right: 10px;
   padding-bottom: 5px;
+
   .adm-card-body {
     padding: 0px;
     width: 100%;
@@ -63,10 +66,13 @@
   --size: 56px;
   margin: 5px 0px;
   position: relative;
-  border: 1px solid @theme; /* 设置边框颜色和宽度 */
+  border: 1px solid @theme;
+  /* 设置边框颜色和宽度 */
   //border-radius: 50%; /* 使边框圆角，如果头像是圆形 */
-  padding: 1px; /* 如果需要内边距 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+  padding: 1px;
+  /* 如果需要内边距 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* 添加阴影效果 */
 }
 
 .header-text {
@@ -82,6 +88,12 @@
   width: 100%;
   margin: 0px;
   padding: 0px;
+}
+
+.left {
+  /* 设置一个固定宽度以对齐 */
+  padding-right: 1px;
+  color: gray;
 }
 
 .avatar-with-text {
@@ -100,6 +112,7 @@
     font-size: 15px;
     //margin-bottom: 10px;
   }
+
   .balance,
   .account {
     display: flex;
@@ -107,6 +120,7 @@
     font-size: 13px;
     color: gray;
   }
+
   .status {
     //margin-top: 12px;
   }
@@ -116,6 +130,7 @@
     width: 70px;
     /* 设置一个固定宽度以对齐 */
     padding-right: 1px;
+    color: gray;
   }
 
   .level {
@@ -150,8 +165,10 @@
   background-color: #fff;
   /* 设置背景颜色 */
 }
+
 .personal-info-container {
-  flex: 1; /* 使其占据剩余空间 */
+  flex: 1;
+  /* 使其占据剩余空间 */
   flex-direction: column;
   /* 确保 Card 组件垂直排列 */
   height: 300px;
@@ -177,16 +194,20 @@
   }
 
   .right-icon {
-    margin-left: auto; /* 将图标推到最右边 */
-    align-self: center; /* 垂直居中 */
+    margin-left: auto;
+    /* 将图标推到最右边 */
+    align-self: center;
+    /* 垂直居中 */
   }
 
   .evaluate {
     color: gray;
+
     .red-tag {
       margin-left: 5px;
       color: red;
     }
+
     .blue-tag {
       margin-left: 5px;
       color: blue;
@@ -220,9 +241,12 @@
 }
 
 .personal-info-space .label {
-  background-color: rgba(110, 203, 249, 0.501); /* 灰色半透明背景 */
-  padding: 3px 0px; /* 添加内边距 */
-  border-radius: 5px; /* 圆角 */
+  background-color: rgba(110, 203, 249, 0.501);
+  /* 灰色半透明背景 */
+  padding: 3px 0px;
+  /* 添加内边距 */
+  border-radius: 5px;
+  /* 圆角 */
 
   width: 50%;
   text-align: center;
@@ -236,11 +260,13 @@
   border-radius: 5px;
   /* 圆角 */
   margin-bottom: 0px;
+
   .adm-text-area-element {
     padding: 5px 8px;
 
     font-size: 15px;
   }
+
   .adm-text-area-count {
     font-size: 12px;
   }
@@ -256,7 +282,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 10px 10px; /* 控制外层容器的左右间隙 */
+  margin: 10px 10px;
+  /* 控制外层容器的左右间隙 */
 }
 
 .card {
@@ -264,11 +291,14 @@
     padding: 0;
   }
 }
+
 .card-inner-container {
   display: flex;
   flex-direction: column;
-  margin: 1px 0; /* 控制上下间隙 */
+  margin: 1px 0;
+  /* 控制上下间隙 */
   width: 100%;
+
   .adm-card-body {
     padding: 0;
   }
@@ -301,6 +331,7 @@
     align-items: center;
     height: 40px;
   }
+
   .icon {
     margin-right: 10px;
   }

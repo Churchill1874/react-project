@@ -20,6 +20,7 @@ import CompanyDetail from '@/pages/companydetail';
 import SocietyDetail from '@/pages/societydetail';
 import PoliticsDetail from '@/pages/politicsdetail';
 import NewsInfoDetail from '@/pages/newsinfo';
+import TopicDetail from '@/pages/topicdetail';
 
 export default [
   //首页
@@ -121,6 +122,10 @@ export default [
   {
     path: '/newsInfo/:id',
     component: NewsInfoDetail
+  },
+  {
+    path: '/topic/:id',
+    component: TopicDetail
   }
 
 ];

@@ -123,8 +123,6 @@ const Promotion: React.FC = () => {
       <>
         {hasMore ? (
           <div className="dot-loading-custom">
-            <span>加载中</span>
-            <DotLoading color="black" />
             <Skeleton.Title animated />
             <Skeleton.Paragraph lineCount={8} animated />
           </div>

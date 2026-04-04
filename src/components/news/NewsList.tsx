@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import useStore from '@/zustand/store';
 import NewsRecord from '@/components/news/NewsRecord';
-import { InfiniteScroll, PullToRefresh, Skeleton } from 'antd-mobile';
+import { InfiniteScroll, PullToRefresh, Skeleton, DotLoading } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 import '@/components/news/NewsList.less'
 
@@ -23,6 +23,12 @@ const NewsList: React.FC<any> = () => {
   const newsPageRef = useRef<number>(newsPage);
   const loadingRef = useRef<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  // 1. 加这个 state
+  const [initialLoading, setInitialLoading] = useState<boolean>(() => {
+    const cache = getNewsListCache('news');
+    return !cache || cache.data.length === 0;
+  });
 
   useEffect(() => {
     newsPageRef.current = newsPage;
@@ -71,6 +77,7 @@ const NewsList: React.FC<any> = () => {
     } finally {
       loadingRef.current = false;
       setLoading(false);
+      setInitialLoading(false);  // ← 加这行
     }
   };
 
@@ -91,8 +98,14 @@ const NewsList: React.FC<any> = () => {
   return (
     <>
 
-      <div >
-        <div>
+      {initialLoading ? (
+        // 整页骨架，从顶部开始
+        <div className="dot-loading-custom">
+          <Skeleton.Title animated />
+          <Skeleton.Paragraph lineCount={8} animated />
+        </div>
+      ) : (
+        <>
           <PullToRefresh onRefresh={() => reqNewsApi(true)}>
             {newsList?.map((news, _index) => (
               <div key={news.id} style={{ minHeight: '100px' }}>
@@ -116,29 +129,33 @@ const NewsList: React.FC<any> = () => {
               </div>
             ))}
           </PullToRefresh>
-        </div>
 
-        <InfiniteScroll
-          loadMore={() => reqNewsApi(false)}
-          hasMore={newsHasMore}
-          threshold={50}
-        />
+          <InfiniteScroll
+            loadMore={() => reqNewsApi(false)}
+            hasMore={newsHasMore}
+            threshold={50}
+          />
 
 
-        {loading ? (
-          <div >
-            {/* <span>加载中</span> */}
-            {/* <DotLoading color='#fff' /> */}
-            <Skeleton.Title animated />
-            <Skeleton.Paragraph lineCount={8} animated />
-          </div>
-        ) : (
-          <div className="infinite-scroll-footer">
-            <span>--- 我是有底线的 ---</span>
-          </div>
-        )}
+          {loading ? (
+            <div className="dot-loading-custom">
+              {/* <span>加载中</span> */}
+              {/* <DotLoading color='#fff' /> */}
+              <Skeleton.Title animated />
+              <Skeleton.Paragraph lineCount={8} animated />
+            </div>
+          ) : (
+            <div className="infinite-scroll-footer">
+              <span>--- 我是有底线的 ---</span>
+            </div>
+          )}
+        </>
+      )
 
-      </div>
+
+      }
+
+
 
 
     </>
