@@ -23,12 +23,12 @@ import { FcReading } from "react-icons/fc";
 import { LocationFill } from 'antd-mobile-icons';
 import { getImgUrl } from '@/utils/commentUtils';
 import useStore from '@/zustand/store';
+import { Request_OnlineCount} from '@/pages/groupchat/api';
 
 const Home: React.FC = () => {
   // 轮播图状态管理
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
-  const [onlineCount, setOnlineCount] = useState<number>(0);
   const [bannerList, setBannerList] = useState<BannerType[]>([]);
   const [newsRank, setNewsRank] = useState<NewsRankType>();
   const [company, setCompany] = useState<CompanyRankType>();
@@ -42,9 +42,10 @@ const Home: React.FC = () => {
   const [newsId, setNewsId] = useState<string>();
   const [newsVisible, setNewsVisible] = useState(false)
   const [exposureList, setExposureList] = useState<ExposureType[]>([]);
-
+  const [noticeBoard, setNoticeBoard] = useState<string[]>([])
   const navigate = useNavigate();
-  const { setOnlineCount: setGlobalOnlineCount } = useStore();
+  const { onlineCount, setOnlineCount } = useStore();
+
   // 创建扩展的幻灯片数组（前后各复制一份实现无缝循环）
   const extendedSlides = [
     bannerList[bannerList.length - 1], // 最后一张的副本
@@ -52,12 +53,14 @@ const Home: React.FC = () => {
     bannerList[0] // 第一张的副本
   ];
 
-
+  const onlintCountRequest = async () => {
+    const onlineCount = (await Request_OnlineCount()).data;
+    setOnlineCount(onlineCount);
+  }
+  
   // 获取首页新闻数据
   const homeReq = async () => {
     const data = (await Request_HOME()).data;
-    setOnlineCount(data.onlineCount)
-    setGlobalOnlineCount(data.onlineCount); // 同时更新全局状态
     setNewsRank(data.newsRank)
     setCompany(data.company)
     //setHotLottery(data.hotLottery)
@@ -68,10 +71,14 @@ const Home: React.FC = () => {
     setBannerList(data.bannerList.filter(item => item.imageType === 1))
     setPromotion(data.promotion);
     setExposureList(data.exposureList);
+    setNoticeBoard(data.noticeList);
+
+    console.log('首页数据：', data.noticeList);
   };
 
   useEffect(() => {
     homeReq();
+    onlintCountRequest();
   }, [])
 
   // 自动轮播效果
@@ -114,13 +121,47 @@ const Home: React.FC = () => {
       {/* 头部 */}
       <div className="header" >
         <div className="header-content">
-          <div className="logo">📰 新闻中心</div>
-          <div className="online-users">
-            <span className="online-dot"></span>
-            {onlineCount} 在线
+          {/* 第一行：logo + 在线人数 */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className="logo">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="logo">
+                  <img
+                    src="/assets/logo/logo1.png"
+                    alt="logo"
+                    style={{ width: '36px', height: '36px', verticalAlign: 'middle', marginRight: '6px', backgroundColor: 'transparent' }}
+                  />
+                  <div style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle', lineHeight: 1.1, marginLeft: '0px' }}>
+                    <span style={{ fontSize: '18px' }}> 灰亚新闻</span>
+                    <span style={{ fontSize: '11px', fontWeight: 400, color: 'white' }}>www.grayasia.com</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="online-users">
+              <span className="online-dot"></span>
+              {onlineCount} 在线
+            </div>
           </div>
+
+
         </div>
       </div>
+
+      {/* 第二行：滚动公告 */}
+      {noticeBoard && noticeBoard.length > 0 &&
+        <div className="notice-marquee-bar">
+          <span className="notice-label">公 告:</span>
+          <div className="notice-marquee-track">
+            <div className="notice-marquee-inner">
+              {[...noticeBoard, ...noticeBoard].map((item, i) => (
+                <span key={i} className="notice-marquee-item">{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      }
+
 
       <div className="content">
         {
@@ -135,7 +176,7 @@ const Home: React.FC = () => {
           newsRank &&
           <>
             {/* 热门新闻 */}
-            <div className="section" style={{ marginTop: '0px' }}>
+            <div className="section" >
               {/* 菜单图标 */}
               <div className="menu-icons">
                 {/*                 <Link to={'/bet'} className="menu-icon">
@@ -143,29 +184,39 @@ const Home: React.FC = () => {
                   <div className="menu-icon-text">政治盘口</div>
                 </Link> */}
                 <Link to={'/news/company'} className="menu-icon">
-                  <div className="menu-icon-image">🔍</div>
+                  <div className="menu-icon-image">
+                    <img src="/assets/icons/company.png" alt="追查公司" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                  </div>
                   <div className="menu-icon-text">追查公司</div>
                 </Link>
                 <Link to={'/news/southeastAsia'} className="menu-icon">
-                  <div className="menu-icon-image">🏝️</div>
+                  <div className="menu-icon-image">
+                    <img src="/assets/icons/southeast-asia.png" alt="东南亚" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                  </div>
                   <div className="menu-icon-text">东南亚</div>
                 </Link>
                 <Link to={'/news/politics'} className="menu-icon">
-                  <div className="menu-icon-image">📰</div>
-                  <div className="menu-icon-text">政治新闻</div>
+                  <div className="menu-icon-image">
+                    <img src="/assets/icons/politics.png" alt="国际政治" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                  </div>
+                  <div className="menu-icon-text">国际政治</div>
                 </Link>
-                <Link to={'/news/news'} className="menu-icon">
-                  <div className="menu-icon-image">🌏️</div>
-                  <div className="menu-icon-text">国内新闻</div>
+                <Link to={'/news/society'} className="menu-icon">
+                  <div className="menu-icon-image">
+                    <img src="/assets/icons/society.png" alt="社会瓜" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                  </div>
+                  <div className="menu-icon-text">社会瓜</div>
                 </Link>
-                <Link to={'/'} className="menu-icon">
-                  <div className="menu-icon-image">ℹ️</div>
-                  <div className="menu-icon-text">了解我们</div>
-                </Link>
+                <div className="menu-icon" onClick={() => { window.location.href = '/pages/about-us.html' }}>
+                  <div className="menu-icon-image">
+                    <img src="/assets/icons/weare.png" alt="了解我们" style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
+                  </div>
+                  <div className="menu-icon-text" >了解我们</div>
+                </div>
               </div>
 
               {/* 曝光台 */}
-              <div className="v2-section-title" style={{ marginTop: '5px', marginBottom: '2px', fontWeight: 'bold' }}>🔥 曝光台</div>
+              <div className="v2-section-title" style={{ fontWeight: 'bold', padding: '2px 5px' }}><span> 🔥 曝光台</span></div>
               <div className="home-news-grid">
                 <div className="home-grid" onClick={() => navigate('/news/exposure')}>
 
@@ -173,7 +224,7 @@ const Home: React.FC = () => {
                     <>
                       <div className="home-news-item" key={index}>
                         <div className="home-news-content">
-                          <Ellipsis className="home-news-title" style={{ fontSize: '15px', fontWeight: '500' }} content={exposure.title} direction='end' rows={1} />
+                          <Ellipsis className="home-news-title" style={{ fontSize: '14px', fontWeight: '500' }} content={exposure.title} direction='end' rows={1} />
                         </div>
                         <div className="home-news-image">
                           <Image fit='cover'//fit='contain'  // 大屏120px，小屏100px
@@ -222,9 +273,11 @@ const Home: React.FC = () => {
               {/* 公司信息 */}
               <div className="company-card" onClick={() => navigate('/news/company')}>
                 <div className="v2-section-title" style={{ marginTop: '0px', padding: '2px 5px' }}>
+                  <img src="/assets/icons/company.png" alt="追查公司" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
 
-                  <span style={{ marginRight: '10px', fontWeight: '600' }}>🕵️‍♂️ 追踪公司 ➡︎</span>
-
+                  <span style={{ marginLeft: '3px', fontWeight: '600' }}>
+                    追踪公司 ➡︎
+                  </span>
                   <span className="home-company-name">
                     {company?.companyName}
                   </span>
@@ -275,7 +328,13 @@ const Home: React.FC = () => {
             </div>
 
             {/* 东南亚新闻 */}
-            <div className="v2-section-title" style={{ margin: '0px 5px', padding: '2px 5px', fontWeight: '600' }}>🌏 东南亚资讯</div>
+            <div className="v2-section-title" style={{ margin: '0px 5px', padding: '2px 5px', fontWeight: '600' }}>
+              <img src="/assets/icons/southeast-asia.png" alt="东南亚" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+              <span style={{ marginLeft: 3 }}>
+                东南亚资讯
+              </span>
+            </div>
+
             <div className="sea-news-item" onClick={() => navigate('/news/southeastAsia')}>
               <div className="sea-news-flag"   >{southeastAsiaNews?.southeastAsiaCountry1}</div>
               <div className="sea-news-content">
@@ -388,7 +447,10 @@ const Home: React.FC = () => {
           <>
 
             <div className='section' onClick={() => navigate('/news/politics')} >
-              <div className="v2-section-title" style={{ margin: '0', padding: '2px 5px', fontWeight: '600' }}>🗳️ 国际政治</div>
+              <div className="v2-section-title" style={{ margin: '0', padding: '2px 5px', fontWeight: '600' }}>
+                <img src="/assets/icons/politics.png" alt="国际政治" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+                <span style={{ marginLeft: 3 }}>国际政治</span>
+              </div>
               {
                 politicsList.map((politics, index) => (
                   <>
@@ -458,7 +520,7 @@ const Home: React.FC = () => {
 
                     </Card>
 
-                    <Divider style={{ padding: '0px', margin: '0px', borderColor:'#f1ecec' }} />
+                    <Divider style={{ padding: '0px', margin: '0px', borderColor: '#f1ecec' }} />
                   </>
                 ))
               }
@@ -467,14 +529,19 @@ const Home: React.FC = () => {
           </>
         }
 
-        {homeAdvertise &&
+        {/*         {homeAdvertise &&
           <div className='section'>
             <div style={{ fontFamily: 'unset', color: 'gray', marginBottom: '3px' }}>广而告之</div>
             <Image style={{ padding: '0px' }} fit='contain' src={homeAdvertise} />
           </div>
 
         }
+ */}
 
+        <div className='section'>
+          <div style={{ fontFamily: 'unset', color: 'gray', marginBottom: '5px', marginTop: '10px' }}>广而告之</div>
+          <Image style={{ padding: '0px' }} fit='contain' src='/advertise/home.jpg' />
+        </div>
 
 
       </div>

@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import useStore from '@/zustand/store';
 import NewsRecord from '@/components/news/NewsRecord';
-import { InfiniteScroll, PullToRefresh, Skeleton, DotLoading } from 'antd-mobile';
+import { PullToRefresh, Skeleton } from 'antd-mobile';
 import { Request_NewsPage, NewsPageRequestType, NewsInfoType } from '@/pages/news/api';
 import '@/components/news/NewsList.less'
 
 const NewsList: React.FC<any> = () => {
-  const { getNewsListCache, setNewsListCache, getNewsScrollPosition } = useStore();
-  //各种新闻类型状态数据
+  const { getNewsListCache, setNewsListCache } = useStore();
+
   const [newsList, setNewsList] = useState<NewsInfoType[]>(() => {
     const cache = getNewsListCache('news');
     return cache ? cache.data : [];
@@ -22,32 +22,25 @@ const NewsList: React.FC<any> = () => {
   });
   const newsPageRef = useRef<number>(newsPage);
   const loadingRef = useRef<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // 1. 加这个 state
   const [initialLoading, setInitialLoading] = useState<boolean>(() => {
     const cache = getNewsListCache('news');
     return !cache || cache.data.length === 0;
   });
 
+
+
   useEffect(() => {
     newsPageRef.current = newsPage;
   }, [newsPage]);
 
-
-  // ✅ 完全模仿Politics组件的API请求逻辑
-  const reqNewsApi = async (isReset: boolean) => {
-    if (loadingRef.current) {
-      return;
-    }
+  const reqNewsApi = async (isReset: boolean): Promise<void> => {
+    if (loadingRef.current) return new Promise(() => { });
 
     loadingRef.current = true;
-    setLoading(true);
-
     const pageNum = isReset ? 1 : newsPageRef.current;
 
     try {
-      const pageReq: NewsPageRequestType = { pageNum: pageNum, pageSize: 10 };
+      const pageReq: NewsPageRequestType = { pageNum, pageSize: 20 };
       const newsListResp: NewsInfoType[] = (await Request_NewsPage(pageReq)).data.records || [];
 
       if (newsListResp.length > 0) {
@@ -76,20 +69,31 @@ const NewsList: React.FC<any> = () => {
       }
     } finally {
       loadingRef.current = false;
-      setLoading(false);
-      setInitialLoading(false);  // ← 加这行
+      setInitialLoading(false);
     }
   };
 
+  // 替换掉 InfiniteScroll，改用手动监听
+  useEffect(() => {
+    const container = document.querySelector('.news-content');
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container as HTMLElement;
+      if (scrollHeight - scrollTop - clientHeight < 50 && newsHasMore && !loadingRef.current) {
+        reqNewsApi(false);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [newsHasMore]); // newsHasMore 变化时重新绑定
+
   const hasRequestedRef = useRef(false);
 
-  // 初次进入或回到列表时：优先使用缓存；如果没缓存则请求一次。
   useEffect(() => {
-    if (hasRequestedRef.current) {
-      return;
-    }
+    if (hasRequestedRef.current) return;
     hasRequestedRef.current = true;
-
     if (!newsList || newsList.length === 0) {
       reqNewsApi(true);
     }
@@ -97,9 +101,7 @@ const NewsList: React.FC<any> = () => {
 
   return (
     <>
-
       {initialLoading ? (
-        // 整页骨架，从顶部开始
         <div className="dot-loading-custom">
           <Skeleton.Title animated />
           <Skeleton.Paragraph lineCount={8} animated />
@@ -107,10 +109,9 @@ const NewsList: React.FC<any> = () => {
       ) : (
         <>
           <PullToRefresh onRefresh={() => reqNewsApi(true)}>
-            {newsList?.map((news, _index) => (
+            {newsList?.map((news) => (
               <div key={news.id} style={{ minHeight: '100px' }}>
                 <NewsRecord
-                  key={news.id} // ✅ 和Politics一样使用index作为key
                   id={news.id}
                   title={news.title}
                   content={news.filterContent}
@@ -122,7 +123,6 @@ const NewsList: React.FC<any> = () => {
                   createTime={news.createTime}
                   category={news.category}
                   source={news.source}
-                  data-id={news.id}
                   newsList={newsList}
                   setNewsList={setNewsList}
                 />
@@ -130,34 +130,14 @@ const NewsList: React.FC<any> = () => {
             ))}
           </PullToRefresh>
 
-          <InfiniteScroll
-            loadMore={() => reqNewsApi(false)}
-            hasMore={newsHasMore}
-            threshold={50}
-          />
 
-
-          {loading ? (
-            <div className="dot-loading-custom">
-              {/* <span>加载中</span> */}
-              {/* <DotLoading color='#fff' /> */}
-              <Skeleton.Title animated />
-              <Skeleton.Paragraph lineCount={8} animated />
-            </div>
-          ) : (
+          {!newsHasMore && (
             <div className="infinite-scroll-footer">
               <span>--- 我是有底线的 ---</span>
             </div>
           )}
         </>
-      )
-
-
-      }
-
-
-
-
+      )}
     </>
   );
 };

@@ -23,7 +23,7 @@ const UserCenter: React.FC = () => {
 
   const showCustomerContact = () => {
     Modal.show({
-      content: <CustomerContact text={'@FengXiao170'} />,
+      content: <CustomerContact text={'@grayasia'} />,
       closeOnMaskClick: true,
     })
   }
@@ -131,7 +131,9 @@ const UserCenter: React.FC = () => {
           <span style={{ color: 'white', fontSize: '16px' }}>
             <div style={{ fontWeight: 'bold' }}> {playerInfo?.likesReceivedCount} </div>
             <div className="label" onClick={() => { toLikes(playerInfo?.id) }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} >
-              <div style={{ marginRight: '3px' }}><FcLike fontSize={16} /> </div>
+              <div style={{ marginRight: '3px' }}>
+                <FcLike fontSize={16} />
+                 </div>
               <div>收赞</div>
             </div>
           </span>
@@ -222,10 +224,10 @@ const UserCenter: React.FC = () => {
 
         <div className="card-outer-container">
           <Card className="card-inner-container">
-
+            {/* 
             <div className='fucation'>
               <div className='personal-card-title'><FcBriefcase className='icon' fontSize={22} /> 钱包 {playerInfo?.balance} U </div> <RightOutline className="right-icon" />
-            </div>
+            </div> */}
 
             <div className='fucation' onClick={() => showCustomerContact()}>
               <div className='personal-card-title'><FcHeadset className='icon' fontSize={22} /> 客服</div> <RightOutline className="right-icon" />
@@ -235,8 +237,16 @@ const UserCenter: React.FC = () => {
               <div className='personal-card-title' onClick={logout}><FcImport className='icon' fontSize={22} /> 退出</div> <RightOutline className="right-icon" />
             </div>
           </Card>
+
         </div>
 
+
+        {/* 底部 Logo 展示 */}
+        <div className="site-footer">
+          <img src="/assets/logo/logo1.png" alt="logo" className="site-logo" />
+          <div className="site-domain">www.grayasia.com</div>
+          <div className="site-slogan">灰亚新闻</div>
+        </div>
       </div>
 
     </>

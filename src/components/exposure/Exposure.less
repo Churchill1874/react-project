@@ -30,17 +30,17 @@
 /* 列表容器 */
 .exposure-list {
   padding: 0px 5px;
-  gap: 16px;
+  gap: 10px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 250px;
+  //margin-bottom: 250px;
 }
 
 /* 单个曝光项目 */
 .exposure-item {
   background: white;
   border-radius: 16px;
-  padding: 16px;
+  padding: 20px 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
   position: relative;
@@ -49,18 +49,18 @@
 
   /* 置顶样式 */
   &.top-item {
-    border: 2px solid #f59e0b;
+    border: 2px solid red;
     background: white;
 
     .top-badge {
       position: absolute;
       top: -1px;
-      right: 16px;
-      background: #f59e0b;
+      right: 15px;
+      background: red;
       color: white;
       padding: 4px 12px;
       border-radius: 0 0 8px 8px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
       box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
     }
@@ -68,10 +68,10 @@
 }
 
 .top-badge {
-  font-size: 14px;
-  padding: 1px 8px;
+  font-size: 12px;
+  padding: 2px 8px;
   color: #f8f6f4;
-  background: #bc5602b2;
+  background: rgba(250, 69, 69, 0.925);
   border-radius: 10px;
   margin-right: 5px;
 }
@@ -104,7 +104,7 @@
 
   .exposure-title {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     //color: #dc2626;
     line-height: 1.5;
@@ -118,7 +118,7 @@
 
   .exposure-title-red {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     //color: #dc2626;
     line-height: 1.5;
@@ -128,7 +128,7 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    color: #dc2626;
+    //color: #dc2626;
   }
 
   .exposure-description {
@@ -318,12 +318,12 @@
   }
 
   .exposure-item {
-    padding: 10px 12px;
+    padding: 10px;
     border-radius: 12px;
   }
 
   .item-content .exposure-title {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .suspects-grid {

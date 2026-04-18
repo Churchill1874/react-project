@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { CapsuleTabs } from "antd-mobile";
 import '@/pages/news/News.less';
-import NewsList from '@/components/news/NewsList';
-import Job from '@/components/job/Job';
+//import NewsList from '@/components/news/NewsList';
+//import Job from '@/components/job/Job';
+//import Promotion from '@/components/promotion/Promotion';
 import Company from '@/components/company/Company';
 import SoutheastAsia from '@/components/southeastasia/SoutheastAsia';
 import Politics from "@/components/politics/politics";
 import Society from "@/components/society/Society";
-import Promotion from '@/components/promotion/Promotion';
 import Topic from '@/components/topic/Topic';
 import Exposure from "@/components/exposure/Exposure";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
@@ -22,13 +22,14 @@ const News: React.FC = React.memo(() => {
   const location = useLocation();
 
   const [newsActiveTab, setNewsActiveTab] = useState<string>(() => {
-    if (typeId) return typeId;
-    if (location.pathname.startsWith('/news/')) {
-      const parts = location.pathname.split('/').filter(Boolean);
-      return parts[1] || 'news';
-    }
-    return 'news';
+    const saved = localStorage.getItem('newsActiveTab');
+    const validTabs = ['exposure', 'company', 'southeastAsia', 'society', 'politics', 'topic'];
+    if (saved && validTabs.includes(saved)) return saved;
+    if (typeId && validTabs.includes(typeId)) return typeId;
+    return 'exposure';
   });
+
+
   const [isScrollReady, setIsScrollReady] = useState(false);
   const newsContentRef = useRef<HTMLDivElement>(null);
   const { setNewsScrollPosition, getNewsScrollPosition } = useStore();
@@ -57,11 +58,11 @@ const News: React.FC = React.memo(() => {
       return;
     }
 
-    if (location.pathname === '/news') {
-      setNewsActiveTab('news');
-      localStorage.setItem('newsActiveTab', 'news');
-      if (window.location.pathname !== '/news/news') {
-        navigate('/news/news', { replace: true });
+    if (location.pathname === '/exposure') {
+      setNewsActiveTab('exposure');
+      localStorage.setItem('newsActiveTab', 'exposure');
+      if (window.location.pathname !== '/news/exposure') {
+        navigate('/news/exposure', { replace: true });
       }
     }
   }, [typeId, navigate, location.pathname]);
@@ -132,8 +133,6 @@ const News: React.FC = React.memo(() => {
 
   const renderActiveComponent = () => {
     switch (newsActiveTab) {
-      case 'news':
-        return <NewsList />;
       case 'politics':
         return <Politics />;
       case 'southeastAsia':
@@ -142,16 +141,18 @@ const News: React.FC = React.memo(() => {
         return <Society />;
       case 'topic':
         return <Topic />;
-      case 'promotion':
-        return <Promotion />;
-      case 'job':
-        return <Job />;
       case 'company':
         return <Company />;
       case 'exposure':
         return <Exposure />;
-      default:
+/*       case 'promotion':
+        return <Promotion />;
+      case 'news':
         return <NewsList />;
+      case 'job':
+        return <Job />; */
+      default:
+        return <Exposure />;
     }
   };
 
@@ -164,7 +165,7 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="东南亚" key="southeastAsia" />
           <CapsuleTabs.Tab title="社会瓜" key="society" />
           <CapsuleTabs.Tab title="政闻" key="politics" />
-          <CapsuleTabs.Tab title="国内" key="news" />
+          {/* <CapsuleTabs.Tab title="国内" key="news" /> */}
           <CapsuleTabs.Tab title="话题" key="topic" />
         </CapsuleTabs>
       </div>

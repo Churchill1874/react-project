@@ -33,7 +33,7 @@ const NewsInfoDetail: React.FC = () => {
   return (
     <div style={{ minHeight: '100vh', background: '#c1e4f91e', overflowY: 'auto' }}>
       <NavBar onBack={onBack} style={{fontWeight:'600'}}>
-        国内新闻详情
+        国内新闻数据源详情
       </NavBar>
 
       {idFromPath ? (

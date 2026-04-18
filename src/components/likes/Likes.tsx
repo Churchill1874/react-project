@@ -74,7 +74,7 @@ const Likes: React.FC<any> = () => {
             </div>
           </>
         ) : (
-          <span color='gray'>--- 我是有底线的 ---</span>
+          <span color='gray' style={{fontSize:'12px'}}>--- 没有更多的数据 ---</span>
         )}
       </>
     )
@@ -106,12 +106,13 @@ const Likes: React.FC<any> = () => {
 
       }
 
-    </PullToRefresh>
-
-
     <InfiniteScroll loadMore={() => reqPageApi(false)} hasMore={likesHasMore} >
       <LikesScrollContent hasMore={likesHasMore} />
     </InfiniteScroll>
+
+    </PullToRefresh>
+
+
 
     <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
       position='right'

@@ -202,7 +202,7 @@ const NewsInfo: React.FC<NewsInfoProps & { commentRef: any }> = ({
               )}
               <div style={{marginTop:'3px', marginBottom:'10px'}}>
                 <span className='source'>
-                {newsStatus?.source || ''}</span> 
+                {newsStatus?.source || ''} </span> 
               <span className='newsinfo-time'>{dayjs(newsStatus?.createTime || '').format('YYYY-MM-DD HH:mm')}</span>
               </div>
               {

@@ -13,16 +13,25 @@ export function highlightReply(inputString) {
 }
 
 
-  export function getImgUrl(url?: string) {
-    if (!url) return '';
+export function getImgUrl(url?: string) {
+  if (!url) return '';
 
-    if ('/assets/logo/logo2.png' === url){
-      return url;
-    }
-
-    if (url.startsWith('http')) {
-      return url;
-    }
-
-    return `http://192.168.188.199:8009${url}`;
+  if ('/assets/logo/logo1.jpg' === url) {
+    return url;
   }
+  if ('/assets/logo/logo2.jpg' === url) {
+    return url;
+  }
+  if ('/assets/logo/logo3.jpg' === url) {
+    return url;
+  }
+  if ('1' === url) {
+    return '/assets/logo/logo1.jpg';
+  }
+
+  if (url.startsWith('http')) {
+    return url;
+  }
+
+  return `http://192.168.188.199:8009${url}`;
+}

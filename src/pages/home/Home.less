@@ -6,6 +6,7 @@
         font-size: 13px !important;
         color: rgb(128, 1, 1);
       }
+
       .adm-step-description {
         padding-top: 0px !important;
         color: gray;
@@ -32,8 +33,80 @@
 
   /* 桌面端样式 */
   @media (min-width: 768px) {
-    position: relative; /* 确保是positioned element，让fixed header有参考 */
-    overflow: visible; /* 桌面端允许溢出 */
+    position: relative;
+    /* 确保是positioned element，让fixed header有参考 */
+    overflow: visible;
+    /* 桌面端允许溢出 */
+  }
+}
+
+.notice-marquee-bar {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  overflow: hidden;
+  //border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1px 0px;
+  //margin-top: 2px;
+  //background: rgba(132, 10, 238, 0.096); // 加这行
+  //background: #003063d7;
+  background-color: #188fff3e;
+
+  @media (min-width: 768px) {
+    margin-top: 46px; // 根据你 header 的实际高度调整（约 46~54px）
+  }
+
+}
+
+.notice-label {
+  font-size: 13px;
+  color: rgb(53, 52, 52);
+    white-space: nowrap;
+  //background: rgba(242, 243, 245, 0.352);  // 橙红色背景
+  padding: 0px 5px;
+  border-radius: 20px; // 胶囊圆角
+  flex-shrink: 0;
+  font-weight: 500;
+  line-height: 1.5; // 加这个
+  display: flex; // 加这个
+  align-items: center; // 加这个
+}
+
+.notice-marquee-track {
+  flex: 1;
+  overflow: hidden;
+  height: 20px; // 和胶囊实际高度一致（2px padding上 + 2px padding下 + 12px字体 + 行高）
+  position: relative;
+}
+
+.notice-marquee-inner {
+  display: flex;
+  top: 50%; // top 改成 50%
+
+  gap: 40px;
+  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  animation: notice-scroll 40s linear infinite;
+
+}
+
+.notice-marquee-item {
+  font-size: 13px;
+  //color: white;
+  color: rgb(53, 52, 52);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 1px;
+}
+
+@keyframes notice-scroll {
+  0% {
+    transform: translateY(-50%) translateX(0); // 两个合并写
+  }
+
+  100% {
+    transform: translateY(-50%) translateX(-50%); // 两个合并写
   }
 }
 
@@ -42,7 +115,7 @@
   //background: #1890ff;
   background: linear-gradient(to right, #1890ff, #42b1fb);
   //color: white;
-  padding: 7px;
+  padding: 5px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -50,13 +123,15 @@
 
   &-content {
     display: flex;
+    flex-direction: column; // 改这里
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch; // 改这里，让公告栏撑满宽度
   }
 
   /* 桌面端样式 */
   @media (min-width: 768px) {
-    position: fixed !important; /* 桌面端强制使用fixed */
+    position: fixed !important;
+    /* 桌面端强制使用fixed */
     top: 0;
 
     width: 100%;
@@ -72,7 +147,11 @@
   font-size: 20px; // 稍微减小字体
   font-weight: bold;
   color: white;
-  //color: #1890ff;
+  letter-spacing: 1px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    /* 宽度 + 颜色 */
+
+    //color: #1890ff;
 }
 
 .online-users {
@@ -101,9 +180,11 @@
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
+
   100% {
     opacity: 1;
   }
@@ -117,13 +198,13 @@
   //background-color: #1890ff;
 
   /* 桌面端为fixed header留出空间 */
-  @media (min-width: 768px) {
-    margin-top: 35px; /* 根据header实际高度调整 */
-  }
+
 }
+
 .adm-steps-vertical {
   padding: 0px !important;
 }
+
 .adm-step-icon-dot {
   //height: 5px;
 }
@@ -232,15 +313,18 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   border-radius: 8px;
 }
+
 .v2-section-title {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
-  font-size: 15px;
+  margin-bottom: 1px;
+  font-size: 14px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   background-color: #188fff3e;
   border-radius: 8px;
+  color: rgb(43, 43, 43);
 }
+
 .news-title {
   font-size: 14px; // 减小字体
   //font-weight: 500;
@@ -279,7 +363,8 @@
 @supports not (aspect-ratio: 16 / 9) {
   .carousel-container {
     height: 0;
-    padding-top: 56.25%; /* 16:9比例 */
+    padding-top: 56.25%;
+    /* 16:9比例 */
   }
 }
 
@@ -290,11 +375,14 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
 
   img {
-    width: 90%; /* 图片90%宽度 */
+    width: 90%;
+    /* 图片90%宽度 */
     height: 100%;
     object-fit: fill;
     border-radius: 8px;
@@ -304,9 +392,12 @@
 .carousel-caption {
   position: absolute;
   bottom: 0;
-  left: 5%; /* 对应图片的左边距 */
-  right: 5%; /* 对应图片的右边距 */
-  width: 90%; /* 与图片宽度一致 */
+  left: 5%;
+  /* 对应图片的左边距 */
+  right: 5%;
+  /* 对应图片的右边距 */
+  width: 90%;
+  /* 与图片宽度一致 */
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.713));
   color: white;
   padding: 15px 12px 8px;
@@ -314,7 +405,8 @@
   font-weight: 500;
   letter-spacing: 1px;
   border-radius: 0 0 8px 8px;
-  box-sizing: border-box; /* 确保padding不会增加宽度 */
+  box-sizing: border-box;
+  /* 确保padding不会增加宽度 */
 }
 
 .carousel-indicators {
@@ -490,6 +582,7 @@
     padding: 6px;
   }
 }
+
 // 公司信息样式
 .company-card {
   background: white;
@@ -508,7 +601,7 @@
 }
 
 .home-company-name {
-  font-size: 15px; // 减小字体
+  font-size: 14px; // 减小字体
   font-weight: bold;
   color: #052cc8;
   display: flex;
@@ -603,7 +696,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 6px;
-  margin-top: 5px;
+  margin-top: 3px;
   margin-bottom: 5px;
   font-size: 14px;
 }
@@ -612,7 +705,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   cursor: pointer;
   transition: transform 0.2s ease;
   flex: 1;
@@ -638,7 +731,7 @@
 .menu-icon-image {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  //background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -660,7 +753,8 @@
 .sea-news-item {
   display: flex;
   align-items: flex-start;
-  padding: 5px 5px; // 减小padding
+  padding: 3px 5px; // 减小padding
+
   &:last-child {
     border-bottom: none;
   }
@@ -765,16 +859,17 @@
   display: flex;
   flex-direction: column;
   padding: 0px 5px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 // 曝光台新闻网格样式 - 固定宽高版本（高度 = 宽度 * 90%）
 .home-news-grid {
   padding: 0px 10px;
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 7px;
+  margin-top: 1px;
   display: flex;
   justify-content: center;
+
   .home-grid {
     display: flex;
     gap: 10px;
@@ -814,6 +909,7 @@
   }
 
   .home-news-title {
+    color: rgb(54, 54, 54);
     font-size: 15px;
     font-weight: 400;
     //letter-spacing: 1px;
@@ -848,6 +944,10 @@
     gap: 15px;
   }
 
+  .section {
+    //margin-top: 15px;
+  }
+
   .home-news-item {
     .home-news-title {
       font-size: 15px;
@@ -860,6 +960,10 @@
   .home-news-grid .home-grid {
     max-width: 600px;
     gap: 10px;
+  }
+
+  .section {
+    //margin-top: 15px;
   }
 
   .home-news-item {
@@ -901,6 +1005,6 @@
   }
 }
 
-.other-companies-title{
+.other-companies-title {
   font-size: 12px;
 }

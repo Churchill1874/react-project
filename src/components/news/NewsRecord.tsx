@@ -31,7 +31,7 @@ const NewsRecord: React.FC<Props> = ({ id,
   setNewsList,
 }) => {
 
-  const imagePath = photoPath && photoPath !== '1' ? photoPath : '/assets/logo/logo2.png'
+  const imagePath = photoPath && photoPath !== '1' ? photoPath : '/assets/logo/logo1.jpg'
   const navigate = useNavigate();
   const { setNewsScrollPosition } = useStore();
 

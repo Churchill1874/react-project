@@ -203,7 +203,6 @@ export interface ExposureType{
 }
 
 export interface HomeType {
-  onlineCount: number;
   newsRank: NewsRankType;
   bannerList: BannerType[];
   company: CompanyRankType;
@@ -213,6 +212,7 @@ export interface HomeType {
   politicsList: PoliticsType[];
   promotion: PromotionType;
   exposureList: ExposureType[];
+  noticeList: string[];
 }
 
 interface Resp {

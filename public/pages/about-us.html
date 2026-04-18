@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>了解我们</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1890ff;
+      --primary-light: #e6f4ff;
+      --primary-mid: #91caff;
+      --success: #52c41a;
+      --warning: #faad14;
+      --danger: #f5222d;
+      --text-primary: #000000;
+      --text-secondary: #595959;
+      --text-muted: #8c8c8c;
+      --text-placeholder: #bfbfbf;
+      --border: #e9e6e6;
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --radius: 10px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NavBar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 12px;
+      gap: 10px;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .back-btn:active {
+      background: var(--bg);
+    }
+
+    .back-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--primary);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .navbar-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+      flex: 1;
+      text-align: center;
+    }
+
+    .navbar-placeholder {
+      width: 32px;
+      flex-shrink: 0;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
+      padding: 15px 15px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: -20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .hero-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .hero-title-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .hero-domain {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 2px;
+      letter-spacing: 0.03em;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .hero-bottom {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.6;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Telegram contact rows in hero */
+    .hero-contacts {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .hero-contacts .contact-row {
+      flex: 1;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .contact-row:active {
+      background: rgba(255, 255, 255, 0.20);
+    }
+
+    .contact-tg-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-tg-icon svg {
+      width: 17px;
+      height: 17px;
+      fill: #fff;
+    }
+
+    .contact-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    .contact-arrow {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 24px;
+    }
+
+    /* Section */
+    .section {
+      margin: 12px 12px 0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 0 4px 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Card group */
+    .card-group {
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .card {
+      background: var(--card);
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .card+.card {
+      border-top: 1px solid var(--border);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .card-label-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .card-desc em {
+      font-style: normal;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .ic-blue {
+      background: var(--primary-light);
+    }
+
+    .ic-red {
+      background: #fff1f0;
+    }
+
+    .ic-green {
+      background: #f6ffed;
+    }
+
+    .ic-purple {
+      background: #f9f0ff;
+    }
+
+    .badge-blue {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .badge-red {
+      background: #fff1f0;
+      color: #cf1322;
+    }
+
+    .badge-green {
+      background: #f6ffed;
+      color: #389e0d;
+    }
+
+    .badge-purple {
+      background: #f9f0ff;
+      color: #722ed1;
+    }
+
+    /* Quote card */
+    .quote-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 16px 18px;
+      position: relative;
+      animation: fadeUp 0.35s 0.24s ease both;
+    }
+
+    .quote-mark {
+      font-size: 48px;
+      line-height: 1;
+      color: var(--primary);
+      opacity: 0.15;
+      font-family: Georgia, serif;
+      position: absolute;
+      top: 4px;
+      left: 10px;
+    }
+
+    .quote-text {
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      text-align: justify;
+      padding-top: 10px;
+    }
+
+    .quote-text em {
+      font-style: normal;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .quote-divider {
+      width: 24px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 1px;
+      margin: 12px auto 0;
+      opacity: 0.4;
+    }
+
+    /* Support card */
+    .support-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      animation: fadeUp 0.35s 0.28s ease both;
+      padding: 18px 16px 18px;
+    }
+
+    .support-header {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .support-header h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .support-header p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* QR */
+    .qr-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .qr-frame {
+      width: 158px;
+      height: 158px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 16px rgba(24, 144, 255, 0.12);
+    }
+
+    .qr-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .qr-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--text-placeholder);
+      font-size: 11px;
+    }
+
+    /* Address string */
+    .addr-box {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .addr-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .addr-string {
+      font-size: 14px;
+      font-weight: 600;
+      color: gray;
+      font-family: 'Courier New', monospace;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .copy-btn {
+      flex-shrink: 0;
+      background: var(--primary-light);
+      color: var(--primary);
+      border: none;
+      border-radius: 5px;
+      padding: 4px 9px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .copy-btn:active {
+      background: var(--primary-mid);
+      color: #fff;
+    }
+
+    .copy-btn.copied {
+      background: #f6ffed;
+      color: #389e0d;
+    }
+
+    /* Notice box */
+    .notice-box {
+      margin-top: 12px;
+      background: var(--primary-light);
+      border-radius: 8px;
+      padding: 11px 13px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      border-left: 3px solid var(--primary);
+    }
+
+    .notice-box strong {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .thank-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      margin: 16px 12px 28px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: var(--text-placeholder);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-dot {
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--primary-mid);
+      margin: 0 6px;
+      vertical-align: middle;
+    }
+
+    /* animation delays */
+    .d1 {
+      animation-delay: 0.04s;
+    }
+
+    .d2 {
+      animation-delay: 0.08s;
+    }
+
+    .d3 {
+      animation-delay: 0.12s;
+    }
+
+    .d4 {
+      animation-delay: 0.16s;
+    }
+
+    .d5 {
+      animation-delay: 0.20s;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24">
+        <path d="M15 19l-7-7 7-7" />
+      </svg>
+    </div>
+    <div class="navbar-title">了解我们</div>
+    <div class="navbar-placeholder"></div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-top">
+      <div class="hero-icon">
+        <img src="/assets/logo/logo1.png" style=' width: 42px; height: 42px; objectFit: contain;' alt="灰亚新闻">
+
+      </div>
+      <div class="hero-title-wrap">
+        <div class="hero-title">灰亚新闻</div>
+        <div class="hero-domain">www.grayknow.com</div>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <span class="hero-sub">东南亚圈内从业者权益守护平台</span>
+      <span class="tag">独立运营</span>
+      <span class="tag">匿名安全</span>
+    </div>
+
+    <div class="hero-contacts">
+      <!-- 群链接 -->
+      <a class="contact-row" href="https://t.me/grayasia_com" target="_blank">
+        <div class="contact-tg-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 13.67l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.95l-.565-.061z" />
+          </svg>
+        </div>
+        <div class="contact-info">
+          <div class="contact-label">官方TG群</div>
+          <div class="contact-value">点击自动加入</div>
+        </div>
+        <span class="contact-arrow">›</span>
+      </a>
+      <!-- 群主联系 -->
+      <a class="contact-row" href="https://t.me/grayasia" target="_blank">
+        <div class="contact-tg-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.88 13.67l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.95l-.565-.061z" />
+          </svg>
+        </div>
+        <div class="contact-info">
+          <div class="contact-label">管理员TG</div>
+          <div class="contact-value">@grayasia</div>
+        </div>
+        <span class="contact-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 平台意义 -->
+  <div class="section">
+    <div class="section-title">关于平台</div>
+    <div class="card-group">
+      <div class="card d1">
+        <div class="card-inner">
+          <div class="card-icon ic-blue">⚖️</div>
+          <div class="card-content">
+            <div class="card-label">
+              <span class="card-label-text">平台存在的意义</span>
+              <span class="badge badge-blue">使命</span>
+            </div>
+            <div class="card-desc">
+              本平台致力于联合圈内从业者，对无良资本展开<em>自下而上的追查、与曝光</em>，努力减少弱势劳动群体权益受损，揭示曝光薪资拖欠、虚假招聘、暴力欺压、职场 PUA 等恶性行为。<br><br>
+              即便难以在短期内彻底改变行业环境，我们也希望让更多从业者在入职前看清风险，避免为不良企业卖命。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 声明类 -->
+  <div class="section">
+    <div class="section-title">重要声明</div>
+    <div class="card-group">
+      <div class="card d2">
+        <div class="card-inner">
+          <div class="card-icon ic-red">🔒</div>
+          <div class="card-content">
+            <div class="card-label">
+              <span class="card-label-text">您的隐私保护</span>
+              <span class="badge badge-red">声明</span>
+            </div>
+            <div class="card-desc">
+              本平台<em>绝不以任何名义</em>向用户索取真实身份信息。若有人冒充平台内部人员向您索取隐私资料，与本平台无任何关联，请谨防信息泄露。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card d3">
+        <div class="card-inner">
+          <div class="card-icon ic-blue">🛡️</div>
+          <div class="card-content">
+            <div class="card-label">
+              <span class="card-label-text">无实名验证保护隐私声明</span>
+              <span class="badge badge-blue">独立</span>
+            </div>
+            <div class="card-desc">
+              本平台服务器<em>不位于中国大陆境内</em>，与大陆不存在任何硬件、软件及数据层面的干预关联，切实保障用户隐私安全与言论自由，请放心使用。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card d4">
+        <div class="card-inner">
+          <div class="card-icon ic-green">💡</div>
+          <div class="card-content">
+            <div class="card-label">
+              <span class="card-label-text">平台收入与资金用途</span>
+              <span class="badge badge-green">透明</span>
+            </div>
+            <div class="card-desc">
+              平台目前<em>完全免费使用</em>，无任何付费门槛。收入来源依赖用户自愿打赏，所有资金将专项用于拓展信息源收录及平台功能迭代。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card d5">
+        <div class="card-inner">
+          <div class="card-icon ic-purple">🌏</div>
+          <div class="card-content">
+            <div class="card-label">
+              <span class="card-label-text">技术支持团队声明</span>
+              <span class="badge badge-purple">团队</span>
+            </div>
+            <div class="card-desc">
+              平台由一批<em>拥有多年圈内经验的技术人员</em>共同搭建与维护，团队成员目前均已移居海外各发达国家，持续为平台提供稳定支持。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结语 -->
+  <div class="section">
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">
+        我们希望得到大家的支持，以此更好地平衡圈内秩序，凝聚起<em>自下而上的力量</em>。
+      </div>
+      <div class="quote-divider"></div>
+    </div>
+  </div>
+
+  <!-- 支持我们 -->
+  <div class="section">
+    <div class="section-title">支持我们</div>
+    <div class="support-card">
+      <div class="support-header">
+        <h3>希望得到您的支持与打赏 🙏</h3>
+        <p style="color: gray;">USDT ( TRC20 )</p>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-frame">
+          <img src="/assets/usdt.jpg" alt="打赏二维码">
+        </div>
+
+        <!-- 收款地址字符串，替换 data-addr 和显示文字为你的实际地址 -->
+        <div class="addr-box">
+          <span class="addr-label">收款地址</span>
+          <span class="addr-string" id="addrStr">TSfQtNVPbifHoxDNi9ZL1VCzb8HKWvhxMU</span>
+          <button class="copy-btn" id="copyBtn" onclick="copyAddr()">复制</button>
+        </div>
+      </div>
+
+      <div class="notice-box">
+        <strong>温馨提示：</strong>转账时请在备注中填写您的<strong>平台账号</strong>，我们将在平台首页顶部公开致谢，并在力所能及的范围内为您提供优先支持。
+      </div>
+      <div class="thank-note">
+        感谢每一位支持者，我们会在平台页面公开向您表示感谢
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-text">独立运营</span>
+    <span class="footer-dot"></span>
+    <span class="footer-text">匿名安全</span>
+    <span class="footer-dot"></span>
+    <span class="footer-text">从业者自治</span>
+  </div>
+
+  <script>
+    function copyAddr() {
+      const addr = document.getElementById('addrStr').innerText.trim();
+      const btn = document.getElementById('copyBtn');
+
+      function onSuccess() {
+        btn.textContent = '已复制';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+      }
+
+      // 优先用 clipboard API
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(addr).then(onSuccess).catch(() => fallback());
+      } else {
+        fallback();
+      }
+
+      function fallback() {
+        const ta = document.createElement('textarea');
+        ta.value = addr;
+        // 手机上关键：定位到屏幕内可见区域
+        ta.style.position = 'fixed';
+        ta.style.left = '0';
+        ta.style.top = '0';
+        ta.style.opacity = '0';
+        ta.style.fontSize = '16px'; // 防止 iOS 自动缩放
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.setSelectionRange(0, ta.value.length); // 比 select() 更兼容
+        try {
+          document.execCommand('copy');
+          onSuccess();
+        } catch (e) {
+          alert('复制失败，请手动长按地址复制');
+        }
+        document.body.removeChild(ta);
+      }
+    }
+  </script>
+</body>
+
+</html>

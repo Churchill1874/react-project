@@ -13,13 +13,13 @@ const RelationScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     <>
       {hasMore ? (
         <>
-          <div style={{ fontSize: '15px', color: 'gray' }} >
+          <div style={{ fontSize: '14px', color: 'gray' }} >
             <span >加载中</span>
             <DotLoading color='gray' />
           </div>
         </>
       ) : (
-        <span color='gray'>--- 我是有底线的 ---</span>
+        <span color='gray' style={{fontSize:'12px'}}>--- 没有更多的数据 ---</span>
       )}
     </>
   )
@@ -117,12 +117,15 @@ const Relation: React.FC = () => {
 
             </div>
           ))}
+
         </PullToRefresh>
+
+        <InfiniteScroll loadMore={() => reqPageApi(false)} hasMore={relationHasMore} >
+          <RelationScrollContent hasMore={relationHasMore} />
+        </InfiniteScroll>
       </div>
 
-      <InfiniteScroll loadMore={() => reqPageApi(false)} hasMore={relationHasMore} >
-        <RelationScrollContent hasMore={relationHasMore} />
-      </InfiniteScroll>
+
 
       <Popup className='news-record-popup' bodyStyle={{ display: 'flex', flexDirection: 'column', overflowY: 'auto', width: '100%', height: '100%' }}
         position='right'
