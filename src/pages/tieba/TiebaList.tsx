@@ -20,7 +20,7 @@ const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
         </>
       ) : (
         <div className="infinite-scroll-footer">
-          <span >--- 我是有底线的 ---</span>
+          <span >---</span>
         </div>
       )}
     </>
@@ -277,7 +277,7 @@ const TiebaList: React.FC = () => {
 
         {(tiebaList.length != 0) &&
           <div className="infinite-scroll-footer">
-            <span >--- 我是有底线的 ---</span>
+            <span >---</span>
           </div>
         }
 

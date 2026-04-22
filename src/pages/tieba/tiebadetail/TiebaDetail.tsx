@@ -20,7 +20,7 @@ const TiebaDetail: React.FC = () => {
           </>
         ) : (
           <div className="infinite-scroll-footer" style={{ paddingBottom: '200px' }} >
-            <span style={{ color: 'black' }}>--- 我是有底线的 ---</span>
+            <span style={{ color: 'black' }}>---</span>
           </div>
         )}
       </>

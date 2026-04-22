@@ -21,9 +21,10 @@ import NewsInfo from '@/components/news/newsinfo/NewsInfo';
 import HomeBetOrder from '@/components/homebetorder/HomeBetOrder';
 import { FcReading } from "react-icons/fc";
 import { LocationFill } from 'antd-mobile-icons';
-import { getImgUrl } from '@/utils/commentUtils';
+import { getImgUrl, getImgUrls } from '@/utils/commentUtils';
 import useStore from '@/zustand/store';
-import { Request_OnlineCount} from '@/pages/groupchat/api';
+import { Request_OnlineCount } from '@/pages/groupchat/api';
+import logo from '@/assets/logo/logo1.png'
 
 const Home: React.FC = () => {
   // 轮播图状态管理
@@ -57,7 +58,7 @@ const Home: React.FC = () => {
     const onlineCount = (await Request_OnlineCount()).data;
     setOnlineCount(onlineCount);
   }
-  
+
   // 获取首页新闻数据
   const homeReq = async () => {
     const data = (await Request_HOME()).data;
@@ -127,8 +128,8 @@ const Home: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div className="logo">
                   <img
-                    src="/assets/logo/logo1.png"
-                    alt="logo"
+                    src={logo}
+                    alt="..."
                     style={{ width: '36px', height: '36px', verticalAlign: 'middle', marginRight: '6px', backgroundColor: 'transparent' }}
                   />
                   <div style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle', lineHeight: 1.1, marginLeft: '0px' }}>
@@ -466,7 +467,7 @@ const Home: React.FC = () => {
                           <div className="politics-image-container" style={{ marginTop: '5px' }}>
                             <Image
                               className="politics-image"
-                              src={getImgUrl(politics.imagePath)}
+                              src={getImgUrls(politics.imagePath)[0]}
                               alt="Example"
                               fit="contain"
                             />
@@ -497,7 +498,7 @@ const Home: React.FC = () => {
                                 <LocationFill className="area" />
                                 {politics.country}
                               </div>
-                              <div className="source-inner" style={{ color: '#0e5aa1ff' }}>
+                              <div className="source-inner" style={{ color: '#0e5aa1ff', fontWeight: 'bold' }}>
                                 {politics.source}
                               </div>
                             </div>
@@ -549,7 +550,7 @@ const Home: React.FC = () => {
 
 
       <div style={{ textAlign: 'center', marginTop: '30px' }}>
-        <span >--- 我是有底线的 ---</span>
+        <span >---</span>
       </div>
     </div >
   );

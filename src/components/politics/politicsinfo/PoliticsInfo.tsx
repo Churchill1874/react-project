@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { PoliticsType } from "@/components/politics/api";
-import { Image, Card, Divider, Tag, Toast, Skeleton, DotLoading } from 'antd-mobile';
+import { Image, Card, Divider, Tag, Toast, Skeleton, DotLoading, Swiper } from 'antd-mobile';
 import { FcLike, FcReading } from "react-icons/fc";
 import { LeftOutline, MessageOutline, LocationFill, HeartOutline } from 'antd-mobile-icons';
 import Comment from "@/components/comment/Comment";
@@ -9,7 +9,7 @@ import { PoliticsFind_Requset, PoliticsFindReqType } from '@/components/politics
 
 import dayjs from 'dayjs'
 import useStore from '@/zustand/store';
-import { getImgUrl } from "@/utils/commentUtils";
+import { getImgUrls } from "@/utils/commentUtils";
 
 type PoliticsProps = {
   needCommentPoint?: boolean;
@@ -120,6 +120,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
     }
   }
 
+  const images = getImgUrls(politics?.imagePath);
   return (
     <>
       {politics && <>
@@ -129,16 +130,32 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
 
         <Card className="politics-custom-card-container">
           <div className="politics-card-content">
-            <div className="politics-title">
+            <div className="politics-title" style={{ marginTop: '5px' }}>
               {politics?.title || ''}
             </div>
-            <div className="politics-image-container-inner">
-              {politics?.imagePath && <Image
-                className="politics-image"
-                src={getImgUrl(politics.imagePath)}
-                alt="Example"
-                fit="contain"
-              />}
+            <div className="politics-image-container-inner" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+            >
+              {images?.length > 0 &&
+                (
+                  <Swiper loop autoplay indicator={images.length > 1 ? undefined : () => null}>
+                    {images.map((path, index) => (
+                      <Swiper.Item key={index}>
+                        <Image
+                          className="politics-image"
+                          src={path}
+                          alt={`image-${index}`}
+                          fit="contain"
+                          style={{           // 👈 加这里
+                            width: '100%',
+                            display: 'block',
+                            margin: '0 auto',
+                          }}
+                        />
+                      </Swiper.Item>
+                    ))}
+                  </Swiper>
+                )
+              }
             </div>
 
             <Divider className='politics-divider-line' />
@@ -170,8 +187,8 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
                     <span className="tracking">
                       <LocationFill className="area" /> {politics?.country || ''}
                     </span>
-                    <span className="source-inner" style={{margin:'0px 5px'}}>
-                      { politics?.source || ''}
+                    <span className="source-inner" style={{ margin: '0px 5px' }}>
+                      {politics?.source || ''}
                     </span>
 
                   </span>

@@ -9,6 +9,7 @@ import '@/pages/personal/Personal.less';
 import { levelEnum } from '@/common/level'
 import CustomerContact from '@/components/tools/CustomerContact';
 import useStore from '@/zustand/store';
+import logo from '@/assets/logo/logo1.png'
 
 const UserCenter: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -243,7 +244,7 @@ const UserCenter: React.FC = () => {
 
         {/* 底部 Logo 展示 */}
         <div className="site-footer">
-          <img src="/assets/logo/logo1.png" alt="logo" className="site-logo" />
+          <img src={logo} alt="logo" className="site-logo" />
           <div className="site-domain">www.grayasia.com</div>
           <div className="site-slogan">灰亚新闻</div>
         </div>

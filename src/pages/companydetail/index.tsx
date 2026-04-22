@@ -67,34 +67,41 @@ const CompanyDetail: React.FC = () => {
                 </>
               }
 
-              <div className="text-area">
-                {company?.description}
-              </div>
-
-              <Divider className='company-divider-line' style={{ marginTop: 10 }} />
-              <div className="line-group">
+              <div className="line-group" style={{ marginTop: 10 }}>
                 <div className="line">{company?.overtimeCompensation}</div>
                 <Divider className='blue-divider-line' direction="vertical" />
                 <div className="line">{company?.holiday}</div>
                 <Divider className='blue-divider-line' direction="vertical" />
                 <div className="line">{company?.teamScale}</div>
-                <Divider className='blue-divider-line' direction="vertical" />
-                <div className="line">{company?.bonus}</div>
               </div>
 
               <Divider className='divider-line' />
+
               <div className="line-group">
                 <div className="line">{company?.salaryRange}</div>
                 <Divider className='blue-divider-line' direction="vertical" />
                 <div className="line">{company?.leadershipCharacter}</div>
                 <Divider className='blue-divider-line' direction="vertical" />
                 <div className="line">{company?.live}</div>
+              </div>
+
+              <Divider className='divider-line' />
+
+              <div className="line-group" >
+                <div className="line">{company?.bonus}</div>
                 <Divider className='blue-divider-line' direction="vertical" />
                 <div className="line">{company?.officeEnvironment}</div>
               </div>
+
+
+              <div className="text-area" style={{ whiteSpace: 'pre-wrap' }}>
+                {company?.description}
+              </div>
+
               <Divider className='divider-line' />
+
               <div className="line-group">
-                <span style={{ marginTop: 10 , color:'gray'}} ><LocationFill className="area" /> {company?.city}</span>
+                <span style={{ marginTop: 10, color: 'gray' }} ><LocationFill className="area" /> {company?.city}</span>
                 <span style={{ marginTop: 10 }} className='last-time'>最后一次更新时间: {dayjs(company?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
               </div>
             </Card>
@@ -108,6 +115,7 @@ const CompanyDetail: React.FC = () => {
                       title={event.description}
                       status='finish'
                       description={event.eventDate}
+                      style={{fontSize:'14'}}
                     />
                   )
                 })

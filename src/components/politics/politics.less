@@ -42,6 +42,7 @@
   //background-color: rgb(237, 232, 232); /* 默认背景颜色 */
   width: 100%;
 }
+
 .politics-image-container-inner {
   /* 容器最大高度 */
   display: flex;
@@ -50,16 +51,25 @@
   //background-color: rgb(237, 232, 232); /* 默认背景颜色 */
   width: 100%;
   margin-top: 5px;
+
+  // 让 Swiper 撑满容器
+  .adm-swiper {
+    width: 100%;
+  }
 }
 
 .politics-image {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  object-fit: cover; /* 填满容器并保持比例 */
-  //object-fit: contain;        /* 保持图片的比例，适应容器 */
-  min-width: 150px;
+  width: 100%; // 👈 加这个
+
+  //justify-content: center;
+  //align-items: center;
+  //text-align: center;
+  //object-fit: contain;
+  /* 填满容器并保持比例 */
+  object-fit: contain;        /* 保持图片的比例，适应容器 */
+  //min-width: 150px;
   max-width: 300px;
+
 }
 
 .line-group {
@@ -79,16 +89,20 @@
   padding: 1px 0;
   text-align: start;
   color: rgb(44, 44, 44);
-  text-indent: 2em; /* 首行缩进两格 */
+  text-indent: 2em;
+  /* 首行缩进两格 */
   font-size: 15px;
   //font-weight: bold;
   letter-spacing: 1.1px;
 }
 
 .politics-text-area p {
-  margin-bottom: 1px; /* 段落间距 */
-  line-height: 1; /* 行间距 */
-  text-indent: 2em; /* 首行缩进 */
+  margin-bottom: 1px;
+  /* 段落间距 */
+  line-height: 1;
+  /* 行间距 */
+  text-indent: 2em;
+  /* 首行缩进 */
 }
 
 .politics-divider-line {
@@ -117,9 +131,12 @@
 }
 
 .politics-button-info {
-  display: flex; /* 使用 Flexbox 布局 */
-  justify-content: space-between; /* 横向平分空间 */
-  align-items: center; /* 垂直居中 */
+  display: flex;
+  /* 使用 Flexbox 布局 */
+  justify-content: space-between;
+  /* 横向平分空间 */
+  align-items: center;
+  /* 垂直居中 */
   padding: 0 10px;
   font-size: 13px;
 }
@@ -128,14 +145,18 @@
   margin-top: 3px;
   margin-bottom: 10px;
 }
+
 .politics-synopsis {
   margin-top: 3px;
 }
 
 .politics-button-info-inner {
-  display: flex; /* 使用 Flexbox 布局 */
-  justify-content: space-around; /* 横向平分空间 */
-  align-items: center; /* 垂直居中 */
+  display: flex;
+  /* 使用 Flexbox 布局 */
+  justify-content: space-around;
+  /* 横向平分空间 */
+  align-items: center;
+  /* 垂直居中 */
   padding: 0 10px;
   font-size: 13px;
   margin-top: 20px;
@@ -153,21 +174,25 @@
 
 .icon-and-text {
   display: flex;
-  align-items: center; /* 垂直居中 */
-  gap: 1px; /* 图标和数字之间的间距，可调整 */
+  align-items: center;
+  /* 垂直居中 */
+  gap: 1px;
+  /* 图标和数字之间的间距，可调整 */
 }
 
 .number {
   font-size: 14px;
   padding-left: 2px;
-  line-height: 1; /* 确保数字没有额外的行高 */
+  line-height: 1;
+  /* 确保数字没有额外的行高 */
   color: gray;
 }
 
 .message-number {
   font-size: 14px;
   padding-left: 2px;
-  line-height: 1; /* 确保数字没有额外的行高 */
+  line-height: 1;
+  /* 确保数字没有额外的行高 */
   margin-right: 50px;
 }
 
@@ -191,24 +216,31 @@
   font-size: 18px; // 修改输入文本的字体大小
   margin-left: 5px;
 }
+
 .source {
   color: #1e77ca;
+
   .tracking {
-    display: inline-block; /* 防止文字过长时的换行 */
+    display: inline-block;
+    /* 防止文字过长时的换行 */
     text-align: center;
+
     .area {
       margin-right: 1px;
       font-size: 13px;
     }
+
     color: gray;
     margin-top: 3px;
   }
 }
+
 .politics-tag {
   //margin-right: 10px;
 
   font-size: 13px;
   margin-top: 3px;
+
   .tag-size {
     font-size: 11px;
   }

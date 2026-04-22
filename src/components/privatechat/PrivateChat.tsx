@@ -23,7 +23,7 @@ const PrivateMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
           <DotLoading color='black' />
         </div>
       ) : (
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: '13px' }} >--- 我是有底线的 ---</div>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: '13px' }} >---</div>
       )}
     </>
   )

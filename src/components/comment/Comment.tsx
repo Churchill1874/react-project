@@ -25,7 +25,7 @@ const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
           </div>
         </>
       ) : (
-        <span color='gray' style={{ marginTop: '100px', marginBottom: '200px' }}>--- 没有更多的评论了 ---</span>
+        <span color='gray' style={{ marginTop: '100px', marginBottom: '200px', fontWeight: 400, fontSize: 12 }}>--- 没有更多的评论了 ---</span>
       )}
     </>
   )

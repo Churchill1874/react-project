@@ -1,99 +1,414 @@
+// ================================
+// 灰亚新闻 · 登录注册页 · 蓝白主题
+// ================================
 @theme: #1890ff;
 
-.adm-result-page-header {
-  height: 80px;
+@primary: #1890ff;
+@primary-light: #1890ff;
+@primary-bg: #f0f6ff;
+@primary-border: #d1e0f7;
+@text-main: #1e3a5f;
+@text-muted: #6b91c7;
+@text-hint: #9db8d8;
+
+// ---- 整页容器 ----
+.login-page {
+  margin: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0px 16px 40px;
+  position: static;  // 不用 relative，避免影响 fixed 弹出层的定位基准
 }
 
-.adm-list-card {
-  margin: 10px;
+.login-bg-circle {
+  display: none; // 父级不再是 relative，装饰圆隐藏掉，不影响布局
 }
 
-.adm-form {
+// ---- 卡片 ----
+.login-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(37, 99, 235, 0.1), 0 2px 8px rgba(37, 99, 235, 0.06);
+  width: 100%;
+  max-width: 440px;
+  padding: 10px 20px 10px;
+  position: relative;
+  z-index: 1;
+}
+
+// ---- Logo ----
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1px;
+
+  &__img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+  }
+
+  &__name {
+    font-size: 20px;
+    font-weight: 700;
+    color: @text-main;
+    letter-spacing: 4px;
+  }
+
+  &__sub {
+    margin-top: 4px;
+    font-size: 12px;
+    color: @text-muted;
+    letter-spacing: 1px;
+  }
+}
+
+// ---- Tab 栏 ----
+.login-tab-bar {
+  display: flex;
+  border-bottom: 2px solid #e8f0fc;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.login-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 20px 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  color: @text-hint;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 4px;
+  transition: color 0.25s;
+
+  &--active {
+    color: rgb(37, 94, 169);
+    font-weight: 700;
+  }
+
+  .login-tab-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: @primary-light;
+    border-radius: 50%;
+    margin-left: 4px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  &--active .login-tab-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.login-tab-indicator {
+  position: absolute;
+  bottom: -2px;
+  height: 3px;
+  width: 50%;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, @primary, @primary-light);
+  transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ---- antd-mobile Form 完整覆盖 ----
+// 策略：不动 adm-input 本身的 overflow/border，
+// 改为在 adm-form-item-child-inner 上画边框，让 adm-input 透明贴合其中
+.login-form {
+
+  .adm-list {
+    background: transparent;
+    --border-top: none;
+    --border-bottom: none;
+    --border-inner: none;
+  }
+
+  .adm-list-body {
+    background: transparent;
+    border: none;
+    &::before, &::after { display: none; }
+  }
+
+  .adm-list-item {
+    background: transparent;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .adm-list-item-content {
+    border-bottom: none !important;
+    padding: 0 !important;
+    align-items: center;
+    min-height: 48px;
+  }
+
+  .adm-list-item-content-prefix {
+    width: 56px !important;
+    min-width: 56px !important;
+    flex-shrink: 0 !important;
+    padding-right: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+  }
+
+  .adm-list-item-content-main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    padding: 4px 20px 4px 0 !important;
+  }
+
+  .adm-form-item-child {
+    width: 100% !important;
+  }
+
+  // ✅ 边框画在这一层，不碰 adm-input 的 overflow
+  .adm-form-item-child-inner {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 40px;
+    background: #f7faff;
+    border: 1.5px solid @primary-border;
+    border-radius: 9px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus-within {
+      border-color: @primary-light;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+      background: #fff;
+    }
+  }
+
+  // adm-input 本身只做透明容器，不加任何 border/overflow
+  .adm-input {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 40px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+
+    .adm-input-element {
+      width: 100% !important;
+      height: 40px !important;
+      line-height: 40px !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      font-size: 16px !important; // >=16px 防止手机自动放大
+      color: @text-main !important;
+
+      &::placeholder {
+        color: @text-hint;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .adm-list-item-description { display: none !important; }
+
+  .adm-form-item {
+    margin-bottom: 5px;
+    padding: 0;
+  }
+
+  .adm-form-item-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .adm-form-item-feedback-error {
+    font-size: 12px;
+    color: #ef4444;
+    padding-left: 64px;
+    margin-top: 2px;
+  }
+
   .adm-form-footer {
-    padding-top: 10px;
+    padding: 16px 0 8px;
   }
 }
 
-.adm-result-page-bg {
-  height: 1850px;
-}
+// ---- 验证码行：antd-mobile Input + 图片横排 ----
+.login-captcha-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 
-.adm-result-page {
-  overflow-y: auto;
-}
-
-.adm-picker-view-column-item-label {
-  font-size: 20px;
-}
-
-.tabs {
-  margin-top: 15%;
-  --fixed-active-line-width: 50%;
-
-  .adm-tabs-tab-active{
-    font-weight: bold;
-    color: rgb(3, 76, 148);
+  // 验证码用 antd-mobile Input，保持和其他框一致的视觉
+  .adm-form-item-child-inner {
+    padding-right: 0 !important;
   }
-  .adm-tabs-tab {
-    //color: white;
+
+  .adm-input {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 40px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+
+    .adm-input-element {
+      font-size: 16px !important;
+      color: @text-main !important;
+      &::placeholder { color: @text-hint; font-size: 16px; }
+    }
+  }
+}
+
+
+// ---- 生日三下拉框 ----
+// 让包裹 BirthPicker 的 child-inner 不显示边框背景，避免"输入框套下拉框"
+.birth-select-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+
+  // 向上找到 child-inner，清除它的边框和背景
+  & {
+    // 通过在 less 里直接覆盖父级：用组合选择器
+  }
+}
+
+// 包含 birth-select-row 的 child-inner 去掉边框
+.adm-form-item-child-inner:has(.birth-select-row) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
+.birth-select {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid @primary-border;
+  border-radius: 9px;
+  background: #f7faff;
+  color: @text-main;
+  font-size: 14px;
+  padding: 0 6px;
+  outline: none;
+  appearance: auto;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: @primary-light;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    background: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ---- 原生 input 样式（替代 antd-mobile Input，解决中文输入法重复问题）----
+.login-native-input {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px !important; // >=16px 防止手机自动放大
+  color: @text-main;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: @text-hint;
     font-size: 16px;
   }
 }
 
-.form {
-  .adm-list-item-content-prefix {
-    width: 70px;
-    /* 调整这个值以控制左侧空白区域的宽度 */
+// 验证码图片
+.login-captcha-img {
+  border-radius: 8px;
+  border: 1.5px solid @primary-border;
+  cursor: pointer;
+  display: block;
+  flex-shrink: 0;
+}
+
+// ---- Radio ----
+.adm-radio-icon {
+  border-color: @primary-border !important;
+}
+
+.adm-radio.adm-radio-checked .adm-radio-icon {
+  background: @primary-light !important;
+  border-color: @primary-light !important;
+}
+
+// ---- 提交按钮 ----
+.login-submit-btn {
+  background: linear-gradient(90deg, @primary 0%, @primary-light 100%) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  height: 44px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  letter-spacing: 4px !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.22) !important;
+  --background-color: transparent !important;
+  --border-color: transparent !important;
+
+  &:active { opacity: 0.9; transform: scale(0.985); }
+}
+
+// ---- 底部 ----
+.login-footer {
+  text-align: center;
+  margin-top: 15px;
+  z-index: 1;
+
+  &__domain {
+    font-size: 13px;
+    font-weight: 600;
+    color: @text-muted;
+    letter-spacing: 0.5px;
   }
 
-  .adm-list-item-title {
-    font-size: 14px;
-    /* 设置标题字体大小 */
-  }
-
-  .adm-list-item-content {
-    font-size: 15px;
-    /* 设置内容字体大小 */
+  &__slogan {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: @text-hint;
+    letter-spacing: 0.5px;
   }
 }
 
-.footer {
-  margin-top: 0px;
-  background-color: transparent;
-  /* 去掉背景色 */
-  border: none;
-  /* 去掉边框，如果有的话 */
-
-  .adm-footer {
-    background-color: transparent;
-    /* 去掉背景色 */
-    border: none;
-    /* 去掉边框 */
-    box-shadow: none;
-    /* 去掉阴影 */
-  }
-
-  .adm-footer-content {
-    background-color: transparent;
-    /* 确保内容背景色也去掉 */
-    border: none;
-    /* 去掉边框 */
-  }
-}
-
-
-/* 针对 PC / 桌面端（屏幕宽度 ≥ 768px） */
+// ---- PC 端 ----
 @media screen and (min-width: 768px) {
-
-  .adm-result-page-title{
-    color: @theme;
-    font-weight: bold;
-  }
-
-  .antd-mobile-icon{
-    color: #1890ff;
-  }
+  .login-card { padding: 32px 32px 16px; }
+  .login-logo__name { font-size: 24px; }
 }
-
-
-

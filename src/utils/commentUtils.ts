@@ -13,25 +13,19 @@ export function highlightReply(inputString) {
 }
 
 
-export function getImgUrl(url?: string) {
+// 单图场景用这个（头像、logo等）
+export function getImgUrl(url?: string): string {
   if (!url) return '';
+  if (url === '1') return '/assets/logo/logo1.jpg';
+  if (url.startsWith('/assets/logo/')) return url;
+  if (url.startsWith('http')) return url;
+  return url;
+}
 
-  if ('/assets/logo/logo1.jpg' === url) {
-    return url;
-  }
-  if ('/assets/logo/logo2.jpg' === url) {
-    return url;
-  }
-  if ('/assets/logo/logo3.jpg' === url) {
-    return url;
-  }
-  if ('1' === url) {
-    return '/assets/logo/logo1.jpg';
-  }
+// 多图场景用这个（新闻配图等）
+export function getImgUrls(url?: string): string[] {
+  console.log('getImgUrls called:', url);  // 加这行
 
-  if (url.startsWith('http')) {
-    return url;
-  }
-
-  return `http://192.168.188.199:8009${url}`;
+  if (!url) return [];
+  return url.split('||').map(u => getImgUrl(u.trim())).filter(Boolean);
 }

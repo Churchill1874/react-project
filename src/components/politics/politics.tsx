@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Card, Divider, Tag, Ellipsis, Image, Toast, PullToRefresh, Skeleton } from 'antd-mobile';
+import { Card, Divider, Tag, Ellipsis, Image, Toast, PullToRefresh, Skeleton, Swiper } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
 import { MessageOutline, HeartOutline } from 'antd-mobile-icons';
 import '@/components/politics/politics.less'
 import { PoliticsPage_Request, PoliticsPageReqType, PoliticsType } from '@/components/politics/api'
 import dayjs from 'dayjs'
 import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
-import { getImgUrl } from "@/utils/commentUtils";
+import { getImgUrls } from "@/utils/commentUtils";
 import useStore from '@/zustand/store';
 
 const Politics: React.FC = () => {
@@ -44,7 +44,6 @@ const Politics: React.FC = () => {
     politicsHasMoreRef.current = politicsHasMore;
   }, [politicsHasMore]);
 
-  // 点赞
   const clickLikes = async (id) => {
     if (likesIdList.includes(id)) {
       Toast.show({ content: '已点赞', duration: 600 });
@@ -102,7 +101,6 @@ const Politics: React.FC = () => {
     }
   };
 
-  // 手动监听滚动容器
   useEffect(() => {
     const container = document.querySelector('.news-content');
     if (!container) return;
@@ -116,7 +114,6 @@ const Politics: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 初始加载
   const hasRequestedRef = useRef(false);
   useEffect(() => {
     if (hasRequestedRef.current) return;
@@ -126,7 +123,6 @@ const Politics: React.FC = () => {
     }
   }, []);
 
-  // 从上次阅读位置恢复
   useEffect(() => {
     const lastId = getLastReadItemId('politics');
     const container = document.querySelector('.news-content') as HTMLElement | null;
@@ -189,65 +185,67 @@ const Politics: React.FC = () => {
         <>
           <PullToRefresh onRefresh={() => politicsPageRequest(true)}>
             <div className="card-container">
-              {politicsList?.map((politics, index) => (
-                <div key={index}>
-                  <Card
-                    className="politics-custom-card politics-item"
-                    data-id={politics.id}
-                    style={{ marginTop: '0px' }}
-                    onClick={() => click(String(politics.id))}
-                  >
-                    <div className="politics-card-content">
-                      {politics.title && (
-                        <div className="politics-title">
-                          <Ellipsis direction='end' rows={2} content={politics.title} />
+              {politicsList?.map((politics, index) => {
+                const imgs = getImgUrls(politics.imagePath);
+                return (
+                  <div key={index}>
+                    <Card
+                      className="politics-custom-card politics-item"
+                      data-id={politics.id}
+                      style={{ marginTop: '0px' }}
+                      onClick={() => click(String(politics.id))}
+                    >
+                      <div className="politics-card-content">
+                        {politics.title && (
+                          <div className="politics-title" style={{marginTop:'5px'}}>
+                            <Ellipsis direction='end' rows={2} content={politics.title} />
+                          </div>
+                        )}
+                        {imgs.length > 0 && (
+                          <div className="politics-image-container" onClick={(e) => e.stopPropagation()}>
+                            <Swiper>
+                              {imgs.map((imgUrl, i) => (
+                                <Swiper.Item key={i}>
+                                  <Image src={imgUrl} fit="cover" width="100%" height="200px" />
+                                </Swiper.Item>
+                              ))}
+                            </Swiper>
+                          </div>
+                        )}
+                        <Ellipsis className="politics-synopsis" direction='end' rows={3} content={politics.content} style={{ fontSize: "15px", textIndent: "2em" }} />
+                        <div style={{ marginTop: '5px', marginBottom: '10px', padding: '0px', textIndent: '0px' }}>
+                          <span className="icon-and-text" style={{ color: 'gray', marginRight: '3px' }}>
+                            来源: {politics.country}
+                          </span>
+                          <span className="source" style={{ marginRight: '10px' }}>{politics.source}</span>
+                          <span className="politics-time">
+                            {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD HH:mm')}
+                          </span>
                         </div>
-                      )}
-                      {politics.imagePath && (
-                        <div className="politics-image-container">
-                          <Image
-                            className="politics-image"
-                            src={getImgUrl(politics.imagePath)}
-                            alt="Example"
-                            fit="contain"
-                          />
+                        <div className="politics-meta" style={{ marginBottom: '10px' }}>
+                          {politics.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
+                          {politics.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
+                          <span className="icon-and-text">
+                            <FcReading fontSize={17} />
+                            <span className="number"> {politics.viewCount} </span>
+                          </span>
+                          <span className="icon-and-text">
+                            <FcLike className='attribute-icon' fontSize={15} onClick={(e) => { e.stopPropagation(); clickLikes(politics.id); }} />
+                            <span className="number"> {politics?.likesCount || 0} </span>
+                          </span>
+                          <span className="icon-and-text">
+                            <MessageOutline fontSize={17} />
+                            <span className="number"> {politics.commentsCount} </span>
+                          </span>
                         </div>
-                      )}
-                      <Ellipsis className="politics-synopsis" direction='end' rows={3} content={politics.content} style={{ fontSize: "15px", textIndent: "2em" }} />
-                      <div style={{ marginTop: '5px', marginBottom: '10px', padding: '0px', textIndent: '0px' }}>
-                        <span className="icon-and-text" style={{ color: 'gray', marginRight: '3px' }}>
-                          来源: {politics.country}
-                        </span>
-                        <span className="source" style={{ marginRight: '10px' }}>{politics.source}</span>
-                        <span className="politics-time">
-                          {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD HH:mm')}
-                        </span>
                       </div>
-                      <div className="politics-meta" style={{ marginBottom: '10px' }}>
-                        {politics.newsStatus == 2 && <Tag className="tag-size" color='#a05d29'>置顶</Tag>}
-                        {politics.newsStatus == 3 && <Tag className="tag-size" color='red' fill='outline'>热门</Tag>}
-                        <span className="icon-and-text">
-                          <FcReading fontSize={17} />
-                          <span className="number"> {politics.viewCount} </span>
-                        </span>
-                        <span className="icon-and-text">
-                          <FcLike className='attribute-icon' fontSize={15} onClick={clickLikes} />
-                          <span className="number"> {politics?.likesCount || 0} </span>
-                        </span>
-                        <span className="icon-and-text">
-                          <MessageOutline fontSize={17} />
-                          <span className="number"> {politics.commentsCount} </span>
-                        </span>
-                      </div>
-                    </div>
-                  </Card>
-                  <Divider className="politics-divider-line" />
-                </div>
-              ))}
+                    </Card>
+                    <Divider className="politics-divider-line" />
+                  </div>
+                );
+              })}
             </div>
           </PullToRefresh>
-
-
         </>
       )}
     </>

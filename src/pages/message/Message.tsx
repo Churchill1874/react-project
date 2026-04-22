@@ -145,7 +145,7 @@ const Message: React.FC = () => {
             <DotLoading color='black' />
           </div>
         ) : (
-          <span color='#fff'>--- 我是有底线的 ---</span>
+          <span color='#fff'>---</span>
         )}
       </>
     )

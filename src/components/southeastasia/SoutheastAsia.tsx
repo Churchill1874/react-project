@@ -200,7 +200,7 @@ const SoutheastAsia: React.FC = () => {
 
           {!southeastAsiaNewsHasMore && (
             <div className="infinite-scroll-footer">
-              <span>--- 我是有底线的 ---</span>
+              <span>---</span>
             </div>
           )}
         </>

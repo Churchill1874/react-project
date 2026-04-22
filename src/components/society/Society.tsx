@@ -175,12 +175,18 @@ const Society: React.FC = () => {
                         <Ellipsis direction='end' rows={2} content={society.title} />
                       </div>
                     )}
-                    {society.videoCover && (
+                    {(society.videoCover || society.videoPath) && (
                       <div className="society-news-image-container">
-                        <video className="society-news-video" src={getImgUrl(society.videoPath)} controls poster={getImgUrl(society.videoCover)} />
+                        <video
+                          className="society-news-video"
+                          src={getImgUrl(society.videoPath)}
+                          controls
+                          poster={society.videoCover ? getImgUrl(society.videoCover) : undefined}
+                          preload="none"
+                        />
                       </div>
                     )}
-                    {!society.videoCover && society.imagePath && (
+                    {!society.videoPath && !society.videoCover && society.imagePath && (
                       <div className="society-news-image-container">
                         <Image
                           className="society-news-image"
@@ -218,7 +224,7 @@ const Society: React.FC = () => {
 
           {!societyHasMore && (
             <div className="infinite-scroll-footer">
-              <span>--- 我是有底线的 ---</span>
+              <span>---</span>
             </div>
           )}
         </>
