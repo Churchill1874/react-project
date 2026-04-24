@@ -7,6 +7,8 @@ import { SocietyType, SocietyFindReqType, SocietyFind_Requset } from '@/componen
 import dayjs from 'dayjs'
 import '@/components/society/societyinfo/SocietyInfo.less'
 import { getImgUrl } from "@/utils/commentUtils";
+import { Helmet } from 'react-helmet-async';
+
 type CommentAttributeType = {
   needCommentPoint?: boolean;
   commentPointId?: string | null;
@@ -62,6 +64,17 @@ const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) =>
     <>
       {society &&
         <>
+          <Helmet>
+            <title>{society.title} - 灰亚新闻</title>
+            <meta name="description" content={society.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            <meta property="og:title" content={society.title} />
+            <meta property="og:description" content={society.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            {society.videoCover
+              ? <meta property="og:image" content={getImgUrl(society.videoCover)} />
+              : society.imagePath && <meta property="og:image" content={getImgUrl(society.imagePath)} />
+            }
+          </Helmet>
+          
           {props.showHeader !== false && (
             <div onClick={() => props.setVisibleCloseRight(false)} >
               <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >

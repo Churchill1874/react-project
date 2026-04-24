@@ -222,11 +222,7 @@ const Society: React.FC = () => {
             </div>
           </PullToRefresh>
 
-          {!societyHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
+ 
         </>
       )}
     </>

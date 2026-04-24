@@ -479,7 +479,7 @@ const Home: React.FC = () => {
                           direction='end'
                           rows={politics.imagePath ? 3 : 8}
                           content={politics?.content}
-                          style={{ fontSize: "15px", textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }} />
+                          style={{ fontSize: "15px", fontFamily: 'inherit', textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }} />
 
                         <div className="politics-meta" style={{ marginTop: '10px' }}>
                           {/*                           {
@@ -549,9 +549,7 @@ const Home: React.FC = () => {
 
 
 
-      <div style={{ textAlign: 'center', marginTop: '30px' }}>
-        <span >---</span>
-      </div>
+
     </div >
   );
 };

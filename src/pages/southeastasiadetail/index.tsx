@@ -28,7 +28,7 @@ const SoutheastAsiaDetail: React.FC = () => {
     if (resp?.data) {
       setSoutheastAsia(resp.data);
       // ✅ SEO核心：动态更新每篇文章的title和description
-      document.title = `${resp.data.title} - 大新闻`;
+      document.title = `${resp.data.title} - 灰亚新闻`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute(
@@ -44,7 +44,7 @@ const SoutheastAsiaDetail: React.FC = () => {
     fetchDetail();
     // 离开页面时恢复默认title
     return () => {
-      document.title = '大新闻';
+      document.title = '灰亚新闻';
     };
   }, [id]);
 

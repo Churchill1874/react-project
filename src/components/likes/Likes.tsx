@@ -66,16 +66,14 @@ const Likes: React.FC<any> = () => {
   const LikesScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     return (
       <>
-        {hasMore ? (
+        {hasMore && (
           <>
             <div style={{ fontSize: '15px', color: 'gray' }} >
               <span >加载中</span>
               <DotLoading color='gray' />
             </div>
           </>
-        ) : (
-          <span color='gray' style={{fontSize:'12px'}}>--- 没有更多的数据 ---</span>
-        )}
+        ) }
       </>
     )
   }

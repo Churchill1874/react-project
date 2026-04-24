@@ -204,11 +204,7 @@ const ExposureList: React.FC = () => {
             </div>
           </PullToRefresh>
 
-          {!exposureHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
+
         </>
       )}
     </>

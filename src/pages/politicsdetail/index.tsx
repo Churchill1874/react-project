@@ -7,7 +7,7 @@ const PoliticsDetail: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ minHeight: '100vh', overflowY: 'auto' }}>
+    <div style={{ minHeight: '100vh', marginBottom: '100px' }}>
       <NavBar onBack={() => navigate('/news/politics')}>
         政闻详情
       </NavBar>

@@ -9,7 +9,7 @@ import avatars from '@/common/avatar';
 const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
     <>
-      {hasMore ? (
+      {hasMore && (
         <>
           <div className="dot-loading-custom" >
             <span >加载中</span>
@@ -18,10 +18,6 @@ const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
             <Skeleton.Paragraph lineCount={8} animated />
           </div>
         </>
-      ) : (
-        <div className="infinite-scroll-footer">
-          <span >---</span>
-        </div>
       )}
     </>
   )
@@ -275,11 +271,7 @@ const TiebaList: React.FC = () => {
           ))
         )}
 
-        {(tiebaList.length != 0) &&
-          <div className="infinite-scroll-footer">
-            <span >---</span>
-          </div>
-        }
+
 
       </div>
 

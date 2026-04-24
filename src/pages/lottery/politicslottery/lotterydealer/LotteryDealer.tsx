@@ -32,16 +32,14 @@ import BetPopup from '@/pages/lottery/politicslottery/betorder/betpopup/BetPopup
 const ScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
     <>
-      {hasMore ? (
+      {hasMore && (
         <>
           <div className="dot-loading-custom" >
             <span >加载中</span>
             <DotLoading color='black' />
           </div>
         </>
-      ) : (
-        <span color='#fff'>---</span>
-      )}
+      ) }
     </>
   )
 }

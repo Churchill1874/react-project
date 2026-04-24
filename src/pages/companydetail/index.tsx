@@ -5,6 +5,7 @@ import { LocationFill } from 'antd-mobile-icons';
 import { Request_CompanyFind, CompanyDetailReqType, CompanyPageType } from '@/components/company/api';
 import dayjs from 'dayjs';
 import '@/components/company/Company.less';
+import { Helmet } from 'react-helmet-async';
 
 const CompanyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,13 +33,22 @@ const CompanyDetail: React.FC = () => {
 
   return (
     <>
-      <div style={{ minHeight: '100vh', paddingBottom: '20px', overflowY: 'auto' }}>
+      <div style={{ minHeight: '100vh', paddingBottom: '20px', marginBottom: '100px' }}>
         <NavBar onBack={() => navigate('/news/company')}>
           公司详情
         </NavBar>
 
         {company ? (
+
           <div className="company-info-popup">
+            <Helmet>
+              <title>{company.name} - 灰亚新闻</title>
+              <meta name="description" content={company.description?.slice(0, 120).replace(/\s+/g, ' ')} />
+              <meta property="og:title" content={company.name} />
+              <meta property="og:description" content={company.description?.slice(0, 120).replace(/\s+/g, ' ')} />
+              {images?.[0] && <meta property="og:image" content={images[0]} />}
+            </Helmet>
+
             <Card className="company-custom-card">
               <div className="company-line1">
                 <span className="company-name">
@@ -102,7 +112,7 @@ const CompanyDetail: React.FC = () => {
 
               <div className="line-group">
                 <span style={{ marginTop: 10, color: 'gray' }} ><LocationFill className="area" /> {company?.city}</span>
-                <span style={{ marginTop: 10 }} className='last-time'>最后一次更新时间: {dayjs(company?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
+                <span style={{ marginTop: 10 }} className='last-time'>最后更新: {dayjs(company?.updateTime).format('YYYY-MM-DD HH:mm')} </span>
               </div>
             </Card>
 
@@ -115,7 +125,7 @@ const CompanyDetail: React.FC = () => {
                       title={event.description}
                       status='finish'
                       description={event.eventDate}
-                      style={{fontSize:'14'}}
+                      style={{ fontSize: '14' }}
                     />
                   )
                 })

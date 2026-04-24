@@ -42,7 +42,7 @@ export interface CompanyPageType{
     holiday: any;//休假情况
     name: any;//公司名称
     teamScale: any;//团队规模
-    updateTime: any;//最后更新时间
+    updateTime: any;//最后更新
     salaryRange: any;//薪资范围
     leadershipCharacter: any;//领导性格
     live: any;//居住环境

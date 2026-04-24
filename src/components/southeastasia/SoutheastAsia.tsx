@@ -198,11 +198,6 @@ const SoutheastAsia: React.FC = () => {
             </div>
           </PullToRefresh>
 
-          {!southeastAsiaNewsHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
         </>
       )}
     </>

@@ -7,6 +7,7 @@ import '@/components/topic/Topic.less';
 import { TopicType, TopicFindReqType, TopicFind_Requset } from '@/components/topic/api'
 import dayjs from 'dayjs'
 import { getImgUrl } from "@/utils/commentUtils";
+import { Helmet } from 'react-helmet-async';
 
 type CommentAttributeType = {
   needCommentPoint?: boolean;
@@ -71,7 +72,17 @@ const TopicInfo: React.FC<TopicPropsType & { commentRef: any }> = (props) => {
 
       {topic &&
         <>
-
+          <Helmet>
+            <title>{topic.title} - 灰亚新闻</title>
+            <meta name="description" content={topic.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            <meta property="og:title" content={topic.title} />
+            <meta property="og:description" content={topic.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            {topic.videoCover
+              ? <meta property="og:image" content={getImgUrl(topic.videoCover)} />
+              : topic.imagePath && <meta property="og:image" content={getImgUrl(topic.imagePath)} />
+            }
+          </Helmet>
+          
           <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
 
           <div onClick={() => props.setVisibleCloseRight(false)} >

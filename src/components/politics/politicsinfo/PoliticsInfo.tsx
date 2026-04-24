@@ -6,7 +6,7 @@ import { LeftOutline, MessageOutline, LocationFill, HeartOutline } from 'antd-mo
 import Comment from "@/components/comment/Comment";
 import { Request_IncreaseLikesCount } from '@/components/news/newsinfo/api';
 import { PoliticsFind_Requset, PoliticsFindReqType } from '@/components/politics/api';
-
+import { Helmet } from 'react-helmet-async';
 import dayjs from 'dayjs'
 import useStore from '@/zustand/store';
 import { getImgUrls } from "@/utils/commentUtils";
@@ -124,6 +124,14 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
   return (
     <>
       {politics && <>
+        <Helmet>
+          <title>{politics.title} - 灰亚新闻</title>
+          <meta name="description" content={politics.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+          <meta property="og:title" content={politics.title} />
+          <meta property="og:description" content={politics.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+          {images?.[0] && <meta property="og:image" content={images[0]} />}
+        </Helmet>
+        
         {props.showHeader !== false && (
           <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
         )}

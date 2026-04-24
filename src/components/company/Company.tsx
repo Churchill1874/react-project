@@ -212,11 +212,7 @@ const Company: React.FC = () => {
               ))}
             </div>
           </PullToRefresh>
-          {!companyHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
+
         </>
       )}
     </>

@@ -9,7 +9,7 @@ const TiebaDetail: React.FC = () => {
   const TiebaCommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     return (
       <>
-        {hasMore ? (
+        {hasMore && (
           <>
             <div className="dot-loading-custom" >
               <span >加载中</span>
@@ -18,10 +18,6 @@ const TiebaDetail: React.FC = () => {
               <Skeleton.Paragraph lineCount={8} animated />
             </div>
           </>
-        ) : (
-          <div className="infinite-scroll-footer" style={{ paddingBottom: '200px' }} >
-            <span style={{ color: 'black' }}>---</span>
-          </div>
         )}
       </>
     )

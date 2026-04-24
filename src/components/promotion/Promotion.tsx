@@ -121,14 +121,10 @@ const Promotion: React.FC = () => {
   const PromotionScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     return (
       <>
-        {hasMore ? (
+        {hasMore && (
           <div className="dot-loading-custom">
             <Skeleton.Title animated />
             <Skeleton.Paragraph lineCount={8} animated />
-          </div>
-        ) : (
-          <div className="infinite-scroll-footer">
-            <span >---</span>
           </div>
         )}
       </>

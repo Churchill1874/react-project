@@ -24,7 +24,7 @@ const SocietyDetail: React.FC = () => {
 
   return (
     <>
-      <div style={{ minHeight: '100vh', paddingBottom: '0px', fontWeight:'bold', overflowY: 'auto'}}>
+      <div style={{ minHeight: '100vh', paddingBottom: '0px', fontWeight:'bold', marginBottom: '100px' }}>
         <NavBar onBack={() => navigate('/news/society')}>
           社会瓜详情
         </NavBar>

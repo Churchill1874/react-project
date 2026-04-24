@@ -194,11 +194,7 @@ const Topic: React.FC = () => {
             </div>
           </PullToRefresh>
 
-          {!topicHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
+
         </>
       )}
     </>

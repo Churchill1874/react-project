@@ -11,15 +11,13 @@ import OtherPeople from '@/pages/otherpeople/otherpeople';
 const RelationScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
     <>
-      {hasMore ? (
+      {hasMore && (
         <>
           <div style={{ fontSize: '14px', color: 'gray' }} >
             <span >加载中</span>
             <DotLoading color='gray' />
           </div>
         </>
-      ) : (
-        <span color='gray' style={{fontSize:'12px'}}>--- 没有更多的数据 ---</span>
       )}
     </>
   )

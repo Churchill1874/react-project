@@ -139,14 +139,12 @@ const Message: React.FC = () => {
   const SystemMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
     return (
       <>
-        {hasMore ? (
+        {hasMore && (
           <div className="dot-loading-custom">
             <span>Loading</span>
             <DotLoading color='black' />
           </div>
-        ) : (
-          <span color='#fff'>---</span>
-        )}
+        ) }
       </>
     )
   }

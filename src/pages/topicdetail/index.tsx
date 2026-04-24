@@ -43,7 +43,7 @@ const TopicDetail: React.FC = () => {
     const resp = await TopicFind_Requset(param);
     if (resp?.data) {
       setTopic(resp.data);
-      document.title = `${resp.data.title} - 大新闻`;
+      document.title = `${resp.data.title} - 灰亚新闻`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute('content', resp.data.content?.slice(0, 120) || resp.data.title);
@@ -55,7 +55,7 @@ const TopicDetail: React.FC = () => {
     setTopic(null);
     fetchDetail();
     return () => {
-      document.title = '大新闻';
+      document.title = '灰亚新闻';
     };
   }, [id]);
 

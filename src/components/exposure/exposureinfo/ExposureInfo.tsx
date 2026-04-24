@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import '@/components/exposure/exposureinfo/ExposureInfo.less';
 import { Request_ExposureFind, ExposureDetailReqType, ExposureType } from '@/components/exposure/api'
 import { Image, Skeleton, ImageViewer } from 'antd-mobile';
+import { Helmet } from 'react-helmet-async';
 
 import { getImgUrl } from '@/utils/commentUtils'
 interface ExposureDetailProps {
@@ -42,9 +43,17 @@ const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) =
   return (
 
     <>
-      {exposure &&
 
+      {exposure &&
         <div className="detail-container">
+          <Helmet>
+            <title>{exposure?.title} - 灰亚新闻</title>
+            <meta name="description" content={exposure?.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            <meta property="og:title" content={exposure?.title} />
+            <meta property="og:description" content={exposure?.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+            {images?.[0] && <meta property="og:image" content={images[0]} />}
+          </Helmet>
+
           {/* 页面头部 */}
           <div className="detail-header">
             <div className="header-nav">
@@ -140,7 +149,7 @@ const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) =
 
             {/* 底部统计信息 */}
             <div className="detail-footer">
-              ⚠️ 如有相关举报意向, 提供资料, 请联系举报tg @messer173。
+              ⚠️ 如有相关举报意向, 提供资料, 请联系举报tg @grayasia
             </div>
           </div>
         </div>

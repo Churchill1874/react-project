@@ -227,7 +227,7 @@ const Login: React.FC = () => {
         {/* Logo */}
         <div className="login-logo">
           <img src={logo} alt="logo" className="login-logo__img" />
-          <div className="login-logo__name">大新闻</div>
+          <div className="login-logo__name">灰亚新闻</div>
           <div className="login-logo__sub">让我们一起搞点大新闻 ~</div>
         </div>
 

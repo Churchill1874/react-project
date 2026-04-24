@@ -7,6 +7,7 @@ import '@/components/southeastasia/SoutheastAsia.less'
 import { SoutheastAsiaNewsType, SoutheastAsiaFindReqType, SoutheastAsiaFind_Requset } from '@/components/southeastasia/api'
 import dayjs from 'dayjs'
 import { getImgUrl } from "@/utils/commentUtils";
+import { Helmet } from 'react-helmet-async';
 
 type CommentAttributeType = {
   needCommentPoint?: boolean;
@@ -100,6 +101,16 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
 
   return (
     <>
+      {southeastAsia && (
+        <Helmet>
+          <title>{southeastAsia.title} - 灰亚新闻</title>
+          <meta name="description" content={southeastAsia.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+          <meta property="og:title" content={southeastAsia.title} />
+          <meta property="og:description" content={southeastAsia.content?.slice(0, 120).replace(/\s+/g, ' ')} />
+          {getImages()?.[0] && <meta property="og:image" content={getImages()[0]} />}
+        </Helmet>
+      )}
+      
       <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px' }}>东南亚新闻</span></div>
 
       <ImageViewer.Multi classNames={{ mask: 'customize-mask', body: 'customize-body', }} images={getImages()} visible={visible} onClose={() => { setVisible(false) }} />
@@ -169,7 +180,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
 
 
 
-{/*           <div className="southeast-asia-text-area">
+          {/*           <div className="southeast-asia-text-area">
             {splitBySentenceLength((southeastAsia?.content || '')).map((paragraph, index) => (
               <p key={index} style={{ marginTop: '5px', marginBottom: '1px', lineHeight: '1.5' }}>
                 {paragraph}

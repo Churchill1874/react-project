@@ -6,7 +6,7 @@ const ExposureDetail: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div style={{ minHeight: '100vh', overflowY: 'auto' }}>
+    <div style={{ minHeight: '100vh', marginBottom: '100px' }}>
       {id ? (
         <ExposureInfo id={id} onClose={() => navigate('/news/exposure')} />
       ) : (

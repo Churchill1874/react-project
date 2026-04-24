@@ -130,12 +130,6 @@ const NewsList: React.FC<any> = () => {
             ))}
           </PullToRefresh>
 
-
-          {!newsHasMore && (
-            <div className="infinite-scroll-footer">
-              <span>---</span>
-            </div>
-          )}
         </>
       )}
     </>

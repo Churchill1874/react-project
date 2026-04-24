@@ -17,13 +17,11 @@ import dayjs from 'dayjs';
 const PrivateMessageScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
     <>
-      {hasMore ? (
+      {hasMore && (
         <div className="dot-loading-custom">
           <span>Loading</span>
           <DotLoading color='black' />
         </div>
-      ) : (
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: '13px' }} >---</div>
       )}
     </>
   )

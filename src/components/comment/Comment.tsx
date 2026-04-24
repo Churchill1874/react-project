@@ -17,16 +17,14 @@ import OtherPeople from "@/pages/otherpeople/otherpeople";
 const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
   return (
     <>
-      {hasMore ? (
+      {hasMore && (
         <>
           <div >
             <span >Loading</span>
             <DotLoading color='gray' />
           </div>
         </>
-      ) : (
-        <span color='gray' style={{ marginTop: '100px', marginBottom: '200px', fontWeight: 400, fontSize: 12 }}>--- 没有更多的评论了 ---</span>
-      )}
+      ) }
     </>
   )
 }
