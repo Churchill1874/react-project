@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import '@/components/society/societyinfo/SocietyInfo.less'
 import { getImgUrl } from "@/utils/commentUtils";
 import { Helmet } from 'react-helmet-async';
+import useStore from '@/zustand/store';
 
 type CommentAttributeType = {
   needCommentPoint?: boolean;
@@ -25,32 +26,23 @@ type SocietyPropsType = CommentAttributeType & {
 const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) => {
   const [society, setSociety] = useState<SocietyType>();
 
-  function splitBySentenceLength(text: string, maxChars = 200): string[] {
-    const sentences = text.split(/(。)/); // 以句号 `。` 分割，同时保留句号
-    const result: string[] = []; // 确保 result 是 string 数组
-    let currentParagraph: string = '';
-
-    for (let i = 0; i < sentences.length; i++) {
-      currentParagraph += sentences[i] || ''; // 处理分割后的空元素
-
-      // 遇到 `。` 并且当前段落字数超过 `maxChars`，就另起一行
-      if (sentences[i] === '。' && currentParagraph.length >= maxChars) {
-        result.push(currentParagraph);
-        currentParagraph = ''; // 清空，准备下一段
-      }
-    }
-
-    // 处理剩余的文本
-    if (currentParagraph.trim()) {
-      result.push(currentParagraph);
-    }
-    return result;
-  }
 
   const societyFindRequest = async () => {
     const param: SocietyFindReqType = { id: props.id }
     const data: SocietyType = (await SocietyFind_Requset(param)).data;
-    setSociety(data);
+    setSociety({ ...data, viewCount: (data.viewCount || 0) + 1 }); // 详情页显示+1
+
+    // 同步列表缓存浏览量 +1
+    const { getNewsListCache, setNewsListCache } = useStore.getState();
+    const cache = getNewsListCache('society');
+    if (cache) {
+      const newData = cache.data.map((item: any) =>
+        String(item.id) === String(props.id)
+          ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+          : item
+      );
+      setNewsListCache('society', newData, cache.page, cache.hasMore);
+    }
   }
 
   useEffect(() => {
@@ -74,7 +66,7 @@ const SocietyInfo: React.FC<SocietyPropsType & { commentRef: any }> = (props) =>
               : society.imagePath && <meta property="og:image" content={getImgUrl(society.imagePath)} />
             }
           </Helmet>
-          
+
           {props.showHeader !== false && (
             <div onClick={() => props.setVisibleCloseRight(false)} >
               <span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} >

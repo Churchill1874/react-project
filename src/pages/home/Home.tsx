@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import '@/pages/home/Home.less';
 import {
   Divider, Popup, Skeleton, Ellipsis, Steps, TextArea, Card, Image, Tag,
@@ -28,9 +28,7 @@ import logo from '@/assets/logo/logo1.png'
 
 const Home: React.FC = () => {
   // 轮播图状态管理
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [bannerList, setBannerList] = useState<BannerType[]>([]);
+  //const [bannerList, setBannerList] = useState<BannerType[]>([]);
   const [newsRank, setNewsRank] = useState<NewsRankType>();
   const [company, setCompany] = useState<CompanyRankType>();
   const [promotion, setPromotion] = useState<PromotionType>();
@@ -48,12 +46,6 @@ const Home: React.FC = () => {
   const { onlineCount, setOnlineCount } = useStore();
 
   // 创建扩展的幻灯片数组（前后各复制一份实现无缝循环）
-  const extendedSlides = [
-    bannerList[bannerList.length - 1], // 最后一张的副本
-    ...bannerList,
-    bannerList[0] // 第一张的副本
-  ];
-
   const onlintCountRequest = async () => {
     const onlineCount = (await Request_OnlineCount()).data;
     setOnlineCount(onlineCount);
@@ -69,12 +61,10 @@ const Home: React.FC = () => {
     setBetRecords(data.betOrderList)
     setPoliticsList(data.politicsList)
     setHomeAdvertise(data.bannerList.find(item => item.imageType === 3)?.imagePath || null)
-    setBannerList(data.bannerList.filter(item => item.imageType === 1))
     setPromotion(data.promotion);
     setExposureList(data.exposureList);
     setNoticeBoard(data.noticeList);
 
-    console.log('首页数据：', data.noticeList);
   };
 
   useEffect(() => {
@@ -82,38 +72,6 @@ const Home: React.FC = () => {
     onlintCountRequest();
   }, [])
 
-  // 自动轮播效果
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide(prev => prev + 1);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // 处理无缝循环
-  useEffect(() => {
-    if (currentSlide === extendedSlides.length - 1) {
-      // 如果到了最后一张（第一张的副本），无动画跳回真正的第一张
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentSlide(1);
-      }, 500);
-    } else if (currentSlide === 0) {
-      // 如果到了第一张（最后一张的副本），无动画跳回真正的最后一张
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentSlide(extendedSlides.length - 2);
-      }, 500);
-    }
-
-    // 重新启用动画
-    if (!isTransitioning) {
-      setTimeout(() => {
-        setIsTransitioning(true);
-      }, 50);
-    }
-  }, [currentSlide, isTransitioning, extendedSlides.length]);
 
 
 
@@ -222,8 +180,8 @@ const Home: React.FC = () => {
                 <div className="home-grid" onClick={() => navigate('/news/exposure')}>
 
                   {exposureList && exposureList.map((exposure, index) => (
-                    <>
-                      <div className="home-news-item" key={index}>
+                    <React.Fragment key={index}>
+                      <div className="home-news-item" >
                         <div className="home-news-content">
                           <Ellipsis className="home-news-title" style={{ fontSize: '14px', fontWeight: '500' }} content={exposure.title} direction='end' rows={1} />
                         </div>
@@ -233,7 +191,8 @@ const Home: React.FC = () => {
                             onClick={() => { }} />
                         </div>
                       </div>
-                    </>
+                    </React.Fragment>
+
                   ))}
                 </div>
               </div>
@@ -454,8 +413,9 @@ const Home: React.FC = () => {
               </div>
               {
                 politicsList.map((politics, index) => (
-                  <>
-                    <Card className="politics-custom-card" style={{ borderRadius: '0', marginTop: '5px', marginBottom: '15px' }} key={index}>
+                  <React.Fragment key={politics.id || index}>
+
+                    <Card className="politics-custom-card" style={{ borderRadius: '0', marginTop: '5px', marginBottom: '15px' }} >
                       <div className="home-politics-card-content">
 
                         {politics.title &&
@@ -522,7 +482,7 @@ const Home: React.FC = () => {
                     </Card>
 
                     <Divider style={{ padding: '0px', margin: '0px', borderColor: '#f1ecec' }} />
-                  </>
+                  </React.Fragment>
                 ))
               }
 

@@ -6,6 +6,7 @@ import { Request_CompanyFind, CompanyDetailReqType, CompanyPageType } from '@/co
 import dayjs from 'dayjs';
 import '@/components/company/Company.less';
 import { Helmet } from 'react-helmet-async';
+import useStore from '@/zustand/store';
 
 const CompanyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,6 +28,18 @@ const CompanyDetail: React.FC = () => {
     const param: CompanyDetailReqType = { id: id };
     const data: CompanyPageType = (await Request_CompanyFind(param)).data;
     setCompany(data);
+
+    // 同步列表缓存浏览量 +1
+    const { getNewsListCache, setNewsListCache } = useStore.getState();
+    const cache = getNewsListCache('company');
+    if (cache) {
+      const newData = cache.data.map((item: any) =>
+        String(item.id) === String(id)
+          ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+          : item
+      );
+      setNewsListCache('company', newData, cache.page, cache.hasMore);
+    }
   };
 
   const images = company?.image ? company.image.split('||').filter(Boolean) : [];

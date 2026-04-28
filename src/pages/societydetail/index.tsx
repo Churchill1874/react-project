@@ -1,39 +1,25 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import { NavBar, Skeleton } from 'antd-mobile';
-import { SocietyFind_Requset, SocietyFindReqType, SocietyType } from '@/components/society/api';
 import SocietyInfo from '@/components/society/societyinfo/SocietyInfo';
 
 const SocietyDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [society, setSociety] = useState<SocietyType | null>(null);
-
-  useEffect(() => {
-    if (id) {
-      societyFindReq();
-    }
-  }, [id]);
-
-  const societyFindReq = async () => {
-    if (!id) return;
-    const param: SocietyFindReqType = { id: id };
-    const data: SocietyType = (await SocietyFind_Requset(param)).data;
-    setSociety(data);
-  };
 
   return (
     <>
-      <div style={{ minHeight: '100vh', paddingBottom: '0px', fontWeight:'bold', marginBottom: '100px' }}>
+      <div style={{ 
+      marginBottom: '100px', minHeight: '100vh', overflowY: 'auto', height: '100vh', paddingBottom: 'calc(60px + env(safe-area-inset-bottom))',  // 👈 加这个
+}}>
         <NavBar onBack={() => navigate('/news/society')}>
           社会瓜详情
         </NavBar>
 
-        {society ? (
+        {id ? (
           <div style={{ padding: '0px 10px' }}>
             <SocietyInfo
               commentRef={null}
-              id={String(society.id)}
+              id={id}
               setVisibleCloseRight={() => navigate('/news/society')}
               needCommentPoint={false}
               commentPointId={null}

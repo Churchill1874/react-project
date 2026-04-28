@@ -65,6 +65,7 @@ export interface PoliticsFindRespType {
   data: PoliticsType;
 }
 
+
 //分页政治新闻
 const PoliticsPagePath = '/player/politics/page';
 export const PoliticsPage_Request = async (param: PoliticsPageReqType): Promise<PoliticsPageRespType> => {
@@ -76,3 +77,5 @@ const PoliticsFindPath = '/player/politics/find';
 export const PoliticsFind_Requset = async (param: PoliticsFindReqType): Promise<PoliticsFindRespType> => {
   return (await axios.post(serverTarget + PoliticsFindPath, param)).data;
 };
+
+

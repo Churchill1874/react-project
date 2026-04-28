@@ -32,8 +32,21 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
   const PoliticsFindRequest = async () => {
     const param: PoliticsFindReqType = { id: props.id };
     const data: PoliticsType = (await PoliticsFind_Requset(param)).data;
-    setPolitics(data);
-  }
+
+    setPolitics({ ...data, viewCount: (data.viewCount || 0) + 1 });
+
+    // 同步列表缓存浏览量 +1
+    const { getNewsListCache, setNewsListCache } = useStore.getState();
+    const cache = getNewsListCache('politics');
+    if (cache) {
+      const newData = cache.data.map((item: any) =>
+        String(item.id) === String(props.id)
+          ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+          : item
+      );
+      setNewsListCache('politics', newData, cache.page, cache.hasMore);
+    }
+  };
 
   function splitBySentenceLength(text: string, maxChars = 200): string[] {
     const sentences = text.split(/(。|！|？)/); // 保留句号、感叹号、问号（包括标点）
@@ -131,7 +144,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
           <meta property="og:description" content={politics.content?.slice(0, 120).replace(/\s+/g, ' ')} />
           {images?.[0] && <meta property="og:image" content={images[0]} />}
         </Helmet>
-        
+
         {props.showHeader !== false && (
           <div onClick={() => props.setVisibleCloseRight(false)} ><span style={{ paddingRight: '5px', color: 'gray', fontSize: '16px' }} ><LeftOutline fontSize={18} />返回 </span><span style={{ color: 'black', fontSize: '16px', letterSpacing: '2px' }}> 国际政治 </span></div>
         )}

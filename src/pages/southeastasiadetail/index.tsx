@@ -8,6 +8,7 @@ import { SoutheastAsiaNewsType, SoutheastAsiaFindReqType, SoutheastAsiaFind_Requ
 import { getImgUrl } from '@/utils/commentUtils';
 import dayjs from 'dayjs';
 import '@/components/southeastasia/SoutheastAsia.less'
+import useStore from '@/zustand/store';
 
 const SoutheastAsiaDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,7 +27,6 @@ const SoutheastAsiaDetail: React.FC = () => {
     const param: SoutheastAsiaFindReqType = { id };
     const resp = await SoutheastAsiaFind_Requset(param);
     if (resp?.data) {
-      setSoutheastAsia(resp.data);
       // ✅ SEO核心：动态更新每篇文章的title和description
       document.title = `${resp.data.title} - 灰亚新闻`;
       const metaDesc = document.querySelector('meta[name="description"]');
@@ -35,6 +35,21 @@ const SoutheastAsiaDetail: React.FC = () => {
           'content',
           resp.data.content?.slice(0, 120) || resp.data.title
         );
+      }
+
+      setSoutheastAsia({ ...resp.data, viewCount: (resp.data.viewCount || 0) + 1 });
+
+
+      // ✅ 同步列表缓存浏览量 +1
+      const { getNewsListCache, setNewsListCache } = useStore.getState();
+      const cache = getNewsListCache('southeastAsia');
+      if (cache) {
+        const newData = cache.data.map((item: any) =>
+          String(item.id) === String(id)
+            ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+            : item
+        );
+        setNewsListCache('southeastAsia', newData, cache.page, cache.hasMore);
       }
     }
   };
@@ -80,7 +95,7 @@ const SoutheastAsiaDetail: React.FC = () => {
           />
 
           <Card className="southeastasia-custom-card-container">
-            <div className="southeastasia-card-content">
+            <div className="southeastasia-card-content" style={{ marginBottom: '100px' }}>
 
               {/* 标题 */}
               <div className="southeast-asia-title">{southeastAsia.title}</div>

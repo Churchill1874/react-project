@@ -3,7 +3,7 @@ import '@/components/exposure/exposureinfo/ExposureInfo.less';
 import { Request_ExposureFind, ExposureDetailReqType, ExposureType } from '@/components/exposure/api'
 import { Image, Skeleton, ImageViewer } from 'antd-mobile';
 import { Helmet } from 'react-helmet-async';
-
+import useStore from '@/zustand/store';
 import { getImgUrl } from '@/utils/commentUtils'
 interface ExposureDetailProps {
   id: string | null;
@@ -11,7 +11,7 @@ interface ExposureDetailProps {
   setId?: (id: string | null) => void;
 }
 
-const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) => {
+const ExposureInfo: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) => {
   const [exposure, setExposure] = useState<ExposureType | null>(null);
   const [visible, setVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,8 +19,20 @@ const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) =
   const exposureFindReq = async () => {
     const param: ExposureDetailReqType = { id: id }
     const data: ExposureType = (await Request_ExposureFind(param)).data;
-    setExposure(data);
+    setExposure({ ...data, viewsCount: (data.viewsCount || 0) + 1 });
     setId?.(data.id)
+
+    // 同步列表缓存浏览量 +1
+    const { getNewsListCache, setNewsListCache } = useStore.getState();
+    const cache = getNewsListCache('exposure');
+    if (cache) {
+      const newData = cache.data.map((item: any) =>
+        String(item.id) === String(id)
+          ? { ...item, viewsCount: (item.viewsCount || 0) + 1 }
+          : item
+      );
+      setNewsListCache('exposure', newData, cache.page, cache.hasMore);
+    }
   }
 
   useEffect(() => {
@@ -172,4 +184,4 @@ const ExposureDetail: React.FC<ExposureDetailProps> = ({ onClose, id, setId }) =
   );
 };
 
-export default ExposureDetail;
+export default ExposureInfo;

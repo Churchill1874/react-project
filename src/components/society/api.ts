@@ -72,3 +72,4 @@ const SocietyFindPath = '/player/society/find';
 export const SocietyFind_Requset = async (param: SocietyFindReqType): Promise<SocietyFindRespType> => {
   return (await axios.post(serverTarget + SocietyFindPath, param)).data;
 };
+

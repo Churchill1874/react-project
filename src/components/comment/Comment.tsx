@@ -24,7 +24,7 @@ const CommentScrollContent = ({ hasMore }: { hasMore?: boolean }) => {
             <DotLoading color='gray' />
           </div>
         </>
-      ) }
+      )}
     </>
   )
 }
@@ -449,12 +449,18 @@ const Comment = forwardRef<any, any>(({
             )}
             <Divider className='comment-line' />
           </div>
+
+
         </div>
+
+
       ))}
 
       <InfiniteScroll loadMore={reqCommentPageApi} hasMore={commentHasMore}>
         <CommentScrollContent hasMore={commentHasMore} />
       </InfiniteScroll>
+
+      <div style={{ height: '150px' }} />
 
 
       <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>

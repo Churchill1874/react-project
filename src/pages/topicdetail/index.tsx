@@ -9,6 +9,7 @@ import { TopicType, TopicFindReqType, TopicFind_Requset } from '@/components/top
 import { getImgUrl } from '@/utils/commentUtils';
 import dayjs from 'dayjs';
 import '@/components/topic/Topic.less';
+import useStore from '@/zustand/store';
 
 const TopicDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,11 +43,25 @@ const TopicDetail: React.FC = () => {
     const param: TopicFindReqType = { id };
     const resp = await TopicFind_Requset(param);
     if (resp?.data) {
-      setTopic(resp.data);
+
       document.title = `${resp.data.title} - 灰亚新闻`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute('content', resp.data.content?.slice(0, 120) || resp.data.title);
+      }
+      
+      setTopic({ ...resp.data, viewCount: (resp.data.viewCount || 0) + 1 });
+
+      // 同步列表缓存浏览量 +1
+      const { getNewsListCache, setNewsListCache } = useStore.getState();
+      const cache = getNewsListCache('topic');
+      if (cache) {
+        const newData = cache.data.map((item: any) =>
+          String(item.id) === String(id)
+            ? { ...item, viewCount: (item.viewCount || 0) + 1 }
+            : item
+        );
+        setNewsListCache('topic', newData, cache.page, cache.hasMore);
       }
     }
   };

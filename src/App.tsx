@@ -24,10 +24,7 @@ const getBgColor = (pathname: string) => {
 
 
 // 详情页路由列表 - 这些页面需要自身滚动，不受 content-area overflow:hidden 限制
-const DETAIL_PATHS = ['/southeastAsia/', '/exposure/', '/company/', '/society/'];
 
-const isDetailPage = (pathname: string) =>
-  DETAIL_PATHS.concat(['/newsInfo/']).some(p => pathname.startsWith(p));
 
 const InnerApp = () => {
   return (
@@ -42,6 +39,13 @@ const InnerApp = () => {
 const App: React.FC = () => {
   const location = useLocation();
   const isNewsInfo = location.pathname.startsWith('/newsInfo/');
+
+  // 新增：GA4 pageview 追踪
+  useEffect(() => {
+    window.gtag?.('event', 'page_view', {
+      page_path: location.pathname,
+    });
+  }, [location.pathname]);
 
   const [bgColor, setBgColor] = useState<string>('#fff');
   const { tokenId } = useStore();
@@ -99,7 +103,7 @@ const App: React.FC = () => {
           : { backgroundColor: bgColor }
       }
     >
-      <div className="content-area" style={isDetailPage(location.pathname) ? { overflowY: 'auto' } : {}}>
+      <div className="content-area" >
         {isNewsInfo ? (
           <>
             {/* 保持 News 组件挂载，避免回退重绘重载图片（隐藏但不销毁） */}
