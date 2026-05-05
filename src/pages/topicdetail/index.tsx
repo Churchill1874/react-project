@@ -49,7 +49,7 @@ const TopicDetail: React.FC = () => {
       if (metaDesc) {
         metaDesc.setAttribute('content', resp.data.content?.slice(0, 120) || resp.data.title);
       }
-      
+
       setTopic({ ...resp.data, viewCount: (resp.data.viewCount || 0) + 1 });
 
       // 同步列表缓存浏览量 +1
@@ -75,7 +75,7 @@ const TopicDetail: React.FC = () => {
   }, [id]);
 
   return (
-    <div style={{ minHeight: '100%', paddingBottom: '60px', padding: '0px 5px', boxSizing: 'border-box' }}>
+    <div style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden', padding: '0px 5px', boxSizing: 'border-box' }}>
       {/* 顶部返回栏 */}
       <div
         onClick={() => navigate(-1)}

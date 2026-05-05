@@ -1,0 +1,27 @@
+{
+  "name": "灰亚新闻",
+  "short_name": "灰亚新闻",
+  "description": "东南亚华人相关新闻",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1890ff",
+  "icons": [
+    {
+      "src": "/assets/logo/logo1.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/logo/logo1_500.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/logo/logo1_500.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

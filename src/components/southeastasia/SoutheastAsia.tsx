@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import {  Link } from 'react-router-dom';
 import { Card, Divider, Tag, Ellipsis, Image, PullToRefresh, Skeleton } from 'antd-mobile';
 import { getImgUrl } from "@/utils/commentUtils";
 import { FcReading } from "react-icons/fc";
@@ -10,7 +10,6 @@ import dayjs from 'dayjs'
 import useStore from '@/zustand/store';
 
 const SoutheastAsia: React.FC = () => {
-  const navigate = useNavigate();
   const { getNewsListCache, setNewsListCache, setNewsScrollPosition, getNewsScrollPosition } = useStore();
 
   const [southeastAsiaNewsList, setSoutheastAsiaNewsList] = useState<SoutheastAsiaNewsType[]>(() => {
@@ -124,16 +123,6 @@ const SoutheastAsia: React.FC = () => {
     requestAnimationFrame(tryRestore);
   };
 
-  const click = (id: string) => {
-    const container = document.querySelector('.news-content') as HTMLElement | null;
-    if (container) {
-      const maxScroll = container.scrollHeight - container.clientHeight;
-      const scrollTop = container.scrollTop;
-      setNewsScrollPosition('southeastAsia', maxScroll - scrollTop <= 400 ? maxScroll : scrollTop);
-    }
-    navigate('/southeastAsia/' + id, { replace: true });
-  };
-
   return (
     <>
       {initialLoading ? (
@@ -146,54 +135,69 @@ const SoutheastAsia: React.FC = () => {
           <PullToRefresh onRefresh={() => southeastAsiaNewsPageRequest(true)}>
             <div className="card-container">
               {southeastAsiaNewsList?.map((southeastAsiaNews, index) => (
-                <Card className="southeastasia-custom-card" key={index} data-id={southeastAsiaNews.id}>
-                  <div className="southeastasia-card-content">
-                    {southeastAsiaNews.title && (
-                      <div className="southeast-asia-title">
-                        <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
-                      </div>
-                    )}
-                    {southeastAsiaNews.imagePath && (
-                      <div className="southeastasia-news-image-container">
-                        <Image
-                          className="southeastasia-news-image"
-                          src={getImgUrl(southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || '')}
-                          alt="Example"
-                          fit="contain"
-                        />
-                      </div>
-                    )}
-                    {southeastAsiaNews.imagePath && <Divider className='divider-line' />}
-                    <Ellipsis
-                      direction='end'
-                      rows={2}
-                      content={southeastAsiaNews.content}
-                      style={{ fontSize: "15px", letterSpacing: "1px", textIndent: "2em" }}
-                    />
-                    <span className="southeastasia-time">
-                      {southeastAsiaNews.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
-                      {southeastAsiaNews.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
-                      {southeastAsiaNews.source && (
-                        <span className="southeastasia-tag">来源: <span className="source"> {southeastAsiaNews.source} </span></span>
+                <Link
+                  key={southeastAsiaNews.id || index}
+                  to={`/southeastAsia/${southeastAsiaNews.id}`}
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                  onClick={() => {
+                    // 保存滚动位置的逻辑保留
+                    const container = document.querySelector('.news-content') as HTMLElement;
+                    if (container) {
+                      setNewsScrollPosition('southeastAsia', container.scrollTop);
+                    }
+                  }}
+                >
+
+                  <Card className="southeastasia-custom-card" data-id={southeastAsiaNews.id}>
+                    <div className="southeastasia-card-content">
+                      {southeastAsiaNews.title && (
+                        <div className="southeast-asia-title">
+                          <Ellipsis direction='end' rows={2} content={southeastAsiaNews.title} />
+                        </div>
                       )}
-                      {southeastAsiaNews.createTime && dayjs(southeastAsiaNews.createTime).format('YYYY-MM-DD HH:mm')}
-                    </span>
-                    <div className="button-info">
-                      <span className="tracking"><LocationFill className="area" />{southeastAsiaNews.area}</span>
-                      <span className="icon-and-text">
-                        <FcReading fontSize={17} />
-                        <span className="number"> {southeastAsiaNews.viewCount} </span>
+                      {southeastAsiaNews.imagePath && (
+                        <div className="southeastasia-news-image-container">
+                          <Image
+                            className="southeastasia-news-image"
+                            src={getImgUrl(southeastAsiaNews.imagePath?.split('||').filter(Boolean)[0] || '')}
+                            alt="Example"
+                            fit="contain"
+                          />
+                        </div>
+                      )}
+                      {southeastAsiaNews.imagePath && <Divider className='divider-line' />}
+                      <Ellipsis
+                        direction='end'
+                        rows={2}
+                        content={southeastAsiaNews.content}
+                        style={{ fontSize: "15px", letterSpacing: "1px", textIndent: "2em" }}
+                      />
+                      <span className="southeastasia-time">
+                        {southeastAsiaNews.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
+                        {southeastAsiaNews.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
+                        {southeastAsiaNews.source && (
+                          <span className="southeastasia-tag">来源: <span className="source"> {southeastAsiaNews.source} </span></span>
+                        )}
+                        {southeastAsiaNews.createTime && dayjs(southeastAsiaNews.createTime).format('YYYY-MM-DD')}
                       </span>
-                      <span className="tracking">
+                      <div className="button-info">
+                        <span className="tracking"><LocationFill className="area" />{southeastAsiaNews.area}</span>
                         <span className="icon-and-text">
-                          <MessageOutline fontSize={17} />
-                          <span className="message-number"> {southeastAsiaNews.commentsCount} </span>
-                          <span className="click" onClick={() => click(String(southeastAsiaNews.id))}>点击查看</span>
+                          <FcReading fontSize={17} />
+                          <span className="number"> {southeastAsiaNews.viewCount} </span>
                         </span>
-                      </span>
+                        <span className="tracking">
+                          <span className="icon-and-text">
+                            <MessageOutline fontSize={17} />
+                            <span className="message-number"> {southeastAsiaNews.commentsCount} </span>
+                            <span className="click" >点击查看</span>
+                          </span>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+
+                </Link>
               ))}
             </div>
           </PullToRefresh>

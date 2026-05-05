@@ -64,7 +64,12 @@ const SoutheastAsiaDetail: React.FC = () => {
   }, [id]);
 
   return (
-    <div style={{ minHeight: '100%', paddingBottom: '60px', padding: '0px 5px', boxSizing: 'border-box' }}>
+    <div style={{
+      flex: 1,
+      minHeight: 0,
+      overflowY: 'auto',
+      WebkitOverflowScrolling: 'touch',
+    }}>
       {/* 顶部返回栏 */}
       <div
         onClick={() => navigate('/news/southeastAsia')}
@@ -139,7 +144,7 @@ const SoutheastAsiaDetail: React.FC = () => {
                     来源: <span className="source">{southeastAsia.source}</span>
                   </span>
                 )}
-                {southeastAsia.createTime && dayjs(southeastAsia.createTime).format('YYYY-MM-DD HH:mm')}
+                {southeastAsia.createTime && dayjs(southeastAsia.createTime).format('YYYY-MM-DD')}
               </span>
 
               {/* 地区 / 浏览数 */}

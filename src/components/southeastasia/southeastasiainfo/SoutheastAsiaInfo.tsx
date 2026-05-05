@@ -200,7 +200,7 @@ const SoutheastAsiaInfo: React.FC<SoutheastAsiaPropsType & { commentRef: any }> 
               {southeastAsia?.isTop && <Tag className="southeastasia-tag" color='#a05d29'>置顶</Tag>}
               {southeastAsia?.isHot && <Tag className="southeastasia-tag" color='red' fill='outline'>热门</Tag>}
               {southeastAsia?.source && <span className="southeastasia-tag" > 来源: <span className="source"> {southeastAsia?.source} </span></span>}
-              {southeastAsia?.createTime && dayjs(southeastAsia?.createTime).format('YYYY-MM-DD HH:mm')}
+              {southeastAsia?.createTime && dayjs(southeastAsia?.createTime).format('YYYY-MM-DD')}
             </span>
           </span>
 

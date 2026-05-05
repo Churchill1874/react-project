@@ -214,7 +214,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
 
                   </span>
                   <span className="politics-time">
-                    {politics?.createTime && dayjs(politics?.createTime).format('YYYY-MM-DD HH:mm')}
+                    {politics?.createTime && dayjs(politics?.createTime).format('YYYY-MM-DD')}
                   </span>
                 </span>
               }

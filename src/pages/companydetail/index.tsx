@@ -46,7 +46,12 @@ const CompanyDetail: React.FC = () => {
 
   return (
     <>
-      <div style={{ minHeight: '100vh', paddingBottom: '20px', marginBottom: '100px' }}>
+      <div style={{
+        height: '100vh',
+        overflow: 'auto',
+        paddingBottom: '20px',
+        boxSizing: 'border-box'
+      }}>
         <NavBar onBack={() => navigate('/news/company')}>
           公司详情
         </NavBar>

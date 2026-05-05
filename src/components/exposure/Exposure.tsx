@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '@/components/exposure/Exposure.less';
 import { PullToRefresh, Skeleton, Image } from 'antd-mobile';
 import { Request_ExposurePage, ExposurePageReqType, ExposureType } from '@/components/exposure/api'
@@ -8,7 +8,6 @@ import dayjs from 'dayjs'
 import useStore from '@/zustand/store';
 
 const ExposureList: React.FC = () => {
-  const navigate = useNavigate();
   const { getNewsListCache, setNewsListCache, setNewsScrollPosition, getNewsScrollPosition, getLastReadItemId, setLastReadItemId } = useStore();
 
   const [exposureList, setExposureList] = useState<ExposureType[]>(() => {
@@ -73,7 +72,6 @@ const ExposureList: React.FC = () => {
     }
   };
 
-  // 手动监听滚动容器
   useEffect(() => {
     const container = document.querySelector('.news-content');
     if (!container) return;
@@ -87,7 +85,6 @@ const ExposureList: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 初始加载
   const hasRequestedRef = useRef(false);
   useEffect(() => {
     if (hasRequestedRef.current) return;
@@ -95,7 +92,6 @@ const ExposureList: React.FC = () => {
     if (exposureList.length === 0) exposurePageRequest(true);
   }, []);
 
-  // 从上次阅读位置恢复
   useEffect(() => {
     const lastId = getLastReadItemId('exposure');
     const container = document.querySelector('.news-content') as HTMLElement | null;
@@ -133,7 +129,7 @@ const ExposureList: React.FC = () => {
     }
   }, [exposureList, getNewsListCache, getLastReadItemId, getNewsScrollPosition, setLastReadItemId]);
 
-  const click = (id: string) => {
+  const saveScrollAndItem = (id: string) => {
     const container = document.querySelector('.news-content') as HTMLElement | null;
     if (container) {
       const maxScroll = container.scrollHeight - container.clientHeight;
@@ -144,7 +140,6 @@ const ExposureList: React.FC = () => {
     } else {
       setLastReadItemId('exposure', id);
     }
-    navigate('/exposure/' + id, { replace: true });
   };
 
   const getImages = (exposure: ExposureType) => {
@@ -167,44 +162,47 @@ const ExposureList: React.FC = () => {
               {exposureList?.map((exposure) => {
                 const images = getImages(exposure);
                 return (
-                  <div
-                    className="exposure-item"
+                  <Link
                     key={exposure.id}
-                    data-id={exposure.id}
-                    onClick={() => click(exposure.id)}
+                    to={`/exposure/${exposure.id}`}
+                    style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                    onClick={() => saveScrollAndItem(String(exposure.id))}
                   >
-                    <div className="item-content">
-                      <div className={`exposure-title${exposure.isTop ? '-red' : ''}`}>
-                        {exposure.isTop && <span className="top-badge">置 顶</span>}
-                        {exposure.title}
+                    <div
+                      className="exposure-item"
+                      data-id={exposure.id}
+                    >
+                      <div className="item-content">
+                        <div className={`exposure-title${exposure.isTop ? '-red' : ''}`}>
+                          {exposure.isTop && <span className="top-badge">置 顶</span>}
+                          {exposure.title}
+                        </div>
+                        {images.length > 0 && (
+                          images.length === 1 ? (
+                            <div className="single-image">
+                              <Image fit="contain" src={getImgUrl(images[0])} className="single-photo" />
+                            </div>
+                          ) : (
+                            <div className="suspects-grid">
+                              {images.map((img, index) => (
+                                <div className="suspect-card" key={index}>
+                                  <Image fit="cover" src={getImgUrl(img)} className="suspect-photo" />
+                                </div>
+                              ))}
+                            </div>
+                          )
+                        )}
                       </div>
-                      {images.length > 0 && (
-                        images.length === 1 ? (
-                          <div className="single-image">
-                            <Image fit="contain" src={getImgUrl(images[0])} className="single-photo" />
-                          </div>
-                        ) : (
-                          <div className="suspects-grid">
-                            {images.map((img, index) => (
-                              <div className="suspect-card" key={index}>
-                                <Image fit="cover" src={getImgUrl(img)} className="suspect-photo" />
-                              </div>
-                            ))}
-                          </div>
-                        )
-                      )}
+                      <div className="item-footer">
+                        <div className="report-date">举报时间: {dayjs(exposure.createTime).format('YYYY-MM-DD HH:mm')}</div>
+                        <div className="view-count">浏览: {exposure.viewsCount}</div>
+                      </div>
                     </div>
-                    <div className="item-footer">
-                      <div className="report-date">举报时间:  {dayjs(exposure.createTime).format('YYYY-MM-DD HH:mm')}</div>
-                      <div className="view-count">浏览: {exposure.viewsCount}</div>
-                    </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
           </PullToRefresh>
-
-
         </>
       )}
     </>

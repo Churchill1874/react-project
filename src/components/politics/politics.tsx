@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, Divider, Tag, Ellipsis, Image, Toast, PullToRefresh, Skeleton, Swiper } from 'antd-mobile';
 import { FcReading, FcLike } from "react-icons/fc";
 import { MessageOutline, HeartOutline } from 'antd-mobile-icons';
@@ -11,7 +11,6 @@ import { getImgUrls } from "@/utils/commentUtils";
 import useStore from '@/zustand/store';
 
 const Politics: React.FC = () => {
-  const navigate = useNavigate();
   const { getNewsListCache, setNewsListCache, setNewsScrollPosition, getNewsScrollPosition, getLastReadItemId, setLastReadItemId } = useStore();
 
   const [politicsList, setPoliticsList] = useState<PoliticsType[]>(() => {
@@ -44,13 +43,17 @@ const Politics: React.FC = () => {
     politicsHasMoreRef.current = politicsHasMore;
   }, [politicsHasMore]);
 
-  const clickLikes = async (id) => {
+  const clickLikes = async (e: React.MouseEvent, id: number) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (likesIdList.includes(id)) {
       Toast.show({ content: '已点赞', duration: 600 });
       return;
     }
     setLikesIdList((prev) => [...prev, id]);
-    const param = { id: id, infoType: 1 };
+
+    const param = { id: String(id), infoType: 1 };  // ← 加 String() 转换
+
     const resp = await Request_IncreaseLikesCount(param);
     if (resp.code === 0) {
       if (resp.data.value) {
@@ -160,7 +163,7 @@ const Politics: React.FC = () => {
     }
   }, [politicsList, getNewsListCache, getLastReadItemId, getNewsScrollPosition, setLastReadItemId]);
 
-  const click = (id: string) => {
+  const saveScrollAndItem = (id: string) => {
     const container = document.querySelector('.news-content') as HTMLElement | null;
     if (container) {
       const maxScroll = container.scrollHeight - container.clientHeight;
@@ -171,7 +174,6 @@ const Politics: React.FC = () => {
     } else {
       setLastReadItemId('politics', id);
     }
-    navigate('/politics/' + id, { replace: true });
   };
 
   return (
@@ -188,21 +190,28 @@ const Politics: React.FC = () => {
               {politicsList?.map((politics, index) => {
                 const imgs = getImgUrls(politics.imagePath);
                 return (
-                  <div key={index}>
+                  <Link
+                    key={politics.id || index}
+                    to={`/politics/${politics.id}`}
+                    style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                    onClick={() => saveScrollAndItem(String(politics.id))}
+                  >
                     <Card
                       className="politics-custom-card politics-item"
                       data-id={politics.id}
                       style={{ marginTop: '0px' }}
-                      onClick={() => click(String(politics.id))}
                     >
                       <div className="politics-card-content">
                         {politics.title && (
-                          <div className="politics-title" style={{marginTop:'5px'}}>
+                          <div className="politics-title" style={{ marginTop: '5px' }}>
                             <Ellipsis direction='end' rows={2} content={politics.title} />
                           </div>
                         )}
                         {imgs.length > 0 && (
-                          <div className="politics-image-container" onClick={(e) => e.stopPropagation()}>
+                          <div
+                            className="politics-image-container"
+                            onClick={(e) => e.preventDefault()} // ← 阻止图片区域触发Link
+                          >
                             <Swiper>
                               {imgs.map((imgUrl, i) => (
                                 <Swiper.Item key={i}>
@@ -213,13 +222,15 @@ const Politics: React.FC = () => {
                           </div>
                         )}
                         <Ellipsis className="politics-synopsis" direction='end' rows={3} content={politics.content} style={{ fontSize: "15px", textIndent: "2em" }} />
-                        <div style={{ marginTop: '5px', marginBottom: '10px', padding: '0px', textIndent: '0px' }}>
+                        <div style={{ marginTop: '15px', marginBottom: '10px', padding: '0px', textIndent: '0px' }}>
                           <span className="icon-and-text" style={{ color: 'gray', marginRight: '3px' }}>
-                            来源: {politics.country}
+                            {politics.country}
                           </span>
-                          <span className="source" style={{ marginRight: '10px' }}>{politics.source}</span>
+                          <span className="source" style={{ marginRight: '10px' }}>
+                            来源:{politics.source}
+                          </span>
                           <span className="politics-time">
-                            {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD HH:mm')}
+                            {politics.createTime && dayjs(politics.createTime).format('YYYY-MM-DD')}
                           </span>
                         </div>
                         <div className="politics-meta" style={{ marginBottom: '10px' }}>
@@ -230,7 +241,11 @@ const Politics: React.FC = () => {
                             <span className="number"> {politics.viewCount} </span>
                           </span>
                           <span className="icon-and-text">
-                            <FcLike className='attribute-icon' fontSize={15} onClick={(e) => { e.stopPropagation(); clickLikes(politics.id); }} />
+                            <FcLike
+                              className='attribute-icon'
+                              fontSize={15}
+                              onClick={(e) => clickLikes(e, Number(politics.id))}
+                            />
                             <span className="number"> {politics?.likesCount || 0} </span>
                           </span>
                           <span className="icon-and-text">
@@ -241,7 +256,7 @@ const Politics: React.FC = () => {
                       </div>
                     </Card>
                     <Divider className="politics-divider-line" />
-                  </div>
+                  </Link>
                 );
               })}
             </div>
