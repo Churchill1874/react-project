@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {  Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, Divider, Tag, Ellipsis, Image, PullToRefresh, Skeleton } from 'antd-mobile';
 import { getImgUrl } from "@/utils/commentUtils";
 import { FcReading } from "react-icons/fc";
@@ -190,7 +190,7 @@ const SoutheastAsia: React.FC = () => {
                           <span className="icon-and-text">
                             <MessageOutline fontSize={17} />
                             <span className="message-number"> {southeastAsiaNews.commentsCount} </span>
-                            <span className="click" >点击查看</span>
+                            <span className="click" style={{ fontWeight: 500 }} >点击查看</span>
                           </span>
                         </span>
                       </div>
@@ -199,11 +199,21 @@ const SoutheastAsia: React.FC = () => {
 
                 </Link>
               ))}
+              <div style={{ marginTop: 14, textAlign: "center", paddingBottom: 8 }}>
+                <div style={{ fontSize: 10, padding: '0 10px', color: "#B4B2A9", lineHeight: 1.8 }}>
+                  公司追查信息及曝光内容均为用户投稿与各公司内部同僚提供
+                  <br />
+                  本站已尽合理审核义务，
+                  但仍保留与真实情况存在差异可能提示。<br />
+                  © 2025 GrayAsia. All rights reserved.
+                </div>
+              </div>
             </div>
           </PullToRefresh>
 
         </>
       )}
+
     </>
   );
 };

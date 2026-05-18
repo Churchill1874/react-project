@@ -419,7 +419,7 @@ const Home: React.FC = () => {
                       <div className="home-politics-card-content">
 
                         {politics.title &&
-                          <div className="politics-title" style={{ fontSize: '15px', fontWeight: '600', fontFamily: 'inherit', letterSpacing: '0.1px' }}>
+                          <div className="politics-title" style={{ fontSize: '15px', fontWeight: '500', fontFamily: 'inherit', letterSpacing: '0.1px' }}>
                             <Ellipsis direction='end' rows={2} content={politics.title} />
                           </div>
                         }
@@ -437,9 +437,9 @@ const Home: React.FC = () => {
                         <Ellipsis
                           className="politics-synopsis"
                           direction='end'
-                          rows={politics.imagePath ? 3 : 8}
+                          rows={politics.imagePath ? 3 : 3}
                           content={politics?.content}
-                          style={{ fontSize: "15px", fontFamily: 'inherit', textIndent: "2em", marginTop: '5px', letterSpacing: '1px' }} />
+                          style={{ fontSize: "15px", fontFamily: 'inherit', textIndent: "2em", marginTop: '5px', letterSpacing: '1px', color: 'gray' }} />
 
                         <div className="politics-meta" style={{ marginTop: '10px' }}>
                           {/*                           {
@@ -481,7 +481,7 @@ const Home: React.FC = () => {
 
                     </Card>
 
-                    <Divider style={{ padding: '0px', margin: '0px', borderColor: '#f1ecec' }} />
+                    <Divider style={{ padding: '0px', margin: '10px 0px', borderColor: '#f1ecec' }} />
                   </React.Fragment>
                 ))
               }
@@ -504,12 +504,20 @@ const Home: React.FC = () => {
           <Image style={{ padding: '0px' }} fit='contain' src='/advertise/home.jpg' />
         </div>
 
-
       </div>
 
 
 
-
+      {/* 版权 */}
+      <div style={{ marginTop: 14, textAlign: "center", paddingBottom: 8 }}>
+        <div style={{ fontSize: 10, padding: '0 10px', color: "#B4B2A9", lineHeight: 1.8 }}>
+          公司追查信息及曝光内容均为用户投稿与各公司内部同僚提供
+          <br/>
+          本站已尽合理审核义务，
+          但仍保留与真实情况存在差异可能提示。<br />
+          © 2025 GrayAsia. All rights reserved.
+        </div>
+      </div>
     </div >
   );
 };

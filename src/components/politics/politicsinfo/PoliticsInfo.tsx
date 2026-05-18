@@ -267,6 +267,7 @@ const PoliticsInfo: React.FC<PoliticsProps & { commentRef: any }> = (props) => {
           <Skeleton.Paragraph lineCount={12} animated />
         </>
       }
+      
     </>
   );
 }

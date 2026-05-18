@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from 'react-router-dom';
-import { Card , Tag, Ellipsis, Image, PullToRefresh, Skeleton } from 'antd-mobile';
+import { Card, Tag, Ellipsis, Image, PullToRefresh, Skeleton } from 'antd-mobile';
 import { FcReading } from "react-icons/fc";
 import { MessageOutline, LocationFill } from 'antd-mobile-icons';
 import '@/components/society/Society.less'
@@ -226,10 +226,21 @@ const Society: React.FC = () => {
                   </Card>
                 </Link>
               ))}
+
+              <div style={{ marginTop: 14, textAlign: "center", paddingBottom: 8 }}>
+                <div style={{ fontSize: 10, padding: '0 10px', color: "#B4B2A9", lineHeight: 1.8 }}>
+                  公司追查信息及曝光内容均为用户投稿与各公司内部同僚提供
+                  <br />
+                  本站已尽合理审核义务，
+                  但仍保留与真实情况存在差异可能提示。<br />
+                  © 2025 GrayAsia. All rights reserved.
+                </div>
+              </div>
             </div>
           </PullToRefresh>
         </>
       )}
+
     </>
   );
 };
