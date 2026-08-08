@@ -24,7 +24,6 @@ import { LocationFill } from 'antd-mobile-icons';
 import { getImgUrl, getImgUrls } from '@/utils/commentUtils';
 import useStore from '@/zustand/store';
 import { Request_OnlineCount } from '@/pages/groupchat/api';
-import logo from '@/assets/logo/logo1.png'
 
 const Home: React.FC = () => {
   // 轮播图状态管理
@@ -86,8 +85,8 @@ const Home: React.FC = () => {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div className="logo">
                   <img
-                    src={logo}
-                    alt="..."
+                    src="/assets/logo/logo1.png"
+                    alt="灰亚新闻"
                     style={{ width: '36px', height: '36px', verticalAlign: 'middle', marginRight: '6px', backgroundColor: 'transparent' }}
                   />
                   <div style={{ display: 'inline-flex', flexDirection: 'column', verticalAlign: 'middle', lineHeight: 1.1, marginLeft: '0px' }}>
@@ -309,7 +308,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="sea-news-item">
+            <div className="sea-news-item" onClick={() => navigate('/news/southeastAsia')}>
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry2}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle2}</div>
@@ -323,7 +322,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="sea-news-item">
+            <div className="sea-news-item" onClick={() => navigate('/news/southeastAsia')}>
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry3}</div>
               <div className="sea-news-content">
                 <div className="sea-news-title">{southeastAsiaNews?.southeastAsiaTitle3}</div>
@@ -490,18 +489,17 @@ const Home: React.FC = () => {
           </>
         }
 
-        {/*         {homeAdvertise &&
-          <div className='section'>
-            <div style={{ fontFamily: 'unset', color: 'gray', marginBottom: '3px' }}>广而告之</div>
-            <Image style={{ padding: '0px' }} fit='contain' src={homeAdvertise} />
-          </div>
-
-        }
- */}
 
         <div className='section'>
-          <div style={{ fontFamily: 'unset', color: 'gray', marginBottom: '5px', marginTop: '10px' }}>广而告之</div>
-          <Image style={{ padding: '0px' }} fit='contain' src='/advertise/home.jpg' />
+          <div style={{ fontFamily: 'unset', color: 'gray', marginBottom: '5px', marginTop: '5px' }}>广而告之</div>
+          <a href="https://jingcai-tiyu.com" target="_blank" rel="noopener noreferrer">
+            <Image style={{ padding: '0px' }} fit='contain' src='/advertise/home.jpg' />
+          </a>
+          <div style={{ marginTop: '8px', textAlign: 'center' }}>
+            <a href="https://jingcai-zaixian.com" target="_blank" rel="noopener noreferrer" style={{ fontSize: '13px', color: '#c62020', textDecoration: 'none', letterSpacing: '1px' }}>
+              🏆 竞彩体育在线下注 - 中超赛事在线下注 →
+            </a>
+          </div>
         </div>
 
       </div>
@@ -512,7 +510,7 @@ const Home: React.FC = () => {
       <div style={{ marginTop: 14, textAlign: "center", paddingBottom: 8 }}>
         <div style={{ fontSize: 10, padding: '0 10px', color: "#B4B2A9", lineHeight: 1.8 }}>
           公司追查信息及曝光内容均为用户投稿与各公司内部同僚提供
-          <br/>
+          <br />
           本站已尽合理审核义务，
           但仍保留与真实情况存在差异可能提示。<br />
           © 2025 GrayAsia. All rights reserved.

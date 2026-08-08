@@ -1,7 +1,7 @@
 import { useState, forwardRef, useRef, useImperativeHandle, useEffect } from "react";
 import {
   Divider, Avatar, Toast, Popup, Button, TextAreaRef, TextArea,
-  DotLoading, InfiniteScroll, SpinLoading, Space, FloatingBubble
+  DotLoading, InfiniteScroll, SpinLoading, Space
 } from "antd-mobile";
 
 import '@/components/comment/Comment.less'
@@ -460,12 +460,14 @@ const Comment = forwardRef<any, any>(({
         <CommentScrollContent hasMore={commentHasMore} />
       </InfiniteScroll>
 
-      <div style={{ height: '150px' }} />
+      <div style={{ height: '80px' }} />
 
-
-      <FloatingBubble onClick={inputCommentClick} axis='xy' magnetic='x' style={{ '--initial-position-bottom': '24px', '--initial-position-right': '24px', '--edge-distance': '24px' }}>
-        <MessageFill fontSize={32} />
-      </FloatingBubble>
+      <div className="comment-bottom-bar">
+        <div className="comment-bottom-input" onClick={inputCommentClick}>
+          <MessageFill fontSize={18} color='gray' />
+          <span className="comment-bottom-placeholder">说点什么...</span>
+        </div>
+      </div>
 
       <Popup className='comments-popup'
         visible={showsCommentInput}

@@ -13,6 +13,11 @@ export interface PrivateChatType {
   isSender?: any;
   notRead: any;
   sendAvatarPath: any;
+  sendName?: string;
+  receiveName?: string;
+  sendLevel?: any;
+  receiveLevel?: any;
+  receiveAvatarPath?: string;
 }
 
 export interface PrivateChatListType {
@@ -92,4 +97,19 @@ export const Request_PlayerPrivateChatPage = async (param: ChatPageReqType): Pro
 const CleanUnreadStatusPath = '/player/privateChat/cleanUnreadStatus';
 export const Request_CleanUnreadStatus = async (param: { id: string }): Promise<{ code: string; data: any; msg: string }> => {
   return (await axios.post(serverTarget + CleanUnreadStatusPath, param)).data;
+};
+
+
+// 按账号搜索玩家
+const FindPlayerByAccountPath = '/player/player/findPlayerByAccount';
+export const Request_FindPlayerByAccount = async (param: { account: string }): Promise<{ code: number; data: any; msg: string }> => {
+  return (await axios.post(serverTarget + FindPlayerByAccountPath, param)).data;
+};
+
+
+
+// 删除与指定玩家的聊天记录
+const CleanByPlayerIdPath = '/player/privateChat/cleanByPlayerId';
+export const Request_CleanByPlayerId = async (param: { playerAId: string }): Promise<{ code: number; data: any; msg: string }> => {
+  return (await axios.post(serverTarget + CleanByPlayerIdPath, param)).data;
 };

@@ -15,7 +15,6 @@ import {
 import { Request_GetVerficationCode, Request_Register, Request_Login } from '@/pages/login/api';
 import dayjs from 'dayjs';
 import useStore from '@/zustand/store';
-import logo from '@/assets/logo/logo1.png'
 // 解决中文输入法重复问题：拼音上屏前不向 Form 提交值
 interface ImeInputProps {
   value?: string;
@@ -226,9 +225,8 @@ const Login: React.FC = () => {
 
         {/* Logo */}
         <div className="login-logo">
-          <img src={logo} alt="logo" className="login-logo__img" />
+          <img src="/assets/logo/logo1.png" alt="logo" className="login-logo__img" />
           <div className="login-logo__name">灰亚新闻</div>
-          <div className="login-logo__sub">让我们一起搞点大新闻 ~</div>
         </div>
 
         {/* Tab 栏 */}
@@ -386,7 +384,7 @@ const Login: React.FC = () => {
 
       <div className="login-footer">
         <div className="login-footer__domain">www.grayasia.com</div>
-        <div className="login-footer__slogan">我来不是阻止你的,我来是希望你一切都能平安的</div>
+        <div className="login-footer__slogan">灰产咨询网站,公司内部动态追踪,东南亚新闻,国际政闻</div>
       </div>
     </div>
   );

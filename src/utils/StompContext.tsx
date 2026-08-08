@@ -31,6 +31,7 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
   const tokenId = useStore((state) => state.tokenId);
   const [client, setClient] = useState<Client | null>(null);
   const [connected, setConnected] = useState(false);
+  const clientRef = useRef<Client | null>(null);
 
   // 添加连接状态跟踪
   const isConnectingRef = useRef(false);
@@ -180,6 +181,9 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
     });
 
     stompClient.onConnect = () => {
+      Toast.clear(); // ← 连上后清掉断线提示，加在 onConnect 最开始
+      clientRef.current = stompClient;
+
       //console.log('StompProvider: Connected successfully');
       setClient(stompClient);
       setConnected(true);
@@ -191,10 +195,13 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       // 私信订阅
       try {
         const privateSub = stompClient.subscribe('/user/queue/private', (message) => {
-          //console.log("私信来了:", message.body);
+          console.log("私信原始body:", message.body);
           const msg = JSON.parse(message.body) as PrivateChatType;
-          pushChatMessageToMap(msg);
-          updatePrivateChatList(msg);
+          console.log("解析后的msg对象:", msg);
+
+          console.log('收到私信，当前playerInfo:', useStore.getState().playerInfo);
+          useStore.getState().pushChatMessageToMap(msg);
+          useStore.getState().updatePrivateChatList(msg);
 
           //console.log('当前所在路由路径:', latestPathRef.current, ',对比结果:', latestPathRef.current !== '/message');
           if (latestPathRef.current !== '/message') {
@@ -298,24 +305,36 @@ export const StompProvider = ({ children }: { children: ReactNode }) => {
       }
     };
 
-    stompClient.onDisconnect = () => {
-      //console.log('StompProvider: Disconnected from server');
+    stompClient.onStompError = (error) => {
+      console.error('STOMP error:', error);
       setConnected(false);
       isConnectingRef.current = false;
     };
 
-    stompClient.onStompError = (error) => {
-      //console.error('STOMP error:', error);
-      isConnectingRef.current = false;
-    };
-
     stompClient.onWebSocketError = (error) => {
-      //console.error('WebSocket error:', error);
+      console.error('WebSocket error:', error);
+      console.log('设置connected为false');   // ← 加这行
+
+      setConnected(false);
       isConnectingRef.current = false;
     };
 
     try {
       stompClient.activate();
+      // 每2秒检查一次真实连接状态
+      const timer = setInterval(() => {
+        const isReallyConnected = clientRef.current?.connected ?? false;
+        setConnected(isReallyConnected);
+      }, 2000);
+
+      // 存一下timer方便清理
+      stompClient.onDisconnect = () => {
+        clearInterval(timer);
+        setConnected(false);
+        isConnectingRef.current = false;
+        Toast.show({ content: '连接已断开，正在重连...', duration: 0, icon: 'fail' }); // ← 加这行
+
+      };
       //console.log('StompProvider: Client activation initiated');
     } catch (error) {
       //console.error('Error activating STOMP client:', error);

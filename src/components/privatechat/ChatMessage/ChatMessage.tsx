@@ -27,6 +27,7 @@ interface ChatMessageProps {
   targetId?: string;
   avatar?: string;
   level?: number;
+  name?: string;
   currentPlayerId?: string;
   currentPlayerAvatar?: string;
   visiblePrivateChatCloseRight?: boolean;
@@ -36,6 +37,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   targetId,
   avatar,
   level,
+  name,
   currentPlayerId,
   currentPlayerAvatar,
   visiblePrivateChatCloseRight
@@ -43,18 +45,26 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const [chatMessagePageNum, setChatMessagePageNum] = useState<number>(1);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const { chatMessageMap, pushChatMessageToMap, updatePrivateChatList, } = useStore();
+  const { chatMessageMap, pushChatMessageToMap, updatePrivateChatList, playerInfo } = useStore();
   const currentMessageList = targetId ? chatMessageMap.get(targetId) || [] : [];
   const { client, connected } = useContext(StompContext)!;
+  console.log('当前connected状态:', connected);  // ← 加这行
+
   const [input, setInput] = useState("");
+  const navigate = useNavigate();  // ← 放这里
 
   const handleInputChange = (val: string) => {
     setInput(val);
   };
 
   useEffect(() => {
-    chatMessagePageRequest();
+    if (!targetId) return;
+    // 先清空这个会话的缓存，再重新拉第一页
+    const newMap = new Map(useStore.getState().chatMessageMap);
+    newMap.delete(targetId);
+    useStore.getState().setChatMessageMap(newMap);
     setChatMessagePageNum(1);
+    chatMessagePageRequest(1);  // 直接传1，不依赖state
   }, [targetId]);
 
   useEffect(() => {
@@ -63,29 +73,26 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     }
   }, [currentMessageList, visiblePrivateChatCloseRight]);
 
-  const chatMessagePageRequest = async () => {
+  const chatMessagePageRequest = async (pageNum: number) => {
     if (loading || !targetId) return;
     setLoading(true);
-
-    const param: ChatPageReqType = { playerAId: targetId, pageNum: chatMessagePageNum, pageSize: 50 };
+    const param: ChatPageReqType = { playerAId: targetId, pageNum: pageNum, pageSize: 50 };
     const list: PrivateChatType[] = (await Request_PlayerPrivateChatPage(param)).data.records || [];
-
     if (list.length > 0) {
-      setChatMessagePageNum(prev => prev + 1);
+      setChatMessagePageNum(pageNum + 1);
       for (const msg of list.reverse()) {
         pushChatMessageToMap({ ...msg, isSender: msg.sendId === currentPlayerId });
       }
     }
-
     setLoading(false);
   };
 
   const sendMessage = () => {
     if (!input.trim()) return;
+    console.log('发送时name值:', name, 'playerInfo:', playerInfo?.name);  // ← 加这行
 
     if (!currentPlayerId) {
       //当前用户id获取不到直接跳转登录页面
-      const navigate = useNavigate();
       navigate('/logo');
       return;
     }
@@ -105,19 +112,22 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       type: 1,
       isSender: true,
       notRead: true,
-      sendAvatarPath: avatar
+      sendAvatarPath: currentPlayerAvatar,
+      sendName: playerInfo?.name,
+      receiveName: name,
+      receiveAvatarPath: avatar,
     };
 
     pushChatMessageToMap(message);
     updatePrivateChatList(message);
 
-    if (connected && client) {
+    if (client?.connected) {
       client.publish({
         destination: '/app/chat/private',
         body: JSON.stringify(message),
       });
     } else {
-      Toast.show({ content: '连接未建立，无法发送消息', icon: 'fail' });
+      Toast.show({ content: '连接已断开，请稍候重试', icon: 'fail' });
     }
 
     setInput("");
@@ -126,7 +136,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   return (
     <>
       <div style={{ touchAction: "pan-y", overflowY: "auto", height: "100%" }}>
-        <PullToRefresh onRefresh={chatMessagePageRequest}>
+        <PullToRefresh onRefresh={() => chatMessagePageRequest(chatMessagePageNum)}>
           <div className="private-chat-popup" style={{ flex: 1, overflowY: 'auto' }}>
             <ChatMessageScrollContent hasMore={loading} />
             {currentMessageList.map((chatMessage, index) => {
@@ -180,7 +190,14 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           onChange={handleInputChange}
           value={input}
         />
-        <Button className="private-send-button" color="primary" onClick={sendMessage}>发送</Button>
+        <Button
+          className="private-send-button"
+          color="primary"
+          onClick={sendMessage}
+          disabled={!connected}
+        >
+          {connected ? '发送' : '重连中'}
+        </Button>
       </div>
     </>
 

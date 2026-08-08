@@ -115,7 +115,7 @@ const useStore = create<AppState>()(
         const state = get();
         return state.lastReadItemId[tabKey] || null;
       },
-      
+
       playerInfo: null,
       setPlayerInfo: playerInfo => set(() => ({ playerInfo })),
 
@@ -156,13 +156,15 @@ const useStore = create<AppState>()(
 
           const otherId = msg.sendId === playerId ? msg.receiveId : msg.sendId;
           const oldMessages = state.chatMessageMap.get(otherId) || [];
+
+          // 有id的消息去重，避免重复push
+          if (msg.id && oldMessages.some(m => m.id === msg.id)) return {};
+
           const newMessages = [...oldMessages, msg];
           const newMap = new Map(state.chatMessageMap);
           newMap.set(otherId, newMessages);
-
           return { chatMessageMap: newMap };
         }),
-
       privateChatList: [],
       setPrivateChatList: listOrFn =>
         set(state => ({
@@ -174,12 +176,16 @@ const useStore = create<AppState>()(
         set(state => {
           const playerId = state.playerInfo?.id;
           console.log(1);
+          console.log('updatePrivateChatList收到msg:', msg);  // ← 加这行
           if (!playerId || !msg.sendId || !msg.receiveId) return {};
           console.log(2);
           //找到聊天对方id
           const otherId = msg.sendId === playerId ? msg.receiveId : msg.sendId;
           const foundIndex = state.privateChatList?.findIndex(item => (item.sendId === otherId && item.receiveId === playerId) || (item.receiveId === otherId && item.sendId === playerId));
 
+          console.log('playerId:', playerId, 'otherId:', otherId, 'foundIndex:', foundIndex);  // ← 加这行
+          console.log('当前privateChatList:', JSON.stringify(state.privateChatList));           // ← 加这行
+          
           let newList = [...state.privateChatList];
 
           //如果当前聊天列表已经存在对方 就更新对方最后一次给我发信息的时间和内容 否则 就插入一个新的
@@ -189,14 +195,18 @@ const useStore = create<AppState>()(
               content: msg.content,
               createTime: msg.createTime,
               notRead: playerId !== msg.sendId,
+              sendName: (msg as any).sendName || newList[foundIndex].sendName,
+              receiveName: (msg as any).receiveName || newList[foundIndex].receiveName,
+              sendAvatarPath: (msg as any).sendAvatarPath || newList[foundIndex].sendAvatarPath,
+              receiveAvatarPath: (msg as any).receiveAvatarPath || newList[foundIndex].receiveAvatarPath,
             };
           } else {
             newList.unshift({
               id: '-1',
               sendId: msg.sendId,
               receiveId: msg.receiveId,
-              sendName: msg.sendId === playerId ? state.playerInfo?.name : '',
-              receiveName: msg.receiveId === playerId ? state.playerInfo?.name : msg.createName,
+              sendName: (msg as any).sendName || '',
+              receiveName: (msg as any).receiveName || '',
               sendAvatarPath: msg.sendId === playerId ? state.playerInfo?.avatarPath : msg.sendAvatarPath,
               receiveAvatarPath: msg.receiveId === playerId ? state.playerInfo?.avatarPath : msg.sendAvatarPath,
               sendLevel: '',

@@ -152,6 +152,34 @@
   margin: 10px 0px;
 }
 
+.comment-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  box-sizing: border-box;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+  background-color: #fff;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.comment-bottom-input {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 18px;
+  background-color: rgb(240, 240, 240);
+  box-sizing: border-box;
+
+  .comment-bottom-placeholder {
+    margin-left: 8px;
+    font-size: 14px;
+    color: gray;
+  }
+}
+
 .comment-send-container {
   display: flex;
   justify-content: center;
