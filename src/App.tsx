@@ -28,8 +28,7 @@ const getBgColor = (pathname: string) => {
 
 const InnerApp = () => {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' }}>
-
+    <div className="inner-app">
       <Routes>
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={<route.component />} />
