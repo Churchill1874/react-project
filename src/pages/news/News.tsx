@@ -1,3 +1,11 @@
+// 目标路径: src/pages/news/News.tsx
+// 完整文件，可直接整份覆盖替换你项目里的 src/pages/news/News.tsx
+// （在原文件基础上只加了四处，都标了「电报」注释，其余一字未改）：
+//   1. import Telegram
+//   2. validTabs 数组加 'telegram'
+//   3. renderActiveComponent 的 switch 加 case 'telegram'
+//   4. CapsuleTabs 里加一个 Tab
+
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { CapsuleTabs } from "antd-mobile";
 import '@/pages/news/News.less';
@@ -10,6 +18,7 @@ import Politics from "@/components/politics/politics";
 import Society from "@/components/society/Society";
 import Topic from '@/components/topic/Topic';
 import Exposure from "@/components/exposure/Exposure";
+import Telegram from '@/components/telegram/Telegram'; // 电报：列表组件
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import useStore from '@/zustand/store';
 
@@ -23,7 +32,7 @@ const News: React.FC = React.memo(() => {
 
   const [newsActiveTab, setNewsActiveTab] = useState<string>(() => {
     const saved = localStorage.getItem('newsActiveTab');
-    const validTabs = ['exposure', 'company', 'southeastAsia', 'society', 'politics', 'topic'];
+    const validTabs = ['exposure', 'company', 'southeastAsia', 'society', 'politics', 'topic', 'telegram']; // 电报：加入合法tab列表
     if (saved && validTabs.includes(saved)) return saved;
     if (typeId && validTabs.includes(typeId)) return typeId;
     return 'exposure';
@@ -145,6 +154,8 @@ const News: React.FC = React.memo(() => {
         return <Company />;
       case 'exposure':
         return <Exposure />;
+      case 'telegram': // 电报：渲染列表组件
+        return <Telegram />;
 /*       case 'promotion':
         return <Promotion />;
       case 'news':
@@ -167,6 +178,7 @@ const News: React.FC = React.memo(() => {
           <CapsuleTabs.Tab title="政闻" key="politics" />
           {/* <CapsuleTabs.Tab title="国内" key="news" /> */}
           <CapsuleTabs.Tab title="话题" key="topic" />
+          <CapsuleTabs.Tab title="电报" key="telegram" /> {/* 电报：新增标签 */}
         </CapsuleTabs>
       </div>
 

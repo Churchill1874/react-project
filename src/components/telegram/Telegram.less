@@ -1,0 +1,383 @@
+// 目标路径: src/components/telegram/Telegram.less
+// 电报模块专属样式（鲜艳社交风），与站点整体柔和风格区分开，
+// 用来在列表里抓眼球、引导点击/扫码/跳转。
+
+@tg-primary: #7c4dff;
+@tg-primary-dark: #5b2fe0;
+@tg-secondary: #ff3e7f;
+@tg-blue: #29a9eb;
+@tg-channel: #00c2a8;
+@tg-group: #7c4dff;
+@tg-bg: #f7f6fc;
+@tg-text-main: #1a1533;
+@tg-text-sub: #6b6580;
+@tg-text-faint: #9d97b3;
+@tg-border-soft: #ececf6;
+@tg-gradient-brand: linear-gradient(135deg, #7c4dff 0%, #ff3e7f 100%);
+@tg-gradient-soft: linear-gradient(135deg, rgba(124, 77, 255, 0.1) 0%, rgba(255, 62, 127, 0.1) 100%);
+@tg-shadow-card: 0 8px 20px rgba(124, 77, 255, 0.14);
+
+// ---------------------------------------------------------------
+// 列表页（嵌入 News 的 CapsuleTabs 内容区）
+// ---------------------------------------------------------------
+
+.telegram-container {
+  padding: 8px 8px 24px;
+  background: @tg-bg;
+  min-height: 100%;
+}
+
+.telegram-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: @tg-shadow-card;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: @tg-text-sub;
+  margin-bottom: 10px;
+
+  b {
+    color: @tg-primary;
+  }
+}
+
+.telegram-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.telegram-card {
+  display: block;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: @tg-shadow-card;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// 海报图：固定 3:1
+.telegram-card__poster {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  background: @tg-gradient-soft;
+  overflow: hidden;
+
+  .adm-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.telegram-card__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.telegram-card__badge--channel {
+  background: linear-gradient(135deg, #00c2a8, #00e0c0);
+}
+
+.telegram-card__badge--group {
+  background: linear-gradient(135deg, #7c4dff, #a06bff);
+}
+
+.telegram-card__body {
+  padding: 12px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.telegram-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.telegram-card__title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: @tg-text-main;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.telegram-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.telegram-account,
+.telegram-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: @tg-text-sub;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.telegram-account {
+  color: @tg-blue;
+  font-weight: 600;
+}
+
+.telegram-card__qr {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  border: 1px solid @tg-border-soft;
+  padding: 3px;
+  background: #fff;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+// ---------------------------------------------------------------
+// 详情页（独立路由 /telegram/:id）
+// ---------------------------------------------------------------
+
+.telegram-detail-back {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+
+  span:first-child {
+    padding-right: 5px;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  span:last-child {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.telegram-detail-header {
+  background: @tg-gradient-brand;
+  padding-bottom: 34px;
+}
+
+.telegram-detail-poster {
+  margin: -22px 12px 0;
+  position: relative;
+  aspect-ratio: 3 / 1;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: @tg-shadow-card;
+  background: @tg-gradient-soft;
+
+  .adm-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.telegram-detail-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: @tg-shadow-card;
+  padding: 18px 16px;
+  margin: 14px 12px 0;
+}
+
+.telegram-detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+
+  h1 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.35;
+    color: @tg-text-main;
+  }
+}
+
+.telegram-detail-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.telegram-detail-badge--channel {
+  background: linear-gradient(135deg, #00c2a8, #00e0c0);
+}
+
+.telegram-detail-badge--group {
+  background: linear-gradient(135deg, #7c4dff, #a06bff);
+}
+
+.telegram-detail-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px dashed @tg-border-soft;
+  border-bottom: 1px dashed @tg-border-soft;
+  margin-bottom: 14px;
+}
+
+.telegram-detail-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: @tg-text-sub;
+
+  strong {
+    color: @tg-text-main;
+    font-weight: 700;
+  }
+}
+
+.telegram-detail-account-value {
+  color: @tg-blue;
+  font-weight: 700;
+}
+
+.telegram-detail-cta {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: @tg-gradient-brand;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 0;
+  box-shadow: 0 6px 16px rgba(124, 77, 255, 0.35);
+  text-decoration: none;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.telegram-detail-qr-block {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: @tg-gradient-soft;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.telegram-detail-qr-block__img {
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: 0 4px 12px rgba(124, 77, 255, 0.18);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.telegram-detail-qr-block__text {
+  h3 {
+    margin: 0 0 4px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: @tg-text-main;
+  }
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    color: @tg-text-sub;
+  }
+}
+
+.telegram-detail-desc {
+  margin-top: 16px;
+
+  h2 {
+    font-size: 14.5px;
+    font-weight: 800;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: @tg-text-main;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 13px;
+      border-radius: 999px;
+      background: @tg-gradient-brand;
+      display: inline-block;
+    }
+  }
+
+  p {
+    margin: 0 0 10px;
+    font-size: 13.5px;
+    color: #453f5c;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+}

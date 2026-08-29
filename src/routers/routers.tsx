@@ -1,3 +1,7 @@
+// 目标路径: src/routers/routers.tsx
+// 完整文件，可直接整份覆盖替换你项目里的 src/routers/routers.tsx
+// （在原文件基础上只加了两处：import TelegramDetail、以及 /telegram/:id 路由，其余一字未改）
+
 //所有路由配置文件
 import Home from '@/pages/home/Home';
 import Login from '@/pages/login/Login';
@@ -21,6 +25,7 @@ import SocietyDetail from '@/pages/societydetail';
 import PoliticsDetail from '@/pages/politicsdetail';
 import NewsInfoDetail from '@/pages/newsinfo';
 import TopicDetail from '@/pages/topicdetail';
+import TelegramDetail from '@/pages/telegramdetail';
 
 export default [
   //首页
@@ -126,6 +131,11 @@ export default [
   {
     path: '/topic/:id',
     component: TopicDetail
+  },
+  // SEO: 电报频道/群组独立详情页，可被搜索引擎收录
+  {
+    path: '/telegram/:id',
+    component: TelegramDetail
   }
 
 ];
