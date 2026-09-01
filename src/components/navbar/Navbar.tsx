@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Badge, Popup, Toast } from 'antd-mobile';
-import { AiOutlineMenu } from 'react-icons/ai';
+import {
+  AiOutlineMenu,
+  AiOutlineHome,
+  AiOutlineRead,
+  AiOutlineTeam,
+  AiOutlineMessage,
+  AiOutlineUser,
+} from 'react-icons/ai';
 import useStore from '@/zustand/store';
 
 // 简单的调试信息显示
@@ -13,12 +20,12 @@ const showDebugInfo = (message: string) => {
   });
 };
 
-const MENU_ITEMS: { key: string; title: string }[] = [
-  { key: 'home', title: '首页' },
-  { key: 'news', title: '新闻' },
-  { key: 'groupChat', title: '聊天大厅' },
-  { key: 'message', title: '消息' },
-  { key: 'personal', title: '个人' },
+const MENU_ITEMS: { key: string; title: string; icon: React.ReactNode }[] = [
+  { key: 'home', title: '首页', icon: <AiOutlineHome size={20} /> },
+  { key: 'news', title: '新闻', icon: <AiOutlineRead size={20} /> },
+  { key: 'groupChat', title: '聊天大厅', icon: <AiOutlineTeam size={20} /> },
+  { key: 'message', title: '消息', icon: <AiOutlineMessage size={20} /> },
+  { key: 'personal', title: '个人', icon: <AiOutlineUser size={20} /> },
 ];
 
 const Navbar = () => {
@@ -106,6 +113,7 @@ const Navbar = () => {
               }
               onClick={() => handleMenuSelect(item.key)}
             >
+              <span className="side-menu-item-icon">{item.icon}</span>
               {item.key === 'message' && hasUnreadMessage ? (
                 <Badge content={Badge.dot}>{item.title}</Badge>
               ) : (

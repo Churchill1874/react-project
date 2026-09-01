@@ -138,6 +138,9 @@ body {
 }
 
 .side-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 16px 24px;
   font-size: 16px;
   color: #333;
@@ -145,11 +148,20 @@ body {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
+.side-menu-item-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #888;
+}
 
 .side-menu-item--active {
   color: @theme;
   font-weight: 600;
   background-color: rgba(24, 144, 255, 0.08);
+}
+.side-menu-item--active .side-menu-item-icon {
+  color: @theme;
 }
 
 /* 这两条不是底部导航栏专属样式，是 antd-mobile Tabs 组件的全局样式，
