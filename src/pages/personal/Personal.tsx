@@ -106,7 +106,7 @@ const UserCenter: React.FC = () => {
 
             </div>
             <div className="right-info">
-              <span style={{marginRight: '30px'}} onClick={editPlayerInfo}>
+              <span style={{marginRight: '40px'}} onClick={editPlayerInfo}>
                 <EditSOutline fontSize={20} />
               </span>
             </div>
