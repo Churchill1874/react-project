@@ -26,8 +26,28 @@
 
   <meta charset="UTF-8" />
   <meta name="google" content="notranslate">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>灰亚新闻 - 灰产咨询 | 追查灰产公司动态 | 国际政闻</title>
+
+  <!--
+    针对 iOS 上部分浏览器（尤其是 Chrome for iOS 从主屏幕图标冷启动时）地址栏/工具栏收起
+    动画没有及时完成、导致 position:fixed 元素按"收起前"的旧尺寸定位，出现底部大块空白的情况。
+    做一次极小幅度的"假滚动"，可以强制浏览器立刻把地址栏收起动画走完并触发一次真实布局重算，
+    这是一个存在多年的移动端兼容技巧，对本身不可滚动（overflow:hidden）的页面同样有效。
+  -->
+  <script>
+    (function () {
+      function nudge() {
+        window.scrollTo(0, 1);
+        requestAnimationFrame(function () {
+          window.scrollTo(0, 0);
+        });
+      }
+      window.addEventListener('load', nudge);
+      window.addEventListener('pageshow', nudge);
+    })();
+  </script>
+
   <meta name="description" content="灰产圈咨询平台，追查灰产公司动态，置顶曝光，实时东南亚新闻动态，国际政闻" />
   <meta name="keywords" content="追查灰产公司动态,灰产咨询，国际政闻，置顶曝光，东南亚实时动态咨询" />
 

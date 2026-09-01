@@ -1,4 +1,4 @@
-import { useLayoutEffect, useEffect, useRef, useState, useContext } from 'react';
+import { useLayoutEffect, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import routes from '@/routers/routers';
 import News from '@/pages/news/News';
@@ -52,37 +52,6 @@ const App: React.FC = () => {
 
   const [bgColor, setBgColor] = useState<string>('#fff');
   const { tokenId } = useStore();
-
-  // 固定导航栏高度，避免动态计算带来的性能问题
-  const navbarHeight = 35;
-
-  // 计算内容区域高度
-  const [contentHeight, setContentHeight] = useState(() => {
-    return window.innerHeight - navbarHeight;
-  });
-
-  // 只在必要时更新高度，减少不必要的重新计算
-  useEffect(() => {
-    const updateHeight = () => {
-      // 只有非 /groupchat 页面才需要重新计算高度
-      if (location.pathname !== '/groupChat') {
-        const newHeight = window.innerHeight - navbarHeight;
-        setContentHeight(newHeight);
-      }
-    };
-
-    // 初始化高度
-    updateHeight();
-
-    // 监听屏幕尺寸变化
-    window.addEventListener('resize', updateHeight);
-    window.addEventListener('orientationchange', updateHeight);
-
-    return () => {
-      window.removeEventListener('resize', updateHeight);
-      window.removeEventListener('orientationchange', updateHeight);
-    };
-  }, [location.pathname]); // 添加 location.pathname 依赖
 
   // 处理背景色变化
   useLayoutEffect(() => {

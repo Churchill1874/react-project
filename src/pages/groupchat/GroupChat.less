@@ -311,11 +311,10 @@
       }
     }
   }
-  /* 🔥 输入区域 - 重新使用固定定位，但考虑导航栏 */
+  /* 🔥 输入区域 - 固定定位。底部导航栏已改成右上角菜单按钮，不用再让位了 */
   .chat-input-area {
     position: fixed;
-    //bottom: calc(45px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
-    bottom: calc(44px + env(safe-area-inset-bottom)); /* 在导航栏上方 */
+    bottom: calc(8px + env(safe-area-inset-bottom));
 
     left: 50%;
     right: auto;
@@ -432,8 +431,8 @@
 
     .chat-input-area {
       padding: 5px 12px;
-      /* 🔥 移动端额外调整 */
-      bottom: calc(45px + env(safe-area-inset-bottom) + 5px);
+      /* 🔥 移动端额外调整；底部导航栏已改成右上角菜单按钮，不用再让位了 */
+      bottom: calc(8px + env(safe-area-inset-bottom));
 
       .input-container {
         gap: 8px;
@@ -538,8 +537,8 @@
 /* iPhone特殊适配 */
 @media (max-width: 430px) and (-webkit-min-device-pixel-ratio: 2) {
   .chat-input-area {
-    /* iPhone特殊处理 */
-    bottom: calc(35px + env(safe-area-inset-bottom) + 8px) !important;
+    /* iPhone特殊处理；底部导航栏已改成右上角菜单按钮，不用再让位了 */
+    bottom: calc(8px + env(safe-area-inset-bottom)) !important;
 
     .input-container {
       .message-input {

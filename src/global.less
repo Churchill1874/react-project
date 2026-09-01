@@ -11,9 +11,7 @@
 html,
 body {
   touch-action: manipulation;
-  height: 100vh;
-  height: 100dvh;
-  /* 动态视口高度，适配移动端 */
+  height: 100%;
   margin: 0;
   padding: 0;
   color: #000;
@@ -21,8 +19,6 @@ body {
   /* 移动端防止滚动 */
   overflow: hidden !important;
   overscroll-behavior: none;
-  /* 支持安全区域 */
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 桌面端允许滚动 */
@@ -35,6 +31,15 @@ body {
   }
 
   .main-container {
+    position: relative !important;
+    /* 取消移动端的 fixed 钉边布局，恢复桌面端正常文档流；改成 relative（而不是 static）
+       是为了给 .menu-trigger-btn 在桌面端提供一个定位参照——按钮固定在这个居中列的
+       右上角，而不是整个浏览器窗口的右上角。
+       这里必须加 !important：本文件里这条桌面端覆盖规则在源码顺序上写在移动端基础规则
+       （.main-container { position: fixed... }）前面，CSS 优先级相同时后写的规则生效，
+       不加 !important 桌面端会被后面的移动端 fixed 规则覆盖回去（其余几条 overflow 覆盖
+       用 !important 也是同样的原因）。 */
+    inset: auto;
     height: auto;
     /* 桌面端允许自然高度 */
     min-height: 100vh;
@@ -47,25 +52,25 @@ body {
 
   .content-area {
     overflow: auto !important;
-    padding-bottom: 60px;
-    /* 桌面端固定底部间距 */
+    padding-bottom: 20px;
   }
 
-  .navbar {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100%, 680px);
-    max-width: 680px;
-    z-index: 999;
+  .menu-trigger-btn {
+    /* 同样需要 !important：源码顺序上这条桌面端覆盖写在移动端基础规则（position: fixed）前面 */
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
   }
 }
 
 .main-container {
-  height: 100vh;
-  height: 100dvh;
-  /* 动态视口高度 */
+  /* 不再用 100vh/100dvh 猜视口高度——这类单位在微信内置浏览器、Chrome 主屏幕快捷方式等
+     非标准 WebView 里，工具栏收起/展开的时机经常算不准，刷新前后会差一截，表现为导航栏
+     上方多出一块空白。改用 position: fixed + inset: 0 直接钉在浏览器当前真实可视区域的
+     四条边上，这是各家引擎（包括老版 WebView、微信内核）都稳定支持的老技术，不依赖任何
+     视口单位或 JS 时机校正。 */
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -77,8 +82,9 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* 为导航栏和安全区域留出空间 */
-  padding-bottom: calc(45px + env(safe-area-inset-bottom));
+  /* 底部导航栏已经改成右上角菜单按钮 + 侧滑弹窗，content-area 不用再留底部空间了，
+     这里只保留一点安全区域，避免内容贴着 iPhone 底部小黑条 */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 桌面端内容区域调整 */
@@ -86,26 +92,69 @@ body {
   .content-area {
     overflow: auto;
     /* 桌面端允许滚动 */
-    padding-bottom: 60px;
-    /* 桌面端固定底部间距 */
+    padding-bottom: 20px;
   }
 }
 
-.navbar {
-  flex-shrink: 0;
+/* 右上角菜单按钮 */
+.menu-trigger-btn {
   position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: calc(40px + env(safe-area-inset-bottom));
-  /* 包含安全区域 */
-  z-index: 999;
-  margin: 0;
-  padding: 3px 0 env(safe-area-inset-bottom) 0;
-  /* 底部安全区域 */
-  background-color: #fff;
-  border-top: 1px solid rgb(233, 230, 230);
+  top: calc(10px + env(safe-area-inset-top));
+  right: 12px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.menu-trigger-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #f5222d;
+  border: 1px solid #fff;
+}
+
+/* 右侧滑出的菜单弹窗内容 */
+.side-menu {
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: calc(24px + env(safe-area-inset-top));
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: #fff;
+}
+
+.side-menu-item {
+  padding: 16px 24px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.side-menu-item--active {
+  color: @theme;
+  font-weight: 600;
+  background-color: rgba(24, 144, 255, 0.08);
+}
+
+/* 这两条不是底部导航栏专属样式，是 antd-mobile Tabs 组件的全局样式，
+   投注/消息/设置头像等页面里的 Tabs（lottery-tabs / message-tabs / tabs-personal）都在用，
+   跟底部导航栏改版无关，保留 */
 .adm-tabs-header {
   padding: 1px 0px;
   border-bottom: none !important;
@@ -161,15 +210,6 @@ body {
     flex-direction: column;
   }
 
-  .navbar {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(100%, 680px);
-    max-width: 680px;
-  }
-
   .capsule-tabs-container {
     max-width: 680px;
     width: 100%;
@@ -192,16 +232,6 @@ body {
     margin: 0 auto;
     border: 1px solid #eee;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .navbar {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 680px;
-    width: 100%;
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); // 可选
   }
 
   .capsule-tabs-container {

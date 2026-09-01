@@ -32,7 +32,7 @@ const TelegramDetail: React.FC = () => {
   const descParagraphs = (telegram?.description || '').split(/\n+/).filter(Boolean);
 
   return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 'calc(60px + env(safe-area-inset-bottom))' }}>
+    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))' }}>
       {telegram && (
         <Helmet>
           <title>{telegram.title}（{telegram.account}）- 电报{telegram.type === 1 ? '频道' : '群组'}详情｜灰亚新闻</title>

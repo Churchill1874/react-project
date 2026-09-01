@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Badge, Tabs, Toast } from 'antd-mobile';
+import { Badge, Popup, Toast } from 'antd-mobile';
+import { AiOutlineMenu } from 'react-icons/ai';
 import useStore from '@/zustand/store';
 
 // 简单的调试信息显示
@@ -12,11 +13,20 @@ const showDebugInfo = (message: string) => {
   });
 };
 
-const Navbar = () => {
+const MENU_ITEMS: { key: string; title: string }[] = [
+  { key: 'home', title: '首页' },
+  { key: 'news', title: '新闻' },
+  { key: 'groupChat', title: '聊天大厅' },
+  { key: 'message', title: '消息' },
+  { key: 'personal', title: '个人' },
+];
 
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeKey, setActiveKey] = useState('');
+  const [menuVisible, setMenuVisible] = useState(false);
+  const hasUnreadMessage = useStore(state => state.hasUnreadMessage);
 
   useEffect(() => {
     const currentPath = location.pathname === '/' ? '' : location.pathname.split('/')[1];
@@ -35,7 +45,9 @@ const Navbar = () => {
     }
   }, [location.pathname]);
 
-  const handleTabChange = (key: string) => {
+  const handleMenuSelect = (key: string) => {
+    setMenuVisible(false);
+
     // 添加防抖处理
     if (activeKey === key) return;
 
@@ -43,7 +55,6 @@ const Navbar = () => {
     const isHonorBrowser = /HUAWEI|Honor/i.test(navigator.userAgent);
 
     try {
-      //showDebugInfo(`正在跳转到: /${key}`);
       navigate(`/${key}`);
 
       // 如果3秒后页面仍未跳转，强制刷新
@@ -68,28 +79,43 @@ const Navbar = () => {
   };
 
   return (
-    <Tabs
-      activeKey={activeKey}
-      onChange={handleTabChange}
-      className="navbar"
-      activeLineMode="auto"
-      style={{
-        '--fixed-active-line-width': '40px',
-        '--active-line-height': '2px',
-        '--active-line-border-radius': '1px',
-      }}
-    >
-      <Tabs.Tab title="首页" key="home" />
-      <Tabs.Tab title="新闻" key="news" />
-      {/* <Tabs.Tab title="大厅" key="hall" /> */}
-      <Tabs.Tab title="聊天大厅" key="groupChat" />
-      {/* <Tabs.Tab title="投注" key="bet" /> */}
-      <Tabs.Tab
-        title={useStore.getState().hasUnreadMessage ? <Badge content={Badge.dot}>消息</Badge> : '消息'}
-        key="message"
-      />
-      <Tabs.Tab title="个人" key="personal" />
-    </Tabs>
+    <>
+      <button
+        type="button"
+        className="menu-trigger-btn"
+        aria-label="打开菜单"
+        onClick={() => setMenuVisible(true)}
+      >
+        <AiOutlineMenu size={20} />
+        {hasUnreadMessage && <span className="menu-trigger-dot" />}
+      </button>
+
+      <Popup
+        visible={menuVisible}
+        position="right"
+        closeOnMaskClick
+        onClose={() => setMenuVisible(false)}
+        bodyStyle={{ width: '62vw', maxWidth: 260 }}
+      >
+        <div className="side-menu">
+          {MENU_ITEMS.map(item => (
+            <div
+              key={item.key}
+              className={
+                'side-menu-item' + (activeKey === item.key ? ' side-menu-item--active' : '')
+              }
+              onClick={() => handleMenuSelect(item.key)}
+            >
+              {item.key === 'message' && hasUnreadMessage ? (
+                <Badge content={Badge.dot}>{item.title}</Badge>
+              ) : (
+                item.title
+              )}
+            </div>
+          ))}
+        </div>
+      </Popup>
+    </>
   );
 };
 

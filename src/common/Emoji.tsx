@@ -190,7 +190,7 @@ const MobileEmojiPicker: React.FC<MobileEmojiPickerProps> = ({
         ref={modalRef}
         style={{
           position: 'fixed',
-          bottom: 'calc(35px + env(safe-area-inset-bottom) + 70px)',
+          bottom: 'calc(env(safe-area-inset-bottom) + 70px)', // 70px 是留给输入框的空间；底部导航栏已改成右上角菜单按钮，不用再额外让位了
           left: '10px',
           right: '10px',
           maxWidth: '400px',

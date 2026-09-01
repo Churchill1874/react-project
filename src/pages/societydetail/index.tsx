@@ -9,7 +9,7 @@ const SocietyDetail: React.FC = () => {
   return (
     <>
       <div style={{ 
-      marginBottom: '100px', minHeight: '100vh', overflowY: 'auto', height: '100vh', paddingBottom: 'calc(60px + env(safe-area-inset-bottom))',  // 👈 加这个
+      marginBottom: '100px', minHeight: '100vh', overflowY: 'auto', height: '100vh', paddingBottom: 'calc(20px + env(safe-area-inset-bottom))', // 底部导航栏已改成右上角菜单按钮，不用再留那么多了
 }}>
         <NavBar onBack={() => navigate('/news/society')}>
           社会瓜详情

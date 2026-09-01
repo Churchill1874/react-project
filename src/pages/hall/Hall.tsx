@@ -1,6 +1,6 @@
 // 修复后的 HallPage.tsx
 import React from 'react';
-import '@/pages/Hall/Hall.less';
+import '@/pages/hall/Hall.less';
 import { useNavigate } from 'react-router-dom'; // 添加这个导入
 import { Image } from 'antd-mobile';
 
