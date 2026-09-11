@@ -34,14 +34,28 @@ body {
   }
 
   .main-container {
+    position: relative !important;
+    inset: auto !important;
+
+    width: 100%;
     height: auto !important;
     min-height: 100vh;
+
     max-width: 680px;
+    margin: 0 auto;
+
     display: block;
     overflow: visible !important;
   }
 
   .content-area {
+    height: auto !important;
+    min-height: 0;
+    overflow: visible !important;
+    display: block;
+  }
+
+  .inner-app {
     height: auto !important;
     min-height: 0;
     overflow: visible !important;
