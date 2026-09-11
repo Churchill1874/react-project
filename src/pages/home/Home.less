@@ -61,7 +61,7 @@
 .notice-label {
   font-size: 13px;
   color: rgb(53, 52, 52);
-    white-space: nowrap;
+  white-space: nowrap;
   //background: rgba(242, 243, 245, 0.352);  // 橙红色背景
   padding: 0px 5px;
   border-radius: 20px; // 胶囊圆角
@@ -352,12 +352,9 @@
 }
 
 // 轮播图样式 - 使用16:9宽高比
-.carousel-container {
+.container {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 8;
-  border-radius: 10px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* 为不支持aspect-ratio的浏览器提供备选方案 */
@@ -851,8 +848,9 @@
 // 适配您的项目桌面端样式
 @media (min-width: 768px) {
   .container {
-    max-width: 680px;
-    margin: 0 auto;
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
   }
 }
 

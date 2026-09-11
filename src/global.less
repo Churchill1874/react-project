@@ -26,33 +26,26 @@ body {
 
   html,
   body {
-    overflow: auto !important;
-    height: auto;
+    height: auto !important;
+    min-height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: auto;
   }
 
   .main-container {
-    position: relative !important;
-    /* 取消移动端的 fixed 钉边布局，恢复桌面端正常文档流；改成 relative（而不是 static）
-       是为了给 .menu-trigger-btn 在桌面端提供一个定位参照——按钮固定在这个居中列的
-       右上角，而不是整个浏览器窗口的右上角。
-       这里必须加 !important：本文件里这条桌面端覆盖规则在源码顺序上写在移动端基础规则
-       （.main-container { position: fixed... }）前面，CSS 优先级相同时后写的规则生效，
-       不加 !important 桌面端会被后面的移动端 fixed 规则覆盖回去（其余几条 overflow 覆盖
-       用 !important 也是同样的原因）。 */
-    inset: auto;
-    height: auto;
-    /* 桌面端允许自然高度 */
+    height: auto !important;
     min-height: 100vh;
-    overflow: visible !important;
     max-width: 680px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    overflow: visible !important;
   }
 
   .content-area {
-    overflow: auto !important;
-    padding-bottom: 20px;
+    height: auto !important;
+    min-height: 0;
+    overflow: visible !important;
+    display: block;
   }
 
   .menu-trigger-btn {
@@ -90,7 +83,6 @@ body {
 /* 桌面端内容区域调整 */
 @media (min-width: 768px) {
   .content-area {
-    overflow: auto;
     /* 桌面端允许滚动 */
     padding-bottom: 20px;
   }
@@ -148,6 +140,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
+
 .side-menu-item-icon {
   display: flex;
   align-items: center;
@@ -160,6 +153,7 @@ body {
   font-weight: 600;
   background-color: rgba(24, 144, 255, 0.08);
 }
+
 .side-menu-item--active .side-menu-item-icon {
   color: @theme;
 }
@@ -215,13 +209,6 @@ body {
 
 /* 针对桌面设备的样式调整 */
 @media (min-width: 768px) {
-  .main-container {
-    height: 100%;
-    max-width: 680px;
-    display: flex;
-    flex-direction: column;
-  }
-
   .capsule-tabs-container {
     max-width: 680px;
     width: 100%;
