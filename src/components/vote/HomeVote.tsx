@@ -4,7 +4,16 @@ import { VotePage_Request, VoteType } from '@/components/vote/api';
 import VoteListCard from '@/components/vote/VoteListCard';
 import '@/components/vote/Vote.less';
 
-// 首页投票模块：优先展示进行中的投票，没有进行中的就展示最近的投票
+// 首页最多展示几条投票（改这里即可）
+const HOME_VOTE_COUNT = 1;
+
+/**
+ * 首页投票模块
+ * 显示规则（后台通过「置顶」控制首页显示哪一条）：
+ * 1. 优先取进行中的投票，置顶的排最前，其次按发布时间最新
+ * 2. 没有进行中的投票时，显示最近的一条（已截止的结果）
+ * 3. 一条投票都没有时，整个模块隐藏
+ */
 const HomeVote: React.FC = () => {
   const navigate = useNavigate();
   const [voteList, setVoteList] = useState<VoteType[]>([]);
@@ -12,18 +21,17 @@ const HomeVote: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        let list = (await VotePage_Request({ pageNum: 1, pageSize: 2, ended: false })).data?.records || [];
+        let list = (await VotePage_Request({ pageNum: 1, pageSize: HOME_VOTE_COUNT, ended: false })).data?.records || [];
         if (list.length === 0) {
-          list = (await VotePage_Request({ pageNum: 1, pageSize: 1 })).data?.records || [];
+          list = (await VotePage_Request({ pageNum: 1, pageSize: HOME_VOTE_COUNT })).data?.records || [];
         }
-        setVoteList(list);
+        setVoteList(list.slice(0, HOME_VOTE_COUNT));
       } catch (e) {
         setVoteList([]);
       }
     })();
   }, []);
 
-  // 没有任何投票时整个模块不显示
   if (voteList.length === 0) return null;
 
   return (
