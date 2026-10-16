@@ -32,7 +32,10 @@ import useStore from "@/zustand/store";
 import { FcComments, FcMediumPriority, FcVoicePresentation } from "react-icons/fc";
 
 
+import { useNavigate } from 'react-router-dom';
+
 const Message: React.FC = () => {
+  const navigate = useNavigate();
   //点击头像
   const [otherInfoCloseRight, setOtherInfoCloseRight] = useState(false)
   const [otherPlayerId, setOtherPlayerId] = useState<string>()
@@ -283,6 +286,11 @@ const Message: React.FC = () => {
                       {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm')}
                     </div>
                     <div className="find" onClick={() => {
+                      // 投票评论直接跳转投票详情页
+                      if (comment.infoType === 10) {
+                        navigate(`/vote/${comment.newsId}`);
+                        return;
+                      }
                       setCommentId(comment.commentId);
                       setNewsType(comment.infoType);
                       setNewsId(comment.newsId);

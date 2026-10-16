@@ -24,6 +24,7 @@ import { LocationFill } from 'antd-mobile-icons';
 import { getImgUrl, getImgUrls } from '@/utils/commentUtils';
 import useStore from '@/zustand/store';
 import { Request_OnlineCount } from '@/pages/groupchat/api';
+import HomeVote from '@/components/vote/HomeVote';
 
 const Home: React.FC = () => {
   // 轮播图状态管理
@@ -195,6 +196,9 @@ const Home: React.FC = () => {
                   ))}
                 </div>
               </div>
+
+              {/* 投票 */}
+              <HomeVote />
 
               {/*               <div className="news-item" onClick={() => toTodayNews(newsRank?.newsTopId)}>
                 <div className="news-title">

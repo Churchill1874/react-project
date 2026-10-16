@@ -1,0 +1,331 @@
+// 投票相关样式
+
+@vote-blue: #1677ff;
+@vote-blue-light: rgba(22, 119, 255, 0.12);
+@vote-blue-strong: rgba(22, 119, 255, 0.22);
+
+/* ============ 选项面板 ============ */
+.vote-board {
+  margin-top: 10px;
+
+  .vote-board-tip {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 8px;
+  }
+
+  .vote-option {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: #fafafa;
+    transition: border-color 0.2s;
+
+    &.selected {
+      border-color: @vote-blue;
+      background: #fff;
+    }
+
+    &.disabled {
+      cursor: default;
+    }
+  }
+
+  .vote-option-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: @vote-blue-light;
+    transition: width 0.4s ease;
+
+    &.leading {
+      background: @vote-blue-strong;
+    }
+  }
+
+  .vote-option-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    min-height: 44px;
+  }
+
+  .vote-option-image {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .vote-option-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .vote-option-content {
+    font-size: 15px;
+    color: #222;
+    line-height: 1.4;
+    word-break: break-all;
+  }
+
+  .vote-option-mine {
+    margin-left: 6px;
+    font-size: 10px;
+    color: @vote-blue;
+    border: 1px solid @vote-blue;
+    border-radius: 4px;
+    padding: 0 3px;
+    vertical-align: 2px;
+  }
+
+  .vote-option-stat {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .vote-option-check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+
+    &.square {
+      border-radius: 4px;
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
+  .vote-submit {
+    margin-top: 6px;
+    --background-color: @vote-blue;
+    --border-color: @vote-blue;
+    font-size: 15px;
+  }
+}
+
+/* ============ 详情页 ============ */
+.vote-detail-card {
+  margin: 0 2px 20px;
+  border-radius: 10px;
+
+  .vote-detail-title {
+    font-size: 19px;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.4;
+  }
+
+  .vote-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .vote-detail-cover {
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .vote-detail-desc {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f6f8fb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .vote-detail-desc-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  .vote-detail-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0 4px;
+    font-size: 12px;
+    color: #888;
+  }
+}
+
+.vote-status-tag {
+  font-size: 11px;
+  padding: 0 5px;
+  border-radius: 4px;
+  line-height: 18px;
+
+  &.going {
+    color: #fff;
+    background: #52c41a;
+  }
+
+  &.ended {
+    color: #fff;
+    background: #bfbfbf;
+  }
+}
+
+/* ============ 列表卡片（首页模块和列表页共用） ============ */
+.vote-list-card {
+  display: block;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0 6px 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+  color: inherit;
+
+  .vote-list-head {
+    display: flex;
+    gap: 10px;
+  }
+
+  .vote-list-cover {
+    flex-shrink: 0;
+    width: 96px;
+    height: 64px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .vote-list-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .vote-list-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.4;
+  }
+
+  .vote-list-meta {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #999;
+  }
+
+  .vote-list-options {
+    margin-top: 8px;
+  }
+
+  .vote-mini-option {
+    position: relative;
+    overflow: hidden;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 6px;
+    background: #f5f5f5;
+    margin-bottom: 5px;
+    font-size: 12px;
+
+    .vote-mini-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: @vote-blue-light;
+    }
+
+    .vote-mini-text {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8px;
+      color: #333;
+
+      span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-right: 8px;
+      }
+
+      span:last-child {
+        flex-shrink: 0;
+        color: #666;
+      }
+    }
+  }
+
+  .vote-list-more {
+    font-size: 12px;
+    color: @vote-blue;
+    text-align: right;
+  }
+}
+
+/* ============ 首页模块 ============ */
+.home-vote-section {
+  margin: 4px 0 6px;
+
+  .home-vote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 5px 6px;
+    padding: 2px 5px;
+  }
+
+  .home-vote-more {
+    font-size: 12px;
+    font-weight: normal;
+    color: @vote-blue;
+  }
+}
+
+/* ============ 列表页 ============ */
+.vote-list-page {
+  height: 100vh;
+  overflow-y: auto;
+  background: #f5f6f8;
+
+  .vote-list-page-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #fff;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .adm-capsule-tabs {
+    background: #fff;
+  }
+}

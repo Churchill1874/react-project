@@ -62,6 +62,7 @@ const Comment = forwardRef<any, any>(({
   setSociety,
   setPromotion,
   setTopic,
+  setVote,
   newsId,
   newsType,
   needCommentPoint,
@@ -261,6 +262,14 @@ const Comment = forwardRef<any, any>(({
       //如果是话题
       if (newsType == 6) {
         setTopic((prev) => {
+          if (!prev) return prev;
+          return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
+        })
+      }
+
+      //如果是投票
+      if (newsType == 10 && setVote) {
+        setVote((prev) => {
           if (!prev) return prev;
           return { ...prev, commentsCount: (prev.commentsCount || 0) + 1 };
         })
