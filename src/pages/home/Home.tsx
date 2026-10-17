@@ -197,9 +197,6 @@ const Home: React.FC = () => {
                 </div>
               </div>
 
-              {/* 投票 */}
-              <HomeVote />
-
               {/*               <div className="news-item" onClick={() => toTodayNews(newsRank?.newsTopId)}>
                 <div className="news-title">
                   <span style={{ marginLeft: '7px', marginRight: '7px', color: 'gray' }}>1</span>
@@ -286,7 +283,8 @@ const Home: React.FC = () => {
                 }
               </div>
 
-
+              {/* 投票 */}
+              <HomeVote />
 
             </div>
 
