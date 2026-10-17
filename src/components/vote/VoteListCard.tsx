@@ -57,7 +57,10 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
                     ))}
                   <span className="vote-mini-name">{o.content}</span>
                 </span>
-                <span className="vote-mini-percent">{percent}%</span>
+                <span className="vote-mini-percent">
+                  <span className="vote-mini-count">{o.voteCount || 0}票</span>
+                  {percent}%
+                </span>
               </div>
             </div>
           );
