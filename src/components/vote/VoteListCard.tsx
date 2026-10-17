@@ -17,6 +17,8 @@ type Props = {
 const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
   const shown = vote.options.slice(0, maxOptions);
   const restCount = vote.options.length - shown.length;
+  // 只要有一个选项带图，所有选项都留出图片位置，保证文字对齐
+  const hasOptionImage = shown.some((o) => !!o.imagePath);
 
   return (
     <Link to={`/vote/${vote.id}`} className="vote-list-card" onClick={onClick}>
@@ -43,11 +45,19 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
         {shown.map((o) => {
           const percent = votePercent(o.voteCount, vote.voterCount);
           return (
-            <div className="vote-mini-option" key={o.id}>
+            <div className={`vote-mini-option ${hasOptionImage ? 'with-image' : ''}`} key={o.id}>
               <div className="vote-mini-bar" style={{ width: `${Math.min(percent, 100)}%` }} />
               <div className="vote-mini-text">
-                <span>{o.content}</span>
-                <span>{percent}%</span>
+                <span className="vote-mini-label">
+                  {hasOptionImage &&
+                    (o.imagePath ? (
+                      <img className="vote-mini-thumb" src={getImgUrl(o.imagePath)} alt="" loading="lazy" />
+                    ) : (
+                      <span className="vote-mini-thumb vote-mini-thumb-empty" />
+                    ))}
+                  <span className="vote-mini-name">{o.content}</span>
+                </span>
+                <span className="vote-mini-percent">{percent}%</span>
               </div>
             </div>
           );
