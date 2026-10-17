@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Ellipsis, Image } from 'antd-mobile';
-import dayjs from 'dayjs';
 import { FcReading } from 'react-icons/fc';
 import { MessageOutline } from 'antd-mobile-icons';
 import { VoteType, votePercent, remainText } from '@/components/vote/api';
@@ -65,18 +64,11 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
             </div>
           );
         })}
-        <div className="vote-list-more">
-          {restCount > 0 && <span className="vote-list-rest">另有 {restCount} 个选项未显示</span>}
-          <span>{vote.ended ? '查看结果 ›' : '去投票 ›'}</span>
-        </div>
+        {restCount > 0 && <div className="vote-list-rest">另有 {restCount} 个选项未显示</div>}
       </div>
 
-      {/* 底部信息：创建时间 / 截止时间 / 浏览 / 评论 */}
+      {/* 底部：浏览 / 评论 + 去投票 */}
       <div className="vote-list-footer">
-        <div className="vote-list-times">
-          <span>发布 {dayjs(vote.createTime).format('YYYY-MM-DD HH:mm')}</span>
-          <span>截止 {dayjs(vote.deadline).format('YYYY-MM-DD HH:mm')}</span>
-        </div>
         <div className="vote-list-counts">
           <span className="vote-list-count">
             <FcReading fontSize={15} />
@@ -87,6 +79,7 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
             {vote.commentsCount || 0}
           </span>
         </div>
+        <span className={`vote-list-action ${vote.ended ? 'ended' : ''}`}>{vote.ended ? '查看结果' : '去投票'}</span>
       </div>
     </Link>
   );
