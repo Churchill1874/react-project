@@ -44,7 +44,47 @@ const VoteDetail: React.FC = () => {
     setVote((prev) => (prev ? { ...latest, viewCount: prev.viewCount, commentsCount: prev.commentsCount } : latest));
   };
 
-  const desc = vote?.description?.slice(0, 120).replace(/\s+/g, ' ') || vote?.title || '';
+  // ===== SEO =====
+  const pageUrl = `https://grayasia.com/vote/${id}`;
+  const optionText = vote?.options?.map((o) => o.content).join('、') || '';
+  const desc = (
+    (vote?.description || '').replace(/\s+/g, ' ').trim() ||
+    `${vote?.title || ''}，选项：${optionText}`
+  ).slice(0, 150);
+  const coverUrl = vote?.coverImagePath
+    ? getImgUrl(vote.coverImagePath)
+    : 'https://grayasia.com/assets/logo/logo1.png';
+  const toIso = (t?: string) => (t ? dayjs(t).format('YYYY-MM-DDTHH:mm:ssZ') : undefined);
+  // 结构化数据：Article（Google 收录标题、发布时间、图片、正文），正文里带上选项和票数
+  const jsonLd = vote
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: vote.title.slice(0, 110),
+        description: desc,
+        image: [coverUrl],
+        datePublished: toIso(vote.createTime),
+        dateModified: toIso(vote.createTime),
+        mainEntityOfPage: pageUrl,
+        author: { '@type': 'Organization', name: '灰亚新闻', url: 'https://grayasia.com' },
+        publisher: {
+          '@type': 'Organization',
+          name: '灰亚新闻',
+          logo: { '@type': 'ImageObject', url: 'https://grayasia.com/assets/logo/logo1.png' },
+        },
+        articleBody: [
+          vote.description || '',
+          `投票选项：${vote.options.map((o) => `${o.content}（${o.voteCount || 0}票）`).join('，')}`,
+          `共 ${vote.voterCount} 人参与，统计截止 ${dayjs(vote.deadline).format('YYYY-MM-DD HH:mm')}`,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+        interactionStatistic: [
+          { '@type': 'InteractionCounter', interactionType: 'https://schema.org/CommentAction', userInteractionCount: vote.commentsCount || 0 },
+          { '@type': 'InteractionCounter', interactionType: 'https://schema.org/ViewAction', userInteractionCount: vote.viewCount || 0 },
+        ],
+      }
+    : null;
 
   return (
     <div style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden', padding: '0px 5px', boxSizing: 'border-box' }}>
@@ -65,20 +105,39 @@ const VoteDetail: React.FC = () => {
         </div>
       )}
 
-      {notFound && <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>投票不存在或已下架</div>}
+      {notFound && (
+        <>
+          <Helmet>
+            <title>投票不存在 - 灰亚新闻</title>
+            <meta name="robots" content="noindex" />
+          </Helmet>
+          <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>投票不存在或已下架</div>
+        </>
+      )}
 
       {vote && (
         <>
           <Helmet>
-            <title>{vote.title} - 灰亚新闻</title>
+            <title>{`${vote.title} - 投票 | 灰亚新闻`}</title>
             <meta name="description" content={desc} />
+            <meta name="keywords" content={`${vote.title},投票,${optionText},灰亚新闻`} />
+            <meta name="robots" content="index,follow,max-image-preview:large" />
+            <link rel="canonical" href={pageUrl} />
+            <meta property="og:type" content="article" />
+            <meta property="og:url" content={pageUrl} />
+            <meta property="og:site_name" content="灰亚新闻" />
             <meta property="og:title" content={vote.title} />
             <meta property="og:description" content={desc} />
-            {vote.coverImagePath && <meta property="og:image" content={getImgUrl(vote.coverImagePath)} />}
+            <meta property="og:image" content={coverUrl} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={vote.title} />
+            <meta name="twitter:description" content={desc} />
+            <meta name="twitter:image" content={coverUrl} />
+            <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
           </Helmet>
 
           <Card className="vote-detail-card">
-            <div className="vote-detail-title">{vote.title}</div>
+            <h1 className="vote-detail-title">{vote.title}</h1>
 
             <div className="vote-detail-meta">
               <span className={`vote-status-tag ${vote.ended ? 'ended' : 'going'}`}>{vote.ended ? '已截止' : '进行中'}</span>
@@ -89,14 +148,14 @@ const VoteDetail: React.FC = () => {
 
             {vote.coverImagePath && (
               <div className="vote-detail-cover">
-                <Image src={getImgUrl(vote.coverImagePath)} fit="contain" onClick={() => setCoverVisible(true)} />
+                <Image src={getImgUrl(vote.coverImagePath)} alt={vote.title} fit="contain" onClick={() => setCoverVisible(true)} />
                 <ImageViewer image={getImgUrl(vote.coverImagePath)} visible={coverVisible} onClose={() => setCoverVisible(false)} />
               </div>
             )}
 
             {vote.description && (
               <div className="vote-detail-desc">
-                <div className="vote-detail-desc-title">事件简介</div>
+                <h2 className="vote-detail-desc-title">事件简介</h2>
                 {vote.description}
               </div>
             )}

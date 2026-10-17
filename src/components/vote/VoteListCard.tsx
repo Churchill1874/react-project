@@ -24,7 +24,7 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
       <div className="vote-list-head">
         {vote.coverImagePath && (
           <div className="vote-list-cover">
-            <Image src={getImgUrl(vote.coverImagePath)} fit="cover" width="100%" height="100%" />
+            <Image src={getImgUrl(vote.coverImagePath)} alt={vote.title} fit="cover" width="100%" height="100%" />
           </div>
         )}
         <div className="vote-list-main">
@@ -50,7 +50,7 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
                 <span className="vote-mini-label">
                   {hasOptionImage &&
                     (o.imagePath ? (
-                      <img className="vote-mini-thumb" src={getImgUrl(o.imagePath)} alt="" loading="lazy" />
+                      <img className="vote-mini-thumb" src={getImgUrl(o.imagePath)} alt={o.content} loading="lazy" />
                     ) : (
                       <span className="vote-mini-thumb vote-mini-thumb-empty" />
                     ))}

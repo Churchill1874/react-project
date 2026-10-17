@@ -99,7 +99,7 @@ const VoteBoard: React.FC<Props> = ({ vote, onVoted }) => {
                     setPreviewImage(getImgUrl(option.imagePath));
                   }}
                 >
-                  <Image src={getImgUrl(option.imagePath)} fit="cover" width={52} height={52} />
+                  <Image src={getImgUrl(option.imagePath)} alt={option.content} fit="cover" width={52} height={52} />
                 </div>
               )}
 

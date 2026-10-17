@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CapsuleTabs, InfiniteScroll, PullToRefresh, Empty } from 'antd-mobile';
 import { LeftOutline } from 'antd-mobile-icons';
+import { Helmet } from 'react-helmet-async';
 import { VotePage_Request, VoteType } from '@/components/vote/api';
 import VoteListCard from '@/components/vote/VoteListCard';
 import '@/components/vote/Vote.less';
@@ -56,6 +57,11 @@ const VoteList: React.FC = () => {
 
   return (
     <div className="vote-list-page">
+      <Helmet>
+        <title>投票 - 灰亚新闻</title>
+        <meta name="description" content="灰亚新闻投票专区：东南亚生活、工作、时事热点话题投票，查看实时票数与大家的观点。" />
+        <link rel="canonical" href="https://grayasia.com/voteList" />
+      </Helmet>
       <div className="vote-list-page-header" onClick={() => navigate(-1)}>
         <span style={{ color: 'gray', paddingRight: 5 }}>
           <LeftOutline fontSize={18} />
