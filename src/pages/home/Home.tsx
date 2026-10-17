@@ -283,9 +283,6 @@ const Home: React.FC = () => {
                 }
               </div>
 
-              {/* 投票 */}
-              <HomeVote />
-
             </div>
 
             {/* 东南亚新闻 */}
@@ -337,6 +334,9 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* 投票 */}
+            <HomeVote />
 
             {/*             <div className="sea-news-item">
               <div className="sea-news-flag">{southeastAsiaNews?.southeastAsiaCountry4}</div>
