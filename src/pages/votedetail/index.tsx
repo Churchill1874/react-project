@@ -110,6 +110,8 @@ const VoteDetail: React.FC = () => {
           <Helmet>
             <title>投票不存在 - 灰亚新闻</title>
             <meta name="robots" content="noindex" />
+            {/* Rendertron 识别这个标签，给爬虫返回 404 状态码 */}
+            <meta name="render:status_code" content="404" />
           </Helmet>
           <div style={{ padding: 40, textAlign: 'center', color: '#999' }}>投票不存在或已下架</div>
         </>
