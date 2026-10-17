@@ -26,6 +26,8 @@ import PoliticsDetail from '@/pages/politicsdetail';
 import NewsInfoDetail from '@/pages/newsinfo';
 import TopicDetail from '@/pages/topicdetail';
 import TelegramDetail from '@/pages/telegramdetail';
+import VoteList from '@/pages/vote/VoteList';
+import VoteDetail from '@/pages/votedetail';
 
 export default [
   //首页
@@ -136,6 +138,16 @@ export default [
   {
     path: '/telegram/:id',
     component: TelegramDetail
+  },
+  // 投票列表页
+  {
+    path: '/voteList',
+    component: VoteList
+  },
+  // 投票详情页
+  {
+    path: '/vote/:id',
+    component: VoteDetail
   }
 
 ];
