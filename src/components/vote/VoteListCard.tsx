@@ -53,8 +53,8 @@ const VoteListCard: React.FC<Props> = ({ vote, maxOptions = 3, onClick }) => {
           );
         })}
         <div className="vote-list-more">
-          {restCount > 0 ? `还有 ${restCount} 个选项，` : ''}
-          {vote.ended ? '查看结果 ›' : '去投票 ›'}
+          {restCount > 0 && <span className="vote-list-rest">另有 {restCount} 个选项未显示</span>}
+          <span>{vote.ended ? '查看结果 ›' : '去投票 ›'}</span>
         </div>
       </div>
 

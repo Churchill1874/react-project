@@ -43,7 +43,7 @@ const HomeVote: React.FC = () => {
         </span>
       </div>
       {voteList.map((vote) => (
-        <VoteListCard key={vote.id} vote={vote} maxOptions={3} />
+        <VoteListCard key={vote.id} vote={vote} maxOptions={5} />
       ))}
     </div>
   );
